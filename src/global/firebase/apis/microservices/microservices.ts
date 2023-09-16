@@ -6,7 +6,7 @@ const microservices = {
    registerUser: {
       name: 'registerUser',
       los: 0,
-   }
+   },
 };
 
 export default microservices;
