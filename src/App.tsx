@@ -8,6 +8,7 @@ export default function App(): JSX.Element {
    return (
       <>
          <GlobalTheme darkTheme={isDarkTheme} />
+         Hello
       </>
    );
 }

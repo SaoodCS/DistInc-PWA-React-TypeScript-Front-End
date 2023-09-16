@@ -14,7 +14,6 @@ function Root(): JSX.Element {
                <InstallAppModal />
                {/* <EnablePushNotifModal /> */}
                <UpdateAppModal />
-               <InstallAppModal />
                <App />
             </WidgetContextProviders>
          </ThemeContextProvider>
