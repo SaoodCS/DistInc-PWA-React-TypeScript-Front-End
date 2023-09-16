@@ -33,7 +33,7 @@ jobs:
       - name: CD Phase - Deploy to Dev Env If Pushed To Dev Branch
         if: github.ref == 'refs/heads/dev'
         env: 
-          DEV_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DEV_ENV_39536 }}
+          DEV_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DISTINC_DEV }}
           ENV_DEVDEPLOYED: ${{ secrets.ENV_DEVDEPLOYED }}
         run: |
           echo "$ENV_DEVDEPLOYED" > .env.devdeployed
@@ -44,7 +44,7 @@ jobs:
       - name: CD Phase - Deploy to Prod Env If Pushed To Prod Branch
         if: github.ref == 'refs/heads/prod'
         env:
-          PROD_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_PROD_ENV_FCCFE }}
+          PROD_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DISTINC_9AD9D }}
           ENV_PRODDEPLOYED: ${{ secrets.ENV_PRODDEPLOYED }}
         run: |
           echo "$ENV_PRODDEPLOYED" > .env.proddeployed
