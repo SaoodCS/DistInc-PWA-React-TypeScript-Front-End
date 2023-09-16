@@ -40,13 +40,13 @@ export default defineConfig({
             ],
          },
          manifest: {
-            name: 'React Vite PWA',
-            short_name: 'React Vite PWA',
-            description: 'A React Vite PWA project',
+            name: 'DistInc',
+            short_name: 'DistInc',
+            description: 'Distribute your income with ease',
             display: 'standalone',
             orientation: 'natural',
             start_url: '/?application=true',
-            theme_color: '#000000',
+            theme_color: 'rgb(2,8,23)',
             scope: '/',
             icons: [
                {
