@@ -1,0 +1,59 @@
+import type { ReactNode } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { ThemeContext } from '../../../context/theme/ThemeContext';
+import Expander from '../animation/expander/Expander';
+import { CenterWrapper } from '../centerers/CenterWrapper';
+import ConditionalRender from '../conditionalRender/ConditionalRender';
+import { DimOverlay } from '../overlay/dimOverlay/DimOverlay';
+
+import {
+   ModalBody,
+   ModalCloseButton,
+   ModalContainer,
+   ModalHeader,
+   ModalHeaderContainer,
+} from './Style';
+
+interface IModal {
+   isOpen: boolean;
+   onClose: () => void;
+   header: string;
+   children: ReactNode;
+}
+
+export default function Modal(props: IModal): JSX.Element {
+   const { isOpen, onClose, header, children } = props;
+   const { isDarkTheme } = useContext(ThemeContext);
+   const [renderModal, setRenderModal] = useState(false);
+
+   useEffect(() => {
+      let timeoutId: NodeJS.Timeout | undefined = undefined;
+      if (!isOpen) {
+         timeoutId = setTimeout(() => {
+            setRenderModal(false);
+         }, 100);
+      } else {
+         setRenderModal(true);
+      }
+      return () => {
+         clearTimeout(timeoutId);
+      };
+   }, [isOpen]);
+
+   return (
+      <ConditionalRender condition={renderModal}>
+         <DimOverlay onClick={onClose} isDisplayed={isOpen} />
+         <CenterWrapper centerOfScreen>
+            <Expander expandOutCondition={isOpen}>
+               <ModalContainer isDarkTheme={isDarkTheme}>
+                  <ModalHeaderContainer isDarkTheme={isDarkTheme}>
+                     <ModalHeader isDarkTheme={isDarkTheme}>{header}</ModalHeader>
+                     <ModalCloseButton onClick={onClose} />
+                  </ModalHeaderContainer>
+                  <ModalBody>{children}</ModalBody>
+               </ModalContainer>
+            </Expander>
+         </CenterWrapper>
+      </ConditionalRender>
+   );
+}

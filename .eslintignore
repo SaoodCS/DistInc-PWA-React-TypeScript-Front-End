@@ -1,0 +1,5 @@
+coverage/*
+dist/*
+dev-dist/*
+public/*
+src/global/firebase/sw

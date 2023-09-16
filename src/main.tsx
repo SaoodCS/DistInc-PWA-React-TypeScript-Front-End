@@ -1,0 +1,25 @@
+import { StrictMode } from 'react';
+import * as ReactDOM from 'react-dom/client';
+import App from './App';
+import InstallAppModal from './global/components/app/installAppModal/InstallAppModal';
+import UpdateAppModal from './global/components/app/updateAppModal/UpdateAppModal';
+import { ThemeContextProvider } from './global/context/theme/ThemeContextProvider';
+import WidgetContextProviders from './global/context/widget/WidgetContextProviders';
+
+function Root(): JSX.Element {
+   return (
+      <StrictMode>
+         <ThemeContextProvider>
+            <WidgetContextProviders>
+               <InstallAppModal />
+               {/* <EnablePushNotifModal /> */}
+               <UpdateAppModal />
+               <InstallAppModal />
+               <App />
+            </WidgetContextProviders>
+         </ThemeContextProvider>
+      </StrictMode>
+   );
+}
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(<Root />);
