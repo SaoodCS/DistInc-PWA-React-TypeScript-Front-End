@@ -1,9 +1,10 @@
 import { Route } from 'react-router-dom';
-import ProtectRoute from '../../global/components/app/routeRedirector/RouteRedirector';
+import RouteRedirector from '../../global/components/app/routeRedirector/RouteRedirector';
+import useAuthContext from '../../global/hooks/useAuthContext';
 
 export default function AdminRoute(): JSX.Element {
-   const isUserRoleAdmin = true;
-   const routeProtectionByAdmin = <ProtectRoute condition={isUserRoleAdmin} redirectPath="/" />;
+   const { isSignedIn } = useAuthContext();
+   const routeProtectionByAdmin = <RouteRedirector redirectIf={!isSignedIn} redirectTo="/main" />;
    return (
       <Route element={routeProtectionByAdmin}>
          <Route

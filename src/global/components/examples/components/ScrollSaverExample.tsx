@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useContext, useState } from 'react';
 import { ThemeContext } from '../../../context/theme/ThemeContext';
 import { DummyData } from '../../../helpers/lib/dummyContent/dummyData';
+import useThemeContext from '../../../hooks/useThemeContext';
 import ConditionalRender from '../../lib/conditionalRender/ConditionalRender';
 import FetchError from '../../lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../lib/fetch/offlineFetch/offlineFetch';
@@ -39,7 +40,7 @@ export default function ScrollSaverExample(): JSX.Element {
 // -------------------------------------------------------------------------------------- //
 
 function ScrollSaverWithData(): JSX.Element {
-   const { isDarkTheme } = useContext(ThemeContext);
+   const { isDarkTheme } = useThemeContext();
    const { isLoading, error, data, isPaused, refetch } = useQuery(['repoData'], () =>
       fetch(DummyData.endpoints.GET.dynamicRes).then((res) => res.json()),
    );

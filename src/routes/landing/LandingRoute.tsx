@@ -1,17 +1,17 @@
 import { Navigate, Route } from 'react-router-dom';
 import RouteRedirector from '../../global/components/app/routeRedirector/RouteRedirector';
+import useAuthContext from '../../global/hooks/useAuthContext';
 import ErrorPage from '../../pages/error/ErrorPage';
 
 export default function LandingRoute(): JSX.Element {
-   const isUserSignedInTest = true;
-
+   const { isSignedIn } = useAuthContext();
    return (
       <Route
          path="/"
          key={'landing'}
          errorElement={<ErrorPage />}
          element={
-            <RouteRedirector redirectIf={!isUserSignedInTest} redirectTo="/auth">
+            <RouteRedirector redirectIf={!isSignedIn} redirectTo="/auth">
                <Navigate to="/main" replace={true} />
             </RouteRedirector>
          }

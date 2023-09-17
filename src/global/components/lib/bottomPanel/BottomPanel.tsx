@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { useContext } from 'react';
 import Sheet from 'react-modal-sheet';
 import { ThemeContext } from '../../../context/theme/ThemeContext';
+import useThemeContext from '../../../hooks/useThemeContext';
 import ConditionalRender from '../conditionalRender/ConditionalRender';
 import {
    CustomBottomPanelSheet,
@@ -25,7 +26,7 @@ interface IBottomPanel {
 
 export default function BottomPanel(props: IBottomPanel): JSX.Element {
    const { isOpen, onClose, children, height, heading, heightFitContent } = props;
-   const { isDarkTheme } = useContext(ThemeContext);
+   const { isDarkTheme } = useThemeContext();
 
    return (
       <>

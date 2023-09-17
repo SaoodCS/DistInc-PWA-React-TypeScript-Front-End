@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../../../context/theme/ThemeContext';
+import useThemeContext from '../../../hooks/useThemeContext';
 import Fader from '../animation/fader/Fader';
 import ConditionalRender from '../conditionalRender/ConditionalRender';
 import { ToastContainer } from './Style';
@@ -19,7 +20,7 @@ interface IToast {
 export default function Toast(props: IToast): JSX.Element {
    const { message, isVisible, onClose, width, verticalPos, horizontalPos } = props;
    const [renderToast, setRenderToast] = useState(isVisible);
-   const { isDarkTheme } = useContext(ThemeContext);
+   const { isDarkTheme } = useThemeContext();
    let timeout1: NodeJS.Timeout;
    let timeout2: NodeJS.Timeout;
 

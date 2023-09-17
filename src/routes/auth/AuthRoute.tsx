@@ -1,10 +1,11 @@
 import { Route } from 'react-router-dom';
 import RouteRedirector from '../../global/components/app/routeRedirector/RouteRedirector';
+import useAuthContext from '../../global/hooks/useAuthContext';
 
 export default function AuthRoute(): JSX.Element {
-   const isUserSignedInTest = true;
+   const { isSignedIn } = useAuthContext();
    const routeRedirectIfLoggedIn = (
-      <RouteRedirector redirectIf={isUserSignedInTest} redirectTo="/main" />
+      <RouteRedirector redirectIf={!!isSignedIn} redirectTo="/main" />
    );
    return (
       <Route element={routeRedirectIfLoggedIn}>

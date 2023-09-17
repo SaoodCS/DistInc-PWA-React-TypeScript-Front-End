@@ -1,13 +1,23 @@
 /// <reference types="vitest" />
 /// <reference types="vite/client" />
+import basicSsl from '@vitejs/plugin-basic-ssl';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 const oneDayInSeconds = 86400;
 
+const localHttpsForTestingFCM = {
+   server: {
+      https: true,
+   },
+   sslPlugin: basicSsl(),
+};
+
 export default defineConfig({
+   server: localHttpsForTestingFCM.server,
    plugins: [
+      localHttpsForTestingFCM.sslPlugin,
       react(),
       VitePWA({
          registerType: 'autoUpdate',

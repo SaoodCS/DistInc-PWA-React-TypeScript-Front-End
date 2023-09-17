@@ -1,9 +1,10 @@
 import { useContext } from 'react';
 import { ThemeContext } from '../../../../context/theme/ThemeContext';
+import useThemeContext from '../../../../hooks/useThemeContext';
 import { ErrorIcon, ErrorMsg, FetchErrorWrapper } from './Style';
 
 export default function FetchError(): JSX.Element {
-   const { isDarkTheme } = useContext(ThemeContext);
+   const { isDarkTheme } = useThemeContext();
 
    return (
       <FetchErrorWrapper>
