@@ -1,6 +1,6 @@
 import { Navigate, Route } from 'react-router-dom';
+import RouteRedirector from '../../global/components/app/routeRedirector/RouteRedirector';
 import ErrorPage from '../../pages/error/ErrorPage';
-import RouteRedirector from '../redirector/RouteRedirector';
 
 export default function LandingRoute(): JSX.Element {
    const isUserSignedInTest = true;

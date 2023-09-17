@@ -14,7 +14,7 @@ export default function App(): JSX.Element {
       <>
          <GlobalTheme darkTheme={isDarkTheme} />
          <QueryClientProvider client={queryClient}>
-            <AppRouter/>
+            <AppRouter />
             <ReactQueryDevtools initialIsOpen={false} />
          </QueryClientProvider>
       </>

@@ -1,8 +1,8 @@
 import { Route } from 'react-router-dom';
+import RouteRedirector from '../../global/components/app/routeRedirector/RouteRedirector';
 import AccountsLayout from '../../pages/main/accounts/Accounts';
 import MainLayout from '../../pages/main/MainLayout';
 import Settings from '../../pages/main/settings/Settings';
-import RouteRedirector from '../redirector/RouteRedirector';
 
 export default function MainRoutes(): JSX.Element {
    const isUserSignedInTest = true;
