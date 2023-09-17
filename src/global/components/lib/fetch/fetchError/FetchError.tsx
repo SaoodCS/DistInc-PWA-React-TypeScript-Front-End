@@ -1,5 +1,3 @@
-import { useContext } from 'react';
-import { ThemeContext } from '../../../../context/theme/ThemeContext';
 import useThemeContext from '../../../../hooks/useThemeContext';
 import { ErrorIcon, ErrorMsg, FetchErrorWrapper } from './Style';
 

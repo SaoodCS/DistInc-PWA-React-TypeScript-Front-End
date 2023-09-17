@@ -4,9 +4,7 @@ import Logo from '../../app/logo/Logo';
 import Fader from '../animation/fader/Fader';
 import { CenterWrapper } from '../centerers/CenterWrapper';
 import ConditionalRender from '../conditionalRender/ConditionalRender';
-import { StyledImage } from '../image/Style';
 import { OpaqueOverlay } from '../overlay/opaqueOverlay/Style';
-import logo from './logo-192x192.png';
 
 interface ISplashScreen {
    isDisplayed: boolean;

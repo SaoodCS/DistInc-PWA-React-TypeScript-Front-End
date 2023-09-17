@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
-import { ThemeContext } from '../../../context/theme/ThemeContext';
+import { useEffect, useState } from 'react';
 import useThemeContext from '../../../hooks/useThemeContext';
 import Fader from '../animation/fader/Fader';
 import ConditionalRender from '../conditionalRender/ConditionalRender';

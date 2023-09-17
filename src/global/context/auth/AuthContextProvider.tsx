@@ -1,5 +1,6 @@
 import { onAuthStateChanged } from 'firebase/auth';
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import type { ReactNode } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ConditionalRender from '../../components/lib/conditionalRender/ConditionalRender';
 import { auth } from '../../firebase/config/config';
 import { AuthContext } from './AuthContext';
@@ -20,7 +21,6 @@ export default function AuthContextProvider(props: IAuthContextProvider): JSX.El
             setIsSignedIn(false);
          }
       });
-
    }, [isSignedIn]);
 
    const authValues = useMemo(() => ({ isSignedIn, setIsSignedIn }), [isSignedIn, setIsSignedIn]);

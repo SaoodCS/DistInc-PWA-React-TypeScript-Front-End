@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { useQuery } from '@tanstack/react-query';
-import { useContext, useState } from 'react';
-import { ThemeContext } from '../../../context/theme/ThemeContext';
+import { useState } from 'react';
 import { DummyData } from '../../../helpers/lib/dummyContent/dummyData';
 import useThemeContext from '../../../hooks/useThemeContext';
 import ConditionalRender from '../../lib/conditionalRender/ConditionalRender';

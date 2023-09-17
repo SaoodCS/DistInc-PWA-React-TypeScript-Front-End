@@ -1,6 +1,4 @@
-import { useContext } from 'react';
 import { TextBtn } from '../../global/components/lib/button/textBtn/Style';
-import { ThemeContext } from '../../global/context/theme/ThemeContext';
 import useThemeContext from '../../global/hooks/useThemeContext';
 import { ErrorHeading, ErrorPageWrapper, ErrorSubheading, ErrorText } from './Style';
 

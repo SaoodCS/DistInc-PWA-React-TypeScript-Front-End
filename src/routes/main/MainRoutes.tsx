@@ -7,9 +7,7 @@ import Settings from '../../pages/main/settings/Settings';
 
 export default function MainRoutes(): JSX.Element {
    const { isSignedIn } = useAuthContext();
-   const routeProtectionByAuth = (
-      <RouteRedirector redirectIf={!isSignedIn} redirectTo="/auth" />
-   );
+   const routeProtectionByAuth = <RouteRedirector redirectIf={!isSignedIn} redirectTo="/auth" />;
    return (
       <>
          <Route element={routeProtectionByAuth}>
