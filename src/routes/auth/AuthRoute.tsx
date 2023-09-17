@@ -1,5 +1,5 @@
 import { Route } from 'react-router-dom';
-import RouteRedirector from '../RouteRedirector';
+import RouteRedirector from '../redirector/RouteRedirector';
 
 export default function AuthRoute(): JSX.Element {
    const isUserSignedInTest = true;

@@ -1,5 +1,5 @@
 import { Route } from 'react-router-dom';
-import ProtectRoute from '../RouteRedirector';
+import ProtectRoute from '../redirector/RouteRedirector';
 
 export default function AdminRoute(): JSX.Element {
    const isUserRoleAdmin = true;
