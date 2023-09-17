@@ -13,12 +13,10 @@ function Root(): JSX.Element {
          <ThemeContextProvider>
             <AuthContextProvider>
                <WidgetContextProviders>
-                  <>
                      <InstallAppModal />
                      {/* <EnablePushNotifModal /> */}
                      <UpdateAppModal />
                      <App />
-                  </>
                </WidgetContextProviders>
             </AuthContextProvider>
          </ThemeContextProvider>
