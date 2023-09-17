@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Color from '../../../styles/colors';
+import Logo from '../../app/logo/Logo';
 import Fader from '../animation/fader/Fader';
 import { CenterWrapper } from '../centerers/CenterWrapper';
 import ConditionalRender from '../conditionalRender/ConditionalRender';
@@ -34,7 +35,7 @@ export default function SplashScreen(props: ISplashScreen): JSX.Element {
          <Fader fadeInCondition={isDisplayed}>
             <OpaqueOverlay bgColor={Color.darkThm.bg}>
                <CenterWrapper centerOfScreen>
-                  <StyledImage src={logo} alt="logo" width={'100px'} height={'100px'} />
+                  <Logo size={'120px'} />
                </CenterWrapper>
             </OpaqueOverlay>
          </Fader>

@@ -12,17 +12,6 @@ const queryClient = new QueryClient();
 
 export default function App(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
-   const { setShowSplashScreen } = useContext(SplashScreenContext);
-
-   useEffect(() => {
-      const timeoutId = setTimeout(() => {
-         setShowSplashScreen(false);
-      }, 2000);
-
-      return () => {
-         clearTimeout(timeoutId);
-      };
-   }, []);
 
    return (
       <>
