@@ -12,7 +12,8 @@ export const CarouselContainer = styled.div<{ height: string }>`
 `;
 
 export const Slide = styled.div<{ width: string }>`
-   width: ${({ width }) => width};
+   //width: ${({ width }) => width};
+   width: 100%;
    flex: none;
    scroll-snap-align: start;
    overflow-y: scroll;

@@ -1,6 +1,7 @@
 import { Route } from 'react-router-dom';
 import RouteRedirector from '../../global/components/app/routeRedirector/RouteRedirector';
 import useAuthContext from '../../global/hooks/useAuthContext';
+import Authentication from '../../pages/auth/Authentication';
 import NotFound from '../../pages/error/NotFound';
 
 export default function AuthRoute(): JSX.Element {
@@ -9,7 +10,7 @@ export default function AuthRoute(): JSX.Element {
    return (
       <Route element={routeRedirectIfLoggedIn}>
          <Route path="*" element={<NotFound />}/>
-         <Route path="auth" element={<div>Authentication Here</div>} />
+         <Route path="auth" element={<Authentication/>} />
       </Route>
    );
 }
