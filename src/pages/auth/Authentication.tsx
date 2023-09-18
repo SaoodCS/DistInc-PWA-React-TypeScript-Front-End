@@ -1,64 +1,107 @@
+import { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
 import Logo from '../../global/components/app/logo/Logo';
 import { StaticButton } from '../../global/components/lib/button/staticButton/Style';
-import Carousel from '../../global/components/lib/carousel/Carousel';
-import useCarousel from '../../global/hooks/useCarousel';
+import { DummyData } from '../../global/helpers/lib/dummyContent/dummyData';
 import useThemeContext from '../../global/hooks/useThemeContext';
+import Color from '../../global/styles/colors';
 import {
+   Centerer,
+   Container,
    InputLabel,
    LogoContainer,
    ScrollNavigatorBtn,
    ScrollNavigatorContainer,
-   ScrollNavigatorWrapper,
-   SlideWrapper,
+   Slide,
    StyledForm,
-   StyledTextInput,
+   TextInput,
 } from './Style';
 
 export default function Authentication(): JSX.Element {
+   const containerRef = useRef<HTMLDivElement | null>(null);
+   const [currentSlide, setCurrentSlide] = useState<number>(1);
    const { isDarkTheme } = useThemeContext();
-   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-      event.preventDefault();
-   }
-   const { carouselRef, handleGoToSlide, handleNext, handlePrev, setCurrentSlide, currentSlide } =
-      useCarousel(1);
+
+   const scrollToSlide = (slideNumber: number) => {
+      if (containerRef.current) {
+         containerRef.current.scrollTo({
+            left: (slideNumber - 1) * containerRef.current.offsetWidth,
+            behavior: 'smooth',
+         });
+      }
+   };
+
+   useEffect(() => {
+      const handleScroll = () => {
+         if (containerRef.current) {
+            const currentSlide = Math.round(
+               containerRef.current.scrollLeft / containerRef.current.offsetWidth,
+            );
+            setCurrentSlide(currentSlide + 1);
+         }
+      }
+      containerRef.current?.addEventListener('scroll', handleScroll);
+      return () => {
+         containerRef.current?.removeEventListener('scroll', handleScroll);
+      };
+      
+   }, []);
 
    return (
-      <>
+      <Centerer>
          <LogoContainer>
             <Logo size="8.5em" />
          </LogoContainer>
-         <ScrollNavigatorWrapper>
-            <ScrollNavigatorContainer>
-               <ScrollNavigatorBtn onClick={() => handleGoToSlide(1)}>Sign Up</ScrollNavigatorBtn>
-               <ScrollNavigatorBtn onClick={() => handleGoToSlide(2)}>Login</ScrollNavigatorBtn>
-            </ScrollNavigatorContainer>
-         </ScrollNavigatorWrapper>
-         <Carousel ref={carouselRef} width={'100%'} height={'auto'}>
-            <SlideWrapper>
+         <ScrollNavigatorContainer>
+            <ScrollNavigatorBtn
+               onClick={() => scrollToSlide(1)}
+               isDarkTheme={isDarkTheme}
+               isActive={currentSlide === 1}
+            >
+               Sign Up
+            </ScrollNavigatorBtn>
+            <ScrollNavigatorBtn
+               onClick={() => scrollToSlide(2)}
+               isDarkTheme={isDarkTheme}
+               isActive={currentSlide === 2}
+            >
+               Login
+            </ScrollNavigatorBtn>
+         </ScrollNavigatorContainer>
+         <Container ref={containerRef} style={{ width: '20em' }}>
+            <Slide height={'auto'}>
                <StyledForm>
                   <InputLabel>Name</InputLabel>
-                  <StyledTextInput />
+                  <TextInput />
                   <InputLabel>Email</InputLabel>
-                  <StyledTextInput />
+                  <TextInput />
                   <InputLabel>Password</InputLabel>
-                  <StyledTextInput />
+                  <TextInput />
                   <InputLabel>Confirm Password</InputLabel>
-                  <StyledTextInput />
-                  <StaticButton isDarkTheme={isDarkTheme}>Sign Up</StaticButton>
+                  <TextInput />
+                  <StaticButton
+                     isDarkTheme={isDarkTheme}
+                     style={{ padding: '0.65em', textAlign: 'center', marginTop: '0.5em' }}
+                  >
+                     Sign Up
+                  </StaticButton>
                </StyledForm>
-            </SlideWrapper>
-
-            <SlideWrapper>
-               <StyledForm>
+            </Slide>
+            <Slide height={'auto'}>
+               <StyledForm style={{}}>
                   <InputLabel>Email</InputLabel>
-                  <StyledTextInput />
+                  <TextInput />
                   <InputLabel>Password</InputLabel>
-                  <StyledTextInput />
-                  <StaticButton isDarkTheme={isDarkTheme}>Sign Up</StaticButton>
+                  <TextInput />
+                  <StaticButton
+                     isDarkTheme={isDarkTheme}
+                     style={{ padding: '0.65em', textAlign: 'center', marginTop: '0.5em' }}
+                  >
+                     Sign Up
+                  </StaticButton>
                </StyledForm>
-            </SlideWrapper>
-         </Carousel>
-         {/* </ScreenCenterer> */}
-      </>
+            </Slide>
+         </Container>
+      </Centerer>
    );
 }
