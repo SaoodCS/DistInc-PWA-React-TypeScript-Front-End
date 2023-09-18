@@ -18,7 +18,12 @@ export const ScrollNavigatorBtn = styled.div<{
    display: flex;
    justify-content: center;
    align-items: center;
-   color: ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent)};
+   color: ${({ isDarkTheme, isActive }) =>
+      isActive
+         ? isDarkTheme
+            ? Color.darkThm.accent
+            : Color.lightThm.accent
+         : Color.setRgbOpacity(isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent, 0.25)};
    font-size: 1.5em;
    padding-left: 1em;
    padding-right: 1em;
@@ -28,12 +33,17 @@ export const ScrollNavigatorBtn = styled.div<{
       position: absolute;
       bottom: 0;
       left: 50%;
-      transform: ${({ navTo }) => (navTo === 1 ? 'translateX(-100%)' : 'translateX(-30%)')};
+      transform: ${({ navTo }) => (navTo === 1 ? 'translateX(-100%)' : 'translateX(-10%)')};
       width: 25%;
       height: 2px;
-      background-color: ${({ isActive, isDarkTheme }) =>
-         isActive ? (isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent) : null};
+      background-color: ${({ isDarkTheme, isActive }) =>
+         isActive
+            ? isDarkTheme
+               ? Color.darkThm.accent
+               : Color.lightThm.accent
+            : Color.setRgbOpacity(isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent, 0.25)};
    }
+   transition: all 0.1s ease-in-out;
 `;
 
 export const ScrollNavigatorContainer = styled.div`
@@ -47,8 +57,8 @@ export const ScrollNavigatorContainer = styled.div`
 `;
 
 export const LogoContainer = styled.div`
-   padding: 1em;
-   padding-bottom: 2em;
+   margin: 1em;
+   margin-bottom: 2em;
 `;
 
 export const Centerer = styled.div`
@@ -59,24 +69,34 @@ export const Centerer = styled.div`
    height: 100dvh;
 `;
 
-export const InputLabel = styled.div`
+export const InputContainer = styled.div`
+   width: 100%;
+   height: 3.5em;
+`;
+
+export const InputLabel = styled.div<{ focusedInput?: boolean }>`
    font-size: 0.75em;
-   color: grey;
-   margin-bottom: 0.5em;
+   color: ${({ focusedInput }) => (focusedInput ? Color.lightThm.accent : 'grey')};
+   // transform the label so it's 1em lower:
+   transform: ${({ focusedInput }) => (focusedInput ? 'translateY(-0.5em)' : 'translateY(0.25em)')};
+   // make it so that the user can still click on the input:
+   pointer-events: none;
+   transition: all 0.2s ease-in-out;
 `;
 
 export const TextInput = styled.input`
    all: unset;
    font-size: 1em;
-   margin-bottom: 1.5em;
+   width: 100%;
+   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
    border-bottom: 1px solid ${Color.lightThm.border};
    &:focus,
    &:active {
       border-bottom: 1px solid ${Color.lightThm.accent};
    }
    font-weight: 100;
-   
-   `;
+   z-index: 1;
+`;
 
 export const StyledForm = styled.form`
    padding: 1em;
