@@ -8,11 +8,10 @@ export default function LandingRoute(): JSX.Element {
    return (
       <Route
          path="/"
-         key={'landing'}
          errorElement={<ErrorPage />}
          element={
-            <RouteRedirector redirectIf={!isSignedIn} redirectTo="/auth">
-               <Navigate to="/main" replace={true} />
+            <RouteRedirector redirectIf={!isSignedIn} redirectTo="auth">
+               <Navigate to="main" replace={true} />
             </RouteRedirector>
          }
       />

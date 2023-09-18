@@ -6,6 +6,6 @@ export interface IAuthContext {
 }
 
 export const AuthContext = createContext<IAuthContext>({
-   isSignedIn: false,
+   isSignedIn: null,
    setIsSignedIn: () => {},
 });
