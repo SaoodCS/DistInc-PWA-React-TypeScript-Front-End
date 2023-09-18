@@ -57,6 +57,7 @@ export default function Authentication(): JSX.Element {
                onClick={() => scrollToSlide(1)}
                isDarkTheme={isDarkTheme}
                isActive={currentSlide === 1}
+               navTo={1}
             >
                Sign Up
             </ScrollNavigatorBtn>
@@ -64,6 +65,7 @@ export default function Authentication(): JSX.Element {
                onClick={() => scrollToSlide(2)}
                isDarkTheme={isDarkTheme}
                isActive={currentSlide === 2}
+               navTo={2}
             >
                Login
             </ScrollNavigatorBtn>
@@ -72,7 +74,7 @@ export default function Authentication(): JSX.Element {
             <Slide height={'auto'}>
                <StyledForm>
                   <InputLabel>Name</InputLabel>
-                  <TextInput />
+                  <TextInput/>
                   <InputLabel>Email</InputLabel>
                   <TextInput />
                   <InputLabel>Password</InputLabel>
@@ -81,7 +83,7 @@ export default function Authentication(): JSX.Element {
                   <TextInput />
                   <StaticButton
                      isDarkTheme={isDarkTheme}
-                     style={{ padding: '0.65em', textAlign: 'center', marginTop: '0.5em' }}
+                     style={{ padding: '0.65em', textAlign: 'center', marginTop: '0.5em', }}
                   >
                      Sign Up
                   </StaticButton>

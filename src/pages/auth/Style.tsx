@@ -1,38 +1,49 @@
 import styled, { keyframes } from 'styled-components';
 import Color from '../../global/styles/colors';
 
-export const ScrollNavigatorBtn = styled.div<{ isDarkTheme: boolean; isActive: boolean }>`
-   width: 50%;
+export const ScrollNavigatorBtn = styled.div<{
+   isDarkTheme: boolean;
+   isActive: boolean;
+   navTo: number;
+}>`
+   //width: 50%;
    cursor: pointer;
    background: none;
    border: none;
    user-select: none;
    text-decoration: none;
    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-   text-align: center;
+   //text-align: center;
    height: 100%;
    display: flex;
    justify-content: center;
    align-items: center;
-   color: ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt)};
-   border: ${({ isActive, isDarkTheme }) =>
-      isActive
-         ? isDarkTheme
-            ? `2px solid ${Color.darkThm.accent}`
-            : `2px solid ${Color.lightThm.accent}`
-         : null};
-   border-radius: 0.7em;
+   color: ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent)};
+   font-size: 1.5em;
+   padding-left: 1em;
+   padding-right: 1em;
+   position: relative;
+   &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: ${({ navTo }) => (navTo === 1 ? 'translateX(-100%)' : 'translateX(-30%)')};
+      width: 25%;
+      height: 2px;
+      background-color: ${({ isActive, isDarkTheme }) =>
+         isActive ? (isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent) : null};
+   }
 `;
 
 export const ScrollNavigatorContainer = styled.div`
    //border: 1px solid black;
-   border: 1px solid ${Color.lightThm.border};
-   width: 20em;
+   //border: 1px solid ${Color.lightThm.border};
+   width: 100%;
    height: 3em;
    display: flex;
    align-items: center;
-   justify-content: center;
-   border-radius: 0.7em;
+   justify-content: space-between;
 `;
 
 export const LogoContainer = styled.div`
@@ -45,28 +56,27 @@ export const Centerer = styled.div`
    flex-direction: column;
    align-items: center;
    justify-content: center;
-   height:100dvh;
+   height: 100dvh;
 `;
 
 export const InputLabel = styled.div`
-   font-size: 1em;
-   padding-bottom: 0.5em;
+   font-size: 0.75em;
+   color: grey;
+   margin-bottom: 0.5em;
 `;
 
 export const TextInput = styled.input`
    all: unset;
-   border: 1px solid black;
    font-size: 1em;
-   padding: 0.5em;
-   margin-bottom: 1em;
-   border-radius: 0.7em;
-   border: 1px solid ${Color.lightThm.border};
+   margin-bottom: 1.5em;
+   border-bottom: 1px solid ${Color.lightThm.border};
    &:focus,
    &:active {
-      border: 2px solid ${Color.lightThm.accent};
+      border-bottom: 1px solid ${Color.lightThm.accent};
    }
    font-weight: 100;
-`;
+   
+   `;
 
 export const StyledForm = styled.form`
    padding: 1em;
