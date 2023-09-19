@@ -27,7 +27,7 @@ export default function Authentication(): JSX.Element {
          to === 'github'
             ? 'https://github.com/SaoodCS'
             : to === 'linkedin'
-            ? 'https://www.linkedin.com/in/saoodcs/'
+            ? 'https://www.linkedin.com/in/saood-aslam/'
             : 'mailto:saood.aslam@hotmail.com',
       );
    }
@@ -68,7 +68,10 @@ export default function Authentication(): JSX.Element {
             <ContactFooterTitle>Contact Me</ContactFooterTitle>
             <ContactIconsWrapper>
                <Github style={contactIconStyle} onClick={() => handleClick('github')} />
-               <LinkedinWithCircle style={contactIconStyle} onClick={() => handleClick('linkedin')} />
+               <LinkedinWithCircle
+                  style={contactIconStyle}
+                  onClick={() => handleClick('linkedin')}
+               />
                <MailWithCircle style={contactIconStyle} onClick={() => handleClick('email')} />
             </ContactIconsWrapper>
          </ContactFooterWrapper>
