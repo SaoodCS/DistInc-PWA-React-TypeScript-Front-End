@@ -21,6 +21,17 @@ import {
 export default function Authentication(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const { containerRef, currentSlide, scrollToSlide } = useCarousel(1);
+
+   function handleClick(to: 'github' | 'linkedin' | 'email') {
+      window.open(
+         to === 'github'
+            ? 'https://github.com/SaoodCS'
+            : to === 'linkedin'
+            ? 'https://www.linkedin.com/in/saoodcs/'
+            : 'mailto:saood.aslam@hotmail.com',
+      );
+   }
+
    return (
       <Centerer>
          <HeaderContainer>
@@ -56,9 +67,9 @@ export default function Authentication(): JSX.Element {
          <ContactFooterWrapper>
             <ContactFooterTitle>Contact Me</ContactFooterTitle>
             <ContactIconsWrapper>
-               <Github style={contactIconStyle} />
-               <LinkedinWithCircle style={contactIconStyle} />
-               <MailWithCircle style={contactIconStyle} />
+               <Github style={contactIconStyle} onClick={() => handleClick('github')} />
+               <LinkedinWithCircle style={contactIconStyle} onClick={() => handleClick('linkedin')} />
+               <MailWithCircle style={contactIconStyle} onClick={() => handleClick('email')} />
             </ContactIconsWrapper>
          </ContactFooterWrapper>
       </Centerer>

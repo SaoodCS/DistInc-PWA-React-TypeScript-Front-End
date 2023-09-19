@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { CSSProperties } from 'styled-components';
 import { TextBtn } from '../../global/components/lib/button/textBtn/Style';
 import Color from '../../global/styles/colors';
 
@@ -109,8 +109,15 @@ export const ContactFooterTitle = styled.div`
 
 export const ContactIconsWrapper = styled.div``;
 
-export const contactIconStyle = {
+export const contactIconStyle: CSSProperties = {
    height: '2em',
    padding: '0.25em',
    color: Color.darkThm.inactive,
+   cursor: 'pointer',
+   WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
+   background: 'none',
+   border: 'none',
+   userSelect: 'none',
+   textDecoration: 'none',
+   
 }
