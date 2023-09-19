@@ -1,6 +1,20 @@
 import styled from 'styled-components';
 import Color from '../../global/styles/colors';
 
+export const HeaderContainer = styled.div`
+   width: 100%;
+   height: 40%;
+   display: flex;
+   flex-direction: column;
+   justify-content: end;
+   align-items: center;
+   border-bottom-left-radius: 20px;
+   border-bottom-right-radius: 20px;
+   margin-bottom: 1em;
+   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.25);
+   background-color: ${Color.darkThm.inactive};
+`;
+
 export const ScrollNavigatorBtn = styled.div<{
    isDarkTheme: boolean;
    isActive: boolean;
@@ -19,9 +33,12 @@ export const ScrollNavigatorBtn = styled.div<{
    color: ${({ isDarkTheme, isActive }) =>
       isActive
          ? isDarkTheme
-            ? Color.darkThm.accent
-            : Color.lightThm.accent
-         : Color.setRgbOpacity(isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent, 0.25)};
+            ? Color.lightThm.inactive
+            : Color.lightThm.inactive
+         : Color.setRgbOpacity(
+              isDarkTheme ? Color.lightThm.inactive : Color.lightThm.inactive,
+              0.25,
+           )};
    font-size: 1.5em;
    padding-left: 1em;
    padding-right: 1em;
@@ -37,9 +54,12 @@ export const ScrollNavigatorBtn = styled.div<{
       background-color: ${({ isDarkTheme, isActive }) =>
          isActive
             ? isDarkTheme
-               ? Color.darkThm.accent
-               : Color.lightThm.accent
-            : Color.setRgbOpacity(isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent, 0.25)};
+               ? 'white'
+               : 'white'
+            : Color.setRgbOpacity(
+                 isDarkTheme ? Color.lightThm.inactive : Color.lightThm.inactive,
+                 0.25,
+              )};
    }
    transition: all 0.1s ease-in-out;
 `;
@@ -62,35 +82,27 @@ export const Centerer = styled.div`
    display: flex;
    flex-direction: column;
    align-items: center;
-   justify-content: center;
    height: 100dvh;
 `;
 
-
-export const Container = styled.div`
-   overflow: hidden;
-   position: relative;
+export const ContactFooterWrapper = styled.div`
+   padding-top: 2.5em;
    display: flex;
-   scroll-snap-type: x mandatory;
-   scrollbar-width: none;
-   -ms-overflow-style: none;
-   overflow-x: scroll;
-
-   &::-webkit-scrollbar {
-      display: none;
-   }
+   flex-direction: column;
+   text-align: center;
 `;
 
-export const Slide = styled.div<{ height: string }>`
-   min-width: 100%;
-   flex: 1;
-   scroll-snap-align: start;
-   display: flex;
-   justify-content: center;
-   overflow: hidden;
-   overflow-y: scroll;
-   height: ${({ height }) => height};
-   ::-webkit-scrollbar {
-      display: none;
-   }
+
+export const ContactFooterTitle = styled.div`
+   padding-bottom: 1em;
+   color: grey;
+   font-size: 0.75em;
 `;
+
+export const ContactIconsWrapper = styled.div``;
+
+export const contactIconStyle = {
+   height: '2em',
+   padding: '0.25em',
+   color: Color.darkThm.inactive,
+}
