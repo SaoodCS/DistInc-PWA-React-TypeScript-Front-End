@@ -1,13 +1,13 @@
 import { Github } from '@styled-icons/bootstrap/Github';
 import { LinkedinWithCircle } from '@styled-icons/entypo-social/LinkedinWithCircle';
 import { MailWithCircle } from '@styled-icons/entypo-social/MailWithCircle';
-import { useEffect, useRef, useState } from 'react';
 import Logo from '../../global/components/app/logo/Logo';
 import { StaticButton } from '../../global/components/lib/button/staticButton/Style';
 import { TextBtn } from '../../global/components/lib/button/textBtn/Style';
 import { StyledForm } from '../../global/components/lib/form/form/Style';
 import InputComponent from '../../global/components/lib/form/input/Input';
 import { CarouselContainer, CarouselSlide } from '../../global/components/lib/newCarousel/Style';
+import useCarousel from '../../global/components/lib/newCarousel/useCarousel';
 import useThemeContext from '../../global/hooks/useThemeContext';
 import {
    Centerer,
@@ -21,33 +21,8 @@ import {
 } from './Style';
 
 export default function Authentication(): JSX.Element {
-   const containerRef = useRef<HTMLDivElement | null>(null);
-   const [currentSlide, setCurrentSlide] = useState<number>(1);
    const { isDarkTheme } = useThemeContext();
-
-   const scrollToSlide = (slideNumber: number) => {
-      if (containerRef.current) {
-         containerRef.current.scrollTo({
-            left: (slideNumber - 1) * containerRef.current.offsetWidth,
-            behavior: 'smooth',
-         });
-      }
-   };
-
-   useEffect(() => {
-      const handleScroll = () => {
-         if (containerRef.current) {
-            const currentSlide = Math.round(
-               containerRef.current.scrollLeft / containerRef.current.offsetWidth,
-            );
-            setCurrentSlide(currentSlide + 1);
-         }
-      };
-      containerRef.current?.addEventListener('scroll', handleScroll);
-      return () => {
-         containerRef.current?.removeEventListener('scroll', handleScroll);
-      };
-   }, []);
+   const { containerRef, currentSlide, setCurrentSlide, scrollToSlide } = useCarousel(1);
 
    return (
       <Centerer style={{}}>
