@@ -1,14 +1,15 @@
-type InputObject<FieldName> = {
+type InputObject<FieldName, ValueType> = {
    name: FieldName;
    placeholder: string;
    type: string;
    isRequired: boolean;
-   validator: (value: any) => string | true;
+   validator: (value: ValueType) => string | true;
 };
 
 export type InputArray<FormInputs> = {
-   [FieldName in keyof FormInputs]: InputObject<FieldName>;
+   [FieldName in keyof FormInputs]: InputObject<FieldName, FormInputs[FieldName]>;
 }[keyof FormInputs][];
+
 
 export default class FormHelper {
    static createInitialState<T>(arr: InputArray<T>): T {
