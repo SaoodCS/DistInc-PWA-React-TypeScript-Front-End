@@ -2,13 +2,11 @@ import { Github } from '@styled-icons/bootstrap/Github';
 import { LinkedinWithCircle } from '@styled-icons/entypo-social/LinkedinWithCircle';
 import { MailWithCircle } from '@styled-icons/entypo-social/MailWithCircle';
 import Logo from '../../global/components/app/logo/Logo';
-import { StaticButton } from '../../global/components/lib/button/staticButton/Style';
-import { TextBtn } from '../../global/components/lib/button/textBtn/Style';
-import { StyledForm } from '../../global/components/lib/form/form/Style';
-import InputComponent from '../../global/components/lib/form/input/Input';
 import { CarouselContainer, CarouselSlide } from '../../global/components/lib/newCarousel/Style';
 import useCarousel from '../../global/components/lib/newCarousel/useCarousel';
 import useThemeContext from '../../global/hooks/useThemeContext';
+import LoginForm from './login/LoginForm';
+import RegisterForm from './registration/RegisterForm';
 import {
    Centerer,
    ContactFooterTitle,
@@ -22,10 +20,9 @@ import {
 
 export default function Authentication(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
-   const { containerRef, currentSlide, setCurrentSlide, scrollToSlide } = useCarousel(1);
-
+   const { containerRef, currentSlide, scrollToSlide } = useCarousel(1);
    return (
-      <Centerer style={{}}>
+      <Centerer>
          <HeaderContainer>
             <Logo size={'10em'} />
             <ScrollNavigatorContainer>
@@ -50,25 +47,10 @@ export default function Authentication(): JSX.Element {
 
          <CarouselContainer ref={containerRef} style={{ width: '20em' }}>
             <CarouselSlide height={'auto'}>
-               <StyledForm>
-                  <InputComponent placeholder="Email" />
-                  <InputComponent placeholder="Password" />
-                  <InputComponent placeholder="Confirm Password" />
-                  <StaticButton isDarkTheme={isDarkTheme}>Sign Up</StaticButton>
-               </StyledForm>
+                  <RegisterForm />
             </CarouselSlide>
             <CarouselSlide height={'auto'}>
-               <StyledForm style={{ width: '100%' }}>
-                  <InputComponent placeholder="Email" />
-                  <InputComponent placeholder="Password" />
-                  <StaticButton isDarkTheme={isDarkTheme}>Login</StaticButton>
-                  <TextBtn
-                     isDarkTheme={isDarkTheme}
-                     style={{ display: 'flex', justifyContent: 'center', paddingTop: '2.25em' }}
-                  >
-                     Forgot Password?
-                  </TextBtn>
-               </StyledForm>
+               <LoginForm />
             </CarouselSlide>
          </CarouselContainer>
          <ContactFooterWrapper>

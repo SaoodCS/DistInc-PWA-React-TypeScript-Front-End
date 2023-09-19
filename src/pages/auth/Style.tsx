@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { TextBtn } from '../../global/components/lib/button/textBtn/Style';
 import Color from '../../global/styles/colors';
 
 export const HeaderContainer = styled.div`
@@ -84,6 +85,13 @@ export const Centerer = styled.div`
    align-items: center;
    height: 100dvh;
 `;
+
+export const ForgottenPwdBtn = styled(TextBtn)`
+   display: flex;
+   justify-content: center;
+   padding-top: 2.25em;
+`;
+
 
 export const ContactFooterWrapper = styled.div`
    padding-top: 2.5em;
