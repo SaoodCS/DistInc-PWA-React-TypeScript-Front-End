@@ -10,12 +10,8 @@ export type InputArray<FormInputs> = {
    [FieldName in keyof FormInputs]: InputObject<FieldName>;
 }[keyof FormInputs][];
 
-type FormErrors = {
-   [key: string]: string;
-};
-
 export default class FormHelper {
-   static createInitialState(arr: any[]) {
+   static createInitialState<T>(arr: InputArray<T>): T {
       const initialState: any = {};
       arr.forEach((input) => {
          if (input.type === 'checkbox') {
@@ -28,18 +24,18 @@ export default class FormHelper {
             initialState[input.name] = 0;
          }
       });
-      return initialState;
+      return initialState as T;
    }
 
-   static createInitialErrors(arr: any[]): FormErrors {
-      const errors: any = {};
+   static createInitialErrors<T>(arr: InputArray<T>): Record<keyof T, string> {
+      const errors: Record<keyof T, string> = {} as Record<keyof T, string>;
       arr.forEach((input) => {
          errors[input.name] = '';
       });
       return errors;
    }
 
-   static validation(formStateVal: any, formInputsArr: any[]): FormErrors {
+   static validation<T>(formStateVal: T, formInputsArr: InputArray<T>): Record<keyof T, string> {
       const validated = formInputsArr.map((input) => {
          const validationValue = input.validator(formStateVal[input.name]);
 
@@ -48,7 +44,7 @@ export default class FormHelper {
       return Object.assign({}, ...validated);
    }
 
-   static hasNoErrors(errors: any): boolean {
+   static hasNoErrors<T>(errors: Record<keyof T, string>): boolean {
       return Object.values(errors).every((error) => error === '');
    }
 }

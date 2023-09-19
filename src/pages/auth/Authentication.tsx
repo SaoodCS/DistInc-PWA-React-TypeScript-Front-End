@@ -47,7 +47,7 @@ export default function Authentication(): JSX.Element {
 
          <CarouselContainer ref={containerRef} style={{ width: '20em' }}>
             <CarouselSlide height={'auto'}>
-                  <RegisterForm />
+               <RegisterForm />
             </CarouselSlide>
             <CarouselSlide height={'auto'}>
                <LoginForm />

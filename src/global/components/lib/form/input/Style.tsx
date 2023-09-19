@@ -24,8 +24,10 @@ export const LabelWrapper = styled.label``;
 export const InputLabel = styled.div<IInputLabel>`
    font-size: 0.75em;
    color: ${({ focusedInput }) => (focusedInput ? Color.lightThm.accent : 'grey')};
-   transform: ${({ focusedInput, inputHasValue }) => (focusedInput || inputHasValue ? 'translateY(-0.5em)' : 'translateY(0.5em)')};
-   font-size: ${({ focusedInput, inputHasValue }) => (focusedInput || inputHasValue ? '0.8em' : '0.8em')};
+   transform: ${({ focusedInput, inputHasValue }) =>
+      focusedInput || inputHasValue ? 'translateY(-0.5em)' : 'translateY(0.5em)'};
+   font-size: ${({ focusedInput, inputHasValue }) =>
+      focusedInput || inputHasValue ? '0.8em' : '0.8em'};
    pointer-events: none;
    transition: all 0.2s ease-in-out;
    &:after {
@@ -46,11 +48,11 @@ export const TextInput = styled.input.attrs<IInput>(({ isRequired }) => ({
       hasError ? `2px solid red` : `1px solid ${Color.lightThm.border}`};
    &:focus,
    &:active {
-      border-bottom: ${({ hasError }) => (hasError ? `2px solid red` : `1px solid ${Color.lightThm.accent}`)};
+      border-bottom: ${({ hasError }) =>
+         hasError ? `2px solid red` : `1px solid ${Color.lightThm.accent}`};
    }
    font-weight: 100;
    z-index: 1;
-  
 `;
 
 export const ErrorLabel = styled.div`

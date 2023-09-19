@@ -30,7 +30,8 @@ export default class LoginClass {
          },
       },
    ];
-   static initialState: ILoginInputs = FormHelper.createInitialState(LoginClass.inputs);
+
+   static initialState = FormHelper.createInitialState(LoginClass.inputs);
 
    static initialErrors = FormHelper.createInitialErrors(LoginClass.inputs);
 
