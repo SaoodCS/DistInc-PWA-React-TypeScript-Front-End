@@ -22,7 +22,6 @@ import {
 export default function Authentication(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const { containerRef, currentSlide, scrollToSlide } = useCarousel(1);
-
    const bgColor = 'transparent';
    const cardColor = isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive;
    const detailsColor = isDarkTheme
