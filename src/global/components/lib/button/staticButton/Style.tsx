@@ -19,8 +19,10 @@ export const StaticButton = styled.button.attrs<IStaticButtonAttrs>(({ isDisable
    user-select: none;
    text-decoration: none;
    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-   padding: 0.5em;
+   padding: 0.65em;
+   text-align: center;
    border-radius: 10px;
+   margin-top:0.5em;
    color: ${({ isDarkTheme }) =>
       isDarkTheme ? Color.darkThm.txtOnAccent : Color.lightThm.txtOnAccent};
    font-size: 0.95em;

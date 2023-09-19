@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { InputContainer, InputLabel, TextInput } from './pages/auth/Style';
+import { InputContainer, InputLabel, TextInput } from './Style';
 
 interface IInput {
    placeholder: string;
@@ -8,7 +8,7 @@ interface IInput {
 }
 
 export default function InputComponent(props: IInput): JSX.Element {
-    const { placeholder, type, name } = props;
+   const { placeholder, type, name } = props;
    const [isActive, setIsActive] = useState(false);
    function handleFocus() {
       setIsActive(true);

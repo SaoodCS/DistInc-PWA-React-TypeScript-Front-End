@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import Color from '../../global/styles/colors';
 
 export const ScrollNavigatorBtn = styled.div<{
@@ -6,14 +6,12 @@ export const ScrollNavigatorBtn = styled.div<{
    isActive: boolean;
    navTo: number;
 }>`
-   //width: 50%;
    cursor: pointer;
    background: none;
    border: none;
    user-select: none;
    text-decoration: none;
    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-   //text-align: center;
    height: 100%;
    display: flex;
    justify-content: center;
@@ -47,9 +45,8 @@ export const ScrollNavigatorBtn = styled.div<{
 `;
 
 export const ScrollNavigatorContainer = styled.div`
-   //border: 1px solid black;
-   //border: 1px solid ${Color.lightThm.border};
-   width: 100%;
+   width: 22em;
+   padding-bottom: 1em;
    height: 3em;
    display: flex;
    align-items: center;
@@ -69,45 +66,6 @@ export const Centerer = styled.div`
    height: 100dvh;
 `;
 
-export const InputContainer = styled.div`
-   width: 100%;
-   height: 3.5em;
-`;
-
-export const InputLabel = styled.div<{ focusedInput?: boolean }>`
-   font-size: 0.75em;
-   color: ${({ focusedInput }) => (focusedInput ? Color.lightThm.accent : 'grey')};
-   // transform the label so it's 1em lower:
-   transform: ${({ focusedInput }) => (focusedInput ? 'translateY(-0.5em)' : 'translateY(0.25em)')};
-   // make it so that the user can still click on the input:
-   pointer-events: none;
-   transition: all 0.2s ease-in-out;
-`;
-
-export const TextInput = styled.input`
-   all: unset;
-   font-size: 1em;
-   width: 100%;
-   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-   border-bottom: 1px solid ${Color.lightThm.border};
-   &:focus,
-   &:active {
-      border-bottom: 1px solid ${Color.lightThm.accent};
-   }
-   font-weight: 100;
-   z-index: 1;
-`;
-
-export const StyledForm = styled.form`
-   padding: 1em;
-   border-radius: 0.7em;
-   display: flex;
-   flex-direction: column;
-   width: 100%;
-   margin-top: 1em;
-   border-radius: 0.7em;
-   height: fit-content;
-`;
 
 export const Container = styled.div`
    overflow: hidden;
