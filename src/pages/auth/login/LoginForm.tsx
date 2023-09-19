@@ -35,6 +35,8 @@ export default function RegisterForm(): JSX.Element {
                handleChange={handleChange}
                value={loginForm[input.name]}
                error={errors[input.name]}
+               id={`login-${input.name}`}
+               key={`login-${input.name}`}
             />
          ))}
          <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>

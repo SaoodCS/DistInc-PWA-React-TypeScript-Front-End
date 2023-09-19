@@ -2,7 +2,7 @@ import styled, { CSSProperties } from 'styled-components';
 import { TextBtn } from '../../global/components/lib/button/textBtn/Style';
 import Color from '../../global/styles/colors';
 
-export const HeaderContainer = styled.div`
+export const HeaderContainer = styled.div<{ isDarkTheme: boolean }>`
    width: 100%;
    height: 40%;
    display: flex;
@@ -13,7 +13,9 @@ export const HeaderContainer = styled.div`
    border-bottom-right-radius: 20px;
    margin-bottom: 1em;
    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.25);
-   background-color: ${Color.darkThm.inactive};
+   background-color: ${({ isDarkTheme }) =>
+      isDarkTheme ? Color.setRgbOpacity(Color.lightThm.inactive, 0.8) : Color.darkThm.inactive};
+   backdrop-filter: blur(5px);
 `;
 
 export const ScrollNavigatorBtn = styled.div<{
@@ -34,11 +36,11 @@ export const ScrollNavigatorBtn = styled.div<{
    color: ${({ isDarkTheme, isActive }) =>
       isActive
          ? isDarkTheme
-            ? Color.lightThm.inactive
+            ? Color.darkThm.inactive
             : Color.lightThm.inactive
          : Color.setRgbOpacity(
-              isDarkTheme ? Color.lightThm.inactive : Color.lightThm.inactive,
-              0.25,
+              isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive,
+              0.3,
            )};
    font-size: 1.5em;
    padding-left: 1em;
@@ -55,11 +57,11 @@ export const ScrollNavigatorBtn = styled.div<{
       background-color: ${({ isDarkTheme, isActive }) =>
          isActive
             ? isDarkTheme
-               ? 'white'
-               : 'white'
+               ? Color.darkThm.inactive
+               : Color.lightThm.inactive
             : Color.setRgbOpacity(
-                 isDarkTheme ? Color.lightThm.inactive : Color.lightThm.inactive,
-                 0.25,
+                 isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive,
+                 0.3,
               )};
    }
    transition: all 0.1s ease-in-out;
@@ -92,7 +94,6 @@ export const ForgottenPwdBtn = styled(TextBtn)`
    padding-top: 2.25em;
 `;
 
-
 export const ContactFooterWrapper = styled.div`
    padding-top: 2.5em;
    display: flex;
@@ -100,24 +101,25 @@ export const ContactFooterWrapper = styled.div`
    text-align: center;
 `;
 
-
-export const ContactFooterTitle = styled.div`
+export const ContactFooterTitle = styled.div<{ isDarkTheme: boolean }>`
    padding-bottom: 1em;
-   color: grey;
+   color: ${({ isDarkTheme }) =>
+      Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.75)};
    font-size: 0.75em;
 `;
 
 export const ContactIconsWrapper = styled.div``;
 
-export const contactIconStyle: CSSProperties = {
-   height: '2em',
-   padding: '0.25em',
-   color: Color.darkThm.inactive,
-   cursor: 'pointer',
-   WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
-   background: 'none',
-   border: 'none',
-   userSelect: 'none',
-   textDecoration: 'none',
-   
+export function contactIconStyle(isDarkTheme: boolean): CSSProperties {
+   return {
+      height: '2em',
+      padding: '0.25em',
+      color: Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.9),
+      cursor: 'pointer',
+      WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
+      background: 'none',
+      border: 'none',
+      userSelect: 'none',
+      textDecoration: 'none',
+   };
 }

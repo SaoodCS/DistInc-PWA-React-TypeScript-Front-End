@@ -15,8 +15,8 @@ export default function RegisterForm(): JSX.Element {
       e.preventDefault();
       setErrors(RegClass.validate(regForm));
       console.log(RegClass.validate(regForm));
-      if(FormHelper.hasNoErrors(errors)) {
-        // Register the user to the microservice endpoint
+      if (FormHelper.hasNoErrors(errors)) {
+         // Register the user to the microservice endpoint
       }
    }
 
@@ -29,6 +29,7 @@ export default function RegisterForm(): JSX.Element {
       <StyledForm onSubmit={handleSubmit}>
          {RegClass.inputs.map((input) => (
             <InputComponent
+             
                placeholder={input.placeholder}
                type={input.type}
                name={input.name}
@@ -36,6 +37,8 @@ export default function RegisterForm(): JSX.Element {
                handleChange={handleChange}
                value={regForm[input.name]}
                error={errors[input.name]}
+               id={`reg-${input.name}`}
+               key={`reg-${input.name}`}
             />
          ))}
          <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>

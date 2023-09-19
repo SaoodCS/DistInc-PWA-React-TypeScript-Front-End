@@ -3,21 +3,22 @@ import { Card, CardStrip, LogoWrapper, RectContainer, RectOne, RectTwo } from '.
 
 interface ILogo {
    size: string;
-   accentColor?: string;
+   bgColor?: string;
    cardColor?: string;
+   detailsColor?:string;
 }
 
 export default function Logo(props: ILogo): JSX.Element {
-   const { size, accentColor, cardColor } = props;
-   const defaultAccentColor = Color.darkThm.inactive;
+   const { size, bgColor, cardColor, detailsColor } = props;
+   const defaultBgColor = Color.darkThm.inactive;
    const defaultCardColor = Color.lightThm.inactive;
    return (
-      <LogoWrapper size={size} accentColor={accentColor || defaultAccentColor}>
+      <LogoWrapper size={size} accentColor={bgColor || defaultBgColor}>
          <Card size={size} cardColor={cardColor || defaultCardColor}>
-            <CardStrip size={size} accentColor={accentColor || defaultAccentColor} />
+            <CardStrip size={size} accentColor={detailsColor || defaultBgColor} />
             <RectContainer size={size}>
-               <RectOne size={size} accentColor={accentColor || defaultAccentColor} />
-               <RectTwo size={size} accentColor={accentColor || defaultAccentColor} />
+               <RectOne size={size} accentColor={detailsColor || defaultBgColor} />
+               <RectTwo size={size} accentColor={detailsColor || defaultBgColor} />
             </RectContainer>
          </Card>
       </LogoWrapper>

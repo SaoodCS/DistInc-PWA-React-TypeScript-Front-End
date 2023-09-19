@@ -1,17 +1,19 @@
 import styled from 'styled-components';
 import Color from '../../../../styles/colors';
 
-interface IInput {
+interface IInputAttr {
    isRequired: boolean;
 }
 
-interface ITextInput extends IInput {
+interface ITextInput extends IInputAttr {
    hasError: boolean;
+   isDarkTheme: boolean;
 }
 
-interface IInputLabel extends IInput {
+interface IInputLabel extends IInputAttr {
    focusedInput: boolean;
    inputHasValue: boolean;
+   isDarkTheme: boolean;
 }
 
 export const InputContainer = styled.div`
@@ -23,7 +25,15 @@ export const LabelWrapper = styled.label``;
 
 export const InputLabel = styled.div<IInputLabel>`
    font-size: 0.75em;
-   color: ${({ focusedInput }) => (focusedInput ? Color.lightThm.accent : 'grey')};
+   color: ${({ focusedInput, isDarkTheme }) =>
+      focusedInput
+         ? isDarkTheme
+            ? Color.darkThm.accent
+            : Color.lightThm.accent
+         : Color.setRgbOpacity(
+              isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt,
+              0.6,
+           )};
    transform: ${({ focusedInput, inputHasValue }) =>
       focusedInput || inputHasValue ? 'translateY(-0.5em)' : 'translateY(0.5em)'};
    font-size: ${({ focusedInput, inputHasValue }) =>
@@ -32,30 +42,35 @@ export const InputLabel = styled.div<IInputLabel>`
    transition: all 0.2s ease-in-out;
    &:after {
       content: ${({ isRequired }) => (isRequired ? "'*'" : "''")};
-      color: red;
+      color: ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.error : Color.lightThm.error)};
       padding: 2px;
    }
 `;
 
-export const TextInput = styled.input.attrs<IInput>(({ isRequired }) => ({
+export const TextInput = styled.input.attrs<IInputAttr>(({ isRequired }) => ({
    isRequired: isRequired,
 }))<ITextInput>`
    all: unset;
    font-size: 1em;
    width: 100%;
    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-   border-bottom: ${({ hasError }) =>
-      hasError ? `2px solid red` : `1px solid ${Color.lightThm.border}`};
+   border-bottom: ${({ hasError, isDarkTheme }) =>
+      hasError
+         ? `2px solid red`
+         : `1px solid ${isDarkTheme ? Color.darkThm.border : Color.lightThm.border}`};
    &:focus,
    &:active {
-      border-bottom: ${({ hasError }) =>
-         hasError ? `2px solid red` : `1px solid ${Color.lightThm.accent}`};
+      border-bottom: ${({ hasError, isDarkTheme }) =>
+         hasError
+            ? `2px solid ${isDarkTheme ? Color.darkThm.error : Color.lightThm.error}`
+            : `1px solid ${Color.lightThm.accent}`};
    }
    font-weight: 100;
    z-index: 1;
 `;
 
-export const ErrorLabel = styled.div`
+export const ErrorLabel = styled.div<{ isDarkTheme: boolean }>`
    font-size: 0.75em;
-   color: ${Color.darkThm.error};
+   margin-top: 0.2em;
+   color: ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.error : Color.lightThm.error)};
 `;

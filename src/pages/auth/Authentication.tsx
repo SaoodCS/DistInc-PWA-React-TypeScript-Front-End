@@ -5,6 +5,7 @@ import Logo from '../../global/components/app/logo/Logo';
 import { CarouselContainer, CarouselSlide } from '../../global/components/lib/newCarousel/Style';
 import useCarousel from '../../global/components/lib/newCarousel/useCarousel';
 import useThemeContext from '../../global/hooks/useThemeContext';
+import Color from '../../global/styles/colors';
 import LoginForm from './login/LoginForm';
 import RegisterForm from './registration/RegisterForm';
 import {
@@ -22,6 +23,12 @@ export default function Authentication(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const { containerRef, currentSlide, scrollToSlide } = useCarousel(1);
 
+   const bgColor = 'transparent';
+   const cardColor = isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive;
+   const detailsColor = isDarkTheme
+      ? Color.setRgbOpacity(Color.lightThm.inactive, 0.8)
+      : Color.darkThm.inactive;
+
    function handleClick(to: 'github' | 'linkedin' | 'email') {
       window.open(
          to === 'github'
@@ -34,8 +41,13 @@ export default function Authentication(): JSX.Element {
 
    return (
       <Centerer>
-         <HeaderContainer>
-            <Logo size={'10em'} />
+         <HeaderContainer isDarkTheme={isDarkTheme}>
+            <Logo
+               size={'10em'}
+               bgColor={bgColor}
+               cardColor={cardColor}
+               detailsColor={detailsColor}
+            />
             <ScrollNavigatorContainer>
                <ScrollNavigatorBtn
                   onClick={() => scrollToSlide(1)}
@@ -65,14 +77,20 @@ export default function Authentication(): JSX.Element {
             </CarouselSlide>
          </CarouselContainer>
          <ContactFooterWrapper>
-            <ContactFooterTitle>Contact Me</ContactFooterTitle>
+            <ContactFooterTitle isDarkTheme={isDarkTheme}>Contact Me</ContactFooterTitle>
             <ContactIconsWrapper>
-               <Github style={contactIconStyle} onClick={() => handleClick('github')} />
+               <Github
+                  style={contactIconStyle(isDarkTheme)}
+                  onClick={() => handleClick('github')}
+               />
                <LinkedinWithCircle
-                  style={contactIconStyle}
+                  style={contactIconStyle(isDarkTheme)}
                   onClick={() => handleClick('linkedin')}
                />
-               <MailWithCircle style={contactIconStyle} onClick={() => handleClick('email')} />
+               <MailWithCircle
+                  style={contactIconStyle(isDarkTheme)}
+                  onClick={() => handleClick('email')}
+               />
             </ContactIconsWrapper>
          </ContactFooterWrapper>
       </Centerer>

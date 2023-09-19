@@ -7,7 +7,7 @@ import AppRouter from './routes/AppRouter';
 const queryClient = new QueryClient();
 
 export default function App(): JSX.Element {
-   const { isDarkTheme } = useThemeContext();
+   const { isDarkTheme, toggleTheme } = useThemeContext();
 
    return (
       <>
