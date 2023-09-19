@@ -29,7 +29,6 @@ export default function RegisterForm(): JSX.Element {
       <StyledForm onSubmit={handleSubmit}>
          {RegClass.inputs.map((input) => (
             <InputComponent
-             
                placeholder={input.placeholder}
                type={input.type}
                name={input.name}

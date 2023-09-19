@@ -17,6 +17,8 @@ export default function InputComponent(props: IInput): JSX.Element {
    const { placeholder, type, name, isRequired, handleChange, value, error, id } = props;
    const [isActive, setIsActive] = useState(false);
    const { isDarkTheme } = useThemeContext();
+   const preventSafariPwdGenerate = 'current-password';
+
    function handleFocus() {
       setIsActive(true);
    }
@@ -48,12 +50,9 @@ export default function InputComponent(props: IInput): JSX.Element {
             value={value}
             hasError={!!error}
             isDarkTheme={isDarkTheme}
+            autoComplete={preventSafariPwdGenerate}
          />
-         <ErrorLabel isDarkTheme = {isDarkTheme}>{error}</ErrorLabel>
+         <ErrorLabel isDarkTheme={isDarkTheme}>{error}</ErrorLabel>
       </InputContainer>
    );
 }
-
-InputComponent.defaultProps = {
-   required: false,
-};

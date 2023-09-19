@@ -21,7 +21,10 @@ export const InputContainer = styled.div`
    height: 4em;
 `;
 
-export const LabelWrapper = styled.label``;
+export const LabelWrapper = styled.label`
+   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+`;
 
 export const InputLabel = styled.div<IInputLabel>`
    font-size: 0.75em;
