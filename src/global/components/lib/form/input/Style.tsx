@@ -19,10 +19,13 @@ export const InputContainer = styled.div`
    height: 4em;
 `;
 
+export const LabelWrapper = styled.label``;
+
 export const InputLabel = styled.div<IInputLabel>`
    font-size: 0.75em;
    color: ${({ focusedInput }) => (focusedInput ? Color.lightThm.accent : 'grey')};
    transform: ${({ focusedInput, inputHasValue }) => (focusedInput || inputHasValue ? 'translateY(-0.5em)' : 'translateY(0.5em)')};
+   font-size: ${({ focusedInput, inputHasValue }) => (focusedInput || inputHasValue ? '0.8em' : '0.8em')};
    pointer-events: none;
    transition: all 0.2s ease-in-out;
    &:after {

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ErrorLabel, InputContainer, InputLabel, TextInput } from './Style';
+import { ErrorLabel, InputContainer, InputLabel, LabelWrapper, TextInput } from './Style';
 
 interface IInput {
    placeholder: string;
@@ -24,12 +24,17 @@ export default function InputComponent(props: IInput): JSX.Element {
 
    return (
       <InputContainer>
-         <InputLabel focusedInput={isActive} isRequired={isRequired || false} 
-         inputHasValue = {!!value}
-         >
-            {placeholder}
-         </InputLabel>
+         <LabelWrapper htmlFor={name}>
+            <InputLabel
+               focusedInput={isActive}
+               isRequired={isRequired || false}
+               inputHasValue={!!value}
+            >
+               {placeholder}
+            </InputLabel>
+         </LabelWrapper>
          <TextInput
+            id={name}
             onFocus={handleFocus}
             onBlur={handleBlur}
             type={type}

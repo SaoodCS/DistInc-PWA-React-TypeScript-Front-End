@@ -4,6 +4,7 @@ import { StyledForm } from '../../../global/components/lib/form/form/Style';
 import InputComponent from '../../../global/components/lib/form/input/Input';
 import FormHelper from '../../../global/helpers/lib/react/form/FormHelper';
 import useThemeContext from '../../../global/hooks/useThemeContext';
+import { ForgottenPwdBtn } from '../Style';
 import LoginClass from './Class';
 
 export default function RegisterForm(): JSX.Element {
@@ -39,6 +40,7 @@ export default function RegisterForm(): JSX.Element {
          <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>
             Sign Up
          </StaticButton>
+         <ForgottenPwdBtn isDarkTheme={isDarkTheme}>Forgot Password?</ForgottenPwdBtn>
       </StyledForm>
    );
 }
