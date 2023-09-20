@@ -20,6 +20,12 @@ export default function useCarousel(
    );
 
    useEffect(() => {
+      if (containerRef.current) {
+         containerRef.current.scrollTo({
+            left: (currentSlide - 1) * containerRef.current.offsetWidth,
+            behavior: 'auto',
+         });
+      }
       const handleScroll = () => {
          if (containerRef.current) {
             const currentSlide = Math.round(
