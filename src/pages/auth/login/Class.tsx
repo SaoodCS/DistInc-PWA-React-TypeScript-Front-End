@@ -9,6 +9,7 @@ export default class LoginClass {
    static inputs: InputArray<ILoginInputs> = [
       {
          name: 'email',
+         id: 'login-email',
          placeholder: 'Email',
          type: 'email',
          isRequired: true,
@@ -20,8 +21,10 @@ export default class LoginClass {
       },
       {
          name: 'password',
+         id: 'login-password',
          placeholder: 'Password',
          type: 'password',
+         autoComplete: 'current-password',
          isRequired: true,
          validator: (value: string): string | true => {
             if (!value) return 'Password is required';

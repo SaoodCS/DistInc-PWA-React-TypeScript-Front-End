@@ -10,14 +10,15 @@ interface IInput {
    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
    error: string;
    value: string | number;
-   id?: string;
+   id: string;
+   autoComplete?: 'current-password' | 'new-password';
 }
 
 export default function InputComponent(props: IInput): JSX.Element {
-   const { placeholder, type, name, isRequired, handleChange, value, error, id } = props;
+   const { placeholder, type, name, isRequired, handleChange, value, error, id, autoComplete } =
+      props;
    const [isActive, setIsActive] = useState(false);
    const { isDarkTheme } = useThemeContext();
-   const preventSafariPwdGenerate = 'current-password';
 
    function handleFocus() {
       setIsActive(true);
@@ -50,7 +51,7 @@ export default function InputComponent(props: IInput): JSX.Element {
             value={value}
             hasError={!!error}
             isDarkTheme={isDarkTheme}
-            autoComplete={preventSafariPwdGenerate}
+            autoComplete={autoComplete}
          />
          <ErrorLabel isDarkTheme={isDarkTheme}>{error}</ErrorLabel>
       </InputContainer>

@@ -33,11 +33,12 @@ export default function RegisterForm(): JSX.Element {
                type={input.type}
                name={input.name}
                isRequired={input.isRequired}
+               autoComplete={input.autoComplete}
                handleChange={handleChange}
                value={regForm[input.name]}
                error={errors[input.name]}
-               id={`reg-${input.name}`}
-               key={`reg-${input.name}`}
+               id={input.id}
+               key={input.id}
             />
          ))}
          <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>

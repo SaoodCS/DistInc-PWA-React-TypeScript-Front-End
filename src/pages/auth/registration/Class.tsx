@@ -11,6 +11,7 @@ export default class RegClass {
    static inputs: InputArray<IRegInputs> = [
       {
          name: 'email',
+         id: 'reg-email',
          placeholder: 'Email',
          type: 'email',
          isRequired: true,
@@ -22,8 +23,10 @@ export default class RegClass {
       },
       {
          name: 'password',
+         id: 'reg-password',
          placeholder: 'Password',
          type: 'password',
+         autoComplete: 'new-password',
          isRequired: true,
          validator: (value: string): string | true => {
             if (!value) return 'Password is required';
@@ -33,8 +36,10 @@ export default class RegClass {
       },
       {
          name: 'confirmPassword',
+         id: 'reg-confirmPassword',
          placeholder: 'Confirm Password',
          type: 'password',
+         autoComplete: 'new-password',
          isRequired: true,
          validator: (value: string): string | true => {
             if (!value) return 'Confirm Password is required';
