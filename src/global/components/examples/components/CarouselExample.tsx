@@ -1,14 +1,13 @@
 // Note -> Scroll animations for this component may not work on desktop browser if animation effects are turned off in Windows settings.
 import { useState } from 'react';
 import { DummyData } from '../../../helpers/lib/dummyContent/dummyData';
-import useCarousel from '../../../hooks/useCarousel';
-import Carousel from '../../lib/carousel/Carousel';
 import ConditionalRender from '../../lib/conditionalRender/ConditionalRender';
+import { CarouselContainer, CarouselSlide } from '../../lib/newCarousel/Style';
+import useCarousel from '../../lib/newCarousel/useCarousel';
 
 export default function CarouselExample(): JSX.Element {
    const [unmountComponent, setUnmountComponent] = useState(false);
-   const { carouselRef, handleGoToSlide, handleNext, handlePrev, setCurrentSlide, currentSlide } =
-      useCarousel(1);
+   const { containerRef, currentSlide, scrollToSlide } = useCarousel(1);
 
    function handleUnmountComponent(): void {
       setUnmountComponent(true);
@@ -22,18 +21,13 @@ export default function CarouselExample(): JSX.Element {
       <>
          <button onClick={handleUnmountComponent}>Unmount Component</button>
          <button onClick={remountComponent}>Remount Component</button>
-
          <ConditionalRender condition={!unmountComponent}>
-            <button onClick={() => handleGoToSlide(1)}>Go to Slide 1</button>
-            <button onClick={() => handleGoToSlide(2)}>Go to Slide 2</button>
-            <button onClick={handlePrev}>Prev</button>
-            <button onClick={handleNext}>Next</button>
-
-            <Carousel ref={carouselRef} width={'100%'} height={'90dvh'}>
-               <div>Slide 1{DummyData.loremIpsum}</div>
-               <div>Slide 2{DummyData.loremIpsum}</div>
-               <div>Slide 3{DummyData.loremIpsum}</div>
-            </Carousel>
+            <button onClick={() => scrollToSlide(1)}>Go to Slide 1</button>
+            <button onClick={() => scrollToSlide(2)}>Go to Slide 2</button>
+               <CarouselContainer ref={containerRef} style={{ width: '20em' }}>
+                  <CarouselSlide height={'90dvh'}>{DummyData.loremIpsum}</CarouselSlide>
+                  <CarouselSlide height={'90dvh'}>{DummyData.loremIpsum}</CarouselSlide>
+               </CarouselContainer>
          </ConditionalRender>
       </>
    );
