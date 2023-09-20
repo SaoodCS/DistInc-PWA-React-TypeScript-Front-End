@@ -20,11 +20,11 @@ export default function InputComponent(props: IInput): JSX.Element {
    const [isActive, setIsActive] = useState(false);
    const { isDarkTheme } = useThemeContext();
 
-   function handleFocus() {
+   function handleFocus(): void {
       setIsActive(true);
    }
 
-   function handleBlur() {
+   function handleBlur(): void {
       setIsActive(false);
    }
 

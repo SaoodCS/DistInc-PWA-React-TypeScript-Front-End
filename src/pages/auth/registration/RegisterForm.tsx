@@ -11,7 +11,7 @@ export default function RegisterForm(): JSX.Element {
    const [errors, setErrors] = useState(RegClass.initialErrors);
    const { isDarkTheme } = useThemeContext();
 
-   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
       e.preventDefault();
       setErrors(RegClass.validate(regForm));
       console.log(RegClass.validate(regForm));
@@ -20,7 +20,7 @@ export default function RegisterForm(): JSX.Element {
       }
    }
 
-   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
       const { name, value } = e.target;
       setRegForm((prev) => ({ ...prev, [name]: value }));
    }

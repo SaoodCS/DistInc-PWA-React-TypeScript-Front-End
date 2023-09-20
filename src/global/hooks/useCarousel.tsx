@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
-import useSessionStorage, { SetValue } from '../../../../hooks/useSessionStorage';
+import type { SetValue } from './useSessionStorage';
+import useSessionStorage from './useSessionStorage';
 
 interface IUseCarouselReturned {
    containerRef: React.RefObject<HTMLDivElement>;
@@ -26,7 +27,7 @@ export default function useCarousel(
             behavior: 'auto',
          });
       }
-      const handleScroll = () => {
+      const handleScroll = (): void => {
          if (containerRef.current) {
             const currentSlide = Math.round(
                containerRef.current.scrollLeft / containerRef.current.offsetWidth,
@@ -40,7 +41,7 @@ export default function useCarousel(
       };
    }, []);
 
-   const scrollToSlide = (slideNumber: number) => {
+   const scrollToSlide = (slideNumber: number): void => {
       if (containerRef.current) {
          containerRef.current.scrollTo({
             left: (slideNumber - 1) * containerRef.current.offsetWidth,

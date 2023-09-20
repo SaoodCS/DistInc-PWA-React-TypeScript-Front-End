@@ -1,4 +1,5 @@
-import FormHelper, { InputArray } from '../../../global/helpers/lib/react/form/FormHelper';
+import type { InputArray } from '../../../global/helpers/lib/react/form/FormHelper';
+import FormHelper from '../../../global/helpers/lib/react/form/FormHelper';
 
 interface ILoginInputs {
    email: string;
@@ -38,7 +39,7 @@ export default class LoginClass {
 
    static initialErrors = FormHelper.createInitialErrors(LoginClass.inputs);
 
-   static validate(formValues: ILoginInputs) {
+   static validate(formValues: ILoginInputs): Record<keyof ILoginInputs, string> {
       const formValidation = FormHelper.validation(formValues, LoginClass.inputs);
       return formValidation;
    }

@@ -4,7 +4,7 @@ type InputObject<FieldName, ValueType> = {
    placeholder: string;
    type: string;
    isRequired: boolean;
-   autoComplete?: "current-password" | "new-password";
+   autoComplete?: 'current-password' | 'new-password';
    validator: (value: ValueType) => string | true;
 };
 
@@ -12,9 +12,9 @@ export type InputArray<FormInputs> = {
    [FieldName in keyof FormInputs]: InputObject<FieldName, FormInputs[FieldName]>;
 }[keyof FormInputs][];
 
-
 export default class FormHelper {
    static createInitialState<T>(arr: InputArray<T>): T {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const initialState: any = {};
       arr.forEach((input) => {
          if (input.type === 'checkbox') {

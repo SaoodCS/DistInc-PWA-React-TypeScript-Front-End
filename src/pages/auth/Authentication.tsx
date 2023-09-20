@@ -2,8 +2,8 @@ import { Github } from '@styled-icons/bootstrap/Github';
 import { LinkedinWithCircle } from '@styled-icons/entypo-social/LinkedinWithCircle';
 import { MailWithCircle } from '@styled-icons/entypo-social/MailWithCircle';
 import Logo from '../../global/components/app/logo/Logo';
-import useCarousel from '../../global/components/lib/carousel/hooks/useCarousel';
 import { CarouselContainer, CarouselSlide } from '../../global/components/lib/carousel/Style';
+import useCarousel from '../../global/hooks/useCarousel';
 import useThemeContext from '../../global/hooks/useThemeContext';
 import Color from '../../global/styles/colors';
 import LoginForm from './login/LoginForm';
@@ -28,7 +28,7 @@ export default function Authentication(): JSX.Element {
       ? Color.setRgbOpacity(Color.lightThm.inactive, 0.8)
       : Color.darkThm.inactive;
 
-   function handleClick(to: 'github' | 'linkedin' | 'email') {
+   function handleClick(to: 'github' | 'linkedin' | 'email'): void {
       window.open(
          to === 'github'
             ? 'https://github.com/SaoodCS'

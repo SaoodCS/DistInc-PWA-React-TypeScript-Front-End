@@ -1,7 +1,13 @@
 import { useEffect, useRef } from 'react';
 
-export default function useScrollSaver(storageId: string) {
+interface IUseScrollSaverReturned {
+   containerRef: React.RefObject<HTMLDivElement>;
+   handleOnScroll: () => void;
+   scrollToTop: () => void;
+   scrollSaverStyle: React.CSSProperties;
+}
 
+export default function useScrollSaver(storageId: string): IUseScrollSaverReturned {
    const containerRef = useRef<HTMLDivElement>(null);
 
    useEffect(() => {
@@ -13,28 +19,28 @@ export default function useScrollSaver(storageId: string) {
       }
    }, [containerRef.current]);
 
-   function handleOnScroll() {
+   function handleOnScroll(): void {
       if (containerRef.current) {
          const scrollPos = containerRef.current.scrollTop;
          sessionStorage.setItem(`${storageId}.scrollPos`, scrollPos.toString());
       }
    }
 
-   function scrollToTop() {
-      sessionStorage.setItem(`${storageId}.scrollPos`, "0");
+   function scrollToTop(): void {
+      sessionStorage.setItem(`${storageId}.scrollPos`, '0');
       if (containerRef.current) {
-         containerRef.current.scrollTop = 0; 
+         containerRef.current.scrollTop = 0;
       }
    }
 
    const scrollSaverStyle = {
       overflow: 'scroll',
-   }
+   };
 
    return {
       containerRef,
       handleOnScroll,
       scrollToTop,
       scrollSaverStyle,
-   }
+   };
 }

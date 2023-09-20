@@ -2,9 +2,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { DummyData } from '../../../helpers/lib/dummyContent/dummyData';
+import useCarousel from '../../../hooks/useCarousel';
 import useScrollSaver from '../../../hooks/useScrollSaver';
 import useThemeContext from '../../../hooks/useThemeContext';
-import useCarousel from '../../lib/carousel/hooks/useCarousel';
 import { CarouselContainer, CarouselSlide } from '../../lib/carousel/Style';
 import ConditionalRender from '../../lib/conditionalRender/ConditionalRender';
 import FetchError from '../../lib/fetch/fetchError/FetchError';
@@ -58,7 +58,7 @@ function CarouselPage(): JSX.Element {
    );
 }
 
-function ContentForS1() {
+function ContentForS1(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const identifier = 'path/slide1Content';
    const {
@@ -100,7 +100,7 @@ function ContentForS1() {
    );
 }
 
-function ContentForS2() {
+function ContentForS2(): JSX.Element {
    const identifier = 'path/slide2Content';
    const {
       containerRef: containerRef,

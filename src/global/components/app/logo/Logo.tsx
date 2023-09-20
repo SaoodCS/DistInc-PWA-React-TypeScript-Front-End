@@ -5,7 +5,7 @@ interface ILogo {
    size: string;
    bgColor?: string;
    cardColor?: string;
-   detailsColor?:string;
+   detailsColor?: string;
 }
 
 export default function Logo(props: ILogo): JSX.Element {

@@ -3,7 +3,7 @@ import useThemeContext from '../../global/hooks/useThemeContext';
 import { ErrorHeading, ErrorPageWrapper, ErrorSubheading, ErrorText } from './Style';
 
 export default function ErrorPage(): JSX.Element {
-   const { isDarkTheme, toggleTheme } = useThemeContext();
+   const { isDarkTheme } = useThemeContext();
    return (
       <ErrorPageWrapper>
          <ErrorHeading>Oops!</ErrorHeading>

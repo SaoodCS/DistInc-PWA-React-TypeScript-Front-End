@@ -23,7 +23,6 @@ export const InputContainer = styled.div`
 
 export const LabelWrapper = styled.label`
    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-
 `;
 
 export const InputLabel = styled.div<IInputLabel>`
@@ -33,10 +32,7 @@ export const InputLabel = styled.div<IInputLabel>`
          ? isDarkTheme
             ? Color.darkThm.accent
             : Color.lightThm.accent
-         : Color.setRgbOpacity(
-              isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt,
-              0.6,
-           )};
+         : Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.6)};
    transform: ${({ focusedInput, inputHasValue }) =>
       focusedInput || inputHasValue ? 'translateY(-0.5em)' : 'translateY(0.5em)'};
    font-size: ${({ focusedInput, inputHasValue }) =>

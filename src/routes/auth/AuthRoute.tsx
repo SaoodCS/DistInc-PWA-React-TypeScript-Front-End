@@ -9,8 +9,8 @@ export default function AuthRoute(): JSX.Element {
    const routeRedirectIfLoggedIn = <RouteRedirector redirectIf={!!isSignedIn} redirectTo="main" />;
    return (
       <Route element={routeRedirectIfLoggedIn}>
-         <Route path="*" element={<NotFound />}/>
-         <Route path="auth" element={<Authentication/>} />
+         <Route path="*" element={<NotFound />} />
+         <Route path="auth" element={<Authentication />} />
       </Route>
    );
 }

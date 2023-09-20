@@ -1,4 +1,5 @@
-import styled, { CSSProperties } from 'styled-components';
+import type { CSSProperties } from 'styled-components';
+import styled from 'styled-components';
 import { TextBtn } from '../../global/components/lib/button/textBtn/Style';
 import Color from '../../global/styles/colors';
 

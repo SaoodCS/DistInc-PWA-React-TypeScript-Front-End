@@ -1,4 +1,5 @@
-import FormHelper, { InputArray } from '../../../global/helpers/lib/react/form/FormHelper';
+import type { InputArray } from '../../../global/helpers/lib/react/form/FormHelper';
+import FormHelper from '../../../global/helpers/lib/react/form/FormHelper';
 
 interface IRegInputs {
    name: string;
@@ -53,7 +54,7 @@ export default class RegClass {
 
    static initialErrors = FormHelper.createInitialErrors(RegClass.inputs);
 
-   static validate(formValues: IRegInputs) {
+   static validate(formValues: IRegInputs): Record<keyof IRegInputs, string> {
       const formValidation = FormHelper.validation(formValues, RegClass.inputs);
       if (formValues.password !== formValues.confirmPassword) {
          formValidation.confirmPassword = 'Passwords do not match';
