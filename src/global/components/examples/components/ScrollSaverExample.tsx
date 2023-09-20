@@ -12,7 +12,7 @@ import {
    PlaceholderRect,
 } from '../../lib/fetch/placeholders/Style';
 import PullToRefresh from '../../lib/pullToRefresh/PullToRefresh';
-import ScrollSaver from '../../lib/scrollSaver/ScrollSaver';
+import useScrollSaver from '../../../hooks/useScrollSaver';
 
 export default function ScrollSaverExample(): JSX.Element {
    const [unmountComponent, setUnmountComponent] = useState(false);
@@ -40,11 +40,15 @@ export default function ScrollSaverExample(): JSX.Element {
 
 function ScrollSaverWithData(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
-   const { isLoading, error, data, isPaused, refetch } = useQuery(['repoData'], () =>
-      fetch(DummyData.endpoints.GET.dynamicRes).then((res) => res.json()),
-   );
+   const storageId = 'scrollSaverWithDataExample';
+   const { containerRef, handleOnScroll, scrollToTop, scrollSaverStyle } =
+      useScrollSaver(storageId);
 
-   if (isLoading && !isPaused)
+   const { isLoading, error, data, isPaused, refetch } = useQuery(['repoData'], () =>
+      fetch(DummyData.endpoints.GET.large).then((res) => res.json()),
+   );
+   if (isLoading && !isPaused) {
+      scrollToTop();
       return (
          <>
             <PlaceholderCircle isDarkTheme={isDarkTheme} size="50px" />
@@ -52,17 +56,16 @@ function ScrollSaverWithData(): JSX.Element {
             <PlaceholderLine isDarkTheme={isDarkTheme} />
          </>
       );
+   }
    if (isPaused) return <OfflineFetch />;
    if (error) return <FetchError />;
 
    return (
       <>
          <PullToRefresh onRefresh={refetch} isDarkTheme={isDarkTheme}>
-            <ScrollSaver childHeight="80dvh" path="home" identifier="scrollexample">
-               <div style={{ height: '80dvh' }}>
-                  <div>STRT {JSON.stringify(data)} END</div>
-               </div>
-            </ScrollSaver>
+            <div ref={containerRef} onScroll={() => handleOnScroll()} style={scrollSaverStyle}>
+               <div style={{ height: '10em' }}>STRT {JSON.stringify(data)} END</div>
+            </div>
          </PullToRefresh>
       </>
    );

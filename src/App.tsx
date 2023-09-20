@@ -14,7 +14,7 @@ export default function App(): JSX.Element {
       <>
             <GlobalTheme darkTheme={isDarkTheme} />
             <QueryClientProvider client={queryClient}>
-               <ExampleUIComp.Carousel/>
+               <ExampleUIComp.ScrollSaver/>
                <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
       </>

@@ -25,9 +25,8 @@ export default function useCarouselWithScrollSaver(storageId: string) {
    function handleSlideOnScroll(slideNo: number): void {
       const slideIndex = slideNo - 1;
       const scrollPos = containerRef.current?.children[slideIndex].scrollTop;
-      const identifier = 'carouselExample';
       sessionStorage.setItem(
-         `${identifier}.slideNo-${slideNo}.scrollPos`,
+         `${storageId}.slideNo-${slideNo}.scrollPos`,
          scrollPos?.toString() || '0',
       );
    }
