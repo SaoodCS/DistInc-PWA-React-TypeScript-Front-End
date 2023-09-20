@@ -87,10 +87,13 @@ function ContentForS1() {
    return (
       <>
          <PullToRefresh onRefresh={refetch} isDarkTheme={isDarkTheme}>
-            <div ref={containerRef} onScroll={() => handleOnScroll()} style={scrollSaverStyle}>
-               <div style={{ height: '10em' }}>
-                  STRT{JSON.stringify(data).replace(/,/g, ' ')}END
-               </div>
+            <div
+               ref={containerRef}
+               onScroll={() => handleOnScroll()}
+               style={{ ...scrollSaverStyle, height: '25em' }}
+            >
+               STRT {JSON.stringify(data).replace(/(.{10})/g, '$1 ')}
+               END
             </div>
          </PullToRefresh>
       </>
