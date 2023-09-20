@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import useCarousel from '../components/lib/newCarousel/useCarousel';
+import useCarousel from './useCarousel';
 
 export default function useCarouselWithScrollSaver(storageId: string) {
    const { containerRef, currentSlide, scrollToSlide, setCurrentSlide, numberOfSlides } =
@@ -33,11 +33,11 @@ export default function useCarouselWithScrollSaver(storageId: string) {
    }
 
    return {
-        containerRef,
-        currentSlide,
-        setCurrentSlide,
-        scrollToSlide,
-        numberOfSlides,
-        handleSlideOnScroll,
-   }
+      containerRef,
+      currentSlide,
+      setCurrentSlide,
+      scrollToSlide,
+      numberOfSlides,
+      handleSlideOnScroll,
+   };
 }

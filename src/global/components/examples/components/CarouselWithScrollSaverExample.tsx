@@ -1,9 +1,9 @@
 // Note -> Scroll animations for this component may not work on desktop browser if animation effects are turned off in Windows settings.
 import { useState } from 'react';
 import { DummyData } from '../../../helpers/lib/dummyContent/dummyData';
-import useCarouselWithScrollSaver from '../../../hooks/useCarouselWithScrollSaver';
+import useCarouselWithScrollSaver from '../../lib/carousel/hooks/useCarouselWithScrollSaver';
+import { CarouselContainer, CarouselSlide } from '../../lib/carousel/Style';
 import ConditionalRender from '../../lib/conditionalRender/ConditionalRender';
-import { CarouselContainer, CarouselSlide } from '../../lib/newCarousel/Style';
 
 export default function CarouselWithScrollSaverExample(): JSX.Element {
    const [unmountComponent, setUnmountComponent] = useState(false);
@@ -29,11 +29,8 @@ export default function CarouselWithScrollSaverExample(): JSX.Element {
 
 function CarouselPage(): JSX.Element {
    const identifier = 'carouselExample';
-   const {
-      containerRef,
-      scrollToSlide,
-      handleSlideOnScroll,
-   } = useCarouselWithScrollSaver(identifier);
+   const { containerRef, scrollToSlide, handleSlideOnScroll } =
+      useCarouselWithScrollSaver(identifier);
 
    return (
       <>

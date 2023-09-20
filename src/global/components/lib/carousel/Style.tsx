@@ -1,22 +1,29 @@
-import styled from 'styled-components';
-import Scrollbar from '../../../styles/scrollbars';
+import styled from "styled-components";
 
-export const CarouselContainer = styled.div<{ height: string }>`
-   height: ${({ height }) => height};
+export const CarouselContainer = styled.div`
+   overflow: hidden;
+   position: relative;
    display: flex;
-   overflow-x: scroll;
    scroll-snap-type: x mandatory;
-   overflow-y: hidden;
-   scroll-behavior: smooth;
-   ${Scrollbar.hide};
+   scrollbar-width: none;
+   -ms-overflow-style: none;
+   overflow-x: scroll;
+
+   &::-webkit-scrollbar {
+      display: none;
+   }
 `;
 
-export const Slide = styled.div<{ width: string }>`
-   //width: ${({ width }) => width};
-   width: 100%;
-   flex: none;
+export const CarouselSlide = styled.div<{ height: string }>`
+   min-width: 100%;
+   flex: 1;
    scroll-snap-align: start;
+   display: flex;
+   justify-content: center;
+   overflow: hidden;
    overflow-y: scroll;
-   border: 1px solid black;
-   ${Scrollbar.hide};
+   height: ${({ height }) => height};
+   ::-webkit-scrollbar {
+      display: none;
+   }
 `;
