@@ -95,10 +95,13 @@ export const ForgottenPwdBtn = styled(TextBtn)`
 `;
 
 export const ContactFooterWrapper = styled.div`
-   padding-top: 2.5em;
+   padding-top: 1em;
    display: flex;
    flex-direction: column;
    text-align: center;
+   @media (min-height: 750px) {
+      padding-top: 2.5em;
+   }
 `;
 
 export const ContactFooterTitle = styled.div<{ isDarkTheme: boolean }>`
