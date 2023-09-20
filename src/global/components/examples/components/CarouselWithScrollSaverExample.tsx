@@ -1,57 +1,52 @@
 // Note -> Scroll animations for this component may not work on desktop browser if animation effects are turned off in Windows settings.
-import { useRef } from 'react';
+import { useState } from 'react';
 import { DummyData } from '../../../helpers/lib/dummyContent/dummyData';
-import useCarousel from '../../../hooks/useCarousel';
-import Carousel from '../../lib/carousel/Carousel';
+import useCarouselWithScrollSaver from '../../../hooks/useCarouselWithScrollSaver';
+import ConditionalRender from '../../lib/conditionalRender/ConditionalRender';
+import { CarouselContainer, CarouselSlide } from '../../lib/newCarousel/Style';
 
 export default function CarouselWithScrollSaverExample(): JSX.Element {
-   const path = 'home';
-   const identifier = 'carousel';
-   const savedSlide = sessionStorage.getItem(`${path}.${identifier}.currentSlide`);
-   const { carouselRef, handleGoToSlide, handleNext, handlePrev, setCurrentSlide, currentSlide } =
-      useCarousel(savedSlide ? parseInt(savedSlide) : 1);
-
-   const unmountRef = useRef<HTMLDivElement>(null); // this and the handleUnmount functions are just for this example to show that the scroll saver works even when the component is unmounted and remounted
+   const [unmountComponent, setUnmountComponent] = useState(false);
 
    function handleUnmountComponent(): void {
-      if (unmountRef.current) {
-         unmountRef.current.style.display = 'none';
-         unmountRef.current.setAttribute('aria-hidden', 'true');
-      }
+      setUnmountComponent(true);
    }
 
    function remountComponent(): void {
-      if (unmountRef.current) {
-         unmountRef.current.style.display = 'block';
-         unmountRef.current.removeAttribute('aria-hidden');
-      }
+      setUnmountComponent(false);
    }
+
    return (
       <>
          <button onClick={handleUnmountComponent}>Unmount Component</button>
          <button onClick={remountComponent}>Remount Component</button>
-         <div ref={unmountRef}>
-            <button onClick={() => handleGoToSlide(1)}>Go to Slide 1</button>
-            <button onClick={() => handleGoToSlide(2)}>Go to Slide 2</button>
-            <button onClick={handlePrev}>Prev</button>
-            <button onClick={handleNext}>Next</button>
+         <ConditionalRender condition={!unmountComponent}>
+            <CarouselPage />
+         </ConditionalRender>
+      </>
+   );
+}
 
-            <Carousel
-               ref={carouselRef}
-               width={'100%'}
-               height={'90dvh'}
-               useScrollSaver={{
-                  path,
-                  identifier,
-                  currentSlide,
-                  handleGoToSlide,
-               }}
-            >
-               <div>Slide 1 content: {DummyData.loremIpsum}</div>
-               <div>Slide 2 content: {DummyData.loremIpsum}</div>
-               <div>Slide 3 content: {DummyData.loremIpsum}</div>
-            </Carousel>
-         </div>
+function CarouselPage(): JSX.Element {
+   const identifier = 'carouselExample';
+   const {
+      containerRef,
+      scrollToSlide,
+      handleSlideOnScroll,
+   } = useCarouselWithScrollSaver(identifier);
+
+   return (
+      <>
+         <button onClick={() => scrollToSlide(1)}>Go to Slide 1</button>
+         <button onClick={() => scrollToSlide(2)}>Go to Slide 2</button>
+         <CarouselContainer ref={containerRef} style={{ width: '20em' }}>
+            <CarouselSlide height={'90dvh'} onScroll={() => handleSlideOnScroll(1)}>
+               SLIDE 1: {DummyData.loremIpsum}
+            </CarouselSlide>
+            <CarouselSlide height={'90dvh'} onScroll={() => handleSlideOnScroll(2)}>
+               SLIDE 2: {DummyData.loremIpsum}
+            </CarouselSlide>
+         </CarouselContainer>
       </>
    );
 }

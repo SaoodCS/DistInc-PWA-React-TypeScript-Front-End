@@ -1,16 +1,23 @@
 import { useEffect, useRef, useState } from 'react';
+import useSessionStorage, { SetValue } from '../../../hooks/useSessionStorage';
 
 interface IUseCarouselReturned {
    containerRef: React.RefObject<HTMLDivElement>;
    currentSlide: number;
-   setCurrentSlide: React.Dispatch<React.SetStateAction<number>>;
+   setCurrentSlide: SetValue<number>;
    scrollToSlide: (slideNumber: number) => void;
    numberOfSlides: number | undefined;
 }
 
-export default function useCarousel(initialSlide: number): IUseCarouselReturned {
+export default function useCarousel(
+   initialSlide: number,
+   scrollSaverId?: string,
+): IUseCarouselReturned {
    const containerRef = useRef<HTMLDivElement>(null);
-   const [currentSlide, setCurrentSlide] = useState(initialSlide);
+   const [currentSlide, setCurrentSlide] = useSessionStorage(
+      `${scrollSaverId || 'carousel'}`,
+      initialSlide,
+   );
 
    useEffect(() => {
       const handleScroll = () => {
