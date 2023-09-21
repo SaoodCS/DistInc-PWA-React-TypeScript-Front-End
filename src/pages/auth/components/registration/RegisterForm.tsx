@@ -1,32 +1,30 @@
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useState } from 'react';
 import { StaticButton } from '../../../../global/components/lib/button/staticButton/Style';
 import { StyledForm } from '../../../../global/components/lib/form/form/Style';
 import InputComponent from '../../../../global/components/lib/form/input/Input';
-import useAuthContext from '../../../../global/context/auth/hooks/useAuthContext';
 import useThemeContext from '../../../../global/context/theme/hooks/useThemeContext';
-import { auth } from '../../../../global/firebase/config/config';
-import FormHelper from '../../../../global/helpers/react/form/FormHelper';
+import APIHelper from '../../../../global/firebase/apis/helper/apiHelper';
+import useForm from '../../../../global/hooks/useForm';
 import RegClass from './Class';
 
 export default function RegisterForm(): JSX.Element {
-   const [regForm, setRegForm] = useState(RegClass.initialState);
-   const [errors, setErrors] = useState(RegClass.initialErrors);
+   const {
+      form: regForm,
+      errors,
+      setApiError,
+      handleChange,
+      initHandleSubmit,
+   } = useForm(RegClass.initialState, RegClass.initialErrors, RegClass.validate);
+
    const { isDarkTheme } = useThemeContext();
-   const { setIsSignedIn } = useAuthContext();
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
-      e.preventDefault();
-      setErrors(RegClass.validate(regForm));
-      console.log(RegClass.validate(regForm));
-      if (FormHelper.hasNoErrors(errors)) {
-         // Register the user to the microservice endpoint
+      const { isFormValid } = initHandleSubmit(e);
+      if (!isFormValid) return;
+      try {
+         // logic for registration here
+      } catch (e: unknown) {
+         setApiError(APIHelper.handleError(e));
       }
-   }
-
-   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
-      const { name, value } = e.target;
-      setRegForm((prev) => ({ ...prev, [name]: value }));
    }
 
    return (

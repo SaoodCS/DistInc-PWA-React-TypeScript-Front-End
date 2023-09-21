@@ -22,7 +22,7 @@ export default function useForm<T>(
       return { isFormValid: true };
    }
 
-   function handleChange(e: any): void {
+   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
       const { name, value } = e.target;
       setForm((prevState) => ({ ...prevState, [name]: value }));
    }
