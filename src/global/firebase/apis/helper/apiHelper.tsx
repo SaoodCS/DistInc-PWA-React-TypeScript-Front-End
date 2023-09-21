@@ -12,8 +12,8 @@ export interface IAPICallerSuccessMsg {
 }
 
 export default class APIHelper {
-   static createBody(keyValues: { [key: string]: unknown }): BodyInit {
-      return JSON.stringify(keyValues);
+   static createBody<T>(formValues: T): BodyInit {
+      return JSON.stringify(formValues);
    }
 
    static isSuccessMsgRes(response: unknown): response is IAPICallerSuccessMsg {
@@ -61,7 +61,7 @@ export default class APIHelper {
       return JSON.stringify(error);
    }
 
-   async gatewayCall<T>(
+   static async gatewayCall<T>(
       body: BodyInit | null | undefined,
       method: string,
       serviceName: string,
