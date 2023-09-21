@@ -46,6 +46,7 @@ export default class APIHelper {
             'auth/user-mismatch': 'Your current email is incorrect.',
             'auth/invalid-email': 'Your new email must be a valid email address',
             'auth/weak-password': 'Your password should be at least 6 characters long',
+            'auth/too-many-requests': 'Too many requests. Try again later.',
          };
          return errorMsgs[errorWithCode.code] || errorWithCode.code;
       }
