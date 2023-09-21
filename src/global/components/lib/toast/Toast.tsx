@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import useThemeContext from '../../../hooks/useThemeContext';
+import useThemeContext from '../../../context/theme/hooks/useThemeContext';
 import Fader from '../animation/fader/Fader';
 import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalRender';
 import { ToastContainer } from './Style';

@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 import { ThemeContext } from '../../../context/theme/ThemeContext';
-import useContextMenu from '../../../hooks/useContextMenu';
 import { StaticButton } from '../../lib/button/staticButton/Style';
 import ContextMenu from '../../lib/contextMenu/ContextMenu';
+import useContextMenu from '../../lib/contextMenu/hooks/useContextMenu';
 
 export default function ContextMenuExample(): JSX.Element {
    const { showMenu, toggleMenu, buttonRef } = useContextMenu();

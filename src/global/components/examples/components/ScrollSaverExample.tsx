@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { DummyData } from '../../../helpers/lib/dummyContent/dummyData';
+import useThemeContext from '../../../context/theme/hooks/useThemeContext';
+import { DummyData } from '../../../helpers/dummyContent/dummyData';
 import useScrollSaver from '../../../hooks/useScrollSaver';
-import useThemeContext from '../../../hooks/useThemeContext';
 import FetchError from '../../lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../lib/fetch/offlineFetch/offlineFetch';
 import {

@@ -1,10 +1,10 @@
 // Note -> Scroll animations for this component may not work on desktop browser if animation effects are turned off in Windows settings.
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { DummyData } from '../../../helpers/lib/dummyContent/dummyData';
-import useCarousel from '../../../hooks/useCarousel';
+import useThemeContext from '../../../context/theme/hooks/useThemeContext';
+import { DummyData } from '../../../helpers/dummyContent/dummyData';
 import useScrollSaver from '../../../hooks/useScrollSaver';
-import useThemeContext from '../../../hooks/useThemeContext';
+import useCarousel from '../../lib/carousel/hooks/useCarousel';
 import { CarouselContainer, CarouselSlide } from '../../lib/carousel/Style';
 import FetchError from '../../lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../lib/fetch/offlineFetch/offlineFetch';

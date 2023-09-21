@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import useThemeContext from '../../../../hooks/useThemeContext';
+import useThemeContext from '../../../../context/theme/hooks/useThemeContext';
 import { ErrorLabel, InputContainer, InputLabel, LabelWrapper, TextInput } from './Style';
 
 interface IInput {

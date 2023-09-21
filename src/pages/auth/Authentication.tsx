@@ -2,22 +2,13 @@ import { Github } from '@styled-icons/bootstrap/Github';
 import { LinkedinWithCircle } from '@styled-icons/entypo-social/LinkedinWithCircle';
 import { MailWithCircle } from '@styled-icons/entypo-social/MailWithCircle';
 import Logo from '../../global/components/app/logo/Logo';
+import useCarousel from '../../global/components/lib/carousel/hooks/useCarousel';
 import { CarouselContainer, CarouselSlide } from '../../global/components/lib/carousel/Style';
-import useCarousel from '../../global/hooks/useCarousel';
-import useThemeContext from '../../global/hooks/useThemeContext';
+import useThemeContext from '../../global/context/theme/hooks/useThemeContext';
 import Color from '../../global/styles/colors';
 import LoginForm from './components/login/LoginForm';
 import RegisterForm from './components/registration/RegisterForm';
-import {
-   Centerer,
-   ContactFooterTitle,
-   ContactFooterWrapper,
-   contactIconStyle,
-   ContactIconsWrapper,
-   HeaderContainer,
-   ScrollNavigatorBtn,
-   ScrollNavigatorContainer,
-} from './components/Style';
+import { Centerer, HeaderContainer, ScrollNavigatorContainer, ScrollNavigatorBtn, ContactFooterWrapper, ContactFooterTitle, ContactIconsWrapper, contactIconStyle } from './style/Style';
 
 export default function Authentication(): JSX.Element {
    const { isDarkTheme } = useThemeContext();

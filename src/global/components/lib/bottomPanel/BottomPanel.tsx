@@ -1,7 +1,7 @@
 // Note: This component's functionality will work on desktop if you turn on animation in windows 11 settings (accessibility settings)
 import type { ReactNode } from 'react';
 import Sheet from 'react-modal-sheet';
-import useThemeContext from '../../../hooks/useThemeContext';
+import useThemeContext from '../../../context/theme/hooks/useThemeContext';
 import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalRender';
 import {
    CustomBottomPanelSheet,

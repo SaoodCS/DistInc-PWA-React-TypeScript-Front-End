@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import type { SetValue } from './useSessionStorage';
-import useSessionStorage from './useSessionStorage';
+import useSessionStorage, { SetValue } from '../../../../hooks/useSessionStorage';
+
 
 interface IUseCarouselReturned {
    containerRef: React.RefObject<HTMLDivElement>;

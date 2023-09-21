@@ -1,4 +1,4 @@
-import useThemeContext from '../../../../hooks/useThemeContext';
+import useThemeContext from '../../../../context/theme/hooks/useThemeContext';
 import { ErrorIcon, ErrorMsg, FetchErrorWrapper } from './Style';
 
 export default function FetchError(): JSX.Element {

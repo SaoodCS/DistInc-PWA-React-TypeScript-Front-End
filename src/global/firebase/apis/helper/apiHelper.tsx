@@ -1,5 +1,5 @@
 import { FirebaseError } from 'firebase/app';
-import ObjectOfObjects from '../../../helpers/lib/dataTypes/objectOfObjects/objectsOfObjects';
+import ObjectOfObjects from '../../../helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import { auth } from '../../config/config';
 import microservices from '../microservices/microservices';
 

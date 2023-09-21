@@ -1,7 +1,7 @@
 import { useState } from 'react';
 // eslint-disable-next-line import/no-unresolved
 import { registerSW } from 'virtual:pwa-register';
-import useThemeContext from '../../../../hooks/useThemeContext';
+import useThemeContext from '../../../../context/theme/hooks/useThemeContext';
 import { TextBtn } from '../../../lib/button/textBtn/Style';
 import Modal from '../../../lib/modal/Modal';
 import { ModalFooterWrapper } from '../../../lib/modal/Style';

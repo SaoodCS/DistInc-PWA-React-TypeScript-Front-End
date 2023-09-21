@@ -1,4 +1,5 @@
-import useThemeContext from '../../../global/hooks/useThemeContext';
+import useThemeContext from "../../../global/context/theme/hooks/useThemeContext";
+
 
 export default function Settings(): JSX.Element {
    const { isDarkTheme } = useThemeContext();

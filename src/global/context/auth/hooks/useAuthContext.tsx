@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { AuthContext } from '../context/auth/AuthContext';
+import { AuthContext } from '../AuthContext';
 
 interface IUseAuthContextReturn {
    isSignedIn: boolean | null;

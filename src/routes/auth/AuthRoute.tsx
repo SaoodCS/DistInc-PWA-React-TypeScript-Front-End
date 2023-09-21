@@ -1,6 +1,6 @@
 import { Route } from 'react-router-dom';
 import RouteRedirector from '../../global/components/lib/renderModifiers/routeRedirector/RouteRedirector';
-import useAuthContext from '../../global/hooks/useAuthContext';
+import useAuthContext from '../../global/context/auth/hooks/useAuthContext';
 import Authentication from '../../pages/auth/Authentication';
 import NotFound from '../../pages/error/NotFound';
 

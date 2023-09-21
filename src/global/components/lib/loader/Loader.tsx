@@ -1,4 +1,4 @@
-import useThemeContext from '../../../hooks/useThemeContext';
+import useThemeContext from '../../../context/theme/hooks/useThemeContext';
 import { DimOverlay } from '../overlay/dimOverlay/DimOverlay';
 import { CenterWrapper } from '../positionModifiers/centerers/CenterWrapper';
 import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalRender';

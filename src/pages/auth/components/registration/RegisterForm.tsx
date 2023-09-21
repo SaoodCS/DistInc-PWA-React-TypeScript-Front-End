@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { StaticButton } from '../../../../global/components/lib/button/staticButton/Style';
 import { StyledForm } from '../../../../global/components/lib/form/form/Style';
 import InputComponent from '../../../../global/components/lib/form/input/Input';
-import FormHelper from '../../../../global/helpers/lib/react/form/FormHelper';
-import useThemeContext from '../../../../global/hooks/useThemeContext';
+import useThemeContext from '../../../../global/context/theme/hooks/useThemeContext';
+import FormHelper from '../../../../global/helpers/react/form/FormHelper';
 import RegClass from './Class';
 
 export default function RegisterForm(): JSX.Element {
