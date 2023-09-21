@@ -3,7 +3,6 @@ import { TextBtn } from '../../global/components/lib/button/textBtn/Style';
 import { ThemeContext } from '../../global/context/theme/ThemeContext';
 import { ErrorHeading, ErrorPageWrapper, ErrorSubheading, ErrorText } from './style/Style';
 
-
 export default function NotFound(): JSX.Element {
    const { isDarkTheme } = useContext(ThemeContext);
 

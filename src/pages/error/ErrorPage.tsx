@@ -1,7 +1,6 @@
 import { TextBtn } from '../../global/components/lib/button/textBtn/Style';
 import useThemeContext from '../../global/context/theme/hooks/useThemeContext';
-import { ErrorPageWrapper, ErrorHeading, ErrorSubheading, ErrorText } from './style/Style';
-
+import { ErrorHeading, ErrorPageWrapper, ErrorSubheading, ErrorText } from './style/Style';
 
 export default function ErrorPage(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
