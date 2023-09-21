@@ -5,10 +5,19 @@ import Logo from '../../global/components/app/logo/Logo';
 import useCarousel from '../../global/components/lib/carousel/hooks/useCarousel';
 import { CarouselContainer, CarouselSlide } from '../../global/components/lib/carousel/Style';
 import useThemeContext from '../../global/context/theme/hooks/useThemeContext';
-import Color from '../../global/styles/colors';
+import Color from '../../global/theme/colors';
 import LoginForm from './components/login/LoginForm';
 import RegisterForm from './components/registration/RegisterForm';
-import { Centerer, HeaderContainer, ScrollNavigatorContainer, ScrollNavigatorBtn, ContactFooterWrapper, ContactFooterTitle, ContactIconsWrapper, contactIconStyle } from './style/Style';
+import {
+   Centerer,
+   ContactFooterTitle,
+   ContactFooterWrapper,
+   contactIconStyle,
+   ContactIconsWrapper,
+   HeaderContainer,
+   ScrollNavigatorBtn,
+   ScrollNavigatorContainer,
+} from './style/Style';
 
 export default function Authentication(): JSX.Element {
    const { isDarkTheme } = useThemeContext();

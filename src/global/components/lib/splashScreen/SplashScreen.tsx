@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Color from '../../../styles/colors';
+import Color from '../../../theme/colors';
 import Logo from '../../app/logo/Logo';
 import Fader from '../animation/fader/Fader';
 import { OpaqueOverlay } from '../overlay/opaqueOverlay/Style';

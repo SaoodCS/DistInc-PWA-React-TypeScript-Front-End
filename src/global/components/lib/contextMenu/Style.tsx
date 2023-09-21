@@ -1,6 +1,6 @@
 import type { Keyframes } from 'styled-components';
 import styled, { keyframes } from 'styled-components';
-import Color from '../../../styles/colors';
+import Color from '../../../theme/colors';
 import type { TButtonPos } from './ContextMenu';
 
 const relativeExpander = (btnPosition: TButtonPos): Keyframes => keyframes`

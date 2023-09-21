@@ -1,6 +1,6 @@
 import type { Keyframes } from 'styled-components';
 import styled, { keyframes } from 'styled-components';
-import Color from '../../../../styles/colors';
+import Color from '../../../../theme/colors';
 
 // Define a keyframe animation for the placeholderLine
 const pulse = (isDarkTheme: boolean): Keyframes => keyframes`

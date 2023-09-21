@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ThemeContext } from 'styled-components';
+import { ThemeContext } from '../ThemeContext';
 
 interface IUseThemeContextReturn {
    isDarkTheme: boolean;

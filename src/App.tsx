@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import useThemeContext from './global/context/theme/hooks/useThemeContext';
-import { GlobalTheme } from './global/styles/theme';
+import { GlobalTheme } from './global/theme/theme';
 import AppRouter from './routes/AppRouter';
 
 const queryClient = new QueryClient();

@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'styled-components';
 import styled from 'styled-components';
 import { TextBtn } from '../../../global/components/lib/button/textBtn/Style';
-import Color from '../../../global/styles/colors';
+import Color from '../../../global/theme/colors';
 
 export const HeaderContainer = styled.div<{ isDarkTheme: boolean }>`
    width: 100%;

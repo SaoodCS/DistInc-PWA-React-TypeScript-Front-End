@@ -1,6 +1,6 @@
 import Sheet from 'react-modal-sheet';
 import styled, { css } from 'styled-components';
-import Color from '../../../styles/colors';
+import Color from '../../../theme/colors';
 import { ModalCloseButton } from '../modal/Style';
 
 const commonHeaderStyles = css`

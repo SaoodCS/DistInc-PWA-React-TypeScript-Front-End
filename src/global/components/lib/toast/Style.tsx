@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Color from '../../../styles/colors';
+import Color from '../../../theme/colors';
 import type { THorizontalPos, TVerticalPos } from './Toast';
 
 export const ToastContainer = styled.div<{

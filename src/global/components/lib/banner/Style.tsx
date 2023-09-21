@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import Color from '../../../styles/colors';
-import Scrollbar from '../../../styles/scrollbars';
+import Scrollbar from '../../../helpers/styledComponents/scrollbars';
+import Color from '../../../theme/colors';
 
 export const BannerBackground = styled.div<{ renderBanner: boolean; heightEm: number }>`
    position: fixed;

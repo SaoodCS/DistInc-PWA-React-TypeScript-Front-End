@@ -2,7 +2,7 @@
 import { useContext } from 'react';
 import { ThemeContext } from '../../../../context/theme/ThemeContext';
 import { getCloudMsgRegToken } from '../../../../firebase/config/config';
-import NotifHelpers from '../../../../helpers/pwa/sendPushNotification';
+import NotifHelpers from '../../../../helpers/pwa/notifHelpers';
 import useLocalStorage from '../../../../hooks/useLocalStorage';
 import { TextBtn } from '../../../lib/button/textBtn/Style';
 import Modal from '../../../lib/modal/Modal';

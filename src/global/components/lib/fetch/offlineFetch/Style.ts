@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { CloudOffline } from 'styled-icons/ionicons-outline';
-import Color from '../../../../styles/colors';
+import Color from '../../../../theme/colors';
 
 export const OfflineMsg = styled.div<{ isDarkTheme: boolean }>`
    font-size: 0.9em;

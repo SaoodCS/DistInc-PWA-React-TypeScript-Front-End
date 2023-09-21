@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import { Close } from 'styled-icons/evil';
-import Color from '../../../styles/colors';
-import Scrollbar from '../../../styles/scrollbars';
-import TextStyles from '../../../styles/textStyles';
+import Scrollbar from '../../../helpers/styledComponents/scrollbars';
+import Color from '../../../theme/colors';
 
 export const ModalHeader = styled.span<{ isDarkTheme: boolean }>`
    text-shadow: ${({ isDarkTheme }) =>
@@ -15,7 +14,7 @@ export const ModalBody = styled.div`
    overflow-x: hidden;
    overflow-y: auto;
    ${Scrollbar.gradientStyle};
-   ${TextStyles.p2TextStyle};
+   font-size: 0.85em;
 `;
 
 export const ModalHeaderContainer = styled.div<{ isDarkTheme: boolean }>`
@@ -26,7 +25,8 @@ export const ModalHeaderContainer = styled.div<{ isDarkTheme: boolean }>`
    border-bottom: ${({ isDarkTheme }) =>
       isDarkTheme ? `1px solid ${Color.darkThm.border}` : `1px solid ${Color.lightThm.border}`};
    border-radius: 5px;
-   ${TextStyles.h4TextStyle};
+   font-size: 1em;
+   font-weight: 500;
 `;
 
 export const ModalContainer = styled.div<{ isDarkTheme: boolean }>`

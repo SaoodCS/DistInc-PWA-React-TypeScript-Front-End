@@ -1,4 +1,4 @@
-import Color from '../../../styles/colors';
+import Color from '../../../theme/colors';
 import { Card, CardStrip, LogoWrapper, RectContainer, RectOne, RectTwo } from './Style';
 
 interface ILogo {
