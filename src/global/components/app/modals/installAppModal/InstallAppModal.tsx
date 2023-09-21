@@ -5,7 +5,7 @@ import { TextColourizer } from '../../../lib/font/textColorizer/TextColourizer';
 import { TextIndenter } from '../../../lib/font/textIndenter/TextIndenter';
 import Modal from '../../../lib/modal/Modal';
 import { VerticalSeperator } from '../../../lib/positionModifiers/verticalSeperator/VerticalSeperator';
-import ConditionalRender from '../../../lib/ternary/conditionalRender/ConditionalRender';
+import ConditionalRender from '../../../lib/renderModifiers/conditionalRender/ConditionalRender';
 
 export default function InstallAppModal(): JSX.Element {
    const [notInstalledOnUserDevice, setNotInstalledOnUserDevice] = useState(

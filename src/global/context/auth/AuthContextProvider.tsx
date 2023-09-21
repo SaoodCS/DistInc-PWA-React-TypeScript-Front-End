@@ -1,7 +1,7 @@
 import { onAuthStateChanged } from 'firebase/auth';
 import type { ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import ConditionalRender from '../../components/lib/ternary/conditionalRender/ConditionalRender';
+import ConditionalRender from '../../components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import { auth } from '../../firebase/config/config';
 import { AuthContext } from './AuthContext';
 

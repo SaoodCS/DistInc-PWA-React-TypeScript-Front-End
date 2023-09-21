@@ -2,7 +2,7 @@
 import type { ReactNode } from 'react';
 import Sheet from 'react-modal-sheet';
 import useThemeContext from '../../../hooks/useThemeContext';
-import ConditionalRender from '../ternary/conditionalRender/ConditionalRender';
+import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalRender';
 import {
    CustomBottomPanelSheet,
    CustomPanelHeader,

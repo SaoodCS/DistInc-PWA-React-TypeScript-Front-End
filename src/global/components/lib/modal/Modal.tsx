@@ -4,7 +4,7 @@ import { ThemeContext } from '../../../context/theme/ThemeContext';
 import Expander from '../animation/expander/Expander';
 import { DimOverlay } from '../overlay/dimOverlay/DimOverlay';
 import { CenterWrapper } from '../positionModifiers/centerers/CenterWrapper';
-import ConditionalRender from '../ternary/conditionalRender/ConditionalRender';
+import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalRender';
 
 import {
    ModalBody,

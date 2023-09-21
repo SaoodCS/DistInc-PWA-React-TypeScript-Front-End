@@ -14,7 +14,7 @@ import {
    PlaceholderRect,
 } from '../../lib/fetch/placeholders/Style';
 import PullToRefresh from '../../lib/pullToRefresh/PullToRefresh';
-import ConditionalRender from '../../lib/ternary/conditionalRender/ConditionalRender';
+import ConditionalRender from '../../lib/renderModifiers/conditionalRender/ConditionalRender';
 
 export default function CarouselWithScrollSaverExample(): JSX.Element {
    const [unmountComponent, setUnmountComponent] = useState(false);

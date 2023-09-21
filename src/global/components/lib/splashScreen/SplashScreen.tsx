@@ -4,7 +4,7 @@ import Logo from '../../app/logo/Logo';
 import Fader from '../animation/fader/Fader';
 import { OpaqueOverlay } from '../overlay/opaqueOverlay/Style';
 import { CenterWrapper } from '../positionModifiers/centerers/CenterWrapper';
-import ConditionalRender from '../ternary/conditionalRender/ConditionalRender';
+import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalRender';
 
 interface ISplashScreen {
    isDisplayed: boolean;

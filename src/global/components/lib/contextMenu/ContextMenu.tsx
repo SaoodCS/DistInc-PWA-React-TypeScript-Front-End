@@ -1,8 +1,7 @@
 import type { ReactNode, RefObject } from 'react';
 import { forwardRef, useContext, useEffect, useRef, useState } from 'react';
 import { ThemeContext } from '../../../context/theme/ThemeContext';
-
-import ConditionalRender from '../ternary/conditionalRender/ConditionalRender';
+import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalRender';
 import { ContextMenuWrapper } from './Style';
 
 export type TButtonPos = 'top left' | 'top right' | 'bottom left' | 'bottom right';

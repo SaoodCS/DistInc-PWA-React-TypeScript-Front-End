@@ -1,5 +1,5 @@
 import { Route } from 'react-router-dom';
-import RouteRedirector from '../../global/components/lib/ternary/routeRedirector/RouteRedirector';
+import RouteRedirector from '../../global/components/lib/renderModifiers/routeRedirector/RouteRedirector';
 import useAuthContext from '../../global/hooks/useAuthContext';
 import NotFound from '../../pages/error/NotFound';
 import AccountsLayout from '../../pages/main/accounts/Accounts';

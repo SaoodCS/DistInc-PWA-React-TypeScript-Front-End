@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../../../context/theme/ThemeContext';
 import { VerticalSeperator } from '../positionModifiers/verticalSeperator/VerticalSeperator';
-import ConditionalRender from '../ternary/conditionalRender/ConditionalRender';
+import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalRender';
 import { BannerBackground, BannerContainer, BannerContent } from './Style';
 
 interface IBanner {
