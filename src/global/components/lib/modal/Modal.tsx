@@ -2,9 +2,9 @@ import type { ReactNode } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../../../context/theme/ThemeContext';
 import Expander from '../animation/expander/Expander';
-import { CenterWrapper } from '../centerers/CenterWrapper';
-import ConditionalRender from '../conditionalRender/ConditionalRender';
 import { DimOverlay } from '../overlay/dimOverlay/DimOverlay';
+import { CenterWrapper } from '../positionModifiers/centerers/CenterWrapper';
+import ConditionalRender from '../ternary/conditionalRender/ConditionalRender';
 
 import {
    ModalBody,

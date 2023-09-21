@@ -1,11 +1,11 @@
 import { Fragment, useEffect, useState } from 'react';
-import useLocalStorage from '../../../hooks/useLocalStorage';
-import Color from '../../../styles/colors';
-import ConditionalRender from '../../lib/conditionalRender/ConditionalRender';
-import Modal from '../../lib/modal/Modal';
-import { TextColourizer } from '../../lib/textColorizer/TextColourizer';
-import { TextIndenter } from '../../lib/textIndenter/TextIndenter';
-import { VerticalSeperator } from '../../lib/verticalSeperator/VerticalSeperator';
+import useLocalStorage from '../../../../hooks/useLocalStorage';
+import Color from '../../../../styles/colors';
+import { TextColourizer } from '../../../lib/font/textColorizer/TextColourizer';
+import { TextIndenter } from '../../../lib/font/textIndenter/TextIndenter';
+import Modal from '../../../lib/modal/Modal';
+import { VerticalSeperator } from '../../../lib/positionModifiers/verticalSeperator/VerticalSeperator';
+import ConditionalRender from '../../../lib/ternary/conditionalRender/ConditionalRender';
 
 export default function InstallAppModal(): JSX.Element {
    const [notInstalledOnUserDevice, setNotInstalledOnUserDevice] = useState(

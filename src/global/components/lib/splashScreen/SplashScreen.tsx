@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import Color from '../../../styles/colors';
 import Logo from '../../app/logo/Logo';
 import Fader from '../animation/fader/Fader';
-import { CenterWrapper } from '../centerers/CenterWrapper';
-import ConditionalRender from '../conditionalRender/ConditionalRender';
 import { OpaqueOverlay } from '../overlay/opaqueOverlay/Style';
+import { CenterWrapper } from '../positionModifiers/centerers/CenterWrapper';
+import ConditionalRender from '../ternary/conditionalRender/ConditionalRender';
 
 interface ISplashScreen {
    isDisplayed: boolean;

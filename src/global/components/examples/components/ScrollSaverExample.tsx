@@ -2,8 +2,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { DummyData } from '../../../helpers/lib/dummyContent/dummyData';
+import useScrollSaver from '../../../hooks/useScrollSaver';
 import useThemeContext from '../../../hooks/useThemeContext';
-import ConditionalRender from '../../lib/conditionalRender/ConditionalRender';
 import FetchError from '../../lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../lib/fetch/offlineFetch/offlineFetch';
 import {
@@ -12,7 +12,7 @@ import {
    PlaceholderRect,
 } from '../../lib/fetch/placeholders/Style';
 import PullToRefresh from '../../lib/pullToRefresh/PullToRefresh';
-import useScrollSaver from '../../../hooks/useScrollSaver';
+import ConditionalRender from '../../lib/ternary/conditionalRender/ConditionalRender';
 
 export default function ScrollSaverExample(): JSX.Element {
    const [unmountComponent, setUnmountComponent] = useState(false);

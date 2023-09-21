@@ -1,7 +1,7 @@
 import useThemeContext from '../../../hooks/useThemeContext';
-import { CenterWrapper } from '../centerers/CenterWrapper';
-import ConditionalRender from '../conditionalRender/ConditionalRender';
 import { DimOverlay } from '../overlay/dimOverlay/DimOverlay';
+import { CenterWrapper } from '../positionModifiers/centerers/CenterWrapper';
+import ConditionalRender from '../ternary/conditionalRender/ConditionalRender';
 import { CustomSpinner } from './Style';
 
 interface ILoader {

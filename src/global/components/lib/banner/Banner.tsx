@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../../../context/theme/ThemeContext';
-import ConditionalRender from '../conditionalRender/ConditionalRender';
-import { VerticalSeperator } from '../verticalSeperator/VerticalSeperator';
+import { VerticalSeperator } from '../positionModifiers/verticalSeperator/VerticalSeperator';
+import ConditionalRender from '../ternary/conditionalRender/ConditionalRender';
 import { BannerBackground, BannerContainer, BannerContent } from './Style';
 
 interface IBanner {

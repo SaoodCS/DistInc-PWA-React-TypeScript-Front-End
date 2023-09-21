@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import useThemeContext from '../../../hooks/useThemeContext';
 import Fader from '../animation/fader/Fader';
-import ConditionalRender from '../conditionalRender/ConditionalRender';
+import ConditionalRender from '../ternary/conditionalRender/ConditionalRender';
 import { ToastContainer } from './Style';
 
 export type TVerticalPos = 'top' | 'bottom';

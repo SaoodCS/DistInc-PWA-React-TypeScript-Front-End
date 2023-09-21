@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { DummyData } from '../../../helpers/lib/dummyContent/dummyData';
 import useCarousel from '../../../hooks/useCarousel';
 import { CarouselContainer, CarouselSlide } from '../../lib/carousel/Style';
-import ConditionalRender from '../../lib/conditionalRender/ConditionalRender';
+import ConditionalRender from '../../lib/ternary/conditionalRender/ConditionalRender';
 
 export default function CarouselExample(): JSX.Element {
    const [unmountComponent, setUnmountComponent] = useState(false);

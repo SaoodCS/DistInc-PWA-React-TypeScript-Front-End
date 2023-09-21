@@ -1,12 +1,12 @@
 // NOTE: To test on mobile, deploy the app to dev env and then open the dev web app on mobile (the domain 192.168.1.80:5173 will not work due to same origin policy)
 import { useContext } from 'react';
-import { ThemeContext } from '../../../context/theme/ThemeContext';
-import { getCloudMsgRegToken } from '../../../firebase/config/config';
-import useLocalStorage from '../../../hooks/useLocalStorage';
-import NotifHelpers from '../../../pwa/sendPushNotification';
-import { TextBtn } from '../../lib/button/textBtn/Style';
-import Modal from '../../lib/modal/Modal';
-import { ModalFooterWrapper } from '../../lib/modal/Style';
+import { ThemeContext } from '../../../../context/theme/ThemeContext';
+import { getCloudMsgRegToken } from '../../../../firebase/config/config';
+import useLocalStorage from '../../../../hooks/useLocalStorage';
+import NotifHelpers from '../../../../pwa/sendPushNotification';
+import { TextBtn } from '../../../lib/button/textBtn/Style';
+import Modal from '../../../lib/modal/Modal';
+import { ModalFooterWrapper } from '../../../lib/modal/Style';
 
 export default function EnablePushNotifModal(): JSX.Element {
    const { isDarkTheme } = useContext(ThemeContext);

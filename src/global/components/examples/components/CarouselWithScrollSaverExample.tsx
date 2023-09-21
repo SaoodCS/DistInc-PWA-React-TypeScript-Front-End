@@ -6,7 +6,6 @@ import useCarousel from '../../../hooks/useCarousel';
 import useScrollSaver from '../../../hooks/useScrollSaver';
 import useThemeContext from '../../../hooks/useThemeContext';
 import { CarouselContainer, CarouselSlide } from '../../lib/carousel/Style';
-import ConditionalRender from '../../lib/conditionalRender/ConditionalRender';
 import FetchError from '../../lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../lib/fetch/offlineFetch/offlineFetch';
 import {
@@ -15,6 +14,7 @@ import {
    PlaceholderRect,
 } from '../../lib/fetch/placeholders/Style';
 import PullToRefresh from '../../lib/pullToRefresh/PullToRefresh';
+import ConditionalRender from '../../lib/ternary/conditionalRender/ConditionalRender';
 
 export default function CarouselWithScrollSaverExample(): JSX.Element {
    const [unmountComponent, setUnmountComponent] = useState(false);

@@ -6,8 +6,8 @@ import { CarouselContainer, CarouselSlide } from '../../global/components/lib/ca
 import useCarousel from '../../global/hooks/useCarousel';
 import useThemeContext from '../../global/hooks/useThemeContext';
 import Color from '../../global/styles/colors';
-import LoginForm from './login/LoginForm';
-import RegisterForm from './registration/RegisterForm';
+import LoginForm from './components/login/LoginForm';
+import RegisterForm from './components/registration/RegisterForm';
 import {
    Centerer,
    ContactFooterTitle,
@@ -17,7 +17,7 @@ import {
    HeaderContainer,
    ScrollNavigatorBtn,
    ScrollNavigatorContainer,
-} from './Style';
+} from './components/Style';
 
 export default function Authentication(): JSX.Element {
    const { isDarkTheme } = useThemeContext();

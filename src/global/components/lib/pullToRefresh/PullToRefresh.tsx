@@ -1,8 +1,8 @@
 // Component inspired by: "react-simple-pull-to-refresh" (https://www.npmjs.com/package/react-simple-pull-to-refresh)
 import type { QueryObserverResult } from '@tanstack/react-query';
 import React, { useEffect, useRef } from 'react';
-import { FlexCenterer } from '../centerers/FlexCenterer';
 import { CustomSpinner } from '../loader/Style';
+import { FlexCenterer } from '../positionModifiers/centerers/FlexCenterer';
 import { DIRECTION } from './helpers/direction';
 import { isTreeScrollable } from './helpers/isScrollable';
 import './styles/main.scss';

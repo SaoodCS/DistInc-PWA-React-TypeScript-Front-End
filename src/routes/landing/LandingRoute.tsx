@@ -1,5 +1,5 @@
 import { Navigate, Route } from 'react-router-dom';
-import RouteRedirector from '../../global/components/app/routeRedirector/RouteRedirector';
+import RouteRedirector from '../../global/components/lib/ternary/routeRedirector/RouteRedirector';
 import useAuthContext from '../../global/hooks/useAuthContext';
 import ErrorPage from '../../pages/error/ErrorPage';
 
