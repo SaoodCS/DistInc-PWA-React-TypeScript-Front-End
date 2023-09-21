@@ -35,7 +35,6 @@ export default class APIHelper {
 
    static handleError(error: unknown): string {
       if (APIHelper.isFirebaseError(error)) {
-         const errorWithCode = error as { code: string };
          const errorMsgs: { [key: string]: string } = {
             'auth/wrong-password': 'Incorrect password',
             'auth/email-already-exists': 'User with this email already exists',
@@ -48,7 +47,7 @@ export default class APIHelper {
             'auth/weak-password': 'Your password should be at least 6 characters long',
             'auth/too-many-requests': 'Too many requests. Try again later.',
          };
-         return errorMsgs[errorWithCode.code] || errorWithCode.code;
+         return errorMsgs[error.code] || error.message;
       }
 
       if (APIHelper.isAPICallerError(error)) return error.error;
