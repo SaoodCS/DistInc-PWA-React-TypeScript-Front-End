@@ -41,7 +41,10 @@ export default function useForm<T>(
 
 // Potential update:
 //1 - rather than passing initialErrors as a prop, create initialErrors from initialState in the hook
-// --- adv: less code to write in the form's class (DRY principle)
-// --- disadv: less consistency as initialState and initialErrors won't both created in same place (also may have to memoize the const to avoid it recalculating on every render as it's in a func component)
+// --- adv: less code to write in each form's class (DRY principle)
+// --- disadv: less consistency as initialState and initialErrors won't both created in same place
+// --- disadv2: as initialErrors would be create in a hook / react component, it would be re-calculated on every render (unless memoized)
 //2 - rather than passing initialErrors and initialState, pass the inputs prop from the form's class and then create the initialErrors and initialState in the hook
+// -- adv: less code to write in each form's class (DRY principle)
 // --- disadv: less control over setting the initialState for an individual form
+// --- disadv2: both initialState and initialErrors would be created in a hook / react component, so they would be re-calculated on every render (unless memoized)
