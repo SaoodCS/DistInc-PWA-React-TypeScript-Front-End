@@ -20,7 +20,7 @@ export default class APIHelper {
       return typeof response === 'object' && response !== null && 'message' in response;
    }
 
-   static isAPICallerErrorRes(response: unknown): response is IAPICallerError {
+   static isAPICallerError(response: unknown): response is IAPICallerError {
       return (
          typeof response === 'object' &&
          response !== null &&
@@ -29,15 +29,17 @@ export default class APIHelper {
       );
    }
 
+   static isFirebaseError(error: unknown): error is FirebaseError {
+      return error instanceof FirebaseError;
+   }
+
    static handleError(error: unknown): string {
-      if (error === null) {
-         return 'Unknown Error: null';
-      }
-      if (error instanceof FirebaseError || (typeof error === 'object' && 'code' in error)) {
+      if (APIHelper.isFirebaseError(error)) {
          const errorWithCode = error as { code: string };
          const errorMsgs: { [key: string]: string } = {
             'auth/wrong-password': 'Incorrect password',
             'auth/email-already-exists': 'User with this email already exists',
+            'auth/invalid-login-credentials': 'Incorrect email or password',
             'auth/invalid-password': 'Password must have at least 6 characters',
             'auth/user-not-found': 'User with this email does not exist',
             'auth/user-disabled': 'The user account has been disabled.',
@@ -47,18 +49,15 @@ export default class APIHelper {
          };
          return errorMsgs[errorWithCode.code] || errorWithCode.code;
       }
-      if (error != null && typeof error === 'object' && ('code' in error || 'message' in error)) {
-         const errorMsgs: { [key: string]: string } = {
-            'auth/email-already-exists': 'User with this email already exists',
-         };
-         const code = 'code' in error ? (error as { code: string }).code : '';
-         const message = 'message' in error ? (error as { message: string }).message : '';
-         return errorMsgs[code as string] || errorMsgs[message as string] || String(error);
+
+      if (APIHelper.isAPICallerError(error)) return error.error;
+
+      if (typeof error === 'string') return error;
+
+      if (error === null) {
+         return 'Unknown Error: null';
       }
 
-      if (typeof error === 'string') {
-         return error;
-      }
       return JSON.stringify(error);
    }
 

@@ -47,7 +47,7 @@ export default class FormHelper {
       return Object.assign({}, ...validated);
    }
 
-   static hasNoErrors<T>(errors: Record<keyof T, string>): boolean {
-      return Object.values(errors).every((error) => error === '');
+   static hasErrors<T>(errors: Record<keyof T, string>): boolean {
+      return !Object.values(errors).every((error) => error === '');
    }
 }
