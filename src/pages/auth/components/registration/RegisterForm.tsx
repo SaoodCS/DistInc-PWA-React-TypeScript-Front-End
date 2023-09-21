@@ -1,8 +1,11 @@
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
 import { StaticButton } from '../../../../global/components/lib/button/staticButton/Style';
 import { StyledForm } from '../../../../global/components/lib/form/form/Style';
 import InputComponent from '../../../../global/components/lib/form/input/Input';
+import useAuthContext from '../../../../global/context/auth/hooks/useAuthContext';
 import useThemeContext from '../../../../global/context/theme/hooks/useThemeContext';
+import { auth } from '../../../../global/firebase/config/config';
 import FormHelper from '../../../../global/helpers/react/form/FormHelper';
 import RegClass from './Class';
 
@@ -10,8 +13,9 @@ export default function RegisterForm(): JSX.Element {
    const [regForm, setRegForm] = useState(RegClass.initialState);
    const [errors, setErrors] = useState(RegClass.initialErrors);
    const { isDarkTheme } = useThemeContext();
+   const { setIsSignedIn } = useAuthContext();
 
-   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
+   async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       e.preventDefault();
       setErrors(RegClass.validate(regForm));
       console.log(RegClass.validate(regForm));

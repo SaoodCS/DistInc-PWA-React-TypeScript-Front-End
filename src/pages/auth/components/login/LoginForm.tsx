@@ -1,9 +1,9 @@
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { useState } from 'react';
 import { StaticButton } from '../../../../global/components/lib/button/staticButton/Style';
 import { StyledForm } from '../../../../global/components/lib/form/form/Style';
 import InputComponent from '../../../../global/components/lib/form/input/Input';
 import useThemeContext from '../../../../global/context/theme/hooks/useThemeContext';
-import FormHelper from '../../../../global/helpers/react/form/FormHelper';
 import { ForgottenPwdBtn } from '../../style/Style';
 import LoginClass from './Class';
 
@@ -12,12 +12,15 @@ export default function RegisterForm(): JSX.Element {
    const [errors, setErrors] = useState(LoginClass.initialErrors);
    const { isDarkTheme } = useThemeContext();
 
-   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
+   async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       e.preventDefault();
       setErrors(LoginClass.validate(loginForm));
-      if (FormHelper.hasNoErrors(errors)) {
+  
          // Log the user in using firebase
-      }
+         try {
+            // await signInWithEmailAndPassword(auth, loginForm.email, loginForm.password);
+         } catch (e: unknown) {}
+      
    }
 
    function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -41,7 +44,7 @@ export default function RegisterForm(): JSX.Element {
             />
          ))}
          <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>
-            Sign Up
+            Sign In
          </StaticButton>
          <ForgottenPwdBtn isDarkTheme={isDarkTheme}>Forgot Password?</ForgottenPwdBtn>
       </StyledForm>
