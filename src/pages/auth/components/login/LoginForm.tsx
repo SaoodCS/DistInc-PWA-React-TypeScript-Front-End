@@ -5,7 +5,7 @@ import { StyledForm } from '../../../../global/components/lib/form/form/Style';
 import InputComponent from '../../../../global/components/lib/form/input/Input';
 import useThemeContext from '../../../../global/context/theme/hooks/useThemeContext';
 import { LoaderContext } from '../../../../global/context/widget/loader/LoaderContext';
-import APIHelper from '../../../../global/firebase/apis/helper/apiHelper';
+import APIHelper from '../../../../global/firebase/apis/helper/APIHelper';
 import { auth } from '../../../../global/firebase/config/config';
 import useForm from '../../../../global/hooks/useForm';
 import { ForgottenPwdBtn } from '../../style/Style';
@@ -58,3 +58,28 @@ export default function RegisterForm(): JSX.Element {
       </StyledForm>
    );
 }
+
+// const loginMutationInstance = useMutation(loginMutation, {
+//    onMutate: () => {
+//       setShowLoader(true);
+//    },
+//    onSettled: (data, error) => {
+//       setShowLoader(false);
+//       if (error) setApiError(APIHelper.handleError(error));
+//       if (data) console.log(data);
+//    },
+// });
+
+// // useMutation instead to sign user in:
+
+// async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
+//    const { isFormValid } = initHandleSubmit(e);
+//    if (!isFormValid) return;
+//    try {
+//       //setShowLoader(true);
+//       await loginMutationInstance.mutateAsync(loginForm);
+//       //setShowLoader(false);
+//    } catch (e: unknown) {
+//       setApiError(APIHelper.handleError(e));
+//    }
+// }

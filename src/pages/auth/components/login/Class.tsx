@@ -1,7 +1,7 @@
 import type { InputArray } from '../../../../global/helpers/react/form/FormHelper';
 import FormHelper from '../../../../global/helpers/react/form/FormHelper';
 
-interface ILoginInputs {
+export interface ILoginInputs {
    email: string;
    password: string;
 }
