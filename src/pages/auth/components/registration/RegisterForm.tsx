@@ -5,55 +5,34 @@ import { StaticButton } from '../../../../global/components/lib/button/staticBut
 import { StyledForm } from '../../../../global/components/lib/form/form/Style';
 import InputComponent from '../../../../global/components/lib/form/input/Input';
 import useThemeContext from '../../../../global/context/theme/hooks/useThemeContext';
+import useApiErrorContext from '../../../../global/context/widget/apiError/hooks/useApiErrorContext';
 import { LoaderContext } from '../../../../global/context/widget/loader/LoaderContext';
 import APIHelper from '../../../../global/firebase/apis/helper/APIHelper';
 import microservices from '../../../../global/firebase/apis/microservices/microservices';
 import { auth } from '../../../../global/firebase/config/config';
+import { useCustomMutation } from '../../../../global/hooks/useCustomMutation';
 import useForm from '../../../../global/hooks/useForm';
 import RegClass, { IRegInputs } from './Class';
 
 export default function RegisterForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const { setShowLoader } = useContext(LoaderContext);
-
+   const { apiError } = useApiErrorContext();
    const {
       form: regForm,
       errors,
-      apiError,
-      setApiError,
       handleChange,
       initHandleSubmit,
    } = useForm(RegClass.initialState, RegClass.initialErrors, RegClass.validate);
 
-   const registerUser = useMutation(
-      async (formData: IRegInputs) => {
-         const body = APIHelper.createBody(formData);
-         const method = 'POST';
-         const microserviceName = microservices.registerUser.name;
-         await APIHelper.gatewayCall(body, method, microserviceName);
-         const signInUser = await signInWithEmailAndPassword(
-            auth,
-            formData.email,
-            formData.password,
-         );
-         await sendEmailVerification(signInUser.user);
-      },
-      {
-         onMutate: () => {
-            setShowLoader(true);
-         },
-         onSettled: () => {
-            setShowLoader(false);
-         },
-         onSuccess: () => {
-
-         },
-         onError: (error) => {
-            setApiError(APIHelper.handleError(error));
-         },
-
-      },
-   );
+   const registerUser = useCustomMutation(async (formData: IRegInputs) => {
+      const body = APIHelper.createBody(formData);
+      const method = 'POST';
+      const microserviceName = microservices.registerUser.name;
+      await APIHelper.gatewayCall(body, method, microserviceName);
+      const signInUser = await signInWithEmailAndPassword(auth, formData.email, formData.password);
+      await sendEmailVerification(signInUser.user);
+   });
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
@@ -102,3 +81,30 @@ export default function RegisterForm(): JSX.Element {
 //       setApiError(APIHelper.handleError(e));
 //    }
 // }
+
+  // const registerUser = useMutation(
+   //    async (formData: IRegInputs) => {
+   //       const body = APIHelper.createBody(formData);
+   //       const method = 'POST';
+   //       const microserviceName = microservices.registerUser.name;
+   //       await APIHelper.gatewayCall(body, method, microserviceName);
+   //       const signInUser = await signInWithEmailAndPassword(
+   //          auth,
+   //          formData.email,
+   //          formData.password,
+   //       );
+   //       await sendEmailVerification(signInUser.user);
+   //    },
+   //    {
+   //       onMutate: () => {
+   //          setShowLoader(true);
+   //       },
+   //       onSettled: () => {
+   //          setShowLoader(false);
+   //       },
+   //       onSuccess: () => {},
+   //       onError: (error) => {
+   //          setApiError(APIHelper.handleError(error));
+   //       },
+   //    },
+   // );

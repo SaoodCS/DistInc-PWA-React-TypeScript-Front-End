@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import ApiErrorContextProvider from './apiError/apiErrorContextProvider';
 import { BannerContextProvider } from './banner/BannerContextProvider';
 import BottomPanelContextProvider from './bottomPanel/BottomPanelContextProvider';
 import { LoaderContextProvider } from './loader/LoaderContextProvider';
@@ -17,9 +18,11 @@ export default function WidgetContextProviders(props: IWidgetContextProvidersPro
          <BottomPanelContextProvider>
             <SplashScreenContextProvider>
                <LoaderContextProvider>
-                  <BannerContextProvider>
-                     <ToastContextProvider>{children}</ToastContextProvider>
-                  </BannerContextProvider>
+                  <ApiErrorContextProvider>
+                     <BannerContextProvider>
+                        <ToastContextProvider>{children}</ToastContextProvider>
+                     </BannerContextProvider>
+                  </ApiErrorContextProvider>
                </LoaderContextProvider>
             </SplashScreenContextProvider>
          </BottomPanelContextProvider>

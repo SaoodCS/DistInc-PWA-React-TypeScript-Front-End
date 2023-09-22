@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import useApiErrorContext from '../context/widget/apiError/hooks/useApiErrorContext';
 import FormHelper from '../helpers/react/form/FormHelper';
 
 interface IUseFormReturn<T> {
@@ -6,8 +7,6 @@ interface IUseFormReturn<T> {
    setForm: React.Dispatch<React.SetStateAction<T>>;
    errors: Record<keyof T, string>;
    setErrors: React.Dispatch<React.SetStateAction<Record<keyof T, string>>>;
-   apiError: string;
-   setApiError: React.Dispatch<React.SetStateAction<string>>;
    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
    initHandleSubmit: (e: React.FormEvent<HTMLFormElement>) => { isFormValid: boolean };
 }
@@ -19,7 +18,7 @@ export default function useForm<T>(
 ): IUseFormReturn<T> {
    const [form, setForm] = useState(initialState);
    const [errors, setErrors] = useState(initialErrors);
-   const [apiError, setApiError] = useState('');
+   const { setApiError } = useApiErrorContext();
 
    function initHandleSubmit(e: React.FormEvent<HTMLFormElement>): { isFormValid: boolean } {
       e.preventDefault();
@@ -43,8 +42,6 @@ export default function useForm<T>(
       setForm,
       errors,
       setErrors,
-      apiError,
-      setApiError,
       handleChange,
       initHandleSubmit,
    };
