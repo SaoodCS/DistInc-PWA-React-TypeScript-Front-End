@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Color from '../../../../theme/colors';
 
-export const StyledForm = styled.form<{apiError?: string}>`
+export const StyledForm = styled.form<{ apiError?: string }>`
    padding: 1em;
    border-radius: 0.7em;
    display: flex;
@@ -10,15 +10,16 @@ export const StyledForm = styled.form<{apiError?: string}>`
    margin-top: 1em;
    border-radius: 0.7em;
    height: fit-content;
-   ${({apiError}) => apiError && {
-      '&::before': {
-         content: `'${apiError}'`,
-         color: Color.darkThm.error,
-         fontSize: '0.75em',
-         position: 'absolute',
-         top: 0,
-         paddingTop: '0.25em',
-         width: '90%',
-      }
-   }}
+   ${({ apiError }) =>
+      apiError && {
+         '&::before': {
+            content: `'${apiError}'`,
+            color: Color.darkThm.error,
+            fontSize: '0.75em',
+            position: 'absolute',
+            top: 0,
+            paddingTop: '0.25em',
+            width: '90%',
+         },
+      }}
 `;

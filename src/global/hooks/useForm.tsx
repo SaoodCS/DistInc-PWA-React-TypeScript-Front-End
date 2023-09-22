@@ -1,16 +1,27 @@
 import { useState } from 'react';
 import FormHelper from '../helpers/react/form/FormHelper';
 
+interface IUseFormReturn<T> {
+   form: T;
+   setForm: React.Dispatch<React.SetStateAction<T>>;
+   errors: Record<keyof T, string>;
+   setErrors: React.Dispatch<React.SetStateAction<Record<keyof T, string>>>;
+   apiError: string;
+   setApiError: React.Dispatch<React.SetStateAction<string>>;
+   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+   initHandleSubmit: (e: React.FormEvent<HTMLFormElement>) => { isFormValid: boolean };
+}
+
 export default function useForm<T>(
    initialState: T,
    initialErrors: Record<keyof T, string>,
    validationFunc: (formStateVal: T) => Record<keyof T, string>,
-) {
+): IUseFormReturn<T> {
    const [form, setForm] = useState(initialState);
    const [errors, setErrors] = useState(initialErrors);
    const [apiError, setApiError] = useState('');
 
-   function initHandleSubmit(e: React.FormEvent<HTMLFormElement>) {
+   function initHandleSubmit(e: React.FormEvent<HTMLFormElement>): { isFormValid: boolean } {
       e.preventDefault();
       setApiError('');
       setErrors(initialErrors);

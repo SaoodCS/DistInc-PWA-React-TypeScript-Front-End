@@ -2,9 +2,8 @@ import { Outlet } from 'react-router-dom';
 import { auth } from '../../global/firebase/config/config';
 
 export default function MainLayout(): JSX.Element {
-
-   function handleSignOut(): void {
-      auth.signOut();
+   async function handleSignOut(): Promise<void> {
+      await auth.signOut();
    }
 
    return (
