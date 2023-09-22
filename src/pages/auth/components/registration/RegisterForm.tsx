@@ -42,10 +42,16 @@ export default function RegisterForm(): JSX.Element {
          onMutate: () => {
             setShowLoader(true);
          },
-         onSettled: async (error) => {
+         onSettled: () => {
             setShowLoader(false);
-            if (error) return setApiError(APIHelper.handleError(error));
          },
+         onSuccess: () => {
+
+         },
+         onError: (error) => {
+            setApiError(APIHelper.handleError(error));
+         },
+
       },
    );
 
