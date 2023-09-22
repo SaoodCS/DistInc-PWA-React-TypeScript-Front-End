@@ -3,14 +3,14 @@ import { MutationFunction, UseMutationOptions, useMutation } from '@tanstack/rea
 import { useContext } from 'react';
 import useApiErrorContext from '../context/widget/apiError/hooks/useApiErrorContext';
 import { LoaderContext } from '../context/widget/loader/LoaderContext';
-import APIHelper from '../firebase/apis/helper/APIHelper';
+import { APIHelper } from '../firebase/apis/helper/NApiHelper';
 
 export function useCustomMutation<TData, TVariables>(
    mutationFn: MutationFunction<TData, TVariables>,
    options?: UseMutationOptions<TData, unknown, TVariables>,
 ) {
    const { setShowLoader } = useContext(LoaderContext);
-   const { setApiError, apiError } = useApiErrorContext();
+   const { setApiError } = useApiErrorContext();
 
    // Define the default callbacks
    const defaultOnMutate = (variables: TVariables) => {

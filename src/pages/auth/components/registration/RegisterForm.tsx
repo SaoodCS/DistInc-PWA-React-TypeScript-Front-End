@@ -1,13 +1,10 @@
-import { useMutation } from '@tanstack/react-query';
 import { sendEmailVerification, signInWithEmailAndPassword } from 'firebase/auth';
-import { useContext } from 'react';
 import { StaticButton } from '../../../../global/components/lib/button/staticButton/Style';
 import { StyledForm } from '../../../../global/components/lib/form/form/Style';
 import InputComponent from '../../../../global/components/lib/form/input/Input';
 import useThemeContext from '../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../global/context/widget/apiError/hooks/useApiErrorContext';
-import { LoaderContext } from '../../../../global/context/widget/loader/LoaderContext';
-import APIHelper from '../../../../global/firebase/apis/helper/APIHelper';
+import APIHelper from '../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../global/firebase/apis/microservices/microservices';
 import { auth } from '../../../../global/firebase/config/config';
 import { useCustomMutation } from '../../../../global/hooks/useCustomMutation';
@@ -16,7 +13,6 @@ import RegClass, { IRegInputs } from './Class';
 
 export default function RegisterForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
-   const { setShowLoader } = useContext(LoaderContext);
    const { apiError } = useApiErrorContext();
    const {
       form: regForm,
@@ -82,29 +78,29 @@ export default function RegisterForm(): JSX.Element {
 //    }
 // }
 
-  // const registerUser = useMutation(
-   //    async (formData: IRegInputs) => {
-   //       const body = APIHelper.createBody(formData);
-   //       const method = 'POST';
-   //       const microserviceName = microservices.registerUser.name;
-   //       await APIHelper.gatewayCall(body, method, microserviceName);
-   //       const signInUser = await signInWithEmailAndPassword(
-   //          auth,
-   //          formData.email,
-   //          formData.password,
-   //       );
-   //       await sendEmailVerification(signInUser.user);
-   //    },
-   //    {
-   //       onMutate: () => {
-   //          setShowLoader(true);
-   //       },
-   //       onSettled: () => {
-   //          setShowLoader(false);
-   //       },
-   //       onSuccess: () => {},
-   //       onError: (error) => {
-   //          setApiError(APIHelper.handleError(error));
-   //       },
-   //    },
-   // );
+// const registerUser = useMutation(
+//    async (formData: IRegInputs) => {
+//       const body = APIHelper.createBody(formData);
+//       const method = 'POST';
+//       const microserviceName = microservices.registerUser.name;
+//       await APIHelper.gatewayCall(body, method, microserviceName);
+//       const signInUser = await signInWithEmailAndPassword(
+//          auth,
+//          formData.email,
+//          formData.password,
+//       );
+//       await sendEmailVerification(signInUser.user);
+//    },
+//    {
+//       onMutate: () => {
+//          setShowLoader(true);
+//       },
+//       onSettled: () => {
+//          setShowLoader(false);
+//       },
+//       onSuccess: () => {},
+//       onError: (error) => {
+//          setApiError(APIHelper.handleError(error));
+//       },
+//    },
+// );

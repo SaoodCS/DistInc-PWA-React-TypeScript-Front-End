@@ -1,38 +1,33 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useContext } from 'react';
 import { StaticButton } from '../../../../global/components/lib/button/staticButton/Style';
 import { StyledForm } from '../../../../global/components/lib/form/form/Style';
 import InputComponent from '../../../../global/components/lib/form/input/Input';
 import useThemeContext from '../../../../global/context/theme/hooks/useThemeContext';
-import { LoaderContext } from '../../../../global/context/widget/loader/LoaderContext';
-import APIHelper from '../../../../global/firebase/apis/helper/APIHelper';
+import useApiErrorContext from '../../../../global/context/widget/apiError/hooks/useApiErrorContext';
 import { auth } from '../../../../global/firebase/config/config';
+import { useCustomMutation } from '../../../../global/hooks/useCustomMutation';
 import useForm from '../../../../global/hooks/useForm';
 import { ForgottenPwdBtn } from '../../style/Style';
-import LoginClass from './Class';
+import LoginClass, { ILoginInputs } from './Class';
 
 export default function RegisterForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const {
       form: loginForm,
       errors,
-      apiError,
-      setApiError,
       handleChange,
       initHandleSubmit,
    } = useForm(LoginClass.initialState, LoginClass.initialErrors, LoginClass.validate);
-   const { setShowLoader } = useContext(LoaderContext);
+   const { apiError } = useApiErrorContext();
+
+   const loginUser = useCustomMutation(async (formData: ILoginInputs) => {
+      await signInWithEmailAndPassword(auth, formData.email, formData.password);
+   });
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
       if (!isFormValid) return;
-      try {
-         setShowLoader(true);
-         await signInWithEmailAndPassword(auth, loginForm.email, loginForm.password);
-         setShowLoader(false);
-      } catch (e: unknown) {
-         setApiError(APIHelper.handleError(e));
-      }
+      await loginUser.mutateAsync(loginForm);
    }
 
    return (
