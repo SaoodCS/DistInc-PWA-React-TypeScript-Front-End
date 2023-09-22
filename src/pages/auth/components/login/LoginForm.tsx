@@ -8,7 +8,8 @@ import { auth } from '../../../../global/firebase/config/config';
 import { useCustomMutation } from '../../../../global/hooks/useCustomMutation';
 import useForm from '../../../../global/hooks/useForm';
 import { ForgottenPwdBtn } from '../../style/Style';
-import LoginClass, { ILoginInputs } from './Class';
+import type { ILoginInputs } from './Class';
+import LoginClass from './Class';
 
 export default function RegisterForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();

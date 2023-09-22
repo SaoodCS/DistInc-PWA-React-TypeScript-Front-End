@@ -9,7 +9,8 @@ import microservices from '../../../../global/firebase/apis/microservices/micros
 import { auth } from '../../../../global/firebase/config/config';
 import { useCustomMutation } from '../../../../global/hooks/useCustomMutation';
 import useForm from '../../../../global/hooks/useForm';
-import RegClass, { IRegInputs } from './Class';
+import type { IRegInputs } from './Class';
+import RegClass from './Class';
 
 export default function RegisterForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
