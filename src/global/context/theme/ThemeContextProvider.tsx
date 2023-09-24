@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import useLocalStorage from '../../hooks/useLocalStorage';
+import { GlobalTheme } from '../../theme/theme';
 import { ThemeContext } from './ThemeContext';
 
 interface IThemeContextProvider {
@@ -35,5 +36,10 @@ export const ThemeContextProvider = (props: IThemeContextProvider): JSX.Element 
       [isDarkTheme, isMobile],
    );
 
-   return <ThemeContext.Provider value={contextMemo}>{children}</ThemeContext.Provider>;
+   return (
+      <ThemeContext.Provider value={contextMemo}>
+         <GlobalTheme darkTheme={isDarkTheme} />
+         {children}
+      </ThemeContext.Provider>
+   );
 };
