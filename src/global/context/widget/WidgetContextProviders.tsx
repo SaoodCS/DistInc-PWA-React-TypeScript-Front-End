@@ -4,7 +4,6 @@ import { BannerContextProvider } from './banner/BannerContextProvider';
 import BottomPanelContextProvider from './bottomPanel/BottomPanelContextProvider';
 import { LoaderContextProvider } from './loader/LoaderContextProvider';
 import ModalContextProvider from './modal/ModalContextProvider';
-import { SplashScreenContextProvider } from './splashScreen/SplashScreenContextProvider';
 import ToastContextProvider from './toast/ToastContextProvider';
 
 interface IWidgetContextProvidersProps {
@@ -16,15 +15,13 @@ export default function WidgetContextProviders(props: IWidgetContextProvidersPro
    return (
       <ModalContextProvider>
          <BottomPanelContextProvider>
-            <SplashScreenContextProvider>
-               <LoaderContextProvider>
-                  <ApiErrorContextProvider>
-                     <BannerContextProvider>
-                        <ToastContextProvider>{children}</ToastContextProvider>
-                     </BannerContextProvider>
-                  </ApiErrorContextProvider>
-               </LoaderContextProvider>
-            </SplashScreenContextProvider>
+            <LoaderContextProvider>
+               <ApiErrorContextProvider>
+                  <BannerContextProvider>
+                     <ToastContextProvider>{children}</ToastContextProvider>
+                  </BannerContextProvider>
+               </ApiErrorContextProvider>
+            </LoaderContextProvider>
          </BottomPanelContextProvider>
       </ModalContextProvider>
    );

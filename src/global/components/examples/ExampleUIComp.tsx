@@ -7,11 +7,9 @@ import LoaderExample from './components/LoaderExample';
 import ModalExample from './components/ModalExample';
 import PushNotifExample from './components/PushNotifExample';
 import ScrollSaverExample from './components/ScrollSaverExample';
-import SplashScreenExample from './components/SplashScreenExample';
 import ToastExample from './components/ToastExample';
 
 export default class ExampleUIComp {
-   static SplashScreen = SplashScreenExample;
    static BottomPanel = BottomPanelExample;
    static Modal = ModalExample;
    static Carousel = CarouselExample;

@@ -56,7 +56,6 @@ export default defineConfig({
             display: 'standalone',
             orientation: 'natural',
             start_url: '/?application=true',
-            theme_color: 'rgb(2,8,23)',
             scope: '/',
             icons: [
                {
