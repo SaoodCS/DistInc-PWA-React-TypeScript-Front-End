@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useEffect,  useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ConditionalRender from '../../components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import SplashScreen from '../../components/lib/splashScreen/SplashScreen';
 import useLocalStorage from '../../hooks/useLocalStorage';
@@ -25,7 +25,7 @@ export const ThemeContextProvider = (props: IThemeContextProvider): JSX.Element 
    useEffect(() => {
       let timer: NodeJS.Timeout | null = null;
       if (showSplashScreen) {
-         timer = setTimeout(() => setShowSplashScreen(false), 1500);
+         timer = setTimeout(() => setShowSplashScreen(false), 1750);
       }
       const handleResize = (): void => setIsMobile(window.innerWidth < 768);
       window.addEventListener(`resize`, handleResize);
