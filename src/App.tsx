@@ -11,7 +11,7 @@ export default function App(): JSX.Element {
    return (
       <>
          <QueryClientProvider client={queryClient}>
-            <button onClick={toggleTheme}>Toggle Theme</button>
+            {/* <button onClick={toggleTheme}>Toggle Theme</button> */}
             <AppRouter />
             <ReactQueryDevtools initialIsOpen={false} />
          </QueryClientProvider>
