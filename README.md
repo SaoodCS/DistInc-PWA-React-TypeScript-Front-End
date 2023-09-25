@@ -135,7 +135,7 @@ _service worker and caching config options can be found in vite.config.ts_
    ```
 
 3. Go to _root/src/main.tsx_ -> import and add the `<UpdateAppModal/>` component just above the `App` component in the return statement
-4. Delete the browser history and cache for the domains `localhost` and `deployed-website`
+4. Delete the browser history and cache for the domains `localhost` and `the deployed website`
 
 ---
 
