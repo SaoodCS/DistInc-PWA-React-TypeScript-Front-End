@@ -10,4 +10,5 @@ export const OpaqueOverlay = styled.div<{ isDarkTheme: boolean }>`
    background-color: ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.bg : Color.lightThm.bg)};
    z-index: 1;
    backdrop-filter: blur(5px);
+   color: ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt)};
 `;

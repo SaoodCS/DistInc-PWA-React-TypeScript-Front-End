@@ -55,8 +55,10 @@ export const ThemeContextProvider = (props: IThemeContextProvider): JSX.Element 
       <>
          <ThemeContext.Provider value={contextMemo}>
             <SplashScreen isDisplayed={showSplashScreen} />
-            <GlobalTheme darkTheme={isDarkTheme} />
-            <ConditionalRender condition={!showSplashScreen}>{children}</ConditionalRender>
+            <ConditionalRender condition={!showSplashScreen}>
+               <GlobalTheme darkTheme={isDarkTheme} />
+               {children}
+            </ConditionalRender>
          </ThemeContext.Provider>
       </>
    );

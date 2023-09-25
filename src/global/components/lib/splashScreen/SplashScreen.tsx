@@ -22,7 +22,7 @@ export default function SplashScreen(props: ISplashScreen): JSX.Element {
       if (!isDisplayed) {
          timeoutId = setTimeout(() => {
             setRenderSplashScreen(false);
-         }, 1500);
+         }, 1750);
       } else {
          setRenderSplashScreen(true);
       }

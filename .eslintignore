@@ -3,3 +3,4 @@ dist/*
 dev-dist/*
 public/*
 src/global/firebase/sw
+pwa-assets.config.ts

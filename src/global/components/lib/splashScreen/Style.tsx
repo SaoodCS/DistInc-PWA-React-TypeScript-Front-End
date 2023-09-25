@@ -9,4 +9,6 @@ export const SplashScreenFooter = styled.div`
    padding-bottom: 2em;
    font-style: italic;
    letter-spacing: 0.055rem;
+   font-family: 'Arial';
+   font-weight: 500;
 `;
