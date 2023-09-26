@@ -11,15 +11,9 @@ export const SidebarContainer = styled.div<{ isDarkTheme: boolean }>`
       ${Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive, 1)} 0%,
       ${Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive, 1)} 100%
    )`};
-
-   @media (max-width: 850px) {
-      display: none;
-   }
 `;
 
 export const LogoWrapper = styled.div`
-   //padding-left: 1em;
-   //padding-right: 1em;
    display: flex;
    justify-content: center;
    align-items: center;
