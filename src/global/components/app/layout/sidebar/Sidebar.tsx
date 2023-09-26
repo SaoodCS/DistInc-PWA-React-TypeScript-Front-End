@@ -37,7 +37,7 @@ export default function Sidebar(): JSX.Element {
       <SidebarContainer isDarkTheme={isDarkTheme}>
          <LogoWrapper>
             <Logo
-               size="8.5em"
+               size="8em"
                bgColor="transparent"
                cardColor={handleLogoCardColor()}
                detailsColor={handleLogoDetailsColor()}
