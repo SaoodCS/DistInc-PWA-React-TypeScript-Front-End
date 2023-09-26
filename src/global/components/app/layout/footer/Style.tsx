@@ -52,4 +52,7 @@ export const FooterContainer = styled.div<{ isDarkTheme: boolean }>`
    bottom: 0px;
    border-top-left-radius: 10px;
    border-top-right-radius: 10px;
+   @media (min-width: 1100px) {
+      display: none;
+   }
 `;

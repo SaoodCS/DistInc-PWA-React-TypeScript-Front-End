@@ -11,11 +11,15 @@ export const SidebarContainer = styled.div<{ isDarkTheme: boolean }>`
       ${Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive, 1)} 0%,
       ${Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive, 1)} 100%
    )`};
+
+   @media (max-width: 1100px) {
+      display: none;
+   }
 `;
 
 export const LogoWrapper = styled.div`
-   padding-left: 1em;
-   padding-right: 1em;
+   //padding-left: 1em;
+   //padding-right: 1em;
    display: flex;
    justify-content: center;
    align-items: center;
@@ -24,16 +28,37 @@ export const LogoWrapper = styled.div`
 export const UserAccountWrapper = styled.div<{ isDarkTheme: boolean }>`
    display: flex;
    align-items: center;
+   justify-content: left;
    flex-direction: row;
    height: 3em;
    padding-bottom: 1em;
    user-select: none;
+   font-size: 0.9em;
    color: ${({ isDarkTheme }) =>
       Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.75)};
    & > :first-child {
       height: 3em;
       padding-right: 0.5em;
       padding-left: 1em;
+      @media (max-width: 1700px) {
+         padding-bottom: 1em;
+         height: 5em;
+         padding-left: 0;
+      }
+      @media (max-width: 1300px) {
+         height: 6em;
+      }
+   }
+   @media (max-width: 1700px) {
+      height: 7em;
+      flex-direction: column;
+      font-size: 0.85em;
+   }
+`;
+
+export const StyledEmail = styled.div`
+   @media (max-width: 1300px) {
+      display: none;
    }
 `;
 

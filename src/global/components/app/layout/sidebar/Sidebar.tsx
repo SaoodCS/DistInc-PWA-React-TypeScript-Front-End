@@ -6,7 +6,14 @@ import Color from '../../../../theme/colors';
 import Logo from '../../../app/logo/Logo';
 import { StyledLink } from '../footer/Style';
 import { navItems } from '../navItems';
-import { ActiveTag, LogoWrapper, SidebarContainer, SidebarItem, UserAccountWrapper } from './Style';
+import {
+   ActiveTag,
+   LogoWrapper,
+   SidebarContainer,
+   SidebarItem,
+   StyledEmail,
+   UserAccountWrapper,
+} from './Style';
 
 export default function Sidebar(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
@@ -38,7 +45,7 @@ export default function Sidebar(): JSX.Element {
          </LogoWrapper>
          <UserAccountWrapper isDarkTheme={isDarkTheme}>
             <AccountCircle />
-            {handleGetEmail()}
+            <StyledEmail> {handleGetEmail()}</StyledEmail>
          </UserAccountWrapper>
          {navItems.map((item) => (
             <StyledLink key={item.name} to={item.name}>

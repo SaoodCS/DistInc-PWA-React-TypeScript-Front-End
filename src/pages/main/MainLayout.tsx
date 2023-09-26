@@ -22,12 +22,8 @@ export default function MainLayout(): JSX.Element {
             <button onClick={toggleTheme}>Toggle Theme</button>
             <Outlet />
          </Body>
-         <ConditionalRender condition={!isMobile}>
-            <Sidebar />
-         </ConditionalRender>
-         <ConditionalRender condition={isMobile}>
+         <Sidebar />
             <Footer />
-         </ConditionalRender>
       </>
    );
 }
