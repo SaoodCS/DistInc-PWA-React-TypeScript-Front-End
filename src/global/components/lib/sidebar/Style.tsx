@@ -14,21 +14,34 @@ export const SidebarItem = styled.div<{ isActive: boolean; isDarkTheme: boolean 
    display: flex;
    align-items: center;
    background-color: ${({ isActive, isDarkTheme }) =>
-      isActive ? Color.darkThm.bg : 'transparent'};
+      isActive && isDarkTheme
+         ? Color.darkThm.bg
+         : isActive && !isDarkTheme
+         ? Color.lightThm.bg
+         : 'transparent'};
    color: ${({ isActive, isDarkTheme }) =>
       isActive
-         ? Color.darkThm.accent
+         ? isDarkTheme
+            ? Color.darkThm.accent
+            : Color.lightThm.accent
          : Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.75)};
 
    ::before {
       content: '';
       position: absolute;
       top: -40px;
+      //border: 1px solid red;
+      //border: transparent;
       right: 0;
       height: 40px;
       width: 50px;
       border-bottom-left-radius: 50%;
-      box-shadow: ${({ isActive }) => (isActive ? `0 20px 0 0 ${Color.darkThm.bg}` : 'none')};
+      box-shadow: ${({ isActive, isDarkTheme }) =>
+         isActive && isDarkTheme
+            ? `-1px 20px 0 0 ${Color.darkThm.bg}`
+            : isActive && !isDarkTheme
+            ? `-1px 20px 0 0 ${Color.lightThm.bg}`
+            : 'none'};
       transform: scaleX(-1);
    }
 
@@ -39,7 +52,12 @@ export const SidebarItem = styled.div<{ isActive: boolean; isDarkTheme: boolean 
       height: 40px;
       width: 50px;
       border-bottom-right-radius: 50%;
-      box-shadow: ${({ isActive }) => (isActive ? `0 20px 0 0 ${Color.darkThm.bg}` : 'none')};
+      box-shadow: ${({ isActive, isDarkTheme }) =>
+         isActive && isDarkTheme
+            ? `0 20px 0 0 ${Color.darkThm.bg}`
+            : isActive && !isDarkTheme
+            ? `0 20px 0 0 ${Color.lightThm.bg}`
+            : 'none'};
       transform: scaleY(-1);
       bottom: 0;
       top: 55px;
@@ -47,7 +65,7 @@ export const SidebarItem = styled.div<{ isActive: boolean; isDarkTheme: boolean 
 
    :hover {
       background-color: ${({ isDarkTheme, isActive }) =>
-         !isActive && Color.setRgbOpacity(Color.darkThm.bg, 0.5)};
+         !isActive && Color.setRgbOpacity(isDarkTheme ? Color.darkThm.bg : Color.lightThm.bg, 0.5)};
       cursor: pointer;
    }
    & > :first-child {
@@ -59,6 +77,8 @@ export const SidebarItem = styled.div<{ isActive: boolean; isDarkTheme: boolean 
       display: ${({ isActive }) => (isActive ? 'block' : 'none')};
       width: 0.5em;
       background-color: ${Color.darkThm.accent};
+      background-color: ${({ isDarkTheme }) =>
+         Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.85)};
    }
    & > :nth-child(2) {
       height: 1.5em;
@@ -71,14 +91,11 @@ export const SidebarContainer = styled.div<{ isDarkTheme: boolean }>`
    width: 15%;
    top: 0;
    bottom: 0px;
-   border-radius: 15px;
-   /* background-color: ${({ isDarkTheme }) =>
-      isDarkTheme ? Color.setRgbOpacity(Color.darkThm.accent, 0.2) : Color.lightThm.txt}; */
-   background-image: radial-gradient(
+   background-image: ${({ isDarkTheme }) => `radial-gradient(
       circle,
-      ${Color.setRgbOpacity(Color.darkThm.accent, 0.5)} 0%,
-      ${Color.setRgbOpacity(Color.lightThm.accent, 0.25)} 100%
-   );
+      ${Color.setRgbOpacity(isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent, 0.5)} 0%,
+      ${Color.setRgbOpacity(isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent, 0.8)} 100%
+   )`};
 `;
 
 export const LogoWrapper = styled.div`
@@ -89,18 +106,19 @@ export const LogoWrapper = styled.div`
    align-items: center;
 `;
 
-export const UserAccountWrapper = styled.div`
+export const UserAccountWrapper = styled.div<{ isDarkTheme: boolean }>`
    display: flex;
    align-items: center;
    flex-direction: row;
    height: 3em;
    padding-bottom: 1em;
    user-select: none;
+   color: ${({ isDarkTheme }) =>
+      Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.75)};
    & > :first-child {
       height: 3em;
       padding-right: 0.5em;
       padding-left: 1em;
-      color: grey;
    }
 `;
 

@@ -2,6 +2,7 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { AccountCircle } from 'styled-icons/material';
 import useThemeContext from '../../../context/theme/hooks/useThemeContext';
+import Color from '../../../theme/colors';
 import Logo from '../../app/logo/Logo';
 import { StyledLink } from '../footer/Style';
 import {
@@ -18,9 +19,14 @@ export default function Sidebar(): JSX.Element {
    return (
       <SidebarContainer isDarkTheme={isDarkTheme}>
          <LogoWrapper>
-            <Logo size="8em" bgColor="transparent"/>
+            <Logo
+               size="8em"
+               bgColor="transparent"
+               cardColor={Color.setRgbOpacity(Color.darkThm.txt, 0.8)}
+               detailsColor={Color.lightThm.txt}
+            />
          </LogoWrapper>
-         <UserAccountWrapper>
+         <UserAccountWrapper isDarkTheme = {isDarkTheme}>
             <AccountCircle />
             saood.aslam@hotmail.com
          </UserAccountWrapper>
