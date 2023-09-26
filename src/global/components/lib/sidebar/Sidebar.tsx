@@ -16,17 +16,28 @@ import {
 export default function Sidebar(): JSX.Element {
    const { isDarkTheme, toggleTheme, isMobile } = useThemeContext();
    const location = useLocation();
+
+   function handleLogoCardColor() {
+      if (isDarkTheme) return Color.setRgbOpacity(Color.darkThm.txt, 0.8);
+      if (!isDarkTheme) return Color.setRgbOpacity(Color.lightThm.txt, 0.8);
+   }
+
+   function handleLogoDetailsColor() {
+      if (isDarkTheme) return Color.setRgbOpacity(Color.lightThm.txt, 0.8);
+      if (!isDarkTheme) return Color.setRgbOpacity(Color.darkThm.txt, 0.8);
+   }
+
    return (
       <SidebarContainer isDarkTheme={isDarkTheme}>
          <LogoWrapper>
             <Logo
-               size="8em"
+               size="8.5em"
                bgColor="transparent"
-               cardColor={Color.setRgbOpacity(Color.darkThm.txt, 0.8)}
-               detailsColor={Color.lightThm.txt}
+               cardColor={handleLogoCardColor()}
+               detailsColor={handleLogoDetailsColor()}
             />
          </LogoWrapper>
-         <UserAccountWrapper isDarkTheme = {isDarkTheme}>
+         <UserAccountWrapper isDarkTheme={isDarkTheme}>
             <AccountCircle />
             saood.aslam@hotmail.com
          </UserAccountWrapper>

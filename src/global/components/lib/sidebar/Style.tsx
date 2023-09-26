@@ -30,8 +30,6 @@ export const SidebarItem = styled.div<{ isActive: boolean; isDarkTheme: boolean 
       content: '';
       position: absolute;
       top: -40px;
-      //border: 1px solid red;
-      //border: transparent;
       right: 0;
       height: 40px;
       width: 50px;
@@ -75,6 +73,7 @@ export const SidebarItem = styled.div<{ isActive: boolean; isDarkTheme: boolean 
       padding-top: 1em;
       padding-bottom: 1em;
       display: ${({ isActive }) => (isActive ? 'block' : 'none')};
+      display: none; // uncomment this for the tag to show
       width: 0.5em;
       background-color: ${Color.darkThm.accent};
       background-color: ${({ isDarkTheme }) =>
@@ -93,8 +92,8 @@ export const SidebarContainer = styled.div<{ isDarkTheme: boolean }>`
    bottom: 0px;
    background-image: ${({ isDarkTheme }) => `radial-gradient(
       circle,
-      ${Color.setRgbOpacity(isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent, 0.5)} 0%,
-      ${Color.setRgbOpacity(isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent, 0.8)} 100%
+      ${Color.setRgbOpacity(isDarkTheme ? Color.lightThm.accent : Color.lightThm.accent, 0.7)} 0%,
+      ${Color.setRgbOpacity(isDarkTheme ? Color.lightThm.accent : Color.lightThm.accent, 1)} 100%
    )`};
 `;
 
