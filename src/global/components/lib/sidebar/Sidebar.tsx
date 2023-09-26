@@ -18,7 +18,7 @@ export default function Sidebar(): JSX.Element {
    return (
       <SidebarContainer isDarkTheme={isDarkTheme}>
          <LogoWrapper>
-            <Logo size="8em" bgColor="transparent" />
+            <Logo size="8em" bgColor="transparent"/>
          </LogoWrapper>
          <UserAccountWrapper>
             <AccountCircle />

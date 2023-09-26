@@ -30,5 +30,8 @@ export const Header = styled.div<{ isDarkTheme: boolean }>`
       left: 15%;
       width: 85dvw;
       border-bottom: none;
+      justify-content: start;
+      padding-left: 2em;
+      font-size: 3em;
    }
 `;
