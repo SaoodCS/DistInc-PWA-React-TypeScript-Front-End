@@ -1,29 +1,34 @@
 import styled from 'styled-components';
 import Color from '../../../theme/colors';
 
-export const Footer = styled.div<{ isDarkTheme: boolean }>`
+export const Body = styled.div<{isDarkTheme: boolean}>`
    position: fixed;
-   bottom: 0;
    width: 100dvw;
-   height: 10dvh;
-   overflow: hidden;
-`;
-
-export const Body = styled.div<{ isDarkTheme: boolean }>`
-   border-top: 1px solid
-      ${(props) => (props.isDarkTheme ? Color.darkThm.border : Color.lightThm.border)};
-   border-bottom: 1px solid
-      ${(props) => (props.isDarkTheme ? Color.darkThm.border : Color.lightThm.border)};
-   position: fixed;
-   bottom: 10dvh;
-   top: 10dvh;
-   width: 100dvw;
-   overflow: hidden;
+   top: 10%;
+   bottom: 10%;
+   overflow: scroll;
+   @media (min-width: 768px) {
+      left: 15%;
+      width: 85dvw;
+      bottom: 0;
+   }
 `;
 
 export const Header = styled.div<{ isDarkTheme: boolean }>`
    position: fixed;
+   top: 0;
+   height: 10%;
    width: 100dvw;
-   height: 10dvh;
-   overflow: hidden;
+   border-bottom: ${({ isDarkTheme }) =>
+      isDarkTheme ? `1px solid ${Color.darkThm.border}` : `1px solid ${Color.lightThm.border}`};
+   border-bottom-left-radius: 10px;
+   border-bottom-right-radius: 10px;
+   display: flex;
+   justify-content: space-evenly;
+   align-items: center;
+      @media (min-width: 768px) {
+      left: 15%;
+      width: 85dvw;
+      border-bottom: none;
+   }
 `;

@@ -5,6 +5,7 @@ import { Receipt } from '@styled-icons/material-sharp/Receipt';
 import { AttachMoney } from '@styled-icons/material/AttachMoney';
 import { useLocation } from 'react-router-dom';
 import useThemeContext from '../../../context/theme/hooks/useThemeContext';
+import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalRender';
 import { FooterContainer, FooterItem, StyledLink } from './Style';
 
 export default function Footer(): JSX.Element {
@@ -16,20 +17,20 @@ export default function Footer(): JSX.Element {
    }
 
    return (
-      <FooterContainer isDarkTheme = {isDarkTheme}>
-         {footerItems.map((item) => (
-            <StyledLink key={item.name} to={item.name} preventScrollReset>
-               <FooterItem
-                  key={item.name}
-                  isActive={handleIsActive(item.name)}
-                  isDarkTheme={isDarkTheme}
-               >
-                  {item.icon}
-                  {item.name}
-               </FooterItem>
-            </StyledLink>
-         ))}
-      </FooterContainer>
+         <FooterContainer isDarkTheme={isDarkTheme}>
+            {footerItems.map((item) => (
+               <StyledLink key={item.name} to={item.name}>
+                  <FooterItem
+                     key={item.name}
+                     isActive={handleIsActive(item.name)}
+                     isDarkTheme={isDarkTheme}
+                  >
+                     {item.icon}
+                     {item.name}
+                  </FooterItem>
+               </StyledLink>
+            ))}
+         </FooterContainer>
    );
 }
 
