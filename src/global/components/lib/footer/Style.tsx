@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Color from '../../../theme/colors';
 import Clickables from '../../../helpers/styledComponents/clickables';
+import Color from '../../../theme/colors';
 
 export const StyledLink = styled(Link)`
    ${Clickables.removeDefaultEffects};
@@ -41,8 +41,9 @@ export const FooterItem = styled.div<{ isActive: boolean; isDarkTheme: boolean }
    animation: ${({ isActive }) => isActive && 'bounce 0.2s'};
 `;
 
-export const FooterContainer = styled.div`
-   border-top: 1px solid ${Color.darkThm.border};
+export const FooterContainer = styled.div<{ isDarkTheme: boolean }>`
+   border-top: ${({ isDarkTheme }) =>
+      isDarkTheme ? `1px solid ${Color.darkThm.border}` : `1px solid ${Color.lightThm.border}`};
    position: fixed;
    width: 100dvw;
    height: 10%;

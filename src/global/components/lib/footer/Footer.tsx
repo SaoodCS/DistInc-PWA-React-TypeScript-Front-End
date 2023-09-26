@@ -16,7 +16,7 @@ export default function Footer(): JSX.Element {
    }
 
    return (
-      <FooterContainer>
+      <FooterContainer isDarkTheme = {isDarkTheme}>
          {footerItems.map((item) => (
             <StyledLink key={item.name} to={item.name} preventScrollReset>
                <FooterItem
