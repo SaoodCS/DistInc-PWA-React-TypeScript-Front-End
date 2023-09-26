@@ -16,8 +16,8 @@ export default function MainRoutes(): JSX.Element {
       <>
          <Route element={routeAuthProtection}>
             <Route path="*" element={<NotFound />} />
-            <Route path="/main" element={<MainLayout />} >
-               <Route index element={<Navigate to = "profile"/>} />
+            <Route path="/main" element={<MainLayout />}>
+               <Route index element={<Navigate to="profile" />} />
                <Route path="profile" element={<Profile />} />
                <Route path="bank" element={<Bank />} />
                <Route path="income" element={<Income />} />

@@ -5,25 +5,24 @@ import { AttachMoney } from '@styled-icons/material/AttachMoney';
 import { BuildingBank } from 'styled-icons/fluentui-system-filled';
 
 export const navItems = [
-    {
-       name: 'profile',
-       icon: <User />,
-    },
-    {
-       name: 'bank',
-       icon: <BuildingBank />,
-    },
-    {
-       name: 'income',
-       icon: <AttachMoney />,
-    },
-    {
-       name: 'expense',
-       icon: <Receipt />,
-    },
-    {
-       name: 'settings',
-       icon: <Settings />,
-    },
- ];
- 
+   {
+      name: 'profile',
+      icon: <User />,
+   },
+   {
+      name: 'bank',
+      icon: <BuildingBank />,
+   },
+   {
+      name: 'income',
+      icon: <AttachMoney />,
+   },
+   {
+      name: 'expense',
+      icon: <Receipt />,
+   },
+   {
+      name: 'settings',
+      icon: <Settings />,
+   },
+];

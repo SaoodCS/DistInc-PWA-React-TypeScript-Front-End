@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Color from '../../../theme/colors';
 
-export const Body = styled.div<{isDarkTheme: boolean}>`
+export const Body = styled.div<{ isDarkTheme: boolean }>`
    position: fixed;
    width: 100dvw;
    top: 10%;
@@ -26,7 +26,7 @@ export const Header = styled.div<{ isDarkTheme: boolean }>`
    display: flex;
    justify-content: space-evenly;
    align-items: center;
-      @media (min-width: 768px) {
+   @media (min-width: 768px) {
       left: 15%;
       width: 85dvw;
       border-bottom: none;

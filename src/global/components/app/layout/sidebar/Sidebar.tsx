@@ -12,15 +12,15 @@ export default function Sidebar(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const location = useLocation();
 
-   function handleLogoCardColor() {
+   function handleLogoCardColor(): string {
       return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.8);
    }
 
-   function handleLogoDetailsColor() {
+   function handleLogoDetailsColor(): string {
       return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.bg : Color.lightThm.bg, 0.8);
    }
 
-   function handleGetEmail() {
+   function handleGetEmail(): string | undefined {
       const email = auth.currentUser?.email;
       if (!email) return;
       return email;

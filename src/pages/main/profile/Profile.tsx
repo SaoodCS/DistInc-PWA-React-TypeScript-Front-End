@@ -1,9 +1,5 @@
-import { DummyData } from "../../../global/helpers/dummyContent/dummyData";
+import { DummyData } from '../../../global/helpers/dummyContent/dummyData';
 
 export default function Profile(): JSX.Element {
-   return (
-      <div>
-         {DummyData.loremIpsum}
-      </div>
-   );
+   return <div>{DummyData.loremIpsum}</div>;
 }
