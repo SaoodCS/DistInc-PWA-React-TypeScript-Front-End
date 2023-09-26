@@ -6,7 +6,7 @@ import ConditionalRender from '../../global/components/lib/renderModifiers/condi
 import useThemeContext from '../../global/context/theme/hooks/useThemeContext';
 
 export default function MainLayout(): JSX.Element {
-   const { isDarkTheme, toggleTheme, isMobile } = useThemeContext();
+   const { isDarkTheme, toggleTheme, isPortableDevice } = useThemeContext();
    const location = useLocation();
 
    function handleHeaderTitle(): string | undefined {
@@ -22,8 +22,12 @@ export default function MainLayout(): JSX.Element {
             <button onClick={toggleTheme}>Toggle Theme</button>
             <Outlet />
          </Body>
-         <Sidebar />
+         <ConditionalRender condition={!isPortableDevice}>
+            <Sidebar />
+         </ConditionalRender>
+         <ConditionalRender condition={isPortableDevice}>
             <Footer />
+         </ConditionalRender>
       </>
    );
 }

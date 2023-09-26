@@ -12,7 +12,7 @@ export const SidebarContainer = styled.div<{ isDarkTheme: boolean }>`
       ${Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive, 1)} 100%
    )`};
 
-   @media (max-width: 1100px) {
+   @media (max-width: 850px) {
       display: none;
    }
 `;

@@ -4,11 +4,11 @@ import { ThemeContext } from '../ThemeContext';
 interface IUseThemeContextReturn {
    isDarkTheme: boolean;
    toggleTheme: () => void;
-   isMobile: boolean;
+   isPortableDevice: boolean;
 }
 
 export default function useThemeContext(): IUseThemeContextReturn {
-   const { isDarkTheme, toggleTheme, isMobile } = useContext(ThemeContext);
+   const { isDarkTheme, toggleTheme, isPortableDevice } = useContext(ThemeContext);
 
-   return { isDarkTheme, toggleTheme, isMobile };
+   return { isDarkTheme, toggleTheme, isPortableDevice };
 }

@@ -17,7 +17,7 @@ export const ThemeContextProvider = (props: IThemeContextProvider): JSX.Element 
       `isDarkTheme`,
       window.matchMedia(`(prefers-color-scheme: dark)`).matches,
    );
-   const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 768);
+   const [isPortableDevice, setIsPortableDevice] = useState<boolean>(window.innerWidth < 850);
    const [showSplashScreen, setShowSplashScreen] = useState(
       window.matchMedia(`(display-mode: standalone)`).matches,
    );
@@ -27,7 +27,7 @@ export const ThemeContextProvider = (props: IThemeContextProvider): JSX.Element 
       if (showSplashScreen) {
          timer = setTimeout(() => setShowSplashScreen(false), 1750);
       }
-      const handleResize = (): void => setIsMobile(window.innerWidth < 768);
+      const handleResize = (): void => setIsPortableDevice(window.innerWidth < 850);
       window.addEventListener(`resize`, handleResize);
       return () => {
          timer && clearTimeout(timer);
@@ -46,9 +46,9 @@ export const ThemeContextProvider = (props: IThemeContextProvider): JSX.Element 
       () => ({
          isDarkTheme,
          toggleTheme: () => setIsDarkTheme(!isDarkTheme),
-         isMobile,
+         isPortableDevice,
       }),
-      [isDarkTheme, isMobile],
+      [isDarkTheme, isPortableDevice],
    );
 
    return (

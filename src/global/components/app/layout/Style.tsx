@@ -7,7 +7,7 @@ export const Body = styled.div<{ isDarkTheme: boolean }>`
    top: 10%;
    bottom: 10%;
    overflow: scroll;
-   @media (min-width: 1100px) {
+   @media (min-width: 850px) {
       left: 15%;
       width: 85dvw;
       bottom: 0;
@@ -26,7 +26,7 @@ export const Header = styled.div<{ isDarkTheme: boolean }>`
    display: flex;
    justify-content: space-evenly;
    align-items: center;
-   @media (min-width: 1100px) {
+   @media (min-width: 850px) {
       left: 15%;
       width: 85dvw;
       border-bottom: none;
