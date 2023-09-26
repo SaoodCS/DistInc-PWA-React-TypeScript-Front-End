@@ -1,8 +1,8 @@
 import { Outlet, useLocation } from 'react-router-dom';
-import Footer from '../../global/components/lib/footer/Footer';
 import { Body, Header } from '../../global/components/lib/layout/Style';
+import Footer from '../../global/components/lib/layout/footer/Footer';
+import Sidebar from '../../global/components/lib/layout/sidebar/Sidebar';
 import ConditionalRender from '../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
-import Sidebar from '../../global/components/lib/sidebar/Sidebar';
 import useThemeContext from '../../global/context/theme/hooks/useThemeContext';
 
 export default function MainLayout(): JSX.Element {

@@ -1,10 +1,41 @@
-import { User } from '@styled-icons/boxicons-solid/User';
-import { Settings } from '@styled-icons/fluentui-system-filled/Settings';
-import { Receipt } from '@styled-icons/material-sharp/Receipt';
-import { AttachMoney } from '@styled-icons/material/AttachMoney';
 import styled from 'styled-components';
-import { BuildingBank } from 'styled-icons/fluentui-system-filled';
-import Color from '../../../theme/colors';
+import Color from '../../../../theme/colors';
+
+export const SidebarContainer = styled.div<{ isDarkTheme: boolean }>`
+   position: fixed;
+   width: 15%;
+   top: 0;
+   bottom: 0px;
+   background-image: ${({ isDarkTheme }) => `radial-gradient(
+      circle,
+      ${Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive, 1)} 0%,
+      ${Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive, 1)} 100%
+   )`};
+`;
+
+export const LogoWrapper = styled.div`
+   padding-left: 1em;
+   padding-right: 1em;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+`;
+
+export const UserAccountWrapper = styled.div<{ isDarkTheme: boolean }>`
+   display: flex;
+   align-items: center;
+   flex-direction: row;
+   height: 3em;
+   padding-bottom: 1em;
+   user-select: none;
+   color: ${({ isDarkTheme }) =>
+      Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.75)};
+   & > :first-child {
+      height: 3em;
+      padding-right: 0.5em;
+      padding-left: 1em;
+   }
+`;
 
 export const SidebarItem = styled.div<{ isActive: boolean; isDarkTheme: boolean }>`
    position: relative;
@@ -19,12 +50,12 @@ export const SidebarItem = styled.div<{ isActive: boolean; isDarkTheme: boolean 
          : isActive && !isDarkTheme
          ? Color.lightThm.bg
          : 'transparent'};
-   color: ${({ isActive, isDarkTheme }) =>
+   /* color: ${({ isActive, isDarkTheme }) =>
       isActive
          ? isDarkTheme
             ? Color.darkThm.accent
             : Color.lightThm.accent
-         : Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.75)};
+         : Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.75)}; */
 
    ::before {
       content: '';
@@ -76,7 +107,7 @@ export const SidebarItem = styled.div<{ isActive: boolean; isDarkTheme: boolean 
       width: 0.5em;
       background-color: ${Color.darkThm.accent};
       background-color: ${({ isDarkTheme }) =>
-         Color.setRgbOpacity(isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent, 0.85)};
+         Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.85)};
    }
    & > :nth-child(2) {
       height: 1.5em;
@@ -84,61 +115,4 @@ export const SidebarItem = styled.div<{ isActive: boolean; isDarkTheme: boolean 
    }
 `;
 
-export const SidebarContainer = styled.div<{ isDarkTheme: boolean }>`
-   position: fixed;
-   width: 15%;
-   top: 0;
-   bottom: 0px;
-   background-image: ${({ isDarkTheme }) => `radial-gradient(
-      circle,
-      ${Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive, 1)} 0%,
-      ${Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive, 1)} 100%
-   )`};
-`;
-
-export const LogoWrapper = styled.div`
-   padding-left: 1em;
-   padding-right: 1em;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-`;
-
-export const UserAccountWrapper = styled.div<{ isDarkTheme: boolean }>`
-   display: flex;
-   align-items: center;
-   flex-direction: row;
-   height: 3em;
-   padding-bottom: 1em;
-   user-select: none;
-   color: ${({ isDarkTheme }) =>
-      Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.75)};
-   & > :first-child {
-      height: 3em;
-      padding-right: 0.5em;
-      padding-left: 1em;
-   }
-`;
-
-export const sidebarItems = [
-   {
-      name: 'profile',
-      icon: <User />,
-   },
-   {
-      name: 'bank',
-      icon: <BuildingBank />,
-   },
-   {
-      name: 'income',
-      icon: <AttachMoney />,
-   },
-   {
-      name: 'expense',
-      icon: <Receipt />,
-   },
-   {
-      name: 'settings',
-      icon: <Settings />,
-   },
-];
+export const ActiveTag = styled.div``;

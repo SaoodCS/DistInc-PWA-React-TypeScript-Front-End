@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Clickables from '../../../helpers/styledComponents/clickables';
-import Color from '../../../theme/colors';
+import Clickables from '../../../../helpers/styledComponents/clickables';
+import Color from '../../../../theme/colors';
 
 export const StyledLink = styled(Link)`
    ${Clickables.removeDefaultEffects};
