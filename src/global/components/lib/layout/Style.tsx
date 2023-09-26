@@ -31,7 +31,7 @@ export const Header = styled.div<{ isDarkTheme: boolean }>`
       width: 85dvw;
       border-bottom: none;
       justify-content: start;
-      padding-left: 2em;
+      padding-left: 1.5em;
       font-size: 3em;
    }
 `;

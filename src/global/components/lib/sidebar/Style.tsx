@@ -91,7 +91,7 @@ export const SidebarContainer = styled.div<{ isDarkTheme: boolean }>`
    bottom: 0px;
    background-image: ${({ isDarkTheme }) => `radial-gradient(
       circle,
-      ${Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.darkThm.inactive, 0.3)} 0%,
+      ${Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive, 1)} 0%,
       ${Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive, 1)} 100%
    )`};
 `;

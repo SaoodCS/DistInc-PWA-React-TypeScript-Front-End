@@ -11,10 +11,12 @@ import {
    UserAccountWrapper,
    sidebarItems,
 } from './Style';
+import { auth } from '../../../firebase/config/config';
 
 export default function Sidebar(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const location = useLocation();
+
 
    function handleLogoCardColor() {
       if (isDarkTheme) return Color.setRgbOpacity(Color.darkThm.txt, 0.8);
@@ -24,6 +26,12 @@ export default function Sidebar(): JSX.Element {
    function handleLogoDetailsColor() {
       if (isDarkTheme) return Color.setRgbOpacity(Color.lightThm.txt, 0.8);
       if (!isDarkTheme) return Color.setRgbOpacity(Color.darkThm.txt, 0.8);
+   }
+
+   function handleGetEmail() {
+        const email = auth.currentUser?.email;
+        if (!email) return;
+        return email;
    }
 
    return (
@@ -38,7 +46,7 @@ export default function Sidebar(): JSX.Element {
          </LogoWrapper>
          <UserAccountWrapper isDarkTheme={isDarkTheme}>
             <AccountCircle />
-            saood.aslam@hotmail.com
+            {handleGetEmail()}
          </UserAccountWrapper>
          {sidebarItems.map((item) => (
             <StyledLink key={item.name} to={item.name}>
