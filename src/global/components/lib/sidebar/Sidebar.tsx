@@ -4,8 +4,13 @@ import { AccountCircle } from 'styled-icons/material';
 import useThemeContext from '../../../context/theme/hooks/useThemeContext';
 import Logo from '../../app/logo/Logo';
 import { StyledLink } from '../footer/Style';
-import { LogoWrapper, SidebarContainer, SidebarItem, UserAccountWrapper, sidebarItems } from './Style';
-
+import {
+   LogoWrapper,
+   SidebarContainer,
+   SidebarItem,
+   UserAccountWrapper,
+   sidebarItems,
+} from './Style';
 
 export default function Sidebar(): JSX.Element {
    const { isDarkTheme, toggleTheme, isMobile } = useThemeContext();
@@ -16,7 +21,7 @@ export default function Sidebar(): JSX.Element {
             <Logo size="8em" bgColor="transparent" />
          </LogoWrapper>
          <UserAccountWrapper>
-            <AccountCircle/>
+            <AccountCircle />
             saood.aslam@hotmail.com
          </UserAccountWrapper>
          {sidebarItems.map((item) => (
@@ -25,6 +30,7 @@ export default function Sidebar(): JSX.Element {
                   isActive={location.pathname.includes(item.name)}
                   isDarkTheme={isDarkTheme}
                >
+                  <div />
                   {item.icon}
                   {item.name}
                </SidebarItem>
