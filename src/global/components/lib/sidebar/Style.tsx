@@ -73,7 +73,6 @@ export const SidebarItem = styled.div<{ isActive: boolean; isDarkTheme: boolean 
       padding-top: 1em;
       padding-bottom: 1em;
       display: ${({ isActive }) => (isActive ? 'block' : 'none')};
-      //display: none; // uncomment this for the tag to show
       width: 0.5em;
       background-color: ${Color.darkThm.accent};
       background-color: ${({ isDarkTheme }) =>

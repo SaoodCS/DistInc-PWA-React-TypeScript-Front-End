@@ -1,5 +1,4 @@
 import { useLocation } from 'react-router-dom';
-import styled from 'styled-components';
 import { AccountCircle } from 'styled-icons/material';
 import useThemeContext from '../../../context/theme/hooks/useThemeContext';
 import Color from '../../../theme/colors';
@@ -14,7 +13,7 @@ import {
 } from './Style';
 
 export default function Sidebar(): JSX.Element {
-   const { isDarkTheme, toggleTheme, isMobile } = useThemeContext();
+   const { isDarkTheme } = useThemeContext();
    const location = useLocation();
 
    function handleLogoCardColor() {
