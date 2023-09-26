@@ -48,7 +48,7 @@ export const BannerContainer = styled.div<{
       background-color: ${({ isDarkTheme }) =>
          isDarkTheme ? Color.darkThm.bg : Color.lightThm.bg};
    }
-   -webkit-user-select: none;
+   user-select: none;
 `;
 
 export const BannerContent = styled.div<{ hasIcon: boolean }>`

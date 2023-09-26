@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Clickables from '../../../../helpers/styledComponents/clickables';
 import Color from '../../../../theme/colors';
 
 interface IStaticButtonAttrs {
@@ -13,12 +14,7 @@ interface IStaticButton extends IStaticButtonAttrs {
 export const StaticButton = styled.button.attrs<IStaticButtonAttrs>(({ isDisabled }) => ({
    disabled: isDisabled,
 }))<IStaticButton>`
-   all: unset;
-   background: none;
-   border: none;
-   user-select: none;
-   text-decoration: none;
-   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+   ${Clickables.removeDefaultEffects};
    padding: 0.65em;
    text-align: center;
    border-radius: 10px;

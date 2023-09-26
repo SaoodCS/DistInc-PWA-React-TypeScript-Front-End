@@ -1,51 +1,54 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Color from '../../../theme/colors';
+import Clickables from '../../../helpers/styledComponents/clickables';
 
-export const FooterContainer = styled.div`
-   position: fixed;
-   bottom: 0;
-   height: 10%;
-   width: 100dvw;
-   display: flex;
-   justify-content: space-between;
-   align-items: start;
-   border-top: 1px solid ${Color.darkThm.border};
-   border-radius: 0.5em;
-   & > * {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background-color: 'blue';
-      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-   }
-   & > * {
-      height: 50%;
-      margin-top: 0.5em;
-      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-      & > * {
-         height: 100%;
-         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-      }
-   }
-   & > *:first-child {
-      padding-left: 0.5em;
-   }
-   & > *:last-child {
-      padding-right: 0.5em;
-   }
+export const StyledLink = styled(Link)`
+   ${Clickables.removeDefaultEffects};
 `;
 
-export const FooterItem = styled.div<{ id: string }>`
+export const FooterItem = styled.div<{ isActive: boolean; isDarkTheme: boolean }>`
    display: flex;
    flex-direction: column;
-   align-items: center;
-   user-select: none;
-   &::after {
-      content: '${(props) => props.id}';
-      font-size: 0.8em;
-      color: ${Color.setRgbOpacity(Color.darkThm.txt, 0.6)};
-      text-transform: capitalize;
+   text-transform: capitalize;
+   padding-left: 1em;
+   padding-right: 1em;
+   padding-top: 0.75em;
+   font-size: 0.8em;
+   color: ${({ isDarkTheme, isActive }) =>
+      isActive && isDarkTheme
+         ? Color.darkThm.txt
+         : !isActive && isDarkTheme
+         ? Color.setRgbOpacity(Color.darkThm.txt, 0.6)
+         : isActive && !isDarkTheme
+         ? Color.lightThm.txt
+         : Color.setRgbOpacity(Color.lightThm.txt, 0.6)};
+   & > :first-child {
+      height: 2em;
+      padding-bottom: 0.25em;
    }
+   @keyframes bounce {
+      0% {
+         transform: scale(1);
+      }
+      50% {
+         transform: scale(0.9);
+      }
+      100% {
+         transform: scale(1);
+      }
+   }
+   animation: ${({ isActive }) => isActive && 'bounce 0.2s'};
+`;
+
+export const FooterContainer = styled.div`
+   border-top: 1px solid ${Color.darkThm.border};
+   position: fixed;
+   width: 100dvw;
+   height: 10%;
+   display: flex;
+   justify-content: space-between;
+   bottom: 0px;
+   border-top-left-radius: 10px;
+   border-top-right-radius: 10px;
 `;

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Clickables from '../../../../helpers/styledComponents/clickables';
 import Color from '../../../../theme/colors';
 
 interface ITextBtnAttrs {
@@ -12,12 +13,7 @@ interface ITextBtn extends ITextBtnAttrs {
 export const TextBtn = styled.button.attrs<ITextBtnAttrs>(({ isDisabled }) => ({
    disabled: isDisabled,
 }))<ITextBtn>`
-   all: unset;
-   background: none;
-   border: none;
-   user-select: none;
-   text-decoration: none;
-   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+   ${Clickables.removeDefaultEffects};
    font-size: 0.95em;
    padding: 0.5em;
    border-radius: 10px;

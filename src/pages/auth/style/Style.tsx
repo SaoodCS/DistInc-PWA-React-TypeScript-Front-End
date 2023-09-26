@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'styled-components';
 import styled from 'styled-components';
 import { TextBtn } from '../../../global/components/lib/button/textBtn/Style';
+import Clickables from '../../../global/helpers/styledComponents/clickables';
 import Color from '../../../global/theme/colors';
 
 export const HeaderContainer = styled.div<{ isDarkTheme: boolean }>`
@@ -24,12 +25,7 @@ export const ScrollNavigatorBtn = styled.div<{
    isActive: boolean;
    navTo: number;
 }>`
-   cursor: pointer;
-   background: none;
-   border: none;
-   user-select: none;
-   text-decoration: none;
-   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+   ${Clickables.removeDefaultEffects};
    height: 100%;
    display: flex;
    justify-content: center;
