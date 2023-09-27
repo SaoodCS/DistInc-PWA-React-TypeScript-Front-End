@@ -33,6 +33,9 @@ export default function Settings(): JSX.Element {
          setShowBackBtn(true);
          setHeaderTitle(StringHelper.firstLetterToUpper(nextSlide));
       }
+      return () => {
+         setShowBackBtn(false);
+      };
    }, [currentSlide]);
 
    function handleNextSlide(item: TSlides) {

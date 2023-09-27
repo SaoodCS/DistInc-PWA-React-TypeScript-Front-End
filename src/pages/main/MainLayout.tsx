@@ -15,6 +15,7 @@ const StyledBackArr = styled(ArrowIosBack)`
    position: fixed;
    left: 0;
    padding-left: 1em;
+   
 `;
 
 export default function MainLayout(): JSX.Element {
