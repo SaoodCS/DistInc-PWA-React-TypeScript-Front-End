@@ -26,6 +26,7 @@ export const Header = styled.div<{ isDarkTheme: boolean }>`
    display: flex;
    justify-content: space-evenly;
    align-items: center;
+   font-size: 1.1em;
    @media (min-width: 850px) {
       left: 15%;
       width: 85dvw;

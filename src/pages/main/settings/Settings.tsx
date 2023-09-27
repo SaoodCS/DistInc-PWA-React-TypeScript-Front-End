@@ -21,10 +21,18 @@ export default function Settings(): JSX.Element {
    const { containerRef, scrollToSlide, currentSlide } = useCarousel(1, carouselId);
    const [nextSlide, setNextSlide] = useSessionStorage(nextSlideId, '');
    const [prevCarouselScrollPos, setPrevCarouselScrollPos] = useState<number>(0);
-   const { setHeaderTitle } = useHeaderContext();
+   const { setHeaderTitle, setShowBackBtn, setHandleBackBtnClick } = useHeaderContext();
 
    useEffect(() => {
-      setHeaderTitle(currentSlide === 1 ? 'Settings' : StringHelper.firstLetterToUpper(nextSlide));
+      if (currentSlide === 1) {
+         setShowBackBtn(false);
+         setHandleBackBtnClick(() => null);
+         setHeaderTitle('Settings');
+      } else {
+         setHandleBackBtnClick(() => scrollToSlide(1));
+         setShowBackBtn(true);
+         setHeaderTitle(StringHelper.firstLetterToUpper(nextSlide));
+      }
    }, [currentSlide]);
 
    function handleNextSlide(item: TSlides) {
