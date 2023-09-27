@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Style';
 import useCarousel from '../../../global/components/lib/carousel/hooks/useCarousel';
 import ConditionalRender from '../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
@@ -49,7 +49,9 @@ export default function Settings(): JSX.Element {
             </SettingsWrapper>
          </CarouselSlide>
          <CarouselSlide height={'80dvh'}>
-            <ConditionalRender condition={isNextSlide('account')} children={<AccountSlide />} />
+            <ConditionalRender condition={isNextSlide('account')}>
+               <AccountSlide storageId={storageId} carouselId={carouselId} />
+            </ConditionalRender>
          </CarouselSlide>
       </CarouselContainer>
    );

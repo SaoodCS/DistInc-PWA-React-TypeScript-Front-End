@@ -3,9 +3,15 @@ import { DummyData } from '../../../../../global/helpers/dummyContent/dummyData'
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useSessionStorage from '../../../../../global/hooks/useSessionStorage';
 
-export default function AccountSlide(): JSX.Element {
-   const [settingsCarousel] = useSessionStorage('settingsCarousel.currentSlide', 1);
-   const identifier = 'settings/account';
+interface ISettingsSlides {
+   storageId: string;
+   carouselId: string;
+}
+
+export default function AccountSlide(props: ISettingsSlides): JSX.Element {
+   const { storageId, carouselId } = props;
+   const [settingsCarousel] = useSessionStorage(carouselId, 1);
+   const identifier = `${storageId}.accountSlide`;
    const {
       containerRef: containerRef,
       handleOnScroll: handleOnScroll,
@@ -17,12 +23,12 @@ export default function AccountSlide(): JSX.Element {
       if (settingsCarousel === 1) {
          scrollToTop();
       }
-   }, [settingsCarousel]);
+   }, []);
 
    return (
       <div ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
          <div>Account Settings</div>
-         {DummyData.loremIpsum}
+         
       </div>
    );
 }
