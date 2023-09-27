@@ -35,7 +35,7 @@ export default function Settings(): JSX.Element {
       return nextSlide === slideName;
    }
 
-   function handleCarouselScroll() {
+   function handleScroll() {
       const currentLeftScroll = containerRef.current?.scrollLeft;
       if (currentLeftScroll! < prevCarouselScrollPos && currentLeftScroll === 0) {
          setNextSlide('');
@@ -44,9 +44,9 @@ export default function Settings(): JSX.Element {
    }
 
    return (
-      <CarouselContainer ref={containerRef} onScroll={handleCarouselScroll}>
-         <CarouselSlide height={'80dvh'}>
-            <SettingsWrapper>
+      <CarouselContainer ref={containerRef} onScroll={handleScroll} style={{ height: '100%' }}>
+         <CarouselSlide height={'100%'}>
+            <SettingsWrapper style={{ height: 'fit-content' }}>
                <ItemContainer onClick={() => handleNextSlide('account')}>Account</ItemContainer>
                <ItemContainer onClick={() => handleNextSlide('notif')}>Notifications</ItemContainer>
                <ItemContainer onClick={() => toggleTheme()}>Toggle Theme</ItemContainer>
