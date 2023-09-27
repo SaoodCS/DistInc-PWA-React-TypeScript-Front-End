@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import useThemeContext from '../../../../context/theme/hooks/useThemeContext';
-import { navItems } from '../navItems';
+
+import NavItems from '../navItems';
 import { FooterContainer, FooterItem, StyledLink } from './Style';
 
 export default function Footer(): JSX.Element {
@@ -13,7 +14,7 @@ export default function Footer(): JSX.Element {
 
    return (
       <FooterContainer isDarkTheme={isDarkTheme}>
-         {navItems.map((item) => (
+         {NavItems.footer.map((item) => (
             <StyledLink key={item.name} to={item.name}>
                <FooterItem
                   key={item.name}

@@ -135,3 +135,14 @@ export const SidebarItem = styled.div<{ isActive: boolean; isDarkTheme: boolean 
 `;
 
 export const ActiveTag = styled.div``;
+
+export const CompanyTag = styled.div`
+   position: fixed;
+   display: flex;
+   bottom: 0px;
+   padding-bottom: 1em;
+   width: 15dvw;
+   align-items: center;
+   justify-content: center;
+   font-size: 0.9em;
+`;

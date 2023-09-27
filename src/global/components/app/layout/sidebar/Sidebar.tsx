@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { useLocation } from 'react-router-dom';
 import { AccountCircle } from 'styled-icons/material';
 import useThemeContext from '../../../../context/theme/hooks/useThemeContext';
@@ -5,9 +6,10 @@ import { auth } from '../../../../firebase/config/config';
 import Color from '../../../../theme/colors';
 import Logo from '../../../app/logo/Logo';
 import { StyledLink } from '../footer/Style';
-import { navItems } from '../navItems';
+import NavItems from '../navItems';
 import {
    ActiveTag,
+   CompanyTag,
    LogoWrapper,
    SidebarContainer,
    SidebarItem,
@@ -47,18 +49,22 @@ export default function Sidebar(): JSX.Element {
             <AccountCircle />
             <StyledEmail> {handleGetEmail()}</StyledEmail>
          </UserAccountWrapper>
-         {navItems.map((item) => (
-            <StyledLink key={item.name} to={item.name}>
-               <SidebarItem
-                  isActive={location.pathname.includes(item.name)}
-                  isDarkTheme={isDarkTheme}
-               >
-                  <ActiveTag />
-                  {item.icon}
-                  {item.name}
-               </SidebarItem>
-            </StyledLink>
+         {NavItems.sidebar.map((item) => (
+            <Fragment key={item.name}>
+               <StyledLink to={item.name !== 'signout' ? item.name : '#'}>
+                  <SidebarItem
+                     isActive={location.pathname.includes(item.name)}
+                     isDarkTheme={isDarkTheme}
+                     onClick={item.name === 'signout' ? () => auth.signOut() : undefined}
+                  >
+                     <ActiveTag />
+                     {item.icon}
+                     {item.name}
+                  </SidebarItem>
+               </StyledLink>
+            </Fragment>
          ))}
+         <CompanyTag>DistInc 2023 &copy; All rights reserved.</CompanyTag>
       </SidebarContainer>
    );
 }

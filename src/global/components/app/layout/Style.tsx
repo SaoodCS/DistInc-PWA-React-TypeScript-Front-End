@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Scrollbar from '../../../helpers/styledComponents/scrollbars';
 import Color from '../../../theme/colors';
 
 export const Body = styled.div<{ isDarkTheme: boolean }>`
@@ -7,6 +8,7 @@ export const Body = styled.div<{ isDarkTheme: boolean }>`
    top: 10%;
    bottom: 10%;
    overflow: scroll;
+   ${Scrollbar.hide};
    @media (min-width: 850px) {
       left: 15%;
       width: 85dvw;

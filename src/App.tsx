@@ -9,7 +9,7 @@ export default function App(): JSX.Element {
       <>
          <QueryClientProvider client={queryClient}>
             <AppRouter />
-            <ReactQueryDevtools initialIsOpen={false} />
+            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
          </QueryClientProvider>
       </>
    );
