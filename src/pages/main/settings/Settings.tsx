@@ -4,7 +4,6 @@ import useCarousel from '../../../global/components/lib/carousel/hooks/useCarous
 import ConditionalRender from '../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import { auth } from '../../../global/firebase/config/config';
-import useScrollSaver from '../../../global/hooks/useScrollSaver';
 import useSessionStorage from '../../../global/hooks/useSessionStorage';
 import Color from '../../../global/theme/colors';
 import AccountSlide from './components/accountSlide/AccountSlide';
@@ -12,15 +11,11 @@ import { ItemContainer, SettingsWrapper } from './style/Style';
 const storageId = 'settingsCarousel';
 const carouselId = `${storageId}.currentSlide`;
 const nextSlideId = `${storageId}.nextSlide`;
+type TSlides = 'account' | 'notif';
 
 export default function Settings(): JSX.Element {
    const { toggleTheme } = useThemeContext();
    const { containerRef, scrollToSlide, currentSlide } = useCarousel(1, carouselId);
-   const {
-      containerRef: settingsRef,
-      handleOnScroll,
-      scrollSaverStyle,
-   } = useScrollSaver(storageId);
    const [nextSlide, setNextSlide] = useSessionStorage(nextSlideId, '');
    const [prevCarouselScrollPos, setPrevCarouselScrollPos] = useState<number>(0);
 
@@ -39,9 +34,13 @@ export default function Settings(): JSX.Element {
       };
    }, [currentSlide]);
 
-   function handleNextSlide(item: 'account' | 'notif') {
+   function handleNextSlide(item: TSlides) {
       setNextSlide(item);
       scrollToSlide(2);
+   }
+
+   function isNextSlide(slideName: TSlides) {
+      return nextSlide === slideName;
    }
 
    function handleCarouselScroll() {
@@ -55,7 +54,7 @@ export default function Settings(): JSX.Element {
    return (
       <CarouselContainer ref={containerRef} onScroll={handleCarouselScroll}>
          <CarouselSlide height={'80dvh'}>
-            <SettingsWrapper ref={settingsRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
+            <SettingsWrapper>
                <ItemContainer onClick={() => handleNextSlide('account')}>Account</ItemContainer>
                <ItemContainer onClick={() => handleNextSlide('notif')}>Notifications</ItemContainer>
                <ItemContainer onClick={() => toggleTheme()}>Toggle Theme</ItemContainer>
@@ -65,9 +64,7 @@ export default function Settings(): JSX.Element {
             </SettingsWrapper>
          </CarouselSlide>
          <CarouselSlide height={'80dvh'}>
-            <ConditionalRender condition={nextSlide === 'account'}>
-               <AccountSlide />
-            </ConditionalRender>
+            <ConditionalRender condition={isNextSlide('account')} children={<AccountSlide />} />
          </CarouselSlide>
       </CarouselContainer>
    );
