@@ -1,4 +1,8 @@
+import { LogOut as SignOut } from '@styled-icons/boxicons-solid/LogOut';
+import { PersonSettings } from '@styled-icons/fluentui-system-filled/PersonSettings';
 import { useEffect, useState } from 'react';
+import { DarkTheme } from 'styled-icons/fluentui-system-regular';
+import { EditNotifications } from 'styled-icons/material';
 import { Switcher } from '../../../global/components/lib/button/switch/Style';
 import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Style';
 import useCarousel from '../../../global/components/lib/carousel/hooks/useCarousel';
@@ -63,13 +67,23 @@ export default function Settings(): JSX.Element {
       <CarouselContainer ref={containerRef} onScroll={handleScroll} style={{ height: '100%' }}>
          <CarouselSlide height={'100%'}>
             <SettingsWrapper isDarkTheme={isDarkTheme}>
-               <ItemContainer onClick={() => handleNextSlide('account')}>Account</ItemContainer>
-               <ItemContainer onClick={() => handleNextSlide('notifications')}>Notifications</ItemContainer>
+               <ItemContainer onClick={() => handleNextSlide('account')}>
+                  <PersonSettings style={{ height: '1.5em', paddingRight: '0.5em' }} /> Account
+               </ItemContainer>
+               <ItemContainer onClick={() => handleNextSlide('notifications')}>
+                  {' '}
+                  <EditNotifications style={{ height: '1.5em', paddingRight: '0.5em' }} />
+                  Notifications
+               </ItemContainer>
                <ThemeToggleItem onClick={() => toggleTheme()}>
-                  Toggle Theme
+                  <div>
+                     <DarkTheme style={{ height: '1.5em', paddingRight: '0.5em' }} />
+                     Toggle Theme
+                  </div>
                   <Switcher isOn={isDarkTheme} isDarkTheme={isDarkTheme} size={'1.5em'} />
                </ThemeToggleItem>
                <ItemContainer style={handleLogoutColor()} onClick={() => auth.signOut()}>
+                  <SignOut style={{ height: '1.5em', paddingRight: '0.5em' }} />
                   Logout
                </ItemContainer>
             </SettingsWrapper>
