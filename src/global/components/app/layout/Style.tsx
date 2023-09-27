@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Scrollbar from '../../../helpers/styledComponents/scrollbars';
+import { ArrowIosBack } from 'styled-icons/evaicons-solid';
 import Color from '../../../theme/colors';
 
 export const Body = styled.div<{ isDarkTheme: boolean }>`
@@ -35,4 +35,11 @@ export const Header = styled.div<{ isDarkTheme: boolean }>`
       padding-left: 1.5em;
       font-size: 3em;
    }
+`;
+
+export const StyledBackArr = styled(ArrowIosBack)`
+   height: 1.5em;
+   position: fixed;
+   left: 0;
+   padding-left: 1em;
 `;

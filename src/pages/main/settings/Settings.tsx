@@ -14,7 +14,7 @@ import { ItemContainer, SettingsWrapper, ThemeToggleItem } from './style/Style';
 const storageId = 'settingsCarousel';
 const carouselId = `${storageId}.currentSlide`;
 const nextSlideId = `${storageId}.nextSlide`;
-type TSlides = 'account' | 'notif';
+type TSlides = 'account' | 'notifications';
 
 export default function Settings(): JSX.Element {
    const { toggleTheme, isDarkTheme } = useThemeContext();
@@ -64,7 +64,7 @@ export default function Settings(): JSX.Element {
          <CarouselSlide height={'100%'}>
             <SettingsWrapper isDarkTheme={isDarkTheme}>
                <ItemContainer onClick={() => handleNextSlide('account')}>Account</ItemContainer>
-               <ItemContainer onClick={() => handleNextSlide('notif')}>Notifications</ItemContainer>
+               <ItemContainer onClick={() => handleNextSlide('notifications')}>Notifications</ItemContainer>
                <ThemeToggleItem onClick={() => toggleTheme()}>
                   Toggle Theme
                   <Switcher isOn={isDarkTheme} isDarkTheme={isDarkTheme} size={'1.5em'} />
