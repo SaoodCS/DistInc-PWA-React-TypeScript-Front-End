@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Switcher } from '../../../global/components/lib/button/switch/Style';
 import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Style';
 import useCarousel from '../../../global/components/lib/carousel/hooks/useCarousel';
 import ConditionalRender from '../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
@@ -9,14 +10,14 @@ import useSessionStorage from '../../../global/hooks/useSessionStorage';
 import Color from '../../../global/theme/colors';
 import useHeaderContext from '../context/header/hook/useHeaderContext';
 import AccountSlide from './components/accountSlide/AccountSlide';
-import { ItemContainer, SettingsWrapper } from './style/Style';
+import { ItemContainer, SettingsWrapper, ThemeToggleItem } from './style/Style';
 const storageId = 'settingsCarousel';
 const carouselId = `${storageId}.currentSlide`;
 const nextSlideId = `${storageId}.nextSlide`;
 type TSlides = 'account' | 'notif';
 
 export default function Settings(): JSX.Element {
-   const { toggleTheme } = useThemeContext();
+   const { toggleTheme, isDarkTheme } = useThemeContext();
    const { containerRef, scrollToSlide, currentSlide } = useCarousel(1, carouselId);
    const [nextSlide, setNextSlide] = useSessionStorage(nextSlideId, '');
    const [prevCarouselScrollPos, setPrevCarouselScrollPos] = useState<number>(0);
@@ -43,14 +44,21 @@ export default function Settings(): JSX.Element {
       setPrevCarouselScrollPos(currentLeftScroll!);
    }
 
+   function handleLogoutColor() {
+      return { color: isDarkTheme ? Color.darkThm.error : Color.lightThm.error };
+   }
+
    return (
       <CarouselContainer ref={containerRef} onScroll={handleScroll} style={{ height: '100%' }}>
          <CarouselSlide height={'100%'}>
-            <SettingsWrapper style={{ height: 'fit-content' }}>
+            <SettingsWrapper isDarkTheme={isDarkTheme}>
                <ItemContainer onClick={() => handleNextSlide('account')}>Account</ItemContainer>
                <ItemContainer onClick={() => handleNextSlide('notif')}>Notifications</ItemContainer>
-               <ItemContainer onClick={() => toggleTheme()}>Toggle Theme</ItemContainer>
-               <ItemContainer style={{ color: Color.darkThm.error }} onClick={() => auth.signOut()}>
+               <ThemeToggleItem onClick={() => toggleTheme()}>
+                  Toggle Theme
+                  <Switcher isOn={isDarkTheme} isDarkTheme={isDarkTheme} size={'1.5em'} />
+               </ThemeToggleItem>
+               <ItemContainer style={handleLogoutColor()} onClick={() => auth.signOut()}>
                   Logout
                </ItemContainer>
             </SettingsWrapper>
