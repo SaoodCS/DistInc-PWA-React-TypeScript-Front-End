@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Style';
 import useCarousel from '../../../global/components/lib/carousel/hooks/useCarousel';
 import ConditionalRender from '../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import { auth } from '../../../global/firebase/config/config';
+import StringHelper from '../../../global/helpers/dataTypes/string/StringHelper';
 import useSessionStorage from '../../../global/hooks/useSessionStorage';
 import Color from '../../../global/theme/colors';
+import useHeaderContext from '../context/header/hook/useHeaderContext';
 import AccountSlide from './components/accountSlide/AccountSlide';
 import { ItemContainer, SettingsWrapper } from './style/Style';
 const storageId = 'settingsCarousel';
@@ -18,6 +20,11 @@ export default function Settings(): JSX.Element {
    const { containerRef, scrollToSlide, currentSlide } = useCarousel(1, carouselId);
    const [nextSlide, setNextSlide] = useSessionStorage(nextSlideId, '');
    const [prevCarouselScrollPos, setPrevCarouselScrollPos] = useState<number>(0);
+   const { setHeaderTitle } = useHeaderContext();
+
+   useEffect(() => {
+      setHeaderTitle(currentSlide === 1 ? 'Settings' : StringHelper.firstLetterToUpper(nextSlide));
+   }, [currentSlide]);
 
    function handleNextSlide(item: TSlides) {
       setNextSlide(item);
