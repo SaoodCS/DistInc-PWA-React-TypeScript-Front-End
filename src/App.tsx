@@ -11,7 +11,7 @@ export default function App(): JSX.Element {
          <QueryClientProvider client={queryClient}>
             <HeaderContextProvider>
                <AppRouter />
-               {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+               <ReactQueryDevtools initialIsOpen={false} />
             </HeaderContextProvider>
          </QueryClientProvider>
       </>

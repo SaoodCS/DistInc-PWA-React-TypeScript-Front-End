@@ -48,7 +48,7 @@ export default function Settings(): JSX.Element {
       };
    }, [currentSlide]);
 
-   function handleScroll() {
+   function handleScroll(): void {
       const currentLeftScroll = containerRef.current?.scrollLeft;
       if (currentLeftScroll! < prevCarouselScrollPos && currentLeftScroll === 0) {
          setNextSlide('');
@@ -56,16 +56,16 @@ export default function Settings(): JSX.Element {
       setPrevCarouselScrollPos(currentLeftScroll!);
    }
 
-   function handleNextSlide(item: TSlides) {
+   function handleNextSlide(item: TSlides): void {
       setNextSlide(item);
       scrollToSlide(2);
    }
 
-   function isNextSlide(slideName: TSlides) {
+   function isNextSlide(slideName: TSlides): boolean {
       return nextSlide === slideName;
    }
 
-   function handleLogoutColor() {
+   function handleLogoutColor(): { color: string } {
       return { color: isDarkTheme ? Color.darkThm.error : Color.lightThm.error };
    }
 

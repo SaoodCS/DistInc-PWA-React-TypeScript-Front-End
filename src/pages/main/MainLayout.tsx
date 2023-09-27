@@ -1,7 +1,5 @@
-import { ArrowIosBack } from '@styled-icons/evaicons-solid/ArrowIosBack';
 import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
 import { Body, Header, StyledBackArr } from '../../global/components/app/layout/Style';
 import Footer from '../../global/components/app/layout/footer/Footer';
 import Sidebar from '../../global/components/app/layout/sidebar/Sidebar';

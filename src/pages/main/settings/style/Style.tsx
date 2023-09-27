@@ -54,5 +54,4 @@ export const SettingsWrapper = styled.div<{ isDarkTheme: boolean }>`
    }
 `;
 
-
 export const IconAndLabelWrapper = styled.div``;
