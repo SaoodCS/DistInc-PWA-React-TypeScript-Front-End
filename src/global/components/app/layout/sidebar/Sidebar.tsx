@@ -64,7 +64,7 @@ export default function Sidebar(): JSX.Element {
                </StyledLink>
             </Fragment>
          ))}
-         <CompanyTag>DistInc 2023 &copy; All rights reserved.</CompanyTag>
+         <CompanyTag isDarkTheme={isDarkTheme}>DistInc 2023 &copy; All rights reserved.</CompanyTag>
       </SidebarContainer>
    );
 }

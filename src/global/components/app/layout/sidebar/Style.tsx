@@ -136,7 +136,7 @@ export const SidebarItem = styled.div<{ isActive: boolean; isDarkTheme: boolean 
 
 export const ActiveTag = styled.div``;
 
-export const CompanyTag = styled.div`
+export const CompanyTag = styled.div<{ isDarkTheme: boolean }>`
    position: fixed;
    display: flex;
    bottom: 0px;
@@ -145,4 +145,6 @@ export const CompanyTag = styled.div`
    align-items: center;
    justify-content: center;
    font-size: 0.9em;
+   color: ${({ isDarkTheme }) =>
+      Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.75)};
 `;
