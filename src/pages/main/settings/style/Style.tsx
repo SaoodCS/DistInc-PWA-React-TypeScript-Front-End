@@ -9,6 +9,5 @@ export const ItemContainer = styled.div`
 
 export const SettingsWrapper = styled.div`
    overflow: hidden;
-   border:1px solid red;
    width: 100%;
 `;
