@@ -9,20 +9,19 @@ import useSessionStorage from '../../../global/hooks/useSessionStorage';
 import Color from '../../../global/theme/colors';
 import AccountSlide from './components/accountSlide/AccountSlide';
 import { ItemContainer, SettingsWrapper } from './style/Style';
+const storageId = 'settingsCarousel';
+const carouselId = `${storageId}.currentSlide`;
+const nextSlideId = `${storageId}.nextSlide`;
 
 export default function Settings(): JSX.Element {
    const { toggleTheme } = useThemeContext();
-   const identifier = 'settingsCarousel';
-   const { containerRef, scrollToSlide, currentSlide } = useCarousel(
-      1,
-      `${identifier}.currentSlide`,
-   );
+   const { containerRef, scrollToSlide, currentSlide } = useCarousel(1, carouselId);
    const {
-      containerRef: slide1containerRef,
+      containerRef: settingsRef,
       handleOnScroll,
       scrollSaverStyle,
-   } = useScrollSaver(identifier);
-   const [slide2, setSlide2] = useSessionStorage('settings/slide2', '');
+   } = useScrollSaver(storageId);
+   const [nextSlide, setNextSlide] = useSessionStorage(nextSlideId, '');
    const [prevCarouselScrollPos, setPrevCarouselScrollPos] = useState<number>(0);
 
    useEffect(() => {
@@ -31,7 +30,7 @@ export default function Settings(): JSX.Element {
       if (container) {
          timerId = setTimeout(() => {
             container.style.overflow = currentSlide === 1 ? 'hidden' : 'scroll';
-         }, 300);
+         }, 1000);
       }
       return () => {
          if (timerId) {
@@ -40,37 +39,25 @@ export default function Settings(): JSX.Element {
       };
    }, [currentSlide]);
 
-   function handleSetSecondSlide(item: string) {
-      if (item === 'account') {
-         setSlide2('settings/account');
-         scrollToSlide(2);
-      }
+   function handleNextSlide(item: 'account' | 'notif') {
+      setNextSlide(item);
+      scrollToSlide(2);
    }
 
    function handleCarouselScroll() {
       const currentLeftScroll = containerRef.current?.scrollLeft;
       if (currentLeftScroll! < prevCarouselScrollPos && currentLeftScroll === 0) {
-         setSlide2('');
+         setNextSlide('');
       }
       setPrevCarouselScrollPos(currentLeftScroll!);
    }
 
    return (
-      <CarouselContainer
-         ref={containerRef}
-         onScroll={handleCarouselScroll}
-         style={{ border: '1px solid red' }}
-      >
+      <CarouselContainer ref={containerRef} onScroll={handleCarouselScroll}>
          <CarouselSlide height={'80dvh'}>
-            <SettingsWrapper
-               ref={slide1containerRef}
-               onScroll={handleOnScroll}
-               style={scrollSaverStyle}
-            >
-               <ItemContainer onClick={() => handleSetSecondSlide('account')}>
-                  Account
-               </ItemContainer>
-               <ItemContainer>Notifications</ItemContainer>
+            <SettingsWrapper ref={settingsRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
+               <ItemContainer onClick={() => handleNextSlide('account')}>Account</ItemContainer>
+               <ItemContainer onClick={() => handleNextSlide('notif')}>Notifications</ItemContainer>
                <ItemContainer onClick={() => toggleTheme()}>Toggle Theme</ItemContainer>
                <ItemContainer style={{ color: Color.darkThm.error }} onClick={() => auth.signOut()}>
                   Logout
@@ -78,7 +65,7 @@ export default function Settings(): JSX.Element {
             </SettingsWrapper>
          </CarouselSlide>
          <CarouselSlide height={'80dvh'}>
-            <ConditionalRender condition={slide2 === 'settings/account'}>
+            <ConditionalRender condition={nextSlide === 'account'}>
                <AccountSlide />
             </ConditionalRender>
          </CarouselSlide>
