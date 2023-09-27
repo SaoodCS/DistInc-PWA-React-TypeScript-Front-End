@@ -8,7 +8,7 @@ export const ItemContainer = styled.div`
 `;
 
 export const SettingsWrapper = styled.div`
-   height: 100%;
-   overflow: scroll;
+   overflow: hidden;
+   border:1px solid red;
    width: 100%;
 `;
