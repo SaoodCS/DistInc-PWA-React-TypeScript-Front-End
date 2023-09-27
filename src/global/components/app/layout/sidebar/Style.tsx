@@ -6,11 +6,11 @@ export const SidebarContainer = styled.div<{ isDarkTheme: boolean }>`
    width: 15%;
    top: 0;
    bottom: 0px;
-   background-image: ${({ isDarkTheme }) => `radial-gradient(
-      circle,
-      ${Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive, 1)} 0%,
-      ${Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive, 1)} 100%
-   )`};
+   background-color: ${({ isDarkTheme }) =>
+      Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.2)};
+   backdrop-filter: blur(10px);
+   border-top-right-radius: 20px;
+   border-bottom-right-radius: 20px;
 `;
 
 export const LogoWrapper = styled.div`
@@ -69,13 +69,6 @@ export const SidebarItem = styled.div<{ isActive: boolean; isDarkTheme: boolean 
          : isActive && !isDarkTheme
          ? Color.lightThm.bg
          : 'transparent'};
-   /* color: ${({ isActive, isDarkTheme }) =>
-      isActive
-         ? isDarkTheme
-            ? Color.darkThm.accent
-            : Color.lightThm.accent
-         : Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.75)}; */
-
    ::before {
       content: '';
       position: absolute;
