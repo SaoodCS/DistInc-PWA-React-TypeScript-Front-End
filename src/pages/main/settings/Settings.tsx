@@ -14,11 +14,17 @@ import useSessionStorage from '../../../global/hooks/useSessionStorage';
 import Color from '../../../global/theme/colors';
 import useHeaderContext from '../context/header/hook/useHeaderContext';
 import AccountSlide from './components/accountSlide/AccountSlide';
-import { ItemContainer, SettingsWrapper, ThemeToggleItem } from './style/Style';
+import {
+   IconAndLabelWrapper,
+   ItemContainer,
+   SettingsWrapper,
+   ThemeToggleItem,
+} from './style/Style';
 const storageId = 'settingsCarousel';
 const carouselId = `${storageId}.currentSlide`;
 const nextSlideId = `${storageId}.nextSlide`;
 type TSlides = 'account' | 'notifications';
+const iconStyle = { height: '1.5em', paddingRight: '0.5em' };
 
 export default function Settings(): JSX.Element {
    const { toggleTheme, isDarkTheme } = useThemeContext();
@@ -68,22 +74,21 @@ export default function Settings(): JSX.Element {
          <CarouselSlide height={'100%'}>
             <SettingsWrapper isDarkTheme={isDarkTheme}>
                <ItemContainer onClick={() => handleNextSlide('account')}>
-                  <PersonSettings style={{ height: '1.5em', paddingRight: '0.5em' }} /> Account
+                  <PersonSettings style={iconStyle} /> Account
                </ItemContainer>
                <ItemContainer onClick={() => handleNextSlide('notifications')}>
-                  {' '}
-                  <EditNotifications style={{ height: '1.5em', paddingRight: '0.5em' }} />
+                  <EditNotifications style={iconStyle} />
                   Notifications
                </ItemContainer>
                <ThemeToggleItem onClick={() => toggleTheme()}>
-                  <div>
-                     <DarkTheme style={{ height: '1.5em', paddingRight: '0.5em' }} />
+                  <IconAndLabelWrapper>
+                     <DarkTheme style={iconStyle} />
                      Toggle Theme
-                  </div>
+                  </IconAndLabelWrapper>
                   <Switcher isOn={isDarkTheme} isDarkTheme={isDarkTheme} size={'1.5em'} />
                </ThemeToggleItem>
                <ItemContainer style={handleLogoutColor()} onClick={() => auth.signOut()}>
-                  <SignOut style={{ height: '1.5em', paddingRight: '0.5em' }} />
+                  <SignOut style={iconStyle} />
                   Logout
                </ItemContainer>
             </SettingsWrapper>

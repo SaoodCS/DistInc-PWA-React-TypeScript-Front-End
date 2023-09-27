@@ -53,3 +53,6 @@ export const SettingsWrapper = styled.div<{ isDarkTheme: boolean }>`
             : `1px solid ${Color.setRgbOpacity(Color.lightThm.txt, 0.1)}`};
    }
 `;
+
+
+export const IconAndLabelWrapper = styled.div``;
