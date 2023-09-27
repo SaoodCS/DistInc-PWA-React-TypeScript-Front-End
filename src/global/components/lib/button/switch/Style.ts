@@ -10,7 +10,7 @@ export const Switcher = styled.div<{ isOn: boolean; isDarkTheme: boolean; size: 
             : Color.lightThm.accent
          : isDarkTheme
          ? Color.darkThm.inactive
-         : Color.lightThm.inactive};
+         : Color.darkThm.inactive};
    border-radius: ${({ size }) => size};
    width: ${({ size }) => `calc(${size} * 1.867)`};
    height: ${({ size }) => size};
