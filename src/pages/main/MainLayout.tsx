@@ -19,7 +19,7 @@ export default function MainLayout(): JSX.Element {
       <>
          <Header isDarkTheme={isDarkTheme}>{handleHeaderTitle()}</Header>
          <Body isDarkTheme={isDarkTheme}>
-            <button onClick={toggleTheme}>Toggle Theme</button>
+            {/* <button onClick={toggleTheme}>Toggle Theme</button> */}
             <Outlet />
          </Body>
          <ConditionalRender condition={!isPortableDevice}>

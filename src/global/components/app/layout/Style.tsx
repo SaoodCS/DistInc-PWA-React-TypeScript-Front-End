@@ -7,8 +7,6 @@ export const Body = styled.div<{ isDarkTheme: boolean }>`
    width: 100dvw;
    top: 10%;
    bottom: 10%;
-   overflow: scroll;
-   ${Scrollbar.hide};
    @media (min-width: 850px) {
       left: 15%;
       width: 85dvw;

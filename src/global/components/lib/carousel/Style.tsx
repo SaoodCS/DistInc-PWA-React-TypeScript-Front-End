@@ -19,7 +19,7 @@ export const CarouselSlide = styled.div<{ height: string }>`
    flex: 1;
    scroll-snap-align: start;
    display: flex;
-   justify-content: center;
+   //justify-content: center;
    overflow: hidden;
    overflow-y: scroll;
    height: ${({ height }) => height};
