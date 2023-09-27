@@ -19,21 +19,6 @@ export default function Settings(): JSX.Element {
    const [nextSlide, setNextSlide] = useSessionStorage(nextSlideId, '');
    const [prevCarouselScrollPos, setPrevCarouselScrollPos] = useState<number>(0);
 
-   useEffect(() => {
-      let timerId: NodeJS.Timeout | null = null;
-      const container = containerRef.current;
-      if (container) {
-         timerId = setTimeout(() => {
-            container.style.overflow = currentSlide === 1 ? 'hidden' : 'scroll';
-         }, 1000);
-      }
-      return () => {
-         if (timerId) {
-            clearTimeout(timerId);
-         }
-      };
-   }, [currentSlide]);
-
    function handleNextSlide(item: TSlides) {
       setNextSlide(item);
       scrollToSlide(2);
