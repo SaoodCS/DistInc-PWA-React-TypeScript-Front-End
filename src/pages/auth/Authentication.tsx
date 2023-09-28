@@ -2,8 +2,8 @@ import { Github } from '@styled-icons/bootstrap/Github';
 import { LinkedinWithCircle } from '@styled-icons/entypo-social/LinkedinWithCircle';
 import { MailWithCircle } from '@styled-icons/entypo-social/MailWithCircle';
 import Logo from '../../global/components/app/logo/Logo';
-import useCarousel from '../../global/components/lib/carousel/hooks/useCarousel';
 import { CarouselContainer, CarouselSlide } from '../../global/components/lib/carousel/Style';
+import useCarousel from '../../global/components/lib/carousel/hooks/useCarousel';
 import useThemeContext from '../../global/context/theme/hooks/useThemeContext';
 import Color from '../../global/theme/colors';
 import LoginForm from './components/login/LoginForm';
@@ -12,7 +12,6 @@ import {
    Centerer,
    ContactFooterTitle,
    ContactFooterWrapper,
-   contactIconStyle,
    ContactIconsWrapper,
    HeaderContainer,
    ScrollNavigatorBtn,
@@ -77,19 +76,10 @@ export default function Authentication(): JSX.Element {
          </CarouselContainer>
          <ContactFooterWrapper>
             <ContactFooterTitle isDarkTheme={isDarkTheme}>Contact Me</ContactFooterTitle>
-            <ContactIconsWrapper>
-               <Github
-                  style={contactIconStyle(isDarkTheme)}
-                  onClick={() => handleClick('github')}
-               />
-               <LinkedinWithCircle
-                  style={contactIconStyle(isDarkTheme)}
-                  onClick={() => handleClick('linkedin')}
-               />
-               <MailWithCircle
-                  style={contactIconStyle(isDarkTheme)}
-                  onClick={() => handleClick('email')}
-               />
+            <ContactIconsWrapper isDarkTheme={isDarkTheme}>
+               <Github onClick={() => handleClick('github')} />
+               <LinkedinWithCircle onClick={() => handleClick('linkedin')} />
+               <MailWithCircle onClick={() => handleClick('email')} />
             </ContactIconsWrapper>
          </ContactFooterWrapper>
       </Centerer>

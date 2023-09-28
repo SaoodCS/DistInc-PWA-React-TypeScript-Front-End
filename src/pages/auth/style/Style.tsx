@@ -108,18 +108,16 @@ export const ContactFooterTitle = styled.div<{ isDarkTheme: boolean }>`
    font-size: 0.75em;
 `;
 
-export const ContactIconsWrapper = styled.div``;
-
-export function contactIconStyle(isDarkTheme: boolean): CSSProperties {
-   return {
-      height: '2em',
-      padding: '0.25em',
-      color: Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.9),
-      cursor: 'pointer',
-      WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
-      background: 'none',
-      border: 'none',
-      userSelect: 'none',
-      textDecoration: 'none',
-   };
-}
+export const ContactIconsWrapper = styled.div<{isDarkTheme: boolean}>`
+   > * {
+      height: 2em;
+      padding: 0.25em;
+      color: ${({isDarkTheme}) => Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.9)};
+      cursor: pointer;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      background: none;
+      border: none;
+      user-select: none;
+      text-decoration: none;
+   }
+`;
