@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import { Body, Header, StyledBackArr } from '../../global/components/app/layout/Style';
+import { Body } from '../../global/components/app/layout/body/Body';
 import Footer from '../../global/components/app/layout/footer/Footer';
+import { Header, StyledBackArr } from '../../global/components/app/layout/header/Header';
 import Sidebar from '../../global/components/app/layout/sidebar/Sidebar';
 import ConditionalRender from '../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useHeaderContext from '../../global/context/header/hooks/useHeaderContext';

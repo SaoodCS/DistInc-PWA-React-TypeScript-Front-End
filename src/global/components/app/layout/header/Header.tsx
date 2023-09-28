@@ -1,18 +1,6 @@
 import styled from 'styled-components';
 import { ArrowIosBack } from 'styled-icons/evaicons-solid';
-import Color from '../../../theme/colors';
-
-export const Body = styled.div<{ isDarkTheme: boolean }>`
-   position: fixed;
-   width: 100dvw;
-   top: 10%;
-   bottom: 10%;
-   @media (min-width: 850px) {
-      left: 15%;
-      width: 85dvw;
-      bottom: 0;
-   }
-`;
+import Color from '../../../../theme/colors';
 
 export const Header = styled.div<{ isDarkTheme: boolean }>`
    position: fixed;

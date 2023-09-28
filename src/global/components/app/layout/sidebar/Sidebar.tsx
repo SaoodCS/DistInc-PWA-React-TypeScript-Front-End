@@ -6,7 +6,7 @@ import { auth } from '../../../../firebase/config/config';
 import Color from '../../../../theme/colors';
 import Logo from '../../../app/logo/Logo';
 import { StyledLink } from '../footer/Style';
-import NavItems from '../navItems';
+import NavItems from '../utils/navItems';
 import {
    ActiveTag,
    CompanyTag,

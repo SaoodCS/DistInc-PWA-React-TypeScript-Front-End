@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import useThemeContext from '../../../../context/theme/hooks/useThemeContext';
 
-import NavItems from '../navItems';
+import NavItems from '../utils/navItems';
 import { FooterContainer, FooterItem, StyledLink } from './Style';
 
 export default function Footer(): JSX.Element {
