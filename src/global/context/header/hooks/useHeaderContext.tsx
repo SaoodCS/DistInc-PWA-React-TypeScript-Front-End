@@ -1,8 +1,7 @@
-import type { Dispatch, SetStateAction } from 'react';
-import { useContext } from 'react';
+import { Dispatch, SetStateAction, useContext } from 'react';
 import { HeaderContext } from '../HeaderContext';
 
-interface IUseHeaderContext {
+export interface IUseHeaderContext {
    headerTitle: string;
    setHeaderTitle: React.Dispatch<React.SetStateAction<string>>;
    showBackBtn: boolean;
@@ -20,7 +19,7 @@ export default function useHeaderContext(): IUseHeaderContext {
       setShowBackBtn,
       handleBackBtnClick,
       setHandleBackBtnClick,
-      hideAndResetBackBtn
+      hideAndResetBackBtn,
    } = useContext(HeaderContext);
    return {
       headerTitle,
@@ -29,6 +28,6 @@ export default function useHeaderContext(): IUseHeaderContext {
       setHandleBackBtnClick,
       showBackBtn,
       setShowBackBtn,
-      hideAndResetBackBtn
+      hideAndResetBackBtn,
    };
 }

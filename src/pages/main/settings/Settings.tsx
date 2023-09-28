@@ -3,6 +3,7 @@ import { Switcher } from '../../../global/components/lib/button/switch/Style';
 import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Style';
 import useCarousel from '../../../global/components/lib/carousel/hooks/useCarousel';
 import ConditionalRender from '../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
+import HeaderHooks from '../../../global/context/header/hooks/HeaderHooks';
 import useHeaderContext from '../../../global/context/header/hooks/useHeaderContext';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import { auth } from '../../../global/firebase/config/config';
@@ -18,7 +19,8 @@ export default function Settings(): JSX.Element {
    const [slide2, setSlide2] = useSessionStorage<NSettings.TSlides | ''>(NSettings.key.slide2, '');
    const [prevScrollPos, setPrevScrollPos] = useState<number>(0);
    const { setHeaderTitle, setHandleBackBtnClick, hideAndResetBackBtn } = useHeaderContext();
-   
+   HeaderHooks.useOnUnMount.hideAndResetBackBtn();
+
    useEffect(() => {
       if (currentSlide === 1) {
          hideAndResetBackBtn();
@@ -27,9 +29,6 @@ export default function Settings(): JSX.Element {
          setHandleBackBtnClick(() => scrollToSlide(1));
          setHeaderTitle(StringHelper.firstLetterToUpper(slide2));
       }
-      return () => {
-         hideAndResetBackBtn();
-      };
    }, [currentSlide]);
 
    function handleScroll(): void {

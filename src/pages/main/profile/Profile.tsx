@@ -1,9 +1,7 @@
-import { useEffect } from 'react';
-import useSetHeaderTitle from '../../../global/context/header/hooks/useSetHeaderTitle';
-import StringHelper from '../../../global/helpers/dataTypes/string/StringHelper';
+import HeaderHooks from '../../../global/context/header/hooks/HeaderHooks';
 
 export default function Profile(): JSX.Element {
-   useSetHeaderTitle('Profile');
+   HeaderHooks.useOnMount.setHeaderTitle('Profile');
 
    return <div>Profile Page</div>;
 }

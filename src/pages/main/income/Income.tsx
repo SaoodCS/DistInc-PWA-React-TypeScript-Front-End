@@ -1,8 +1,7 @@
-import { useEffect } from 'react';
-import useSetHeaderTitle from '../../../global/context/header/hooks/useSetHeaderTitle';
+import HeaderHooks from '../../../global/context/header/hooks/HeaderHooks';
 
 export default function Income(): JSX.Element {
-   useSetHeaderTitle('Income');
+   HeaderHooks.useOnMount.setHeaderTitle('Income');
 
    return (
       <div>

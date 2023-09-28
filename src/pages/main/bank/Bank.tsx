@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import useSetHeaderTitle from '../../../global/context/header/hooks/useSetHeaderTitle';
+import HeaderHooks from '../../../global/context/header/hooks/HeaderHooks';
 
 export default function Bank(): JSX.Element {
-   useSetHeaderTitle('Bank');
+   HeaderHooks.useOnMount.setHeaderTitle('Bank');
    return (
       <>
          <div>Rendered when visiting &apos;/main/bank&apos;</div>
