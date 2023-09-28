@@ -45,6 +45,7 @@ export default function Settings(): JSX.Element {
       }
       return () => {
          setShowBackBtn(false);
+         setHandleBackBtnClick(() => null);
       };
    }, [currentSlide]);
 
