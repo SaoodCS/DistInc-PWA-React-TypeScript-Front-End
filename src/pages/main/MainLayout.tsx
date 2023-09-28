@@ -4,8 +4,8 @@ import { Body, Header, StyledBackArr } from '../../global/components/app/layout/
 import Footer from '../../global/components/app/layout/footer/Footer';
 import Sidebar from '../../global/components/app/layout/sidebar/Sidebar';
 import ConditionalRender from '../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
+import useHeaderContext from '../../global/context/header/hooks/useHeaderContext';
 import useThemeContext from '../../global/context/theme/hooks/useThemeContext';
-import useHeaderContext from './context/header/hooks/useHeaderContext';
 
 export default function MainLayout(): JSX.Element {
    const { isDarkTheme, toggleTheme, isPortableDevice } = useThemeContext();

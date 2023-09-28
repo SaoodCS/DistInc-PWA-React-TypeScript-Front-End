@@ -7,12 +7,12 @@ import { Switcher } from '../../../global/components/lib/button/switch/Style';
 import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Style';
 import useCarousel from '../../../global/components/lib/carousel/hooks/useCarousel';
 import ConditionalRender from '../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
+import useHeaderContext from '../../../global/context/header/hooks/useHeaderContext';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import { auth } from '../../../global/firebase/config/config';
 import StringHelper from '../../../global/helpers/dataTypes/string/StringHelper';
 import useSessionStorage from '../../../global/hooks/useSessionStorage';
 import Color from '../../../global/theme/colors';
-import useHeaderContext from '../context/header/hooks/useHeaderContext';
 import AccountSlide from './components/accountSlide/AccountSlide';
 import {
    IconAndLabelWrapper,
