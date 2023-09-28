@@ -2,7 +2,7 @@ import { LogOut } from '@styled-icons/boxicons-solid/LogOut';
 import { PersonSettings } from '@styled-icons/fluentui-system-filled/PersonSettings';
 import { DarkTheme } from 'styled-icons/fluentui-system-regular';
 import { EditNotifications } from 'styled-icons/material';
-import { StyledIcon } from 'styled-icons/types';
+import type { StyledIcon } from 'styled-icons/types';
 
 export namespace NSettings {
    export type ISettingsOptions = {

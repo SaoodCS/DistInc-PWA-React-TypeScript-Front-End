@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import HeaderHooks from '../../../global/context/header/hooks/HeaderHooks';
 
 export default function Expense(): JSX.Element {

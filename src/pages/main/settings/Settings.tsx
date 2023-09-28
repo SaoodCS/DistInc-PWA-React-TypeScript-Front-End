@@ -41,12 +41,12 @@ export default function Settings(): JSX.Element {
       return slide2 === slideName;
    }
 
-   function handleItemClick(item: NSettings.ISettingsOptions): void {
+   async function handleItemClick(item: NSettings.ISettingsOptions): Promise<void> {
       if (item.hasSlide) {
          setSlide2(item.title as NSettings.TSlides);
          scrollToSlide(2);
       } else if (item.logout) {
-         auth.signOut();
+         await auth.signOut();
       } else if (item.withToggle) {
          toggleTheme();
       }
@@ -76,7 +76,9 @@ export default function Settings(): JSX.Element {
             </SettingsWrapper>
          </CarouselSlide>
          <CarouselSlide height={'80dvh'}>
-            <ConditionalRender condition={isSlide2('Account')} children={<AccountSlide />} />
+            <ConditionalRender condition={isSlide2('Account')}>
+               <AccountSlide />
+            </ConditionalRender>
          </CarouselSlide>
       </CarouselContainer>
    );

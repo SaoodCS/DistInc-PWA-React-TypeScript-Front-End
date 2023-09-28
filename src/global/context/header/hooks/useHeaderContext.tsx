@@ -1,4 +1,5 @@
-import { Dispatch, SetStateAction, useContext } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
+import { useContext } from 'react';
 import { HeaderContext } from '../HeaderContext';
 
 export interface IUseHeaderContext {

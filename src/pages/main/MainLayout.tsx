@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { Body } from '../../global/components/app/layout/body/Body';
 import Footer from '../../global/components/app/layout/footer/Footer';
 import { Header, StyledBackArr } from '../../global/components/app/layout/header/Header';
