@@ -1,3 +1,4 @@
+import { Asterisk } from '@styled-icons/bootstrap/Asterisk';
 import { DotsHorizontalRounded } from '@styled-icons/boxicons-regular/DotsHorizontalRounded';
 import { AddAPhoto } from '@styled-icons/material-outlined/AddAPhoto';
 import { useEffect } from 'react';
@@ -16,7 +17,6 @@ const UserDetails = styled.div`
 `;
 
 const Label = styled.div`
-   padding-bottom: 0.2em;
    padding-top: 0.2em;
 `;
 
@@ -29,7 +29,6 @@ const LabelAndDetailsWrapper = styled.div`
 `;
 
 const ProfilePicContainer = styled.div`
-   //border: 1px solid red;
    height: 35%;
    margin-bottom: 1em;
    display: flex;
@@ -56,6 +55,10 @@ const ProfilePhotoPlaceholder = styled(AddAPhoto)`
    height: 70%;
    color: ${Color.setRgbOpacity(Color.darkThm.bg, 0.7)};
    padding: 1em;
+`;
+
+const StyledAsterisk = styled(Asterisk)`
+   height: 0.5em;
 `;
 
 export default function AccountSlide(): JSX.Element {
@@ -87,7 +90,11 @@ export default function AccountSlide(): JSX.Element {
             <ItemContainer isDarkTheme={isDarkTheme} style={{ justifyContent: 'space-between' }}>
                <LabelAndDetailsWrapper>
                   <Label>Password</Label>
-                  <UserDetails>***************</UserDetails>
+                  <UserDetails>
+                     {Array.from({ length: 8 }, (_, i) => ( 
+                        <StyledAsterisk key={i} />
+                     ))}
+                  </UserDetails>
                </LabelAndDetailsWrapper>
                <HorizontalDots />
             </ItemContainer>
