@@ -1,10 +1,7 @@
-import { Pencil } from '@styled-icons/bootstrap/Pencil';
 import { DotsHorizontalRounded } from '@styled-icons/boxicons-regular/DotsHorizontalRounded';
 import { AddAPhoto } from '@styled-icons/material-outlined/AddAPhoto';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { AccountCircle } from 'styled-icons/material';
-import { PlaceholderCircle } from '../../../../../global/components/lib/fetch/placeholders/Style';
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
