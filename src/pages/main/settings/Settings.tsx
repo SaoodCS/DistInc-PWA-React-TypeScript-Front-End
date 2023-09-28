@@ -9,7 +9,7 @@ import useThemeContext from '../../../global/context/theme/hooks/useThemeContext
 import { auth } from '../../../global/firebase/config/config';
 import StringHelper from '../../../global/helpers/dataTypes/string/StringHelper';
 import useSessionStorage from '../../../global/hooks/useSessionStorage';
-import AccountSlide from './components/accountSlide/AccountSlide';
+import AccountSlide from './components/account/AccountSlide';
 import NSettings from './namespace/NSettings';
 import { IconAndLabelWrapper, ItemContainer, SettingsWrapper } from './style/Style';
 

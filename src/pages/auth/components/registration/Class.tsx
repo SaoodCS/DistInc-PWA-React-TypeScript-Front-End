@@ -2,7 +2,6 @@ import type { InputArray } from '../../../../global/helpers/react/form/FormHelpe
 import FormHelper from '../../../../global/helpers/react/form/FormHelper';
 
 export interface IRegInputs {
-   name: string;
    email: string;
    password: string;
    confirmPassword: string;
