@@ -2,18 +2,20 @@ import styled from 'styled-components';
 import Clickables from '../../../../global/helpers/styledComponents/clickables';
 import Color from '../../../../global/theme/colors';
 
-export const ItemContainer = styled.div`
+export const ItemContainer = styled.div<{ withToggle?: boolean; logoutItem?: boolean, isDarkTheme: boolean }>`
    ${Clickables.removeDefaultEffects};
    height: 3em;
    display: flex;
    align-items: center;
    padding-left: 1em;
    cursor: pointer;
-`;
+   justify-content: ${({ withToggle }) => withToggle && 'space-between'};
+   padding-right: ${({ withToggle }) => withToggle && '1em'};
 
-export const ThemeToggleItem = styled(ItemContainer)`
-   justify-content: space-between;
-   padding-right: 1em;
+   // color: isDarkTheme ? Color.darkThm.error : Color.lightThm.error
+
+   color: ${({ logoutItem, isDarkTheme }) =>
+      logoutItem && (isDarkTheme ? Color.darkThm.error : Color.lightThm.error)};
 `;
 
 export const SettingsWrapper = styled.div<{ isDarkTheme: boolean }>`
