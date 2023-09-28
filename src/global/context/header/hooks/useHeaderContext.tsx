@@ -9,6 +9,7 @@ interface IUseHeaderContext {
    setShowBackBtn: React.Dispatch<React.SetStateAction<boolean>>;
    handleBackBtnClick: () => void;
    setHandleBackBtnClick: Dispatch<SetStateAction<() => void>>;
+   hideAndResetBackBtn: () => void;
 }
 
 export default function useHeaderContext(): IUseHeaderContext {
@@ -19,6 +20,7 @@ export default function useHeaderContext(): IUseHeaderContext {
       setShowBackBtn,
       handleBackBtnClick,
       setHandleBackBtnClick,
+      hideAndResetBackBtn
    } = useContext(HeaderContext);
    return {
       headerTitle,
@@ -27,5 +29,6 @@ export default function useHeaderContext(): IUseHeaderContext {
       setHandleBackBtnClick,
       showBackBtn,
       setShowBackBtn,
+      hideAndResetBackBtn
    };
 }

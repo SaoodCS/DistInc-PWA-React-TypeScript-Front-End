@@ -51,7 +51,7 @@ export namespace NSettings {
    const storageKeyPrefix = 'settingsCarousel';
    export const key = {
       currentSlide: `${storageKeyPrefix}.currentSlide`,
-      nextSlide: `${storageKeyPrefix}.nextSlide`,
+      slide2: `${storageKeyPrefix}.slide2`,
       accountSlide: `${storageKeyPrefix}.accountSlide`,
    };
 

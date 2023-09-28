@@ -8,6 +8,7 @@ interface IHeaderContext {
    setShowBackBtn: React.Dispatch<React.SetStateAction<boolean>>;
    handleBackBtnClick: () => void;
    setHandleBackBtnClick: Dispatch<SetStateAction<() => void>>;
+   hideAndResetBackBtn: () => void;
 }
 
 export const HeaderContext = createContext<IHeaderContext>({
@@ -17,4 +18,5 @@ export const HeaderContext = createContext<IHeaderContext>({
    setShowBackBtn: () => {},
    handleBackBtnClick: () => {},
    setHandleBackBtnClick: () => {},
+   hideAndResetBackBtn: () => {},
 });

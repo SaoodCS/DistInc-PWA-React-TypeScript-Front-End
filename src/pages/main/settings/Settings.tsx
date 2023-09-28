@@ -15,44 +15,36 @@ import { IconAndLabelWrapper, ItemContainer, SettingsWrapper } from './style/Sty
 export default function Settings(): JSX.Element {
    const { toggleTheme, isDarkTheme } = useThemeContext();
    const { containerRef, scrollToSlide, currentSlide } = useCarousel(1, NSettings.key.currentSlide);
-   const [nextSlide, setNextSlide] = useSessionStorage<NSettings.TSlides | ''>(
-      NSettings.key.nextSlide,
-      '',
-   );
-   const [prevCarouselScrollPos, setPrevCarouselScrollPos] = useState<number>(0);
-   const { setHeaderTitle, setShowBackBtn, setHandleBackBtnClick } = useHeaderContext();
-
+   const [slide2, setSlide2] = useSessionStorage<NSettings.TSlides | ''>(NSettings.key.slide2, '');
+   const [prevScrollPos, setPrevScrollPos] = useState<number>(0);
+   const { setHeaderTitle, setHandleBackBtnClick, hideAndResetBackBtn } = useHeaderContext();
+   
    useEffect(() => {
       if (currentSlide === 1) {
-         setShowBackBtn(false);
-         setHandleBackBtnClick(() => null);
+         hideAndResetBackBtn();
          setHeaderTitle('Settings');
       } else {
          setHandleBackBtnClick(() => scrollToSlide(1));
-         setShowBackBtn(true);
-         setHeaderTitle(StringHelper.firstLetterToUpper(nextSlide));
+         setHeaderTitle(StringHelper.firstLetterToUpper(slide2));
       }
       return () => {
-         setShowBackBtn(false);
-         setHandleBackBtnClick(() => null);
+         hideAndResetBackBtn();
       };
    }, [currentSlide]);
 
    function handleScroll(): void {
       const currentLeftScroll = containerRef.current?.scrollLeft;
-      if (currentLeftScroll! < prevCarouselScrollPos && currentLeftScroll === 0) {
-         setNextSlide('');
-      }
-      setPrevCarouselScrollPos(currentLeftScroll!);
+      if (currentLeftScroll! < prevScrollPos && currentLeftScroll === 0) setSlide2('');
+      setPrevScrollPos(currentLeftScroll!);
    }
 
-   function isNextSlide(slideName: NSettings.TSlides): boolean {
-      return nextSlide === slideName;
+   function isSlide2(slideName: NSettings.TSlides): boolean {
+      return slide2 === slideName;
    }
 
    function handleItemClick(item: NSettings.ISettingsOptions): void {
       if (item.hasSlide) {
-         setNextSlide(item.title as NSettings.TSlides);
+         setSlide2(item.title as NSettings.TSlides);
          scrollToSlide(2);
       } else if (item.logout) {
          auth.signOut();
@@ -85,7 +77,7 @@ export default function Settings(): JSX.Element {
             </SettingsWrapper>
          </CarouselSlide>
          <CarouselSlide height={'80dvh'}>
-            <ConditionalRender condition={isNextSlide('Account')} children={<AccountSlide />} />
+            <ConditionalRender condition={isSlide2('Account')} children={<AccountSlide />} />
          </CarouselSlide>
       </CarouselContainer>
    );

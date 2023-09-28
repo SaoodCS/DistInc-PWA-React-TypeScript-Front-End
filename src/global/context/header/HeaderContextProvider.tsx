@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import FunctionHelper from '../../helpers/dataTypes/functions/FunctionHelper';
 import useFuncState from '../../hooks/useFuncState';
 import { HeaderContext } from './HeaderContext';
 
@@ -13,6 +14,17 @@ export default function HeaderContextProvider(props: IHeaderContextProvider): JS
    const [handleBackBtnClick, setHandleBackBtnClick] = useFuncState(() => null);
    const [showBackBtn, setShowBackBtn] = useState<boolean>(false);
 
+   function hideAndResetBackBtn(): void {
+      setShowBackBtn(false);
+      setHandleBackBtnClick(() => null);
+   }
+
+   useEffect(() => {
+      if (!FunctionHelper.isNullFunction(handleBackBtnClick)) {
+         setShowBackBtn(true);
+      }
+   }, [handleBackBtnClick]);
+
    return (
       <HeaderContext.Provider
          value={{
@@ -22,6 +34,7 @@ export default function HeaderContextProvider(props: IHeaderContextProvider): JS
             setShowBackBtn,
             handleBackBtnClick,
             setHandleBackBtnClick,
+            hideAndResetBackBtn,
          }}
       >
          {children}
