@@ -9,17 +9,16 @@ import { auth } from '../../../global/firebase/config/config';
 import StringHelper from '../../../global/helpers/dataTypes/string/StringHelper';
 import useSessionStorage from '../../../global/hooks/useSessionStorage';
 import AccountSlide from './components/accountSlide/AccountSlide';
-import { ISettingsOptions, TSlides, settingsOptions } from './settingsOptions';
+import NSettings from './namespace/NSettings';
 import { IconAndLabelWrapper, ItemContainer, SettingsWrapper } from './style/Style';
-const storageId = 'settingsCarousel';
-const carouselId = `${storageId}.currentSlide`;
-const nextSlideId = `${storageId}.nextSlide`;
-const iconStyle = { height: '1.5em', paddingRight: '0.5em' };
 
 export default function Settings(): JSX.Element {
    const { toggleTheme, isDarkTheme } = useThemeContext();
-   const { containerRef, scrollToSlide, currentSlide } = useCarousel(1, carouselId);
-   const [nextSlide, setNextSlide] = useSessionStorage<TSlides | ''>(nextSlideId, '');
+   const { containerRef, scrollToSlide, currentSlide } = useCarousel(1, NSettings.key.currentSlide);
+   const [nextSlide, setNextSlide] = useSessionStorage<NSettings.TSlides | ''>(
+      NSettings.key.nextSlide,
+      '',
+   );
    const [prevCarouselScrollPos, setPrevCarouselScrollPos] = useState<number>(0);
    const { setHeaderTitle, setShowBackBtn, setHandleBackBtnClick } = useHeaderContext();
 
@@ -47,13 +46,13 @@ export default function Settings(): JSX.Element {
       setPrevCarouselScrollPos(currentLeftScroll!);
    }
 
-   function isNextSlide(slideName: TSlides): boolean {
+   function isNextSlide(slideName: NSettings.TSlides): boolean {
       return nextSlide === slideName;
    }
 
-   function handleItemClick(item: ISettingsOptions): void {
+   function handleItemClick(item: NSettings.ISettingsOptions): void {
       if (item.hasSlide) {
-         setNextSlide(item.title as TSlides);
+         setNextSlide(item.title as NSettings.TSlides);
          scrollToSlide(2);
       } else if (item.logout) {
          auth.signOut();
@@ -66,7 +65,7 @@ export default function Settings(): JSX.Element {
       <CarouselContainer ref={containerRef} onScroll={handleScroll} style={{ height: '100%' }}>
          <CarouselSlide height={'100%'}>
             <SettingsWrapper isDarkTheme={isDarkTheme}>
-               {(settingsOptions as unknown as ISettingsOptions[]).map((item, index) => (
+               {NSettings.settingsOptions.map((item) => (
                   <ItemContainer
                      key={item.title}
                      onClick={() => handleItemClick(item)}
@@ -75,7 +74,7 @@ export default function Settings(): JSX.Element {
                      isDarkTheme={isDarkTheme}
                   >
                      <IconAndLabelWrapper>
-                        <item.icon style={iconStyle} />
+                        <item.icon style={NSettings.iconStyle} />
                         {item.title}
                      </IconAndLabelWrapper>
                      <ConditionalRender condition={item.withToggle || false}>
@@ -86,9 +85,7 @@ export default function Settings(): JSX.Element {
             </SettingsWrapper>
          </CarouselSlide>
          <CarouselSlide height={'80dvh'}>
-            <ConditionalRender condition={isNextSlide('Account')}>
-               <AccountSlide storageId={storageId} carouselId={carouselId} />
-            </ConditionalRender>
+            <ConditionalRender condition={isNextSlide('Account')} children={<AccountSlide />} />
          </CarouselSlide>
       </CarouselContainer>
    );

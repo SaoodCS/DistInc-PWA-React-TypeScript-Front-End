@@ -1,22 +1,16 @@
 import { useEffect } from 'react';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useSessionStorage from '../../../../../global/hooks/useSessionStorage';
+import NSettings from '../../namespace/NSettings';
 
-interface ISettingsSlides {
-   storageId: string;
-   carouselId: string;
-}
-
-export default function AccountSlide(props: ISettingsSlides): JSX.Element {
-   const { storageId, carouselId } = props;
-   const [settingsCarousel] = useSessionStorage(carouselId, 1);
-   const identifier = `${storageId}.accountSlide`;
+export default function AccountSlide(): JSX.Element {
+   const [settingsCarousel] = useSessionStorage(NSettings.key.currentSlide, 1);
    const {
       containerRef: containerRef,
       handleOnScroll: handleOnScroll,
       scrollToTop: scrollToTop,
       scrollSaverStyle: scrollSaverStyle,
-   } = useScrollSaver(identifier);
+   } = useScrollSaver(NSettings.key.accountSlide);
 
    useEffect(() => {
       if (settingsCarousel === 1) {
