@@ -12,7 +12,7 @@ import { auth } from '../../../global/firebase/config/config';
 import StringHelper from '../../../global/helpers/dataTypes/string/StringHelper';
 import useSessionStorage from '../../../global/hooks/useSessionStorage';
 import Color from '../../../global/theme/colors';
-import useHeaderContext from '../context/header/hook/useHeaderContext';
+import useHeaderContext from '../context/header/hooks/useHeaderContext';
 import AccountSlide from './components/accountSlide/AccountSlide';
 import {
    IconAndLabelWrapper,
