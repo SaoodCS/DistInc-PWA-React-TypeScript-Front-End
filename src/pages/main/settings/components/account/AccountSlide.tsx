@@ -1,64 +1,25 @@
-import { Asterisk } from '@styled-icons/bootstrap/Asterisk';
 import { DotsHorizontalRounded } from '@styled-icons/boxicons-regular/DotsHorizontalRounded';
-import { AddAPhoto } from '@styled-icons/material-outlined/AddAPhoto';
 import { useEffect } from 'react';
 import styled from 'styled-components';
+import Asterisks from '../../../../../global/components/lib/asterisks/Asterisks';
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
+import { HorizontalMenuDots } from '../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useSessionStorage from '../../../../../global/hooks/useSessionStorage';
-import Color from '../../../../../global/theme/colors';
 import NSettings from '../../namespace/NSettings';
 import { ItemContainer, SettingsWrapper } from '../../style/Style';
 
 const UserDetails = styled.div`
    font-size: 0.75em;
-   color: #b6b6b6;
+   color: #9f9f9f;
 `;
 
-const Label = styled.div`
-   padding-top: 0.2em;
-`;
-
-const LabelAndDetailsWrapper = styled.div`
+export const LabelAndDetailsWrapper = styled.div<{ row?: boolean }>`
    display: flex;
-   flex-direction: column;
-   height: 90%;
    justify-content: center;
-   align-items: space-between;
-`;
-
-const ProfilePicContainer = styled.div`
-   height: 35%;
-   margin-bottom: 1em;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   border-radius: 1em;
-   background-color: ${Color.setRgbOpacity(Color.darkThm.txt, 0.1)};
-   position: relative;
-`;
-
-const AccountWrapper = styled.div`
-   width: 100%;
-   overflow-x: hidden;
-   padding: 1em;
-`;
-
-const HorizontalDots = styled(DotsHorizontalRounded)`
-   height: 1em;
-   padding-right: 1em;
-   font-size: 1.25em;
-`;
-
-const ProfilePhotoPlaceholder = styled(AddAPhoto)`
-   height: 70%;
-   color: ${Color.setRgbOpacity(Color.darkThm.bg, 0.7)};
-   padding: 1em;
-`;
-
-const StyledAsterisk = styled(Asterisk)`
-   height: 0.5em;
+   flex-direction: ${({ row }) => (row ? 'row' : 'column')};
+   align-items: ${({ row }) => row && 'center'};
 `;
 
 export default function AccountSlide(): JSX.Element {
@@ -75,36 +36,36 @@ export default function AccountSlide(): JSX.Element {
    }, []);
 
    return (
-      <AccountWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
-         <ProfilePicContainer>
-            <ProfilePhotoPlaceholder />
-         </ProfilePicContainer>
-         <SettingsWrapper isDarkTheme={isDarkTheme} style={{ margin: 0 }}>
-            <ItemContainer isDarkTheme={isDarkTheme} style={{ justifyContent: 'space-between' }}>
+      <>
+         <SettingsWrapper
+            isDarkTheme={isDarkTheme}
+            style={scrollSaverStyle}
+            ref={containerRef}
+            onScroll={handleOnScroll}
+         >
+            <ItemContainer isDarkTheme={isDarkTheme} spaceRow>
                <LabelAndDetailsWrapper>
-                  <Label>Email</Label>
+                  Email
                   <UserDetails>saood.aslam@hotmail.com</UserDetails>
                </LabelAndDetailsWrapper>
-               <HorizontalDots />
+               <HorizontalMenuDots />
             </ItemContainer>
-            <ItemContainer isDarkTheme={isDarkTheme} style={{ justifyContent: 'space-between' }}>
+            <ItemContainer isDarkTheme={isDarkTheme} spaceRow>
                <LabelAndDetailsWrapper>
-                  <Label>Password</Label>
+                  Password
                   <UserDetails>
-                     {Array.from({ length: 8 }, (_, i) => ( 
-                        <StyledAsterisk key={i} />
-                     ))}
+                     <Asterisks size={'0.3em'} />
                   </UserDetails>
                </LabelAndDetailsWrapper>
-               <HorizontalDots />
+               <HorizontalMenuDots />
             </ItemContainer>
-            <ItemContainer isDarkTheme={isDarkTheme} style={{ justifyContent: 'space-between' }}>
+            <ItemContainer isDarkTheme={isDarkTheme} spaceRow>
                <TextColourizer color="gold">Reset Account</TextColourizer>
             </ItemContainer>
             <ItemContainer isDarkTheme={isDarkTheme}>
                <TextColourizer color="red">Delete Account</TextColourizer>
             </ItemContainer>
          </SettingsWrapper>
-      </AccountWrapper>
+      </>
    );
 }

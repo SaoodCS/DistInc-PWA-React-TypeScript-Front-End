@@ -41,7 +41,7 @@ export const SettingsWrapper = styled.div<{ isDarkTheme: boolean }>`
 `;
 
 export const ItemContainer = styled.div<{
-   withToggle?: boolean;
+   spaceRow?: boolean;
    logoutItem?: boolean;
    isDarkTheme: boolean;
 }>`
@@ -51,8 +51,8 @@ export const ItemContainer = styled.div<{
    align-items: center;
    padding-left: 1em;
    cursor: pointer;
-   justify-content: ${({ withToggle }) => withToggle && 'space-between'};
-   padding-right: ${({ withToggle }) => withToggle && '1em'};
+   justify-content: ${({ spaceRow }) => spaceRow && 'space-between'};
+   padding-right: ${({ spaceRow }) => spaceRow && '1em'};
    color: ${({ logoutItem, isDarkTheme }) =>
       logoutItem && (isDarkTheme ? Color.darkThm.error : Color.lightThm.error)};
 `;

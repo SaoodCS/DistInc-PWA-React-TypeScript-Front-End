@@ -9,7 +9,7 @@ import useThemeContext from '../../../global/context/theme/hooks/useThemeContext
 import { auth } from '../../../global/firebase/config/config';
 import StringHelper from '../../../global/helpers/dataTypes/string/StringHelper';
 import useSessionStorage from '../../../global/hooks/useSessionStorage';
-import AccountSlide from './components/account/AccountSlide';
+import AccountSlide, { LabelAndDetailsWrapper } from './components/account/AccountSlide';
 import NSettings from './namespace/NSettings';
 import { IconAndLabelWrapper, ItemContainer, SettingsWrapper } from './style/Style';
 
@@ -60,14 +60,14 @@ export default function Settings(): JSX.Element {
                   <ItemContainer
                      key={item.title}
                      onClick={() => handleItemClick(item)}
-                     withToggle={item.withToggle}
+                     spaceRow={item.withToggle}
                      logoutItem={item.logout}
                      isDarkTheme={isDarkTheme}
                   >
-                     <IconAndLabelWrapper>
+                     <LabelAndDetailsWrapper row>
                         <item.icon style={NSettings.iconStyle} />
                         {item.title}
-                     </IconAndLabelWrapper>
+                     </LabelAndDetailsWrapper>
                      <ConditionalRender condition={item.withToggle || false}>
                         <Switcher isOn={isDarkTheme} isDarkTheme={isDarkTheme} size={'1.5em'} />
                      </ConditionalRender>
@@ -75,7 +75,7 @@ export default function Settings(): JSX.Element {
                ))}
             </SettingsWrapper>
          </CarouselSlide>
-         <CarouselSlide height={'80dvh'}>
+         <CarouselSlide height = {'100%'}>
             <ConditionalRender condition={isSlide2('Account')}>
                <AccountSlide />
             </ConditionalRender>
