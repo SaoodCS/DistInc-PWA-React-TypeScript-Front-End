@@ -27,6 +27,7 @@ export default function AccountSlide(): JSX.Element {
       setBottomPanelContent,
       setBottomPanelHeading,
       setBottomPanelHeightDvh,
+      setBottomPanelZIndex,
    } = useContext(BottomPanelContext);
 
    useEffect(() => {
@@ -39,6 +40,7 @@ export default function AccountSlide(): JSX.Element {
       setBottomPanelHeading(`Change ${name}`);
       setBottomPanelHeightDvh(80);
       setBottomPanelContent(name === 'Email' ? <ChangeEmailForm /> : <ChangePwdForm />);
+      setBottomPanelZIndex(0);
       setIsBottomPanelOpen(true);
    }
 

@@ -6,6 +6,7 @@ export const CustomSpinner = styled.div<{
    disableSpin?: boolean;
    sizePx?: string;
 }>`
+   z-index: 999;
    border: ${({ isDarkTheme, sizePx }) =>
       isDarkTheme
          ? `calc(${sizePx || '70px'} / 7 ) solid ${Color.setRgbOpacity(Color.darkThm.txt, 0.5)}`

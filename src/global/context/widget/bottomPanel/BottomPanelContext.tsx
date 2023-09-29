@@ -8,6 +8,8 @@ interface IBottomPanelContext {
    setBottomPanelHeightDvh: Dispatch<SetStateAction<number | undefined>>;
    bottomPanelContent: JSX.Element;
    handleCloseBottomPanel: () => void;
+   bottomPanelZIndex: number | undefined;
+   setBottomPanelZIndex: Dispatch<SetStateAction<number | undefined>>;
 }
 
 export const BottomPanelContext = createContext<IBottomPanelContext>({
@@ -17,4 +19,6 @@ export const BottomPanelContext = createContext<IBottomPanelContext>({
    setBottomPanelHeading: () => {},
    setBottomPanelHeightDvh: () => {},
    handleCloseBottomPanel: () => {},
+   bottomPanelZIndex: undefined,
+   setBottomPanelZIndex: () => {},
 });

@@ -10,13 +10,16 @@ interface ILoaderContextProvider {
 export const LoaderContextProvider = (props: ILoaderContextProvider): JSX.Element => {
    const { children } = props;
    const [showLoader, setShowLoader] = useState(false);
+   const [loaderZIndex, setLoaderZIndex] = useState<number | undefined>(undefined);
 
    return (
       <>
-         <LoaderContext.Provider value={{ showLoader, setShowLoader }}>
+         <LoaderContext.Provider
+            value={{ showLoader, setShowLoader, loaderZIndex, setLoaderZIndex }}
+         >
             {children}
          </LoaderContext.Provider>
-         <Loader isDisplayed={showLoader} />
+         <Loader isDisplayed={showLoader} zIndex = {loaderZIndex} />
       </>
    );
 };

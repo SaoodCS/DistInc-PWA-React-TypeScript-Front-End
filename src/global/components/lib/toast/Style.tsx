@@ -7,6 +7,7 @@ export const ToastContainer = styled.div<{
    verticalPos: TVerticalPos;
    horizontalPos: THorizontalPos;
    isDarkTheme: boolean;
+   zIndex?: number;
 }>`
    min-width: ${({ width }) => width};
    max-width: ${({ width }) => width};
@@ -25,6 +26,6 @@ export const ToastContainer = styled.div<{
    border-radius: 10px;
    padding: 1em;
    backdrop-filter: blur(5px);
-
    font-size: 0.9em;
+   z-index: ${({ zIndex }) => zIndex || 99999};
 `;

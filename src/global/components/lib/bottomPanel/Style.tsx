@@ -25,7 +25,7 @@ export const CustomPanelHeader = styled.div<{ darktheme: boolean }>`
 `;
 
 export const CustomBottomPanelSheet = styled(Sheet)<{ darktheme: boolean }>`
-   border-radius: 10px;
+   //border-radius: 10px;
    .react-modal-sheet-backdrop {
       backdrop-filter: blur(1px);
    }

@@ -15,12 +15,14 @@ export default function BottomPanelContextProvider(
    const [bottomPanelContent, setBottomPanelContent] = useState(<></>);
    const [bottomPanelHeading, setBottomPanelHeading] = useState<string | undefined>(undefined);
    const [bottomPanelHeightDvh, setBottomPanelHeightDvh] = useState<number | undefined>(undefined);
+   const [bottomPanelZIndex, setBottomPanelZIndex] = useState<number | undefined>(undefined);
 
    function handleCloseBottomPanel(): void {
       setBottomPanelContent(<></>);
       setBottomPanelHeading(undefined);
       setBottomPanelHeightDvh(undefined);
       setIsBottomPanelOpen(false);
+      setBottomPanelZIndex(undefined);
    }
 
    const contextMemo = useMemo(
@@ -31,6 +33,8 @@ export default function BottomPanelContextProvider(
          setBottomPanelHeading,
          setBottomPanelHeightDvh,
          handleCloseBottomPanel,
+         bottomPanelZIndex,
+         setBottomPanelZIndex
       }),
       [
          setIsBottomPanelOpen,
@@ -39,6 +43,8 @@ export default function BottomPanelContextProvider(
          setBottomPanelHeading,
          setBottomPanelHeightDvh,
          handleCloseBottomPanel,
+         bottomPanelZIndex,
+         setBottomPanelZIndex
       ],
    );
 
@@ -50,6 +56,7 @@ export default function BottomPanelContextProvider(
             onClose={() => handleCloseBottomPanel()}
             heading={bottomPanelHeading}
             height={bottomPanelHeightDvh}
+            zIndex={bottomPanelZIndex}
          >
             {bottomPanelContent}
          </BottomPanel>

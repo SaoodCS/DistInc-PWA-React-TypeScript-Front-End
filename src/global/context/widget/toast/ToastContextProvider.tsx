@@ -16,10 +16,12 @@ export default function ToastContextProvider(props: IToastContextProvider): JSX.
    const [width, setWidth] = useState('auto');
    const [verticalPos, setVerticalPos] = useState<TVerticalPos>('bottom');
    const [horizontalPos, setHorizontalPos] = useState<THorizontalPos>('left');
+   const [toastZIndex, setToastZIndex] = useState<number | undefined>(undefined);
 
    function handleOnClose(): void {
       setToastMessage('');
       setShowToast(false);
+      setToastZIndex(undefined);
    }
 
    return (
@@ -32,6 +34,8 @@ export default function ToastContextProvider(props: IToastContextProvider): JSX.
                setWidth,
                setVerticalPos,
                setHorizontalPos,
+               toastZIndex,
+               setToastZIndex,
             }}
          >
             {children}
@@ -43,6 +47,7 @@ export default function ToastContextProvider(props: IToastContextProvider): JSX.
             width={width}
             horizontalPos={horizontalPos}
             verticalPos={verticalPos}
+            zIndex={toastZIndex}
          />
       </>
    );

@@ -9,6 +9,8 @@ interface IToastContext {
    setWidth: Dispatch<SetStateAction<string>>;
    setVerticalPos: Dispatch<SetStateAction<TVerticalPos>>;
    setHorizontalPos: Dispatch<SetStateAction<THorizontalPos>>;
+   toastZIndex: number | undefined;
+   setToastZIndex: Dispatch<SetStateAction<number | undefined>>;
 }
 
 export const ToastContext = createContext<IToastContext>({
@@ -18,4 +20,6 @@ export const ToastContext = createContext<IToastContext>({
    setWidth: () => {},
    setVerticalPos: () => {},
    setHorizontalPos: () => {},
+   toastZIndex: undefined,
+   setToastZIndex: () => {},
 });

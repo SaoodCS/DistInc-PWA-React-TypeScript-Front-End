@@ -9,6 +9,8 @@ interface IBannerContext {
    setHandleBannerClick: Dispatch<SetStateAction<() => void>>;
    setBannerIcon: Dispatch<SetStateAction<ReactNode>>;
    setBannerHeightEm: Dispatch<SetStateAction<number>>;
+   bannerZIndex: number | undefined;
+   setBannerZIndex: Dispatch<SetStateAction<number | undefined>>;
 }
 
 export const BannerContext = createContext<IBannerContext>({
@@ -19,4 +21,6 @@ export const BannerContext = createContext<IBannerContext>({
    setHandleBannerClick: () => {},
    setBannerIcon: () => {},
    setBannerHeightEm: () => {},
+   bannerZIndex: undefined,
+   setBannerZIndex: () => {},
 });

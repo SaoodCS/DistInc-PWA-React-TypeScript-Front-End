@@ -15,12 +15,14 @@ export const BannerContextProvider = (props: IBannerContextProvider): JSX.Elemen
    const [handleBannerClick, setHandleBannerClick] = useFuncState(() => null);
    const [BannerIcon, setBannerIcon] = useState<ReactNode>(undefined);
    const [bannerHeightEm, setBannerHeightEm] = useState(5);
+   const [bannerZIndex, setBannerZIndex] = useState<number | undefined>(undefined);
 
    function onClose(): void {
       setShowBanner(false);
       setBannerIcon(undefined);
       setBannerMessage('');
       setHandleBannerClick(() => null);
+      setBannerZIndex(undefined);
    }
 
    return (
@@ -34,6 +36,8 @@ export const BannerContextProvider = (props: IBannerContextProvider): JSX.Elemen
                setHandleBannerClick,
                setBannerIcon,
                setBannerHeightEm,
+               bannerZIndex,
+               setBannerZIndex,
             }}
          >
             {children}
@@ -45,6 +49,7 @@ export const BannerContextProvider = (props: IBannerContextProvider): JSX.Elemen
             Icon={BannerIcon ? BannerIcon : undefined}
             onClose={onClose}
             heightEm={bannerHeightEm}
+            zIndex={bannerZIndex}
          />
       </>
    );

@@ -20,10 +20,11 @@ interface IBottomPanel {
    height?: number;
    heading?: string;
    heightFitContent?: boolean;
+   zIndex?: number;
 }
 
 export default function BottomPanel(props: IBottomPanel): JSX.Element {
-   const { isOpen, onClose, children, height, heading, heightFitContent } = props;
+   const { isOpen, onClose, children, height, heading, heightFitContent, zIndex } = props;
    const { isDarkTheme } = useThemeContext();
 
    return (
@@ -35,6 +36,7 @@ export default function BottomPanel(props: IBottomPanel): JSX.Element {
             darktheme={isDarkTheme}
             detent={'content-height'}
             prefersReducedMotion={false}
+            style={{ zIndex: zIndex || undefined }}
          >
             <Sheet.Container>
                <ConditionalRender condition={heading !== undefined}>

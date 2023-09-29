@@ -3,14 +3,13 @@ import {
    reauthenticateWithCredential,
    verifyBeforeUpdateEmail,
 } from 'firebase/auth';
-import { useState } from 'react';
+import { useContext } from 'react';
 import { StaticButton } from '../../../../../../global/components/lib/button/staticButton/Style';
 import { StyledForm } from '../../../../../../global/components/lib/form/form/Style';
 import InputComponent from '../../../../../../global/components/lib/form/input/Input';
-import Loader from '../../../../../../global/components/lib/loader/Loader';
-import Modal from '../../../../../../global/components/lib/modal/Modal';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
+import { ModalContext } from '../../../../../../global/context/widget/modal/ModalContext';
 import { auth } from '../../../../../../global/firebase/config/config';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
 import useForm from '../../../../../../global/hooks/useForm';
@@ -24,8 +23,9 @@ export default function ChangeEmailForm() {
    );
    const { apiError } = useApiErrorContext();
    const { isDarkTheme } = useThemeContext();
-   const [isModalOpen, setIsModalOpen] = useState(false);
-   const [isLoading, setIsLoading] = useState(false);
+   const { setIsModalOpen, setModalContent, setModalHeader, setModalZIndex } =
+      useContext(ModalContext);
+
    const updateEmailCall = useCustomMutation(
       async (formData: IChangeEmailInputs) => {
          const currentUser = auth.currentUser;
@@ -37,15 +37,16 @@ export default function ChangeEmailForm() {
          }
       },
       {
-         onMutate: () => {
-            setIsLoading(true);
-         },
          onSuccess: () => {
-            setIsLoading(false);
+            setModalZIndex(1);
+            setModalHeader('Verify New Email');
+            setModalContent(
+               <p>
+                  We sent a verification email to <strong>{form.newEmail}</strong>. Please click the
+                  link in that email to verify your new email address.
+               </p>,
+            );
             setIsModalOpen(true);
-         },
-         onSettled: () => {
-            setIsLoading(false);
          },
       },
    );
@@ -75,17 +76,6 @@ export default function ChangeEmailForm() {
          <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>
             Change Email
          </StaticButton>
-         <Modal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            header={'Verify New Email'}
-         >
-            <p>
-               We sent a verification email to <strong>{form.newEmail}</strong>. Please click the
-               link in that email to verify your new email address.
-            </p>
-         </Modal>
-         <Loader isDisplayed={isLoading} />
       </StyledForm>
    );
 }

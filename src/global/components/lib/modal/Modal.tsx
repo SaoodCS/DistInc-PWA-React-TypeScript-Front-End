@@ -19,10 +19,11 @@ interface IModal {
    onClose: () => void;
    header: string;
    children: ReactNode;
+   zIndex?: number;
 }
 
 export default function Modal(props: IModal): JSX.Element {
-   const { isOpen, onClose, header, children } = props;
+   const { isOpen, onClose, header, children, zIndex } = props;
    const { isDarkTheme } = useContext(ThemeContext);
    const [renderModal, setRenderModal] = useState(false);
 
@@ -43,7 +44,7 @@ export default function Modal(props: IModal): JSX.Element {
    return (
       <ConditionalRender condition={renderModal}>
          <DimOverlay onClick={onClose} isDisplayed={isOpen} />
-         <CenterWrapper centerOfScreen>
+         <CenterWrapper centerOfScreen zIndex={zIndex}>
             <Expander expandOutCondition={isOpen}>
                <ModalContainer isDarkTheme={isDarkTheme}>
                   <ModalHeaderContainer isDarkTheme={isDarkTheme}>

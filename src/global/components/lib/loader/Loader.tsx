@@ -6,16 +6,17 @@ import { CustomSpinner } from './Style';
 
 interface ILoader {
    isDisplayed: boolean;
+   zIndex?: number;
 }
 
 export default function Loader(props: ILoader): JSX.Element {
-   const { isDisplayed } = props;
+   const { isDisplayed, zIndex } = props;
    const { isDarkTheme } = useThemeContext();
 
    return (
       <ConditionalRender condition={isDisplayed}>
          <DimOverlay isDisplayed={isDisplayed} />
-         <CenterWrapper centerOfScreen>
+         <CenterWrapper centerOfScreen zIndex={zIndex}>
             <CustomSpinner isDarkTheme={isDarkTheme} />
          </CenterWrapper>
       </ConditionalRender>

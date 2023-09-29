@@ -14,15 +14,15 @@ export default function WidgetContextProviders(props: IWidgetContextProvidersPro
    const { children } = props;
    return (
       <ModalContextProvider>
-         <BottomPanelContextProvider>
-            <LoaderContextProvider>
-               <ApiErrorContextProvider>
-                  <BannerContextProvider>
-                     <ToastContextProvider>{children}</ToastContextProvider>
-                  </BannerContextProvider>
-               </ApiErrorContextProvider>
-            </LoaderContextProvider>
-         </BottomPanelContextProvider>
+         <LoaderContextProvider>
+            <ApiErrorContextProvider>
+               <BannerContextProvider>
+                  <ToastContextProvider>
+                     <BottomPanelContextProvider>{children}</BottomPanelContextProvider>
+                  </ToastContextProvider>
+               </BannerContextProvider>
+            </ApiErrorContextProvider>
+         </LoaderContextProvider>
       </ModalContextProvider>
    );
 }

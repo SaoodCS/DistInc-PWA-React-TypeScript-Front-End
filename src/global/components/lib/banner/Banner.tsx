@@ -12,12 +12,13 @@ interface IBanner {
    Icon?: ReactNode;
    onClose: () => void;
    heightEm?: number;
+   zIndex?: number;
 }
 
 function Banner(props: IBanner): JSX.Element {
    const backgroundId = 'bannerBackground';
    const containerId = 'bannerContainer';
-   const { message, handleClick, isVisible, Icon, onClose, heightEm } = props;
+   const { message, handleClick, isVisible, Icon, onClose, heightEm, zIndex } = props;
    const { isDarkTheme } = useContext(ThemeContext);
    const [renderBanner, setRenderBanner] = useState(isVisible);
    const [mouseDown, setMouseDown] = useState(false);
@@ -59,7 +60,12 @@ function Banner(props: IBanner): JSX.Element {
 
    return (
       <ConditionalRender condition={isVisible}>
-         <BannerBackground renderBanner={renderBanner} id={backgroundId} heightEm={heightEm || 5}>
+         <BannerBackground
+            renderBanner={renderBanner}
+            id={backgroundId}
+            heightEm={heightEm || 5}
+            zIndex={zIndex}
+         >
             <BannerContainer
                onClick={handleClick && handleClick}
                renderBanner={renderBanner}

@@ -2,9 +2,10 @@ import styled, { css } from 'styled-components';
 
 export const CenterWrapper = styled.div<{
    centerOfScreen?: boolean | true;
+   zIndex?: number;
 }>`
    position: fixed;
-   z-index: 99999;
+   z-index: ${({ zIndex }) => zIndex || 99999};
    ${({ centerOfScreen }) =>
       centerOfScreen
          ? css`

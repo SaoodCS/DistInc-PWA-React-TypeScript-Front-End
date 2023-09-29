@@ -14,10 +14,11 @@ interface IToast {
    width?: string;
    verticalPos?: TVerticalPos;
    horizontalPos?: THorizontalPos;
+   zIndex?: number;
 }
 
 export default function Toast(props: IToast): JSX.Element {
-   const { message, isVisible, onClose, width, verticalPos, horizontalPos } = props;
+   const { message, isVisible, onClose, width, verticalPos, horizontalPos, zIndex } = props;
    const [renderToast, setRenderToast] = useState(isVisible);
    const { isDarkTheme } = useThemeContext();
    let timeout1: NodeJS.Timeout;
@@ -48,6 +49,7 @@ export default function Toast(props: IToast): JSX.Element {
                   verticalPos={verticalPos || 'bottom'}
                   horizontalPos={horizontalPos || 'left'}
                   width={width || 'auto'}
+                  zIndex={zIndex || undefined}
                >
                   {message}
                </ToastContainer>
