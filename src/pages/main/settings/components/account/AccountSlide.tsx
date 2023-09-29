@@ -59,7 +59,11 @@ export default function AccountSlide(): JSX.Element {
                </ItemContentWrapper>
                <HorizontalMenuDots />
             </ItemContainer>
-            <ItemContainer isDarkTheme={isDarkTheme} spaceRow onClick={() => handleClick('Password')}>
+            <ItemContainer
+               isDarkTheme={isDarkTheme}
+               spaceRow
+               onClick={() => handleClick('Password')}
+            >
                <ItemContentWrapper>
                   Password
                   <TextColourizer color={'lightgrey'} fontSize="0.75em">
