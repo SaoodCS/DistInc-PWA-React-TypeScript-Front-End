@@ -16,7 +16,7 @@ export default function BottomPanelContextProvider(
    const [bottomPanelHeading, setBottomPanelHeading] = useState<string | undefined>(undefined);
    const [bottomPanelHeightDvh, setBottomPanelHeightDvh] = useState<number | undefined>(undefined);
 
-   function handleClose(): void {
+   function handleCloseBottomPanel(): void {
       setBottomPanelContent(<></>);
       setBottomPanelHeading(undefined);
       setBottomPanelHeightDvh(undefined);
@@ -30,8 +30,16 @@ export default function BottomPanelContextProvider(
          bottomPanelContent,
          setBottomPanelHeading,
          setBottomPanelHeightDvh,
+         handleCloseBottomPanel,
       }),
-      [setIsBottomPanelOpen, setBottomPanelContent, bottomPanelContent],
+      [
+         setIsBottomPanelOpen,
+         setBottomPanelContent,
+         bottomPanelContent,
+         setBottomPanelHeading,
+         setBottomPanelHeightDvh,
+         handleCloseBottomPanel,
+      ],
    );
 
    return (
@@ -39,7 +47,7 @@ export default function BottomPanelContextProvider(
          <BottomPanelContext.Provider value={contextMemo}>{children}</BottomPanelContext.Provider>
          <BottomPanel
             isOpen={isBottomPanelOpen}
-            onClose={() => handleClose()}
+            onClose={() => handleCloseBottomPanel()}
             heading={bottomPanelHeading}
             height={bottomPanelHeightDvh}
          >

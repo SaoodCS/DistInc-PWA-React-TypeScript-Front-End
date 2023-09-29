@@ -26,7 +26,6 @@ export default function ChangeEmailForm() {
    const { isDarkTheme } = useThemeContext();
    const [isModalOpen, setIsModalOpen] = useState(false);
    const [isLoading, setIsLoading] = useState(false);
-
    const updateEmailCall = useCustomMutation(
       async (formData: IChangeEmailInputs) => {
          const currentUser = auth.currentUser;
