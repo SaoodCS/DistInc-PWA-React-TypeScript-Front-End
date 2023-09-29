@@ -7,14 +7,17 @@ import {
    ItemContentWrapper,
    MenuListWrapper,
 } from '../../../../../global/components/lib/menuList/Style';
+import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import { auth } from '../../../../../global/firebase/config/config';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useSessionStorage from '../../../../../global/hooks/useSessionStorage';
+import Color from '../../../../../global/theme/colors';
 import NSettings from '../../namespace/NSettings';
 import ChangeEmailForm from './changeEmailForm/ChangeEmailForm';
 import ChangePwdForm from './changePwdForm/ChangePwdForm';
+import AccountClass from './class/AccountClass';
 
 export default function AccountSlide(): JSX.Element {
    const [settingsCarousel] = useSessionStorage(NSettings.key.currentSlide, 1);
@@ -37,11 +40,19 @@ export default function AccountSlide(): JSX.Element {
    }, []);
 
    function handleClick(name: string) {
-      setBottomPanelHeading(`Change ${name}`);
-      setBottomPanelHeightDvh(80);
-      setBottomPanelContent(name === 'Email' ? <ChangeEmailForm /> : <ChangePwdForm />);
-      setBottomPanelZIndex(0);
-      setIsBottomPanelOpen(true);
+      if (name === 'Email' || name === 'Password') {
+         setBottomPanelHeading(`New ${name}`);
+         setBottomPanelHeightDvh(80);
+         setBottomPanelContent(name === 'Email' ? <ChangeEmailForm /> : <ChangePwdForm />);
+         setBottomPanelZIndex(0);
+         setIsBottomPanelOpen(true);
+      }
+   }
+
+   function handleDetailsColor(): string {
+      return isDarkTheme
+         ? Color.setRgbOpacity(Color.darkThm.txt, 0.5)
+         : Color.setRgbOpacity(Color.lightThm.txt, 0.5);
    }
 
    return (
@@ -52,34 +63,27 @@ export default function AccountSlide(): JSX.Element {
             ref={containerRef}
             onScroll={handleOnScroll}
          >
-            <ItemContainer isDarkTheme={isDarkTheme} spaceRow onClick={() => handleClick('Email')}>
-               <ItemContentWrapper>
-                  Email
-                  <TextColourizer color={'lightgrey'} fontSize="0.75em">
-                     {auth.currentUser?.email}
-                  </TextColourizer>
-               </ItemContentWrapper>
-               <HorizontalMenuDots />
-            </ItemContainer>
-            <ItemContainer
-               isDarkTheme={isDarkTheme}
-               spaceRow
-               onClick={() => handleClick('Password')}
-            >
-               <ItemContentWrapper>
-                  Password
-                  <TextColourizer color={'lightgrey'} fontSize="0.75em">
-                     <Asterisks size={'0.3em'} />
-                  </TextColourizer>
-               </ItemContentWrapper>
-               <HorizontalMenuDots />
-            </ItemContainer>
-            <ItemContainer isDarkTheme={isDarkTheme} spaceRow>
-               <TextColourizer color="gold">Reset Account</TextColourizer>
-            </ItemContainer>
-            <ItemContainer isDarkTheme={isDarkTheme}>
-               <TextColourizer color="red">Delete Account</TextColourizer>
-            </ItemContainer>
+            {AccountClass.menuOptions.map((item, index) => (
+               <ItemContainer
+                  key={index}
+                  isDarkTheme={isDarkTheme}
+                  spaceRow
+                  onClick={() => handleClick(item.name)}
+               >
+                  <ItemContentWrapper>
+                     <TextColourizer color={item.color}>{item.name}</TextColourizer>
+                     <ConditionalRender condition={!!item.detailsContent}>
+                        <TextColourizer color={handleDetailsColor()} fontSize="0.75em">
+                           {item.name === 'Password' && <Asterisks size={'0.4em'} />}
+                           {item.name === 'Email' && auth.currentUser?.email}
+                        </TextColourizer>
+                     </ConditionalRender>
+                  </ItemContentWrapper>
+                  <ConditionalRender condition={!!item.withMenuDots}>
+                     <HorizontalMenuDots />
+                  </ConditionalRender>
+               </ItemContainer>
+            ))}
          </MenuListWrapper>
       </>
    );
