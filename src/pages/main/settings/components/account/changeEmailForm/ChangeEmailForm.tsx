@@ -9,8 +9,9 @@ import InputComponent from '../../../../../../global/components/lib/form/input/I
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
 import { auth } from '../../../../../../global/firebase/config/config';
+import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
 import useForm from '../../../../../../global/hooks/useForm';
-import ChangeEmailClass from './Class';
+import ChangeEmailClass, { IChangeEmailInputs } from './Class';
 
 export default function ChangeEmailForm() {
    const { form, errors, handleChange, initHandleSubmit } = useForm(
@@ -18,26 +19,23 @@ export default function ChangeEmailForm() {
       ChangeEmailClass.initialErrors,
       ChangeEmailClass.validate,
    );
-   const { apiError, setApiError } = useApiErrorContext();
+   const { apiError } = useApiErrorContext();
    const { isDarkTheme } = useThemeContext();
+
+   const updateEmailCall = useCustomMutation(async (formData: IChangeEmailInputs) => {
+      const currentUser = auth.currentUser;
+      const { currentEmail, currentPassword, newEmail } = formData;
+      if (currentUser) {
+         const credential = EmailAuthProvider.credential(currentEmail, currentPassword);
+         await reauthenticateWithCredential(currentUser, credential);
+         await verifyBeforeUpdateEmail(currentUser, newEmail);
+      }
+   });
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
       if (!isFormValid) return;
-      try {
-         const currentUser = auth.currentUser;
-         if (currentUser) {
-            const credential = EmailAuthProvider.credential(
-               form.currentEmail,
-               form.currentPassword,
-            );
-            await reauthenticateWithCredential(currentUser, credential);
-            await verifyBeforeUpdateEmail(currentUser, form.newEmail);
-            
-         }
-      } catch (err) {
-         console.log(err);
-      }
+      await updateEmailCall.mutateAsync(form);
    }
 
    return (
