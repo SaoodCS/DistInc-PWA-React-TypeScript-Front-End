@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import Clickables from '../../../../global/helpers/styledComponents/clickables';
-import Color from '../../../../global/theme/colors';
+import Clickables from '../../../helpers/styledComponents/clickables';
+import Color from '../../../theme/colors';
 
 export const MenuListWrapper = styled.div<{ isDarkTheme: boolean }>`
    height: fit-content;

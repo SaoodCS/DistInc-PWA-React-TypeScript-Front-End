@@ -2,6 +2,11 @@ import { useEffect, useState } from 'react';
 import { Switcher } from '../../../global/components/lib/button/switch/Style';
 import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Style';
 import useCarousel from '../../../global/components/lib/carousel/hooks/useCarousel';
+import {
+   ItemContainer,
+   ItemContentWrapper,
+   MenuListWrapper,
+} from '../../../global/components/lib/menuList/Style';
 import ConditionalRender from '../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import HeaderHooks from '../../../global/context/header/hooks/HeaderHooks';
 import useHeaderContext from '../../../global/context/header/hooks/useHeaderContext';
@@ -11,7 +16,6 @@ import StringHelper from '../../../global/helpers/dataTypes/string/StringHelper'
 import useSessionStorage from '../../../global/hooks/useSessionStorage';
 import AccountSlide from './components/account/AccountSlide';
 import NSettings from './namespace/NSettings';
-import { ItemContentWrapper, ItemContainer, MenuListWrapper } from './style/Style';
 
 export default function Settings(): JSX.Element {
    const { toggleTheme, isDarkTheme } = useThemeContext();

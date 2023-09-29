@@ -2,11 +2,15 @@ import { useEffect } from 'react';
 import Asterisks from '../../../../../global/components/lib/asterisks/Asterisks';
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { HorizontalMenuDots } from '../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
+import {
+   ItemContainer,
+   ItemContentWrapper,
+   MenuListWrapper,
+} from '../../../../../global/components/lib/menuList/Style';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useSessionStorage from '../../../../../global/hooks/useSessionStorage';
 import NSettings from '../../namespace/NSettings';
-import { ItemContainer, ItemContentWrapper, MenuListWrapper } from '../../style/Style';
 
 export default function AccountSlide(): JSX.Element {
    const [settingsCarousel] = useSessionStorage(NSettings.key.currentSlide, 1);
