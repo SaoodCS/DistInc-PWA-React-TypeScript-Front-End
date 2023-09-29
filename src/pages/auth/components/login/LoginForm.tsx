@@ -11,7 +11,7 @@ import { ForgottenPwdBtn } from '../../style/Style';
 import type { ILoginInputs } from './Class';
 import LoginClass from './Class';
 
-export default function RegisterForm(): JSX.Element {
+export default function LoginForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const {
       form: loginForm,
