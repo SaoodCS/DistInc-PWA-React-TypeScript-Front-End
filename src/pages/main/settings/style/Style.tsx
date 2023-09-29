@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Clickables from '../../../../global/helpers/styledComponents/clickables';
 import Color from '../../../../global/theme/colors';
 
-export const SettingsWrapper = styled.div<{ isDarkTheme: boolean }>`
+export const MenuListWrapper = styled.div<{ isDarkTheme: boolean }>`
    height: fit-content;
    margin: 1em;
    background-color: ${({ isDarkTheme }) =>
@@ -57,4 +57,9 @@ export const ItemContainer = styled.div<{
       logoutItem && (isDarkTheme ? Color.darkThm.error : Color.lightThm.error)};
 `;
 
-export const IconAndLabelWrapper = styled.div``;
+export const ItemContentWrapper = styled.div<{ row?: boolean }>`
+   display: flex;
+   justify-content: center;
+   flex-direction: ${({ row }) => (row ? 'row' : 'column')};
+   align-items: ${({ row }) => row && 'center'};
+`;

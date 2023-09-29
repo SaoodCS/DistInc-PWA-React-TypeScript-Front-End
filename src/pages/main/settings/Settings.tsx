@@ -9,9 +9,9 @@ import useThemeContext from '../../../global/context/theme/hooks/useThemeContext
 import { auth } from '../../../global/firebase/config/config';
 import StringHelper from '../../../global/helpers/dataTypes/string/StringHelper';
 import useSessionStorage from '../../../global/hooks/useSessionStorage';
-import AccountSlide, { LabelAndDetailsWrapper } from './components/account/AccountSlide';
+import AccountSlide from './components/account/AccountSlide';
 import NSettings from './namespace/NSettings';
-import { IconAndLabelWrapper, ItemContainer, SettingsWrapper } from './style/Style';
+import { ItemContentWrapper, ItemContainer, MenuListWrapper } from './style/Style';
 
 export default function Settings(): JSX.Element {
    const { toggleTheme, isDarkTheme } = useThemeContext();
@@ -55,7 +55,7 @@ export default function Settings(): JSX.Element {
    return (
       <CarouselContainer ref={containerRef} onScroll={handleScroll} style={{ height: '100%' }}>
          <CarouselSlide height={'100%'}>
-            <SettingsWrapper isDarkTheme={isDarkTheme}>
+            <MenuListWrapper isDarkTheme={isDarkTheme}>
                {NSettings.settingsOptions.map((item) => (
                   <ItemContainer
                      key={item.title}
@@ -64,18 +64,18 @@ export default function Settings(): JSX.Element {
                      logoutItem={item.logout}
                      isDarkTheme={isDarkTheme}
                   >
-                     <LabelAndDetailsWrapper row>
+                     <ItemContentWrapper row>
                         <item.icon style={NSettings.iconStyle} />
                         {item.title}
-                     </LabelAndDetailsWrapper>
+                     </ItemContentWrapper>
                      <ConditionalRender condition={item.withToggle || false}>
                         <Switcher isOn={isDarkTheme} isDarkTheme={isDarkTheme} size={'1.5em'} />
                      </ConditionalRender>
                   </ItemContainer>
                ))}
-            </SettingsWrapper>
+            </MenuListWrapper>
          </CarouselSlide>
-         <CarouselSlide height = {'100%'}>
+         <CarouselSlide height={'100%'}>
             <ConditionalRender condition={isSlide2('Account')}>
                <AccountSlide />
             </ConditionalRender>
