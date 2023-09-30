@@ -39,6 +39,7 @@ export const ScrollNavigatorBtn = styled.div<{
               isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive,
               0.3,
            )};
+   cursor: pointer;
    font-size: 1.5em;
    padding-left: 1em;
    padding-right: 1em;
@@ -88,7 +89,7 @@ export const Centerer = styled.div`
 export const ForgottenPwdBtn = styled(TextBtn)`
    display: flex;
    justify-content: center;
-   padding-top: 2.25em;
+   margin-top: 2em;
 `;
 
 export const ContactFooterWrapper = styled.div`
