@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-interface IApiErrorContext {
+export interface IApiErrorContext {
    apiError: string;
    setApiError: React.Dispatch<React.SetStateAction<string>>;
 }

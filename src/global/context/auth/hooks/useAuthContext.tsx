@@ -1,12 +1,7 @@
 import { useContext } from 'react';
-import { AuthContext } from '../AuthContext';
+import { AuthContext, IAuthContext } from '../AuthContext';
 
-interface IUseAuthContextReturn {
-   isSignedIn: boolean | null;
-   setIsSignedIn: React.Dispatch<React.SetStateAction<boolean | null>>;
-}
-
-export default function useAuthContext(): IUseAuthContextReturn {
+export default function useAuthContext(): IAuthContext {
    const { isSignedIn, setIsSignedIn } = useContext(AuthContext);
 
    return { isSignedIn, setIsSignedIn };

@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { createContext } from 'react';
 
-interface IHeaderContext {
+export interface IHeaderContext {
    headerTitle: string;
    setHeaderTitle: React.Dispatch<React.SetStateAction<string>>;
    showBackBtn: boolean;

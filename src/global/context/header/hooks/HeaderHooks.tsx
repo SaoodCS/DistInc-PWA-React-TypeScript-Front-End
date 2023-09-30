@@ -1,9 +1,8 @@
 import { useContext, useEffect } from 'react';
-import { HeaderContext } from '../HeaderContext';
-import type { IUseHeaderContext } from './useHeaderContext';
+import { HeaderContext, IHeaderContext } from '../HeaderContext';
 
 export default class HeaderHooks {
-   static useHeaderContext(): IUseHeaderContext {
+   static useHeaderContext(): IHeaderContext {
       const {
          headerTitle,
          setHeaderTitle,

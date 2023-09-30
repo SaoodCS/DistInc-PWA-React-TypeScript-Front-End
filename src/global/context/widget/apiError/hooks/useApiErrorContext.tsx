@@ -1,12 +1,7 @@
 import { useContext } from 'react';
-import { ApiErrorContext } from '../apiErrorContext';
+import { ApiErrorContext, IApiErrorContext } from '../apiErrorContext';
 
-interface IUseApiErrorReturn {
-   apiError: string;
-   setApiError: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export default function useApiErrorContext(): IUseApiErrorReturn {
+export default function useApiErrorContext(): IApiErrorContext {
    const { apiError, setApiError } = useContext(ApiErrorContext);
    return { apiError, setApiError };
 }

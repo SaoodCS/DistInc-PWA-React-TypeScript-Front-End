@@ -1,18 +1,8 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { useContext } from 'react';
-import { HeaderContext } from '../HeaderContext';
+import { HeaderContext, IHeaderContext } from '../HeaderContext';
 
-export interface IUseHeaderContext {
-   headerTitle: string;
-   setHeaderTitle: React.Dispatch<React.SetStateAction<string>>;
-   showBackBtn: boolean;
-   setShowBackBtn: React.Dispatch<React.SetStateAction<boolean>>;
-   handleBackBtnClick: () => void;
-   setHandleBackBtnClick: Dispatch<SetStateAction<() => void>>;
-   hideAndResetBackBtn: () => void;
-}
-
-export default function useHeaderContext(): IUseHeaderContext {
+export default function useHeaderContext(): IHeaderContext {
    const {
       headerTitle,
       setHeaderTitle,
