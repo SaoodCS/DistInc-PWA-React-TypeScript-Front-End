@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useFuncState from '../../hooks/useFuncState';
 import { HeaderContext } from './HeaderContext';
 
@@ -17,6 +17,11 @@ export default function HeaderContextProvider(props: IHeaderContextProvider): JS
       setShowBackBtn(false);
       setHandleBackBtnClick(() => null);
    }
+
+   useEffect(() => {
+      const backBtnClickVal = handleBackBtnClick?.toString();
+      if (backBtnClickVal && !backBtnClickVal.includes('null')) setShowBackBtn(true);
+   }, [handleBackBtnClick]);
 
    return (
       <HeaderContext.Provider
