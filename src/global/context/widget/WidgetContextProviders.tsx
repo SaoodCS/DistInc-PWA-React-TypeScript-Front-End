@@ -13,16 +13,16 @@ interface IWidgetContextProvidersProps {
 export default function WidgetContextProviders(props: IWidgetContextProvidersProps): JSX.Element {
    const { children } = props;
    return (
-      <ModalContextProvider>
-         <LoaderContextProvider>
-            <ApiErrorContextProvider>
-               <BannerContextProvider>
-                  <ToastContextProvider>
+      <LoaderContextProvider>
+         <ApiErrorContextProvider>
+            <BannerContextProvider>
+               <ToastContextProvider>
+                  <ModalContextProvider>
                      <BottomPanelContextProvider>{children}</BottomPanelContextProvider>
-                  </ToastContextProvider>
-               </BannerContextProvider>
-            </ApiErrorContextProvider>
-         </LoaderContextProvider>
-      </ModalContextProvider>
+                  </ModalContextProvider>
+               </ToastContextProvider>
+            </BannerContextProvider>
+         </ApiErrorContextProvider>
+      </LoaderContextProvider>
    );
 }
