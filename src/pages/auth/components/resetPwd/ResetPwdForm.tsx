@@ -5,7 +5,7 @@ import { StyledForm } from '../../../../global/components/lib/form/form/Style';
 import InputComponent from '../../../../global/components/lib/form/input/Input';
 import useThemeContext from '../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../global/context/widget/apiError/hooks/useApiErrorContext';
-import { BannerContext } from '../../../../global/context/widget/banner/BannerContext';
+import { ToastContext } from '../../../../global/context/widget/toast/ToastContext';
 import { auth } from '../../../../global/firebase/config/config';
 import { useCustomMutation } from '../../../../global/hooks/useCustomMutation';
 import useForm from '../../../../global/hooks/useForm';
@@ -19,16 +19,16 @@ export default function ResetPwdForm(): JSX.Element {
       ResetPwdClass.validate,
    );
    const { apiError } = useApiErrorContext();
-   const { setShowBanner, setBannerMessage, setBannerZIndex } = useContext(BannerContext);
+   const { setShowToast, setToastMessage, setToastZIndex } = useContext(ToastContext);
    const sendResetPwdEmail = useCustomMutation(
       async (formData: IResetPwdInputs) => {
          await sendPasswordResetEmail(auth, formData.email);
       },
       {
          onSuccess: () => {
-            setBannerMessage('Email sent successfully. Check your inbox!');
-            setBannerZIndex(1);
-            setShowBanner(true);
+            setToastMessage('Email sent successfully. Check your inbox!');
+            setToastZIndex(1);
+            setShowToast(true);
          },
       },
    );

@@ -5,10 +5,10 @@ import AppRouter from './routes/AppRouter';
 export default function App(): JSX.Element {
    return (
       <>
-            <HeaderContextProvider>
-               <AppRouter />
-               <ReactQueryDevtools initialIsOpen={false} />
-            </HeaderContextProvider>
+         <HeaderContextProvider>
+            <AppRouter />
+            <ReactQueryDevtools initialIsOpen={false} />
+         </HeaderContextProvider>
       </>
    );
 }
