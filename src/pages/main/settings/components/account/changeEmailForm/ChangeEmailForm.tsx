@@ -58,7 +58,7 @@ export default function ChangeEmailForm() {
    }
 
    return (
-      <StyledForm onSubmit={handleSubmit} apiError={apiError} style={{ width: '90%' }}>
+      <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
          {ChangeEmailClass.inputs.map((input) => (
             <InputComponent
                placeholder={input.placeholder}

@@ -6,18 +6,18 @@ import type { StyledIcon } from 'styled-icons/types';
 
 export namespace NSettings {
    export type ISettingsOptions = {
-      title: string;
+      name: string;
       icon: StyledIcon;
       hasSlide?: boolean;
       withToggle?: boolean;
-      logout?: boolean;
+      dangerItem?: boolean;
    };
 
    export type TSlides = string &
       {
          [K in keyof typeof settingsOptionsConst]: (typeof settingsOptionsConst)[K] extends {
             hasSlide: true;
-            title: infer U;
+            name: infer U;
          }
             ? U
             : never;
@@ -25,24 +25,24 @@ export namespace NSettings {
 
    export const settingsOptionsConst = [
       {
-         title: 'Account',
+         name: 'Account',
          icon: PersonSettings,
          hasSlide: true,
       },
       {
-         title: 'Notifications',
+         name: 'Notifications',
          icon: EditNotifications,
          hasSlide: true,
       },
       {
-         title: 'Toggle Theme',
+         name: 'Toggle Theme',
          icon: DarkTheme,
          withToggle: true,
       },
       {
-         title: 'Logout',
+         name: 'Logout',
          icon: LogOut,
-         logout: true,
+         dangerItem: true,
       },
    ] as const;
 

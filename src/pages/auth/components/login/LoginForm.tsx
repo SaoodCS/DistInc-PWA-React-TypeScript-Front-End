@@ -44,7 +44,7 @@ export default function LoginForm(): JSX.Element {
    }
 
    return (
-      <StyledForm onSubmit={handleSubmit} apiError={apiError}>
+      <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
          {LoginClass.inputs.map((input) => (
             <InputComponent
                placeholder={input.placeholder}

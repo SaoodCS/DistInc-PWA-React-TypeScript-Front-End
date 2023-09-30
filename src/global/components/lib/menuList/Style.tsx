@@ -42,7 +42,8 @@ export const MenuListWrapper = styled.div<{ isDarkTheme: boolean }>`
 
 export const ItemContainer = styled.div<{
    spaceRow?: boolean;
-   logoutItem?: boolean;
+   dangerItem?: boolean;
+   warningItem?: boolean;
    isDarkTheme: boolean;
 }>`
    ${Clickables.removeDefaultEffects};
@@ -53,8 +54,16 @@ export const ItemContainer = styled.div<{
    cursor: pointer;
    justify-content: ${({ spaceRow }) => spaceRow && 'space-between'};
    padding-right: ${({ spaceRow }) => spaceRow && '1em'};
-   color: ${({ logoutItem, isDarkTheme }) =>
-      logoutItem && (isDarkTheme ? Color.darkThm.error : Color.lightThm.error)};
+   color: ${({ dangerItem, warningItem, isDarkTheme }) =>
+      dangerItem
+         ? isDarkTheme
+            ? Color.darkThm.error
+            : Color.lightThm.error
+         : warningItem
+         ? isDarkTheme
+            ? Color.darkThm.warning
+            : Color.lightThm.warning
+         : undefined};
 `;
 
 export const ItemContentWrapper = styled.div<{ row?: boolean }>`

@@ -1,8 +1,11 @@
+
+
 interface IMenuOptions {
    name: string;
-   color?: string;
    withMenuDots?: boolean;
    detailsContent?: boolean;
+   warningItem?: boolean;
+   dangerItem?: boolean;
 }
 
 export default class AccountClass {
@@ -19,11 +22,11 @@ export default class AccountClass {
       },
       {
          name: 'Reset Account',
-         color: 'gold',
+         warningItem: true,
       },
       {
          name: 'Delete Account',
-         color: 'red',
+         dangerItem: true,
       },
    ];
 }

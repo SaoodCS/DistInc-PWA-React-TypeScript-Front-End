@@ -47,9 +47,9 @@ export default function Settings(): JSX.Element {
 
    async function handleItemClick(item: NSettings.ISettingsOptions): Promise<void> {
       if (item.hasSlide) {
-         setSlide2(item.title as NSettings.TSlides);
+         setSlide2(item.name as NSettings.TSlides);
          scrollToSlide(2);
-      } else if (item.logout) {
+      } else if (item.name === 'Logout') {
          await auth.signOut();
       } else if (item.withToggle) {
          toggleTheme();
@@ -62,15 +62,15 @@ export default function Settings(): JSX.Element {
             <MenuListWrapper isDarkTheme={isDarkTheme}>
                {NSettings.settingsOptions.map((item) => (
                   <ItemContainer
-                     key={item.title}
+                     key={item.name}
                      onClick={() => handleItemClick(item)}
                      spaceRow={item.withToggle}
-                     logoutItem={item.logout}
+                     dangerItem={item.dangerItem}
                      isDarkTheme={isDarkTheme}
                   >
                      <ItemContentWrapper row>
                         <item.icon style={NSettings.iconStyle} />
-                        {item.title}
+                        {item.name}
                      </ItemContentWrapper>
                      <ConditionalRender condition={item.withToggle || false}>
                         <Switcher isOn={isDarkTheme} isDarkTheme={isDarkTheme} size={'1.5em'} />

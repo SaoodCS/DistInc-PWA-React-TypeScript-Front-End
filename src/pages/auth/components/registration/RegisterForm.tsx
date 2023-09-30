@@ -38,7 +38,7 @@ export default function RegisterForm(): JSX.Element {
    }
 
    return (
-      <StyledForm onSubmit={handleSubmit} apiError={apiError}>
+      <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
          {RegClass.inputs.map((input) => (
             <InputComponent
                placeholder={input.placeholder}

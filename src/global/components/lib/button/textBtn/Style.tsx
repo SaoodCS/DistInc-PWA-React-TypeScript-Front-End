@@ -24,7 +24,6 @@ export const TextBtn = styled.button.attrs<ITextBtnAttrs>(({ isDisabled }) => ({
          : isDarkTheme
          ? Color.darkThm.accent
          : Color.lightThm.accent};
-   backdrop-filter: blur(30px);
    justify-content: ${({ position }) => (position === 'center' ? 'center' : position === 'right' ? 'end' : 'start')};
    display: flex;
 

@@ -67,11 +67,13 @@ export default function AccountSlide(): JSX.Element {
                <ItemContainer
                   key={index}
                   isDarkTheme={isDarkTheme}
-                  spaceRow
+                  spaceRow={item.withMenuDots}
                   onClick={() => handleClick(item.name)}
+                  dangerItem={item.dangerItem}
+                  warningItem={item.warningItem}
                >
                   <ItemContentWrapper>
-                     <TextColourizer color={item.color}>{item.name}</TextColourizer>
+                     {item.name}
                      <ConditionalRender condition={!!item.detailsContent}>
                         <TextColourizer color={handleDetailsColor()} fontSize="0.75em">
                            {item.name === 'Password' && <Asterisks size={'0.4em'} />}
