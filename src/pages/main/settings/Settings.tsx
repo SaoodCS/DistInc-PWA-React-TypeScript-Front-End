@@ -22,7 +22,7 @@ export default function Settings(): JSX.Element {
    const { containerRef, scrollToSlide, currentSlide } = useCarousel(1, NSettings.key.currentSlide);
    const [slide2, setSlide2] = useSessionStorage<NSettings.TSlides | ''>(NSettings.key.slide2, '');
    const [prevScrollPos, setPrevScrollPos] = useState<number>(0);
-   const { setHeaderTitle, setHandleBackBtnClick, hideAndResetBackBtn } = useHeaderContext();
+   const { setHeaderTitle, setHandleBackBtnClick, hideAndResetBackBtn, setShowBackBtn } = useHeaderContext();
    HeaderHooks.useOnUnMount.hideAndResetBackBtn();
 
    useEffect(() => {
@@ -30,6 +30,7 @@ export default function Settings(): JSX.Element {
          hideAndResetBackBtn();
          setHeaderTitle('Settings');
       } else {
+         setShowBackBtn(true);
          setHandleBackBtnClick(() => scrollToSlide(1));
          setHeaderTitle(StringHelper.firstLetterToUpper(slide2));
       }
