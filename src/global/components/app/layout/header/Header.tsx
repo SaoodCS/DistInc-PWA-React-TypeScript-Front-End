@@ -25,9 +25,19 @@ export const Header = styled.div<{ isDarkTheme: boolean }>`
    }
 `;
 
-export const StyledBackArr = styled(ArrowIosBack)`
+export const StyledBackArr = styled(ArrowIosBack)<{ darktheme: boolean }>`
    height: 1.5em;
    position: fixed;
    left: 0;
    padding-left: 1em;
+   @media (min-width: 850px) {
+      left: 15%;
+      padding-left: 0;
+      height: 1.25em;
+      &:hover {
+         cursor: pointer;
+         color: ${({ darktheme }) =>
+            Color.setRgbOpacity(darktheme ? Color.darkThm.txt : Color.lightThm.txt, 0.5)};
+      }
+   }
 `;
