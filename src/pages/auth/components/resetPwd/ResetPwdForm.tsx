@@ -9,7 +9,8 @@ import { ToastContext } from '../../../../global/context/widget/toast/ToastConte
 import { auth } from '../../../../global/firebase/config/config';
 import { useCustomMutation } from '../../../../global/hooks/useCustomMutation';
 import useForm from '../../../../global/hooks/useForm';
-import ResetPwdClass, { IResetPwdInputs } from './Class';
+import type { IResetPwdInputs } from './Class';
+import ResetPwdClass from './Class';
 
 export default function ResetPwdForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();

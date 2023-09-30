@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'styled-components';
 import styled from 'styled-components';
 import { TextBtn } from '../../../global/components/lib/button/textBtn/Style';
 import Clickables from '../../../global/helpers/styledComponents/clickables';
@@ -109,11 +108,12 @@ export const ContactFooterTitle = styled.div<{ isDarkTheme: boolean }>`
    font-size: 0.75em;
 `;
 
-export const ContactIconsWrapper = styled.div<{isDarkTheme: boolean}>`
+export const ContactIconsWrapper = styled.div<{ isDarkTheme: boolean }>`
    > * {
       height: 2em;
       padding: 0.25em;
-      color: ${({isDarkTheme}) => Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.9)};
+      color: ${({ isDarkTheme }) =>
+         Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.9)};
       cursor: pointer;
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
       background: none;

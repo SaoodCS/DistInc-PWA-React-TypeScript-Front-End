@@ -19,7 +19,7 @@ export const LoaderContextProvider = (props: ILoaderContextProvider): JSX.Elemen
          >
             {children}
          </LoaderContext.Provider>
-         <Loader isDisplayed={showLoader} zIndex = {loaderZIndex} />
+         <Loader isDisplayed={showLoader} zIndex={loaderZIndex} />
       </>
    );
 };

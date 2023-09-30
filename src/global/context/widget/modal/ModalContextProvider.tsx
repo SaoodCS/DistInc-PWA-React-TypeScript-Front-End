@@ -36,7 +36,12 @@ export default function ModalContextProvider(props: IModalContextProvider): JSX.
    return (
       <>
          <ModalContext.Provider value={contextMemo}>{children}</ModalContext.Provider>
-         <Modal isOpen={isModalOpen} onClose={() => handleClose()} header={modalHeader} zIndex = {modalZIndex}>
+         <Modal
+            isOpen={isModalOpen}
+            onClose={() => handleClose()}
+            header={modalHeader}
+            zIndex={modalZIndex}
+         >
             {modalContent}
          </Modal>
       </>

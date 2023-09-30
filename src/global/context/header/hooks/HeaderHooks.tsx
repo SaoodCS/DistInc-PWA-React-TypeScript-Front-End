@@ -1,5 +1,6 @@
 import { useContext, useEffect } from 'react';
-import { HeaderContext, IHeaderContext } from '../HeaderContext';
+import type { IHeaderContext } from '../HeaderContext';
+import { HeaderContext } from '../HeaderContext';
 
 export default class HeaderHooks {
    static useHeaderContext(): IHeaderContext {

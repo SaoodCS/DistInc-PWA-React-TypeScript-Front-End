@@ -2,7 +2,11 @@ import styled from 'styled-components';
 import Scrollbar from '../../../helpers/styledComponents/scrollbars';
 import Color from '../../../theme/colors';
 
-export const BannerBackground = styled.div<{ renderBanner: boolean; heightEm: number; zIndex?: number }>`
+export const BannerBackground = styled.div<{
+   renderBanner: boolean;
+   heightEm: number;
+   zIndex?: number;
+}>`
    position: fixed;
    top: ${({ renderBanner, heightEm }) => (renderBanner ? '0em' : `-${heightEm * 2}em}`)};
    transition: top 0.3s ease-out;

@@ -13,9 +13,10 @@ import { ModalContext } from '../../../../../../global/context/widget/modal/Moda
 import { auth } from '../../../../../../global/firebase/config/config';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
 import useForm from '../../../../../../global/hooks/useForm';
-import ChangeEmailClass, { IChangeEmailInputs } from './class/ChangeEmailClass';
+import type { IChangeEmailInputs } from './class/ChangeEmailClass';
+import ChangeEmailClass from './class/ChangeEmailClass';
 
-export default function ChangeEmailForm() {
+export default function ChangeEmailForm(): JSX.Element {
    const { form, errors, handleChange, initHandleSubmit } = useForm(
       ChangeEmailClass.initialState,
       ChangeEmailClass.initialErrors,

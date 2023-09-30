@@ -9,9 +9,10 @@ import { ModalContext } from '../../../../../../global/context/widget/modal/Moda
 import { auth } from '../../../../../../global/firebase/config/config';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
 import useForm from '../../../../../../global/hooks/useForm';
-import ChangePwdClass, { IChangePwdInputs } from './class/ChangePwdClass';
+import type { IChangePwdInputs } from './class/ChangePwdClass';
+import ChangePwdClass from './class/ChangePwdClass';
 
-export default function ChangePasswordForm() {
+export default function ChangePasswordForm(): JSX.Element {
    const { form, errors, handleChange, initHandleSubmit } = useForm(
       ChangePwdClass.initialState,
       ChangePwdClass.initialErrors,

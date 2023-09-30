@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import { IThemeContext, ThemeContext } from '../ThemeContext';
+import type { IThemeContext } from '../ThemeContext';
+import { ThemeContext } from '../ThemeContext';
 
 export default function useThemeContext(): IThemeContext {
    const { isDarkTheme, toggleTheme, isPortableDevice } = useContext(ThemeContext);

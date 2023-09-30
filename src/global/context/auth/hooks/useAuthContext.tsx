@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import { AuthContext, IAuthContext } from '../AuthContext';
+import type { IAuthContext } from '../AuthContext';
+import { AuthContext } from '../AuthContext';
 
 export default function useAuthContext(): IAuthContext {
    const { isSignedIn, setIsSignedIn } = useContext(AuthContext);

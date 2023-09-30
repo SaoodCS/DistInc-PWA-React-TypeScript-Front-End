@@ -1,6 +1,6 @@
-import type { Dispatch, SetStateAction } from 'react';
 import { useContext } from 'react';
-import { HeaderContext, IHeaderContext } from '../HeaderContext';
+import type { IHeaderContext } from '../HeaderContext';
+import { HeaderContext } from '../HeaderContext';
 
 export default function useHeaderContext(): IHeaderContext {
    const {

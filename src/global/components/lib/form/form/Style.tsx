@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import Color from '../../../../theme/colors';
 
-export const StyledForm = styled.form<{ apiError?: string, padding?:number }>`
+export const StyledForm = styled.form<{ apiError?: string; padding?: number }>`
    box-sizing: border-box;
-   padding: ${({ padding }) => padding ? `${padding}em` : 0};
+   padding: ${({ padding }) => (padding ? `${padding}em` : 0)};
    border-radius: 0.7em;
    display: flex;
    flex-direction: column;

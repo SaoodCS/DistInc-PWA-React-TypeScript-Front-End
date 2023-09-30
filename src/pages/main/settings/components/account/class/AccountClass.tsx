@@ -1,6 +1,4 @@
-
-
-interface IMenuOptions {
+interface IAccountMenuOptions {
    name: string;
    withMenuDots?: boolean;
    detailsContent?: boolean;
@@ -9,7 +7,7 @@ interface IMenuOptions {
 }
 
 export default class AccountClass {
-   static menuOptions: IMenuOptions[] = [
+   static menuOptions: IAccountMenuOptions[] = [
       {
          name: 'Email',
          withMenuDots: true,

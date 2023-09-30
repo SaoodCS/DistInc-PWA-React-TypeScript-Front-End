@@ -39,7 +39,7 @@ export default function AccountSlide(): JSX.Element {
       }
    }, []);
 
-   function handleClick(name: string) {
+   function handleClick(name: string): void {
       if (name === 'Email' || name === 'Password') {
          setBottomPanelHeading(`New ${name}`);
          setBottomPanelHeightDvh(80);

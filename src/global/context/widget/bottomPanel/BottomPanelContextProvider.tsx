@@ -34,7 +34,7 @@ export default function BottomPanelContextProvider(
          setBottomPanelHeightDvh,
          handleCloseBottomPanel,
          bottomPanelZIndex,
-         setBottomPanelZIndex
+         setBottomPanelZIndex,
       }),
       [
          setIsBottomPanelOpen,
@@ -44,7 +44,7 @@ export default function BottomPanelContextProvider(
          setBottomPanelHeightDvh,
          handleCloseBottomPanel,
          bottomPanelZIndex,
-         setBottomPanelZIndex
+         setBottomPanelZIndex,
       ],
    );
 
