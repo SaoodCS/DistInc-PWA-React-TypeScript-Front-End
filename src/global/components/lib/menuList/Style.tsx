@@ -3,12 +3,15 @@ import Clickables from '../../../helpers/styledComponents/clickables';
 import Color from '../../../theme/colors';
 
 export const MenuListWrapper = styled.div<{ isDarkTheme: boolean }>`
+   //overflow: hidden;
+   ::-webkit-scrollbar {
+      display: none;
+   }
    height: fit-content;
    margin: 1em;
    background-color: ${({ isDarkTheme }) =>
       isDarkTheme ? Color.setRgbOpacity(Color.darkThm.txt, 0.1) : `rgba(0, 0, 0, 0.1)`};
    border-radius: 1em;
-   overflow: hidden;
    width: 100%;
    border: ${({ isDarkTheme }) =>
       isDarkTheme
