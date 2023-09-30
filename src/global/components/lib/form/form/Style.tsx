@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import Color from '../../../../theme/colors';
 
 export const StyledForm = styled.form<{ apiError?: string }>`
-   //padding: 1em;
+   box-sizing: border-box;
+   padding: 0.5em;
    border-radius: 0.7em;
    display: flex;
    flex-direction: column;

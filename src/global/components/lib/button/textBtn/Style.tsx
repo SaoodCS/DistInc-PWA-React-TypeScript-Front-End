@@ -8,6 +8,7 @@ interface ITextBtnAttrs {
 
 interface ITextBtn extends ITextBtnAttrs {
    isDarkTheme: boolean;
+   position?: 'left' | 'center' | 'right';
 }
 
 export const TextBtn = styled.button.attrs<ITextBtnAttrs>(({ isDisabled }) => ({
@@ -24,6 +25,8 @@ export const TextBtn = styled.button.attrs<ITextBtnAttrs>(({ isDisabled }) => ({
          ? Color.darkThm.accent
          : Color.lightThm.accent};
    backdrop-filter: blur(30px);
+   justify-content: ${({ position }) => (position === 'center' ? 'center' : position === 'right' ? 'end' : 'start')};
+   display: flex;
 
    :hover,
    :active {

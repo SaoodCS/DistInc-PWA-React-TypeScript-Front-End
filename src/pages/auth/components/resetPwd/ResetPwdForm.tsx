@@ -55,11 +55,7 @@ export default function ResetPwdForm(): JSX.Element {
                key={input.id}
             />
          ))}
-         <TextBtn
-            isDarkTheme={isDarkTheme}
-            type={'submit'}
-            style={{ alignItems: 'end', justifyContent: 'end', display: 'flex' }}
-         >
+         <TextBtn isDarkTheme={isDarkTheme} type="submit" position="right">
             Send Email
          </TextBtn>
       </StyledForm>
