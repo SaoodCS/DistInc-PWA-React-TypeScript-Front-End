@@ -143,7 +143,13 @@ export const ItemDetails = styled.div<{ isDarkTheme: boolean }>`
 `;
 
 export const ItemSubElement = styled.div`
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   @media (max-width: 850px) {
+      height: 100%;
+   }
    @media (min-width: 850px) {
-      margin-top: 0.35em;
+      padding-top: 0.4em;
    }
 `;
