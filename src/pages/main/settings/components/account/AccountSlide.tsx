@@ -1,4 +1,5 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import useDetectKeyboardOpen from 'use-detect-keyboard-open';
 import Asterisks from '../../../../../global/components/lib/asterisks/Asterisks';
 import { HorizontalMenuDots } from '../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
 import {
@@ -43,7 +44,7 @@ export default function AccountSlide(): JSX.Element {
    function handleClick(name: string): void {
       if (name === 'Email' || name === 'Password') {
          setBottomPanelHeading(`New ${name}`);
-         setBottomPanelHeightDvh(80);
+         setBottomPanelHeightDvh(40);
          setBottomPanelContent(name === 'Email' ? <ChangeEmailForm /> : <ChangePwdForm />);
          setBottomPanelZIndex(0);
          setIsBottomPanelOpen(true);

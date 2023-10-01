@@ -1,6 +1,7 @@
 // Note: This component's functionality will work on desktop if you turn on animation in windows 11 settings (accessibility settings)
-import type { ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import Sheet from 'react-modal-sheet';
+import useDetectKeyboardOpen from 'use-detect-keyboard-open';
 import useThemeContext from '../../../context/theme/hooks/useThemeContext';
 import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalRender';
 import {
@@ -26,6 +27,13 @@ interface IBottomPanel {
 export default function BottomPanel(props: IBottomPanel): JSX.Element {
    const { isOpen, onClose, children, height, heading, heightFitContent, zIndex } = props;
    const { isDarkTheme } = useThemeContext();
+   const isKeyboardOpen = useDetectKeyboardOpen();
+
+   function handleHeight(): number {
+      if (!height) return 50;
+      if (isKeyboardOpen && height) return height * 2;
+      return height;
+   }
 
    return (
       <>
@@ -56,7 +64,7 @@ export default function BottomPanel(props: IBottomPanel): JSX.Element {
                <Sheet.Content>
                   <Sheet.Scroller>
                      <ConditionalRender condition={heightFitContent !== true}>
-                        <SheetContentWrapper heightDvh={height || 50}>
+                        <SheetContentWrapper heightDvh={handleHeight()}>
                            {children}
                         </SheetContentWrapper>
                      </ConditionalRender>
