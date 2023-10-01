@@ -5,6 +5,8 @@ import { LockPassword } from 'styled-icons/remix-fill';
 import { StyledIcon } from 'styled-icons/types';
 import ChangeEmailForm from '../changeEmailForm/ChangeEmailForm';
 import ChangePasswordForm from '../changePwdForm/ChangePwdForm';
+import DeleteAccount from '../deleteAccount/DeleteAccount';
+import ResetAccount from '../resetAccount/ResetAccount';
 
 export interface IAccountMenuOptions {
    name: string;
@@ -25,8 +27,7 @@ export default class AccountClass {
          detailsContent: true,
          icon: MailEdit,
          content: <ChangeEmailForm />,
-         heading: "New Email"
-
+         heading: 'New Email',
       },
       {
          name: 'Password',
@@ -34,21 +35,21 @@ export default class AccountClass {
          detailsContent: true,
          icon: LockPassword,
          content: <ChangePasswordForm />,
-         heading: "New Password"
+         heading: 'New Password',
       },
       {
          name: 'Reset Account',
          warningItem: true,
          icon: Restart,
-         content: <p>Reset Account</p>,
-         heading: "Reset Account"
+         content: <ResetAccount />,
+         heading: 'Reset Account',
       },
       {
          name: 'Delete Account',
          dangerItem: true,
          icon: PersonDelete,
-         content: <p>Delete Account</p>,
-         heading: "Delete Account"
+         content: <DeleteAccount />,
+         heading: 'Delete Account',
       },
    ];
 }
