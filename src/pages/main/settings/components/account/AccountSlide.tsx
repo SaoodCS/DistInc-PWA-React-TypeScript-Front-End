@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import Asterisks from '../../../../../global/components/lib/asterisks/Asterisks';
 import { HorizontalMenuDots } from '../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
 import {
@@ -11,6 +11,7 @@ import {
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
+import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
 import { auth } from '../../../../../global/firebase/config/config';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useSessionStorage from '../../../../../global/hooks/useSessionStorage';
@@ -27,9 +28,11 @@ export default function AccountSlide(): JSX.Element {
       setIsBottomPanelOpen,
       setBottomPanelContent,
       setBottomPanelHeading,
-      setBottomPanelHeightDvh,
       setBottomPanelZIndex,
    } = useContext(BottomPanelContext);
+
+   const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader } =
+      useContext(ModalContext);
 
    useEffect(() => {
       if (settingsCarousel === 1) {
@@ -38,11 +41,17 @@ export default function AccountSlide(): JSX.Element {
    }, []);
 
    function handleClick(item: IAccountMenuOptions): void {
-      setBottomPanelHeading(item.heading);
-      setBottomPanelContent(item.content);
-      //setBottomPanelHeightDvh(40);
-      setBottomPanelZIndex(0);
-      setIsBottomPanelOpen(true);
+      if (isPortableDevice) {
+         setBottomPanelHeading(item.heading);
+         setBottomPanelContent(item.content);
+         setBottomPanelZIndex(0);
+         setIsBottomPanelOpen(true);
+      } else {
+         setModalHeader(item.heading);
+         setModalContent(item.content);
+         setModalZIndex(0);
+         setIsModalOpen(true);
+      }
    }
 
    return (
@@ -64,7 +73,7 @@ export default function AccountSlide(): JSX.Element {
                >
                   <ItemContentWrapper>
                      <IconAndNameWrapper isPortableDevice={isPortableDevice}>
-                        <item.icon  />
+                        <item.icon />
                         {item.name}
                      </IconAndNameWrapper>
                      <ConditionalRender condition={!!item.detailsContent}>

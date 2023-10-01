@@ -3,10 +3,11 @@ import {
    reauthenticateWithCredential,
    verifyBeforeUpdateEmail,
 } from 'firebase/auth';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { StaticButton } from '../../../../../../global/components/lib/button/staticButton/Style';
 import { StyledForm } from '../../../../../../global/components/lib/form/form/Style';
 import InputComponent from '../../../../../../global/components/lib/form/input/Input';
+import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
 import { ModalContext } from '../../../../../../global/context/widget/modal/ModalContext';
@@ -23,9 +24,10 @@ export default function ChangeEmailForm(): JSX.Element {
       ChangeEmailClass.validate,
    );
    const { apiError } = useApiErrorContext();
-   const { isDarkTheme } = useThemeContext();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
    const { setIsModalOpen, setModalContent, setModalHeader, setModalZIndex } =
       useContext(ModalContext);
+   const [showSuccessMsg, setShowSuccessMsg] = useState<boolean>(false);
 
    const updateEmailCall = useCustomMutation(
       async (formData: IChangeEmailInputs) => {
@@ -39,14 +41,10 @@ export default function ChangeEmailForm(): JSX.Element {
       },
       {
          onSuccess: () => {
+            if (!isPortableDevice) return setShowSuccessMsg(true);
             setModalZIndex(1);
             setModalHeader('Verify New Email');
-            setModalContent(
-               <p>
-                  We sent a verification email to <strong>{form.newEmail}</strong>. Please click the
-                  link in that email to verify your new email address.
-               </p>,
-            );
+            setModalContent(ChangeEmailClass.SuccessJSX(form.newEmail));
             setIsModalOpen(true);
          },
       },
@@ -59,24 +57,34 @@ export default function ChangeEmailForm(): JSX.Element {
    }
 
    return (
-      <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
-         {ChangeEmailClass.inputs.map((input) => (
-            <InputComponent
-               placeholder={input.placeholder}
-               type={input.type}
-               name={input.name}
-               isRequired={input.isRequired}
-               autoComplete={input.autoComplete}
-               handleChange={handleChange}
-               value={form[input.name]}
-               error={errors[input.name]}
-               id={input.id}
-               key={input.id}
-            />
-         ))}
-         <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>
-            Change Email
-         </StaticButton>
-      </StyledForm>
+      <>
+         {showSuccessMsg && ChangeEmailClass.SuccessJSX(form.newEmail)}
+         <ConditionalRender condition={!showSuccessMsg}>
+            <StyledForm
+               onSubmit={handleSubmit}
+               apiError={apiError}
+               padding={1}
+               style={{ position: 'relative' }}
+            >
+               {ChangeEmailClass.inputs.map((input) => (
+                  <InputComponent
+                     placeholder={input.placeholder}
+                     type={input.type}
+                     name={input.name}
+                     isRequired={input.isRequired}
+                     autoComplete={input.autoComplete}
+                     handleChange={handleChange}
+                     value={form[input.name]}
+                     error={errors[input.name]}
+                     id={input.id}
+                     key={input.id}
+                  />
+               ))}
+               <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>
+                  Change Email
+               </StaticButton>
+            </StyledForm>
+         </ConditionalRender>
+      </>
    );
 }

@@ -1,3 +1,4 @@
+import SuccessMsg from '../../../../../../../global/components/lib/font/successMsg/SuccessMsg';
 import type { InputArray } from '../../../../../../../global/helpers/react/form/FormHelper';
 import FormHelper from '../../../../../../../global/helpers/react/form/FormHelper';
 
@@ -55,4 +56,11 @@ export default class ChangeEmailClass {
       const formValidation = FormHelper.validation(formValues, ChangeEmailClass.inputs);
       return formValidation;
    }
+
+   static SuccessJSX = (newEmail: string) => (
+      <SuccessMsg>
+         We sent a verification email to <strong>{newEmail}</strong>. Please click the link in that
+         email to verify your new email address.
+      </SuccessMsg>
+   );
 }
