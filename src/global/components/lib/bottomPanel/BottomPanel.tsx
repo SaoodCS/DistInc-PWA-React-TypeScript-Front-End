@@ -1,5 +1,5 @@
 // Note: This component's functionality will work on desktop if you turn on animation in windows 11 settings (accessibility settings)
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import Sheet from 'react-modal-sheet';
 import useDetectKeyboardOpen from 'use-detect-keyboard-open';
 import useThemeContext from '../../../context/theme/hooks/useThemeContext';
@@ -20,19 +20,28 @@ interface IBottomPanel {
    children: ReactNode;
    height?: number;
    heading?: string;
-   heightFitContent?: boolean;
    zIndex?: number;
 }
 
 export default function BottomPanel(props: IBottomPanel): JSX.Element {
-   const { isOpen, onClose, children, height, heading, heightFitContent, zIndex } = props;
+   const { isOpen, onClose, children, height, heading, zIndex } = props;
    const { isDarkTheme } = useThemeContext();
    const isKeyboardOpen = useDetectKeyboardOpen();
+   const wrapperRef = useRef<HTMLDivElement>(null);
 
-   function handleHeight(): number {
-      if (!height) return 50;
-      if (isKeyboardOpen && height) return height * 2;
-      return height;
+   function handleHeight(): string {
+      if (!height && !isKeyboardOpen) {
+         return 'fit-content';
+      }
+      if (isKeyboardOpen) {
+         const keyboardHeight = '50dvh';
+         if (!height) {
+            const wrapperHeight = wrapperRef.current?.getBoundingClientRect().height;
+            return `calc(${wrapperHeight}px + ${keyboardHeight})`;
+         }
+         return `calc(${height}dvh + ${keyboardHeight})`;
+      }
+      return `${height}dvh`;
    }
 
    return (
@@ -63,14 +72,9 @@ export default function BottomPanel(props: IBottomPanel): JSX.Element {
                </ConditionalRender>
                <Sheet.Content>
                   <Sheet.Scroller>
-                     <ConditionalRender condition={heightFitContent !== true}>
-                        <SheetContentWrapper heightDvh={handleHeight()}>
-                           {children}
-                        </SheetContentWrapper>
-                     </ConditionalRender>
-                     <ConditionalRender condition={heightFitContent === true}>
+                     <SheetContentWrapper height={handleHeight()} ref={wrapperRef}>
                         {children}
-                     </ConditionalRender>
+                     </SheetContentWrapper>
                   </Sheet.Scroller>
                </Sheet.Content>
             </Sheet.Container>

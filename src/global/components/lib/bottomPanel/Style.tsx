@@ -14,8 +14,8 @@ const commonHeaderStyles = css`
    border-top-right-radius: 7px;
 `;
 
-export const SheetContentWrapper = styled.div<{ heightDvh: number }>`
-   height: ${({ heightDvh }) => heightDvh}dvh;
+export const SheetContentWrapper = styled.div<{ height: string }>`
+   height: ${({ height }) => height};
 `;
 
 export const CustomPanelHeader = styled.div<{ darktheme: boolean }>`

@@ -40,7 +40,7 @@ export default function AccountSlide(): JSX.Element {
    function handleClick(item: IAccountMenuOptions): void {
       setBottomPanelHeading(item.heading);
       setBottomPanelContent(item.content);
-      setBottomPanelHeightDvh(40);
+      //setBottomPanelHeightDvh(40);
       setBottomPanelZIndex(0);
       setIsBottomPanelOpen(true);
    }
