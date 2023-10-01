@@ -3,6 +3,7 @@ import { useContext, useState } from 'react';
 import { StaticButton } from '../../../../../../global/components/lib/button/staticButton/Style';
 import { StyledForm } from '../../../../../../global/components/lib/form/form/Style';
 import InputComponent from '../../../../../../global/components/lib/form/input/Input';
+import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
 import { ModalContext } from '../../../../../../global/context/widget/modal/ModalContext';
@@ -11,7 +12,6 @@ import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutat
 import useForm from '../../../../../../global/hooks/useForm';
 import type { IChangePwdInputs } from './class/ChangePwdClass';
 import ChangePwdClass from './class/ChangePwdClass';
-import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 
 export default function ChangePasswordForm(): JSX.Element {
    const { form, errors, handleChange, initHandleSubmit } = useForm(
@@ -38,7 +38,10 @@ export default function ChangePasswordForm(): JSX.Element {
       },
       {
          onSuccess: () => {
-            if (!isPortableDevice) return setShowSuccessMsg(true);
+            if (!isPortableDevice) {
+               setShowSuccessMsg(true);
+               return;
+            }
             setModalZIndex(1);
             setModalHeader('Password Changed');
             setModalContent(ChangePwdClass.SuccessJSX);

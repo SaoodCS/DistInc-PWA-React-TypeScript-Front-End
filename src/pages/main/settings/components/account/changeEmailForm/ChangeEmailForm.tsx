@@ -41,7 +41,10 @@ export default function ChangeEmailForm(): JSX.Element {
       },
       {
          onSuccess: () => {
-            if (!isPortableDevice) return setShowSuccessMsg(true);
+            if (!isPortableDevice) {
+               setShowSuccessMsg(true);
+               return;
+            }
             setModalZIndex(1);
             setModalHeader('Verify New Email');
             setModalContent(ChangeEmailClass.SuccessJSX(form.newEmail));
