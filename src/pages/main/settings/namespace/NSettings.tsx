@@ -54,8 +54,6 @@ export namespace NSettings {
       slide2: `${storageKeyPrefix}.slide2`,
       accountSlide: `${storageKeyPrefix}.accountSlide`,
    };
-
-   export const iconStyle = { height: '1.5em', paddingRight: '0.5em' };
 }
 
 export default NSettings;

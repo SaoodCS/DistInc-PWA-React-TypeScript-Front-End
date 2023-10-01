@@ -112,9 +112,7 @@ export const SidebarItem = styled.div<{ isActive: boolean; isDarkTheme: boolean 
    & > :first-child {
       position: absolute;
       left: 0;
-      height: 1.5em;
-      padding-top: 1em;
-      padding-bottom: 1em;
+      height: 100%;
       display: ${({ isActive }) => (isActive ? 'block' : 'none')};
       width: 0.5em;
       background-color: ${Color.darkThm.accent};
@@ -133,8 +131,10 @@ export const CompanyTag = styled.div<{ isDarkTheme: boolean }>`
    position: fixed;
    display: flex;
    bottom: 0px;
-   padding-bottom: 1em;
+   padding: 1em;
+   box-sizing: border-box;
    width: 15dvw;
+   text-align: center;
    align-items: center;
    justify-content: center;
    font-size: 0.9em;

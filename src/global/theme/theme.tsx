@@ -17,13 +17,10 @@ export const GlobalTheme = createGlobalStyle<{ darkTheme: boolean }>`
   body {
   margin: 0;
   padding: 0;
+  overflow: hidden;
   font-family: 'Arial';
-  //line-height: 1.25;
   font-weight: 500;
   box-sizing: border-box;
-  overflow: hidden;
-  
-
   ::-webkit-scrollbar {
     width: 0.4em;
     background-color: rgb(255, 255, 255);

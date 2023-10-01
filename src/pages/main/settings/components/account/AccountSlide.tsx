@@ -1,11 +1,13 @@
 import { useContext, useEffect } from 'react';
 import Asterisks from '../../../../../global/components/lib/asterisks/Asterisks';
-import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { HorizontalMenuDots } from '../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
 import {
+   IconAndNameWrapper,
    ItemContainer,
    ItemContentWrapper,
+   ItemDetails,
    MenuListWrapper,
+   iconStyles,
 } from '../../../../../global/components/lib/menuList/Style';
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
@@ -13,7 +15,6 @@ import { BottomPanelContext } from '../../../../../global/context/widget/bottomP
 import { auth } from '../../../../../global/firebase/config/config';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useSessionStorage from '../../../../../global/hooks/useSessionStorage';
-import Color from '../../../../../global/theme/colors';
 import NSettings from '../../namespace/NSettings';
 import ChangeEmailForm from './changeEmailForm/ChangeEmailForm';
 import ChangePwdForm from './changePwdForm/ChangePwdForm';
@@ -21,7 +22,7 @@ import AccountClass from './class/AccountClass';
 
 export default function AccountSlide(): JSX.Element {
    const [settingsCarousel] = useSessionStorage(NSettings.key.currentSlide, 1);
-   const { isDarkTheme } = useThemeContext();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
    const { containerRef, handleOnScroll, scrollToTop, scrollSaverStyle } = useScrollSaver(
       NSettings.key.accountSlide,
    );
@@ -49,12 +50,6 @@ export default function AccountSlide(): JSX.Element {
       }
    }
 
-   function handleDetailsColor(): string {
-      return isDarkTheme
-         ? Color.setRgbOpacity(Color.darkThm.txt, 0.5)
-         : Color.setRgbOpacity(Color.lightThm.txt, 0.5);
-   }
-
    return (
       <>
          <MenuListWrapper
@@ -73,15 +68,18 @@ export default function AccountSlide(): JSX.Element {
                   warningItem={item.warningItem}
                >
                   <ItemContentWrapper>
-                     {item.name}
+                     <IconAndNameWrapper row={isPortableDevice}>
+                        <item.icon style={iconStyles(isPortableDevice)} />
+                        {item.name}
+                     </IconAndNameWrapper>
                      <ConditionalRender condition={!!item.detailsContent}>
-                        <TextColourizer color={handleDetailsColor()} fontSize="0.75em">
-                           {item.name === 'Password' && <Asterisks size={'0.4em'} />}
+                        <ItemDetails isDarkTheme={isDarkTheme}>
+                           {item.name === 'Password' && <Asterisks size={'0.4em'} amount={15} />}
                            {item.name === 'Email' && auth.currentUser?.email}
-                        </TextColourizer>
+                        </ItemDetails>
                      </ConditionalRender>
                   </ItemContentWrapper>
-                  <ConditionalRender condition={!!item.withMenuDots}>
+                  <ConditionalRender condition={!!item.withMenuDots && isPortableDevice}>
                      <HorizontalMenuDots />
                   </ConditionalRender>
                </ItemContainer>

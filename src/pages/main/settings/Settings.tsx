@@ -3,9 +3,11 @@ import { Switcher } from '../../../global/components/lib/button/switch/Style';
 import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Style';
 import useCarousel from '../../../global/components/lib/carousel/hooks/useCarousel';
 import {
+   IconAndNameWrapper,
    ItemContainer,
    ItemContentWrapper,
    MenuListWrapper,
+   iconStyles,
 } from '../../../global/components/lib/menuList/Style';
 import ConditionalRender from '../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import HeaderHooks from '../../../global/context/header/hooks/HeaderHooks';
@@ -18,7 +20,7 @@ import AccountSlide from './components/account/AccountSlide';
 import NSettings from './namespace/NSettings';
 
 export default function Settings(): JSX.Element {
-   const { toggleTheme, isDarkTheme } = useThemeContext();
+   const { toggleTheme, isDarkTheme, isPortableDevice } = useThemeContext();
    const { containerRef, scrollToSlide, currentSlide } = useCarousel(1, NSettings.key.currentSlide);
    const [slide2, setSlide2] = useSessionStorage<NSettings.TSlides | ''>(NSettings.key.slide2, '');
    const [prevScrollPos, setPrevScrollPos] = useState<number>(0);
@@ -68,12 +70,14 @@ export default function Settings(): JSX.Element {
                      dangerItem={item.dangerItem}
                      isDarkTheme={isDarkTheme}
                   >
-                     <ItemContentWrapper row>
-                        <item.icon style={NSettings.iconStyle} />
-                        {item.name}
+                     <ItemContentWrapper>
+                        <IconAndNameWrapper row={isPortableDevice}>
+                           <item.icon style={iconStyles(isPortableDevice)} />
+                           {item.name}
+                        </IconAndNameWrapper>
                      </ItemContentWrapper>
                      <ConditionalRender condition={item.withToggle || false}>
-                        <Switcher isOn={isDarkTheme} isDarkTheme={isDarkTheme} size={'1.5em'} />
+                        <Switcher isOn={isDarkTheme} isDarkTheme={isDarkTheme} size={'1.25em'} />
                      </ConditionalRender>
                   </ItemContainer>
                ))}
