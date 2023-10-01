@@ -25,10 +25,16 @@ export default function DeleteAccount(): JSX.Element {
             <li>Log you out on all devices</li>
             <li>Remove all your account information from our database</li>
          </ul>
-         <strong>Press delete if you still want to go through with this:</strong>
-         <TextBtn onClick={handleClick} isDarkTheme={isDarkTheme} style={{ ...handleBtnStyle() }}>
-            Delete
-         </TextBtn>
+         <div>
+            <strong>Press delete if you still want to go through with this:</strong>
+            <TextBtn
+               onClick={handleClick}
+               isDarkTheme={isDarkTheme}
+               style={{ ...handleBtnStyle() }}
+            >
+               Delete
+            </TextBtn>
+         </div>
       </div>
    );
 }

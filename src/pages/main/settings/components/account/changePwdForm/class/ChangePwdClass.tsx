@@ -1,3 +1,4 @@
+import SuccessMsg from '../../../../../../../global/components/lib/font/successMsg/SuccessMsg';
 import type { InputArray } from '../../../../../../../global/helpers/react/form/FormHelper';
 import FormHelper from '../../../../../../../global/helpers/react/form/FormHelper';
 
@@ -55,4 +56,6 @@ export default class ChangePwdClass {
       const formValidation = FormHelper.validation(formValues, ChangePwdClass.inputs);
       return formValidation;
    }
+
+   static SuccessJSX = (<SuccessMsg>Your password has been changed successfully.</SuccessMsg>);
 }

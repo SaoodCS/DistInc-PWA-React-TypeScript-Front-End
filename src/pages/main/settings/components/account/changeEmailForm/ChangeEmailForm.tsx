@@ -60,12 +60,7 @@ export default function ChangeEmailForm(): JSX.Element {
       <>
          {showSuccessMsg && ChangeEmailClass.SuccessJSX(form.newEmail)}
          <ConditionalRender condition={!showSuccessMsg}>
-            <StyledForm
-               onSubmit={handleSubmit}
-               apiError={apiError}
-               padding={1}
-               style={{ position: 'relative' }}
-            >
+            <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
                {ChangeEmailClass.inputs.map((input) => (
                   <InputComponent
                      placeholder={input.placeholder}
