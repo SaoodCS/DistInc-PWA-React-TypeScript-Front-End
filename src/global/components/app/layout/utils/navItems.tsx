@@ -3,7 +3,7 @@ import { Settings } from '@styled-icons/fluentui-system-filled/Settings';
 import { SignOut } from '@styled-icons/fluentui-system-filled/SignOut';
 import { Receipt } from '@styled-icons/material-sharp/Receipt';
 import { AttachMoney } from '@styled-icons/material/AttachMoney';
-import { BuildingBank } from 'styled-icons/fluentui-system-filled';
+import { BuildingBank } from '@styled-icons/fluentui-system-filled/BuildingBank';
 
 export default class NavItems {
    static footer = [

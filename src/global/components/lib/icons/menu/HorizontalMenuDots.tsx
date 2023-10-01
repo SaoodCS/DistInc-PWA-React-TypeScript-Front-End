@@ -1,5 +1,5 @@
+import { DotsHorizontalRounded } from '@styled-icons/boxicons-regular/DotsHorizontalRounded';
 import styled from 'styled-components';
-import { DotsHorizontalRounded } from 'styled-icons/boxicons-regular';
 
 export const HorizontalMenuDots = styled(DotsHorizontalRounded)`
    height: 1em;

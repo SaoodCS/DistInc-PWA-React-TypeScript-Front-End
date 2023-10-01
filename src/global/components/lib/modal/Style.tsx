@@ -1,5 +1,5 @@
+import { Close } from '@styled-icons/evil/Close';
 import styled from 'styled-components';
-import { Close } from 'styled-icons/evil';
 import Scrollbar from '../../../helpers/styledComponents/scrollbars';
 import Color from '../../../theme/colors';
 

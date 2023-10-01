@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { CheckCircle } from 'styled-icons/material';
+import { CheckCircle } from '@styled-icons/material/CheckCircle';
+import styled from 'styled-components';
 import Color from '../../../../theme/colors';
 
 export const SuccessMsgText = styled.div`

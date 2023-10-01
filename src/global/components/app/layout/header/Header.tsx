@@ -1,5 +1,5 @@
+import { ArrowIosBack } from '@styled-icons/evaicons-solid/ArrowIosBack';
 import styled from 'styled-components';
-import { ArrowIosBack } from 'styled-icons/evaicons-solid';
 import Color from '../../../../theme/colors';
 
 export const Header = styled.div<{ isDarkTheme: boolean }>`

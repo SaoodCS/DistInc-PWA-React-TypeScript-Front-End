@@ -1,5 +1,5 @@
+import { CloudOffline } from '@styled-icons/ionicons-outline/CloudOffline';
 import styled from 'styled-components';
-import { CloudOffline } from 'styled-icons/ionicons-outline';
 import Color from '../../../../theme/colors';
 
 export const OfflineMsg = styled.div<{ isDarkTheme: boolean }>`

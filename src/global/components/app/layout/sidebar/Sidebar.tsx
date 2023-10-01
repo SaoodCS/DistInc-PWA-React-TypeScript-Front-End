@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { useLocation } from 'react-router-dom';
-import { AccountCircle } from 'styled-icons/material';
+import { AccountCircle } from '@styled-icons/material/AccountCircle';
 import useThemeContext from '../../../../context/theme/hooks/useThemeContext';
 import { auth } from '../../../../firebase/config/config';
 import Color from '../../../../theme/colors';

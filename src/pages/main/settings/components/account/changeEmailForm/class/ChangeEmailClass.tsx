@@ -57,7 +57,7 @@ export default class ChangeEmailClass {
       return formValidation;
    }
 
-   static SuccessJSX = (newEmail: string) => (
+   static SuccessJSX = (newEmail: string): JSX.Element => (
       <SuccessMsg>
          We sent a verification email to <strong>{newEmail}</strong>. Please click the link in that
          email to verify your new email address.

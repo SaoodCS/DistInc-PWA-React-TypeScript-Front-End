@@ -1,5 +1,5 @@
 // Note: This component's functionality will work on desktop if you turn on animation in windows 11 settings (accessibility settings)
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useRef, type ReactNode } from 'react';
 import Sheet from 'react-modal-sheet';
 import useDetectKeyboardOpen from 'use-detect-keyboard-open';
 import useThemeContext from '../../../context/theme/hooks/useThemeContext';

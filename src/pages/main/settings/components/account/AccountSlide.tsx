@@ -17,7 +17,8 @@ import { auth } from '../../../../../global/firebase/config/config';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useSessionStorage from '../../../../../global/hooks/useSessionStorage';
 import NSettings from '../../namespace/NSettings';
-import AccountClass, { IAccountMenuOptions } from './class/AccountClass';
+import type { IAccountMenuOptions } from './class/AccountClass';
+import AccountClass from './class/AccountClass';
 
 export default function AccountSlide(): JSX.Element {
    const [settingsCarousel] = useSessionStorage(NSettings.key.currentSlide, 1);

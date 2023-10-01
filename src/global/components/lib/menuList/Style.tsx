@@ -1,3 +1,4 @@
+import type { FlattenSimpleInterpolation } from 'styled-components';
 import styled, { css } from 'styled-components';
 import Clickables from '../../../helpers/styledComponents/clickables';
 import Color from '../../../theme/colors';
@@ -9,7 +10,7 @@ class MenuWrapperStyles {
       flex-wrap: wrap;
    `;
 
-   static smallScrn = (isDarkTheme: boolean) => css`
+   static smallScrn = (isDarkTheme: boolean): FlattenSimpleInterpolation => css`
       margin: 1em;
       background-color: ${isDarkTheme
          ? Color.setRgbOpacity(Color.darkThm.txt, 0.1)
@@ -44,7 +45,7 @@ export const MenuListWrapper = styled.div<{ isDarkTheme: boolean }>`
 // ---- //
 
 class ItemContainerStyles {
-   static largeScrn = (isDarkTheme: boolean) => css`
+   static largeScrn = (isDarkTheme: boolean): FlattenSimpleInterpolation => css`
       border: ${isDarkTheme
          ? `1px solid ${Color.darkThm.border}`
          : `1px solid ${Color.lightThm.border}`};
@@ -64,7 +65,7 @@ class ItemContainerStyles {
       }
    `;
 
-   static smallSrn = (spaceRow: boolean) => css`
+   static smallSrn = (spaceRow: boolean): FlattenSimpleInterpolation => css`
       height: 3em;
       display: flex;
       align-items: center;

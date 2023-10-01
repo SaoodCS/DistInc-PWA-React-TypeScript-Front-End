@@ -1,8 +1,8 @@
+import { MailEdit } from '@styled-icons/fluentui-system-filled/MailEdit';
 import { PersonDelete } from '@styled-icons/fluentui-system-filled/PersonDelete';
+import { LockPassword } from '@styled-icons/remix-fill/LockPassword';
 import { Restart } from '@styled-icons/remix-fill/Restart';
-import { MailEdit } from 'styled-icons/fluentui-system-filled';
-import { LockPassword } from 'styled-icons/remix-fill';
-import { StyledIcon } from 'styled-icons/types';
+import type { StyledIcon } from 'styled-icons/types';
 import ChangeEmailForm from '../changeEmailForm/ChangeEmailForm';
 import ChangePasswordForm from '../changePwdForm/ChangePwdForm';
 import DeleteAccount from '../deleteAccount/DeleteAccount';

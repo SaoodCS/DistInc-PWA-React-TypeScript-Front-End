@@ -1,5 +1,4 @@
 import React from 'react';
-import { StaticButton } from '../../../../../../global/components/lib/button/staticButton/Style';
 import { TextBtn } from '../../../../../../global/components/lib/button/textBtn/Style';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import Color from '../../../../../../global/theme/colors';
