@@ -104,12 +104,25 @@ export const ItemContainer = styled.div<{
    }
 `;
 
-export const IconAndNameWrapper = styled.div<{ row?: boolean }>`
+export const IconAndNameWrapper = styled.div<{ isPortableDevice?: boolean }>`
    display: flex;
    justify-content: center;
-   flex-direction: ${({ row }) => (row ? 'row' : 'column')};
    align-items: center;
-   padding-bottom: ${({ row }) => !row && '0.5em'};
+   @media (max-width: 850px) {
+      flex-direction: row;
+      & > *:first-child {
+         height: 1.5em;
+         padding-right: 0.5em;
+      }
+   }
+   @media (min-width: 850px) {
+      flex-direction: column;
+      padding-bottom: 0.5em;
+      & > *:first-child {
+         height: 6.5em;
+         padding-bottom: 0.5em;
+      }
+   }
 `;
 
 export const ItemContentWrapper = styled.div`
@@ -122,12 +135,6 @@ export const ItemContentWrapper = styled.div`
       align-items: center;
    }
 `;
-
-export function iconStyles(isPortableDevice: boolean) {
-   return isPortableDevice
-      ? { height: '1.5em', paddingRight: '0.5em' }
-      : { height: '6.5em', paddingBottom: '0.5em' };
-}
 
 export const ItemDetails = styled.div<{ isDarkTheme: boolean }>`
    font-size: 0.75em;

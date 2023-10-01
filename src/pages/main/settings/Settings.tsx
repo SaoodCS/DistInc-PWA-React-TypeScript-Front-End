@@ -7,7 +7,6 @@ import {
    ItemContainer,
    ItemContentWrapper,
    MenuListWrapper,
-   iconStyles,
 } from '../../../global/components/lib/menuList/Style';
 import ConditionalRender from '../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import HeaderHooks from '../../../global/context/header/hooks/HeaderHooks';
@@ -71,8 +70,8 @@ export default function Settings(): JSX.Element {
                      isDarkTheme={isDarkTheme}
                   >
                      <ItemContentWrapper>
-                        <IconAndNameWrapper row={isPortableDevice}>
-                           <item.icon style={iconStyles(isPortableDevice)} />
+                        <IconAndNameWrapper isPortableDevice={isPortableDevice}>
+                           <item.icon />
                            {item.name}
                         </IconAndNameWrapper>
                      </ItemContentWrapper>

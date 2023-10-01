@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from 'react';
-import useDetectKeyboardOpen from 'use-detect-keyboard-open';
 import Asterisks from '../../../../../global/components/lib/asterisks/Asterisks';
 import { HorizontalMenuDots } from '../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
 import {
@@ -8,7 +7,6 @@ import {
    ItemContentWrapper,
    ItemDetails,
    MenuListWrapper,
-   iconStyles,
 } from '../../../../../global/components/lib/menuList/Style';
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
@@ -17,9 +15,7 @@ import { auth } from '../../../../../global/firebase/config/config';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useSessionStorage from '../../../../../global/hooks/useSessionStorage';
 import NSettings from '../../namespace/NSettings';
-import ChangeEmailForm from './changeEmailForm/ChangeEmailForm';
-import ChangePwdForm from './changePwdForm/ChangePwdForm';
-import AccountClass from './class/AccountClass';
+import AccountClass, { IAccountMenuOptions } from './class/AccountClass';
 
 export default function AccountSlide(): JSX.Element {
    const [settingsCarousel] = useSessionStorage(NSettings.key.currentSlide, 1);
@@ -41,14 +37,12 @@ export default function AccountSlide(): JSX.Element {
       }
    }, []);
 
-   function handleClick(name: string): void {
-      if (name === 'Email' || name === 'Password') {
-         setBottomPanelHeading(`New ${name}`);
-         setBottomPanelHeightDvh(40);
-         setBottomPanelContent(name === 'Email' ? <ChangeEmailForm /> : <ChangePwdForm />);
-         setBottomPanelZIndex(0);
-         setIsBottomPanelOpen(true);
-      }
+   function handleClick(item: IAccountMenuOptions): void {
+      setBottomPanelHeading(item.heading);
+      setBottomPanelContent(item.content);
+      setBottomPanelHeightDvh(40);
+      setBottomPanelZIndex(0);
+      setIsBottomPanelOpen(true);
    }
 
    return (
@@ -64,13 +58,13 @@ export default function AccountSlide(): JSX.Element {
                   key={index}
                   isDarkTheme={isDarkTheme}
                   spaceRow={item.withMenuDots}
-                  onClick={() => handleClick(item.name)}
+                  onClick={() => handleClick(item)}
                   dangerItem={item.dangerItem}
                   warningItem={item.warningItem}
                >
                   <ItemContentWrapper>
-                     <IconAndNameWrapper row={isPortableDevice}>
-                        <item.icon style={iconStyles(isPortableDevice)} />
+                     <IconAndNameWrapper isPortableDevice={isPortableDevice}>
+                        <item.icon  />
                         {item.name}
                      </IconAndNameWrapper>
                      <ConditionalRender condition={!!item.detailsContent}>
