@@ -104,7 +104,7 @@ export const ItemContainer = styled.div<{
    }
 `;
 
-export const IconAndNameWrapper = styled.div<{ isPortableDevice?: boolean }>`
+export const IconAndNameWrapper = styled.div`
    display: flex;
    justify-content: center;
    align-items: center;
@@ -140,4 +140,10 @@ export const ItemDetails = styled.div<{ isDarkTheme: boolean }>`
    font-size: 0.75em;
    color: ${({ isDarkTheme }) =>
       Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.5)};
+`;
+
+export const ItemSubElement = styled.div`
+   @media (min-width: 850px) {
+      margin-top: 0.35em;
+   }
 `;

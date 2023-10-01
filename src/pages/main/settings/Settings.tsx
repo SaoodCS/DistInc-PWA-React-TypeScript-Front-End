@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { Switcher } from '../../../global/components/lib/button/switch/Style';
 import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Style';
 import useCarousel from '../../../global/components/lib/carousel/hooks/useCarousel';
@@ -6,6 +7,7 @@ import {
    IconAndNameWrapper,
    ItemContainer,
    ItemContentWrapper,
+   ItemSubElement,
    MenuListWrapper,
 } from '../../../global/components/lib/menuList/Style';
 import ConditionalRender from '../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
@@ -19,7 +21,7 @@ import AccountSlide from './components/account/AccountSlide';
 import NSettings from './namespace/NSettings';
 
 export default function Settings(): JSX.Element {
-   const { toggleTheme, isDarkTheme, isPortableDevice } = useThemeContext();
+   const { toggleTheme, isDarkTheme } = useThemeContext();
    const { containerRef, scrollToSlide, currentSlide } = useCarousel(1, NSettings.key.currentSlide);
    const [slide2, setSlide2] = useSessionStorage<NSettings.TSlides | ''>(NSettings.key.slide2, '');
    const [prevScrollPos, setPrevScrollPos] = useState<number>(0);
@@ -70,13 +72,15 @@ export default function Settings(): JSX.Element {
                      isDarkTheme={isDarkTheme}
                   >
                      <ItemContentWrapper>
-                        <IconAndNameWrapper isPortableDevice={isPortableDevice}>
+                        <IconAndNameWrapper>
                            <item.icon />
                            {item.name}
                         </IconAndNameWrapper>
                      </ItemContentWrapper>
                      <ConditionalRender condition={item.withToggle || false}>
-                        <Switcher isOn={isDarkTheme} isDarkTheme={isDarkTheme} size={'1.25em'} />
+                        <ItemSubElement>
+                           <Switcher isOn={isDarkTheme} isDarkTheme={isDarkTheme} size={'1.5em'} />
+                        </ItemSubElement>
                      </ConditionalRender>
                   </ItemContainer>
                ))}

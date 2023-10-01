@@ -6,6 +6,7 @@ import {
    ItemContainer,
    ItemContentWrapper,
    ItemDetails,
+   ItemSubElement,
    MenuListWrapper,
 } from '../../../../../global/components/lib/menuList/Style';
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
@@ -72,7 +73,7 @@ export default function AccountSlide(): JSX.Element {
                   warningItem={item.warningItem}
                >
                   <ItemContentWrapper>
-                     <IconAndNameWrapper isPortableDevice={isPortableDevice}>
+                     <IconAndNameWrapper>
                         <item.icon />
                         {item.name}
                      </IconAndNameWrapper>
@@ -84,7 +85,9 @@ export default function AccountSlide(): JSX.Element {
                      </ConditionalRender>
                   </ItemContentWrapper>
                   <ConditionalRender condition={!!item.withMenuDots && isPortableDevice}>
-                     <HorizontalMenuDots />
+                     <ItemSubElement>
+                        <HorizontalMenuDots />
+                     </ItemSubElement>
                   </ConditionalRender>
                </ItemContainer>
             ))}
