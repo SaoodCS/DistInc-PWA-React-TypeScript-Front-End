@@ -26,11 +26,7 @@ export default function DeleteAccount(): JSX.Element {
          </ul>
          <div>
             <strong>Press delete if you still want to go through with this:</strong>
-            <TextBtn
-               onClick={handleClick}
-               isDarkTheme={isDarkTheme}
-               style={{ ...handleBtnStyle() }}
-            >
+            <TextBtn onClick={handleClick} isDarkTheme={isDarkTheme} style={handleBtnStyle()}>
                Delete
             </TextBtn>
          </div>

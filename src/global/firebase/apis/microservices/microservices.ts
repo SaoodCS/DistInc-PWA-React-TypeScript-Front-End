@@ -7,6 +7,10 @@ const microservices = {
       name: 'registerUser',
       los: 0,
    },
+   deleteUser: {
+      name: 'deleteUser',
+      los: 1,
+   },
 };
 
 export default microservices;
