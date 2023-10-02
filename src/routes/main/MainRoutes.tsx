@@ -6,7 +6,7 @@ import MainLayout from '../../pages/main/MainLayout';
 import Bank from '../../pages/main/bank/Bank';
 import Expense from '../../pages/main/expense/Expense';
 import Income from '../../pages/main/income/Income';
-import Profile from '../../pages/main/profile/Profile';
+import Profile from '../../pages/main/dashboard/Dashboard';
 import Settings from '../../pages/main/settings/Settings';
 
 export default function MainRoutes(): JSX.Element {
@@ -17,8 +17,8 @@ export default function MainRoutes(): JSX.Element {
          <Route element={routeAuthProtection}>
             <Route path="*" element={<NotFound />} />
             <Route path="/main" element={<MainLayout />}>
-               <Route index element={<Navigate to="profile" />} />
-               <Route path="profile" element={<Profile />} />
+               <Route index element={<Navigate to="dashboard" />} />
+               <Route path="dashboard" element={<Profile />} />
                <Route path="bank" element={<Bank />} />
                <Route path="income" element={<Income />} />
                <Route path="expense" element={<Expense />} />

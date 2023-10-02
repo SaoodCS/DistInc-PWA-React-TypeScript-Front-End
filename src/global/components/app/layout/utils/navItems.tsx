@@ -1,4 +1,4 @@
-import { User } from '@styled-icons/boxicons-solid/User';
+import { Dashboard } from '@styled-icons/material-rounded/Dashboard';
 import { Settings } from '@styled-icons/fluentui-system-filled/Settings';
 import { SignOut } from '@styled-icons/fluentui-system-filled/SignOut';
 import { Receipt } from '@styled-icons/material-sharp/Receipt';
@@ -8,8 +8,8 @@ import { BuildingBank } from '@styled-icons/fluentui-system-filled/BuildingBank'
 export default class NavItems {
    static footer = [
       {
-         name: 'profile',
-         icon: <User />,
+         name: 'dashboard',
+         icon: <Dashboard />,
       },
       {
          name: 'bank',
