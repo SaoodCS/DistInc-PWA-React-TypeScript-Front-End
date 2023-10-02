@@ -3,9 +3,8 @@ import styled, { css } from 'styled-components';
 import Color from '../../../theme/colors';
 import { ModalCloseButton } from '../modal/Style';
 
-const commonHeaderStyles = css`
-   background-color: ${({ darktheme }: { darktheme: boolean }) =>
-      darktheme ? Color.darkThm.bg : Color.lightThm.bg};
+const commonHeaderStyles = (darktheme: boolean) => css`
+   background-color: ${darktheme ? Color.darkThm.bg : Color.lightThm.bg};
    display: flex;
    justify-content: center;
    align-items: center;
@@ -18,13 +17,13 @@ export const SheetContentWrapper = styled.div<{ height: string }>`
    height: ${({ height }) => height};
 `;
 
-export const CustomPanelHeader = styled.div<{ darktheme: boolean }>`
-   ${commonHeaderStyles};
+export const CustomPanelHeader = styled.div<{ darktheme: string }>`
+   ${({ darktheme }) => commonHeaderStyles(darktheme === 'true')};
    padding-top: 1em;
    padding-bottom: 1em;
 `;
 
-export const CustomBottomPanelSheet = styled(Sheet)<{ darktheme: boolean }>`
+export const CustomBottomPanelSheet = styled(Sheet)<{ darktheme: string }>`
    //border-radius: 10px;
    .react-modal-sheet-backdrop {
       backdrop-filter: blur(1px);
@@ -32,7 +31,8 @@ export const CustomBottomPanelSheet = styled(Sheet)<{ darktheme: boolean }>`
    .react-modal-sheet-container {
    }
    .react-modal-sheet-header {
-      ${commonHeaderStyles};
+      ${({ darktheme }) => commonHeaderStyles(darktheme === 'true')};
+
       padding-top: 0.5em;
       padding-bottom: 0.5em;
    }
@@ -41,7 +41,7 @@ export const CustomBottomPanelSheet = styled(Sheet)<{ darktheme: boolean }>`
    }
    .react-modal-sheet-content {
       background-color: ${({ darktheme }) =>
-         darktheme
+         darktheme === 'true'
             ? Color.setRgbOpacity(Color.darkThm.bg, 0.9)
             : Color.setRgbOpacity(Color.lightThm.txt, 0.1)};
    }

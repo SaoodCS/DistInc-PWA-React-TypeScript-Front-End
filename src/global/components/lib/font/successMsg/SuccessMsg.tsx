@@ -11,7 +11,7 @@ export default function SuccessMsg(props: ISuccessMsg): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    return (
       <SuccessMsgHolder>
-         <SuccessIcon darktheme={isDarkTheme} />
+         <SuccessIcon darktheme={isDarkTheme.toString()} />
          <SuccessMsgText>{children}</SuccessMsgText>
       </SuccessMsgHolder>
    );

@@ -6,7 +6,7 @@ export default function FetchError(): JSX.Element {
 
    return (
       <FetchErrorWrapper>
-         <ErrorIcon size="100%" darktheme={isDarkTheme} />
+         <ErrorIcon size="100%" darktheme={isDarkTheme.toString()} />
          <ErrorMsg isDarkTheme={isDarkTheme}>An error occured whilst getting data.</ErrorMsg>
       </FetchErrorWrapper>
    );

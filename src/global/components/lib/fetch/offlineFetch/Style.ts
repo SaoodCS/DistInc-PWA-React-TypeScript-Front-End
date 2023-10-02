@@ -19,9 +19,9 @@ export const OfflineFetchWrapper = styled.div`
    width: 100%;
 `;
 
-export const OfflineIcon = styled(CloudOffline)<{ darktheme: boolean }>`
+export const OfflineIcon = styled(CloudOffline)<{ darktheme: string }>`
    color: ${({ darktheme }) =>
-      darktheme
+      darktheme === 'true'
          ? Color.setRgbOpacity(Color.darkThm.error, 0.6)
          : Color.setRgbOpacity(Color.lightThm.error, 0.7)};
 `;

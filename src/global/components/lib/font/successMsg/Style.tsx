@@ -8,9 +8,10 @@ export const SuccessMsgText = styled.div`
    width: 90%;
 `;
 
-export const SuccessIcon = styled(CheckCircle)<{ darktheme: boolean }>`
+export const SuccessIcon = styled(CheckCircle)<{ darktheme: string }>`
    width: 10%;
-   color: ${({ darktheme }) => (darktheme ? Color.darkThm.success : Color.lightThm.success)};
+   color: ${({ darktheme }) =>
+      darktheme === 'true' ? Color.darkThm.success : Color.lightThm.success};
 `;
 
 export const SuccessMsgHolder = styled.div`

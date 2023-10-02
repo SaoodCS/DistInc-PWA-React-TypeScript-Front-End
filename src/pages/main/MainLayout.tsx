@@ -15,7 +15,7 @@ export default function MainLayout(): JSX.Element {
       <>
          <Header isDarkTheme={isDarkTheme}>
             <ConditionalRender condition={showBackBtn}>
-               <StyledBackArr onClick={handleBackBtnClick} darktheme={isDarkTheme} />
+               <StyledBackArr onClick={handleBackBtnClick} darktheme={isDarkTheme.toString()} />
             </ConditionalRender>
             {headerTitle}
          </Header>

@@ -19,9 +19,9 @@ export const FetchErrorWrapper = styled.div`
    width: 100%;
 `;
 
-export const ErrorIcon = styled(Error)<{ darktheme: boolean }>`
+export const ErrorIcon = styled(Error)<{ darktheme: string }>`
    color: ${({ darktheme }) =>
-      darktheme
+      darktheme === 'true'
          ? Color.setRgbOpacity(Color.darkThm.error, 0.6)
          : Color.setRgbOpacity(Color.lightThm.error, 0.7)};
 `;

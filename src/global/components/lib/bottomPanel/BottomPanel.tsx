@@ -50,7 +50,7 @@ export default function BottomPanel(props: IBottomPanel): JSX.Element {
             isOpen={isOpen}
             onClose={() => onClose()}
             tweenConfig={{ ease: 'easeOut', duration: 0.2 }}
-            darktheme={isDarkTheme}
+            darktheme={isDarkTheme.toString()}
             detent={'content-height'}
             prefersReducedMotion={false}
             style={{ zIndex: zIndex || undefined }}
@@ -58,7 +58,7 @@ export default function BottomPanel(props: IBottomPanel): JSX.Element {
             <Sheet.Container>
                <ConditionalRender condition={heading !== undefined}>
                   <Sheet.Header>
-                     <CustomPanelHeader darktheme={isDarkTheme}>
+                     <CustomPanelHeader darktheme={isDarkTheme.toString()}>
                         <HeaderColumnLeft>
                            <PanelCloseButton onClick={() => onClose()} />
                         </HeaderColumnLeft>

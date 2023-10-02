@@ -7,7 +7,7 @@ export default function OfflineFetch(): JSX.Element {
 
    return (
       <OfflineFetchWrapper>
-         <OfflineIcon size="100%" darktheme={isDarkTheme} />
+         <OfflineIcon size="100%" darktheme={isDarkTheme.toString()} />
          <OfflineMsg isDarkTheme={isDarkTheme}>No network connection</OfflineMsg>
       </OfflineFetchWrapper>
    );
