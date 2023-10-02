@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react';
 import { InlineTxtBtn } from '../../../../../../global/components/lib/button/inlineTextBtn/Style';
-import { TextBtn } from '../../../../../../global/components/lib/button/textBtn/Style';
 import SuccessMsg from '../../../../../../global/components/lib/font/successMsg/SuccessMsg';
 import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
@@ -10,7 +9,6 @@ import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper'
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import { auth } from '../../../../../../global/firebase/config/config';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
-import Color from '../../../../../../global/theme/colors';
 
 export default function ResetAccount(): JSX.Element {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
@@ -54,7 +52,7 @@ export default function ResetAccount(): JSX.Element {
    }
 
    return (
-      <div style = {{padding:'1em'}}>
+      <div style={{ padding: '1em' }}>
          {showSuccessMsg && <SuccessMsg>Account resetted successfully</SuccessMsg>}
          <ConditionalRender condition={!showSuccessMsg}>
             <strong>Resetting your account will do the following:</strong>

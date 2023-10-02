@@ -1,15 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
 import { InlineTxtBtn } from '../../../../../../global/components/lib/button/inlineTextBtn/Style';
-import { TextBtn } from '../../../../../../global/components/lib/button/textBtn/Style';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import { auth } from '../../../../../../global/firebase/config/config';
-import Clickables from '../../../../../../global/helpers/styledComponents/clickables';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
-import Color from '../../../../../../global/theme/colors';
 
 export default function DeleteAccount(): JSX.Element {
    const { isDarkTheme } = useThemeContext();

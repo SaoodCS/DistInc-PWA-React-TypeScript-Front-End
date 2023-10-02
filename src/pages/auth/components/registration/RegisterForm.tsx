@@ -1,6 +1,5 @@
 import { sendEmailVerification, signInWithEmailAndPassword } from 'firebase/auth';
 import { StaticButton } from '../../../../global/components/lib/button/staticButton/Style';
-import { TextBtn } from '../../../../global/components/lib/button/textBtn/Style';
 import { StyledForm } from '../../../../global/components/lib/form/form/Style';
 import InputComponent from '../../../../global/components/lib/form/input/Input';
 import useThemeContext from '../../../../global/context/theme/hooks/useThemeContext';

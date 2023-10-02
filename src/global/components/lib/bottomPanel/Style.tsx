@@ -1,9 +1,10 @@
 import Sheet from 'react-modal-sheet';
+import type { FlattenSimpleInterpolation } from 'styled-components';
 import styled, { css } from 'styled-components';
 import Color from '../../../theme/colors';
 import { ModalCloseButton } from '../modal/Style';
 
-const commonHeaderStyles = (darktheme: boolean) => css`
+const commonHeaderStyles = (darktheme: boolean): FlattenSimpleInterpolation => css`
    background-color: ${darktheme ? Color.darkThm.bg : Color.lightThm.bg};
    display: flex;
    justify-content: center;
