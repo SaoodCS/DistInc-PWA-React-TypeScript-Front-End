@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react';
+import { InlineTxtBtn } from '../../../../../../global/components/lib/button/inlineTextBtn/Style';
 import { TextBtn } from '../../../../../../global/components/lib/button/textBtn/Style';
 import SuccessMsg from '../../../../../../global/components/lib/font/successMsg/SuccessMsg';
 import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
@@ -52,15 +53,8 @@ export default function ResetAccount(): JSX.Element {
       await resetAccount.mutateAsync(currentUser.email);
    }
 
-   function handleBtnStyle(): React.CSSProperties {
-      return {
-         color: isDarkTheme ? Color.darkThm.warning : Color.darkThm.warning,
-         display: 'inline-block',
-      };
-   }
-
    return (
-      <div style={{ padding: '1em' }}>
+      <div style = {{padding:'1em'}}>
          {showSuccessMsg && <SuccessMsg>Account resetted successfully</SuccessMsg>}
          <ConditionalRender condition={!showSuccessMsg}>
             <strong>Resetting your account will do the following:</strong>
@@ -68,14 +62,12 @@ export default function ResetAccount(): JSX.Element {
                <li>Remove all your account information from our database</li>
                <li>Set up your account with a new blank storage</li>
             </ul>
-            <strong>Press reset if you still want to go through with this:</strong>
-            <TextBtn
-               onClick={handleResetBtn}
-               isDarkTheme={isDarkTheme}
-               style={{ ...handleBtnStyle() }}
-            >
-               Reset
-            </TextBtn>
+            <strong>
+               Press reset if you still want to go through with this:{' '}
+               <InlineTxtBtn isDarkTheme={isDarkTheme} isWarningBtn onClick={handleResetBtn}>
+                  Reset
+               </InlineTxtBtn>
+            </strong>
          </ConditionalRender>
       </div>
    );

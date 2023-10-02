@@ -30,7 +30,7 @@ export const TextBtn = styled.button.attrs<ITextBtnAttrs>(({ isDisabled }) => ({
 
    :hover,
    :active {
-      @media (min-width: 768px) {
+      @media (min-width: 850px) {
          background-color: ${({ isDarkTheme, isDisabled }) =>
             !isDisabled &&
             Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.1)};
@@ -40,7 +40,7 @@ export const TextBtn = styled.button.attrs<ITextBtnAttrs>(({ isDisabled }) => ({
    }
 
    :active {
-      @media (max-width: 768px) {
+      @media (max-width: 850px) {
          color: ${({ isDarkTheme, isDisabled }) =>
             !isDisabled &&
             Color.setRgbOpacity(isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent, 0.5)};

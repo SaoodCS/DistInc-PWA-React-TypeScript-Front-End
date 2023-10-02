@@ -8,7 +8,7 @@ import useHeaderContext from '../../global/context/header/hooks/useHeaderContext
 import useThemeContext from '../../global/context/theme/hooks/useThemeContext';
 
 export default function MainLayout(): JSX.Element {
-   const { isDarkTheme, toggleTheme, isPortableDevice } = useThemeContext();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
    const { headerTitle, showBackBtn, handleBackBtnClick } = useHeaderContext();
 
    return (

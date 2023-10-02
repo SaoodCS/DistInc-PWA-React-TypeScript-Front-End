@@ -1,10 +1,13 @@
 import React from 'react';
+import styled from 'styled-components';
+import { InlineTxtBtn } from '../../../../../../global/components/lib/button/inlineTextBtn/Style';
 import { TextBtn } from '../../../../../../global/components/lib/button/textBtn/Style';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import { auth } from '../../../../../../global/firebase/config/config';
+import Clickables from '../../../../../../global/helpers/styledComponents/clickables';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
 import Color from '../../../../../../global/theme/colors';
 
@@ -37,13 +40,6 @@ export default function DeleteAccount(): JSX.Element {
       await deleteAccount.mutateAsync(currentUser.email);
    }
 
-   function handleBtnStyle(): React.CSSProperties {
-      return {
-         color: isDarkTheme ? Color.darkThm.error : Color.darkThm.error,
-         display: 'inline-block',
-      };
-   }
-
    return (
       <div style={{ padding: '1em' }}>
          <strong>Deleting your account will do the following:</strong>
@@ -52,10 +48,12 @@ export default function DeleteAccount(): JSX.Element {
             <li>Remove all your account information from our database</li>
          </ul>
          <div>
-            <strong>Press delete if you still want to go through with this:</strong>
-            <TextBtn onClick={handleDeleteBtn} isDarkTheme={isDarkTheme} style={handleBtnStyle()}>
-               Delete
-            </TextBtn>
+            <strong>
+               Press delete if you still want to go through with this:{' '}
+               <InlineTxtBtn isDarkTheme={isDarkTheme} isDangerBtn onClick={handleDeleteBtn}>
+                  Delete
+               </InlineTxtBtn>
+            </strong>
          </div>
       </div>
    );
