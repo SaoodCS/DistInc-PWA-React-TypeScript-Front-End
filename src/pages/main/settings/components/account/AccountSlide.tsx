@@ -40,6 +40,10 @@ export default function AccountSlide(): JSX.Element {
       if (settingsCarousel === 1) {
          scrollToTop();
       }
+      return () => {
+         setIsBottomPanelOpen(false);
+         setIsModalOpen(false);
+      };
    }, []);
 
    function handleClick(item: IAccountMenuOptions): void {

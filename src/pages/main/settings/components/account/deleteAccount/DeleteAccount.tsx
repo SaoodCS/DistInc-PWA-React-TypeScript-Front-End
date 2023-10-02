@@ -1,13 +1,40 @@
 import React from 'react';
 import { TextBtn } from '../../../../../../global/components/lib/button/textBtn/Style';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
+import useApiErrorContext from '../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
+import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
+import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
+import { auth } from '../../../../../../global/firebase/config/config';
+import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
 import Color from '../../../../../../global/theme/colors';
 
 export default function DeleteAccount(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
+   const { apiError } = useApiErrorContext();
+   const deleteAccount = useCustomMutation(
+      async (email: string) => {
+         const body = APIHelper.createBody({ email });
+         const method = 'POST';
+         const microserviceName = microservices.deleteUser.name;
+         await APIHelper.gatewayCall(body, method, microserviceName);
+      },
+      {
+         onSuccess: async () => {
+            await auth.signOut();
+         },
+         onError: () => {
+            console.error(apiError);
+         },
+      },
+   );
 
-   function handleClick(): void {
-      console.log('delete account');
+   async function handleDeleteBtn(): Promise<void> {
+      const currentUser = auth.currentUser;
+      if (!currentUser || !currentUser.email) {
+         console.error('Current user is not found');
+         return;
+      }
+      await deleteAccount.mutateAsync(currentUser.email);
    }
 
    function handleBtnStyle(): React.CSSProperties {
@@ -26,7 +53,7 @@ export default function DeleteAccount(): JSX.Element {
          </ul>
          <div>
             <strong>Press delete if you still want to go through with this:</strong>
-            <TextBtn onClick={handleClick} isDarkTheme={isDarkTheme} style={handleBtnStyle()}>
+            <TextBtn onClick={handleDeleteBtn} isDarkTheme={isDarkTheme} style={handleBtnStyle()}>
                Delete
             </TextBtn>
          </div>
