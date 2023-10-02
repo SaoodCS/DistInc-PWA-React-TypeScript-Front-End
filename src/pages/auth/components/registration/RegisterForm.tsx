@@ -1,5 +1,6 @@
 import { sendEmailVerification, signInWithEmailAndPassword } from 'firebase/auth';
 import { StaticButton } from '../../../../global/components/lib/button/staticButton/Style';
+import { TextBtn } from '../../../../global/components/lib/button/textBtn/Style';
 import { StyledForm } from '../../../../global/components/lib/form/form/Style';
 import InputComponent from '../../../../global/components/lib/form/input/Input';
 import useThemeContext from '../../../../global/context/theme/hooks/useThemeContext';
@@ -59,49 +60,3 @@ export default function RegisterForm(): JSX.Element {
       </StyledForm>
    );
 }
-
-// async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
-//    const { isFormValid } = initHandleSubmit(e);
-//    if (!isFormValid) return;
-//    try {
-//       const body = APIHelper.createBody(regForm);
-//       const method = 'POST';
-//       const microserviceName = microservices.registerUser.name;
-//       setShowLoader(true);
-//       const response = await APIHelper.gatewayCall(body, method, microserviceName);
-//       setShowLoader(false);
-//       if (APIHelper.isAPICallerError(response)) return setApiError(response.error);
-//       if (!APIHelper.isSuccessMsgRes(response)) return setApiError('Unknown Error');
-//       const signInUser = await signInWithEmailAndPassword(auth, regForm.email, regForm.password);
-//       await sendEmailVerification(signInUser.user);
-//    } catch (e: unknown) {
-//       setApiError(APIHelper.handleError(e));
-//    }
-// }
-
-// const registerUser = useMutation(
-//    async (formData: IRegInputs) => {
-//       const body = APIHelper.createBody(formData);
-//       const method = 'POST';
-//       const microserviceName = microservices.registerUser.name;
-//       await APIHelper.gatewayCall(body, method, microserviceName);
-//       const signInUser = await signInWithEmailAndPassword(
-//          auth,
-//          formData.email,
-//          formData.password,
-//       );
-//       await sendEmailVerification(signInUser.user);
-//    },
-//    {
-//       onMutate: () => {
-//          setShowLoader(true);
-//       },
-//       onSettled: () => {
-//          setShowLoader(false);
-//       },
-//       onSuccess: () => {},
-//       onError: (error) => {
-//          setApiError(APIHelper.handleError(error));
-//       },
-//    },
-// );

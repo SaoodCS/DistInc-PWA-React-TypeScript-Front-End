@@ -11,13 +11,18 @@ export const InlineTxtBtn = styled.span<{
    ${Clickables.removeDefaultEffects};
    cursor: pointer;
    color: ${({ isDarkTheme, isDisabled, isDangerBtn, isWarningBtn }) =>
-      isDisabled
-         ? Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.5)
-         : isDangerBtn
-         ? Color.setRgbOpacity(isDarkTheme ? Color.darkThm.error : Color.lightThm.error, 1)
+      isDangerBtn
+         ? Color.setRgbOpacity(
+              isDarkTheme ? Color.darkThm.error : Color.lightThm.error,
+              isDisabled ? 0.5 : 1,
+           )
          : isWarningBtn
-         ? Color.setRgbOpacity(isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning, 1)
-         : isDarkTheme
-         ? Color.darkThm.accent
-         : Color.lightThm.accent};
+         ? Color.setRgbOpacity(
+              isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning,
+              isDisabled ? 0.5 : 1,
+           )
+         : Color.setRgbOpacity(
+              isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent,
+              isDisabled ? 0.5 : 1,
+           )};
 `;

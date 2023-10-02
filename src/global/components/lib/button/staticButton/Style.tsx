@@ -9,6 +9,8 @@ interface IStaticButtonAttrs {
 interface IStaticButton extends IStaticButtonAttrs {
    isDarkTheme: boolean;
    width?: string;
+   isDangerBtn?: boolean;
+   isWarningBtn?: boolean;
 }
 
 export const StaticButton = styled.button.attrs<IStaticButtonAttrs>(({ isDisabled }) => ({
@@ -23,12 +25,21 @@ export const StaticButton = styled.button.attrs<IStaticButtonAttrs>(({ isDisable
       isDarkTheme ? Color.darkThm.txtOnAccent : Color.lightThm.txtOnAccent};
    font-size: 0.95em;
    width: ${({ width }) => width || 'auto'};
-   background-color: ${({ isDarkTheme, isDisabled }) =>
-      isDisabled
-         ? Color.setRgbOpacity(isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent, 0.5)
-         : isDarkTheme
-         ? Color.darkThm.accent
-         : Color.lightThm.accent};
+   background-color: ${({ isDarkTheme, isDisabled, isDangerBtn, isWarningBtn }) =>
+      isDangerBtn
+         ? Color.setRgbOpacity(
+              isDarkTheme ? Color.darkThm.error : Color.lightThm.error,
+              isDisabled ? 0.5 : 1,
+           )
+         : isWarningBtn
+         ? Color.setRgbOpacity(
+              isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning,
+              isDisabled ? 0.5 : 1,
+           )
+         : Color.setRgbOpacity(
+              isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent,
+              isDisabled ? 0.5 : 1,
+           )};
    transition: background-color 0.3s ease-out;
    backdrop-filter: blur(30px);
 
