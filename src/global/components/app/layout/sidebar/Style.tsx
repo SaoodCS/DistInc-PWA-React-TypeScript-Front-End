@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Color from '../../../../theme/colors';
+import LayoutStyle from '../../../../helpers/styledComponents/layoutStyle';
 
 export const SidebarContainer = styled.div<{ isDarkTheme: boolean }>`
    position: fixed;
@@ -131,8 +132,7 @@ export const CompanyTag = styled.div<{ isDarkTheme: boolean }>`
    position: fixed;
    display: flex;
    bottom: 0px;
-   padding: 1em;
-   box-sizing: border-box;
+   ${LayoutStyle.paddingBorderBox('1em')}
    width: 15dvw;
    text-align: center;
    align-items: center;
