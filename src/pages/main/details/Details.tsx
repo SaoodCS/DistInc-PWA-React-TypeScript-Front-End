@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { CSSProperties, useEffect } from 'react';
 import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Style';
 import useCarousel from '../../../global/components/lib/carousel/hooks/useCarousel';
 import HeaderHooks from '../../../global/context/header/hooks/HeaderHooks';
 import useHeaderContext from '../../../global/context/header/hooks/useHeaderContext';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
+import Color from '../../../global/theme/colors';
 import IncomeSlide from './components/Income/IncomeSlide';
 import AccountsSlide from './components/accounts/AccountsSlide';
 import DetailsContextMenu from './components/contextMenu/DetailsContextMenu';
@@ -16,6 +17,9 @@ export default function Details(): JSX.Element {
    const identifier = 'dashboardCarousel.currentSlide';
    const { containerRef, scrollToSlide, currentSlide } = useCarousel(1, identifier);
    const { isDarkTheme } = useThemeContext();
+   const carouselBorderRight: CSSProperties = {
+      borderRight: `1px solid ${isDarkTheme ? Color.darkThm.border : Color.lightThm.border}`,
+   };
 
    useEffect(() => {
       setHeaderRightElement(<DetailsContextMenu />);
@@ -48,13 +52,13 @@ export default function Details(): JSX.Element {
             </Heading>
          </SlideHeadings>
          <CarouselContainer ref={containerRef} style={{ height: 'calc(100% - 2.5em)' }}>
-            <CarouselSlide height="auto">
+            <CarouselSlide height="auto" style={carouselBorderRight}>
                <IncomeSlide />
             </CarouselSlide>
-            <CarouselSlide height="auto">
+            <CarouselSlide height="auto" style={carouselBorderRight}>
                <ExpenseSlide />
             </CarouselSlide>
-            <CarouselSlide height="auto">
+            <CarouselSlide height="auto" style={carouselBorderRight}>
                <AccountsSlide />
             </CarouselSlide>
          </CarouselContainer>

@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import Color from "../../../../../global/theme/colors";
+import styled from 'styled-components';
+import Color from '../../../../../global/theme/colors';
 
 export const CMItemTitle = styled.div`
    font-size: 0.9em;
 `;
 
-export const CMItemContainer = styled.div<{isDarkTheme: boolean}>`
+export const CMItemContainer = styled.div<{ isDarkTheme: boolean }>`
    padding: 0.5em;
    display: flex;
    justify-content: space-between;
@@ -17,7 +17,6 @@ export const CMItemContainer = styled.div<{isDarkTheme: boolean}>`
       background-color: ${({ isDarkTheme }) =>
          Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.1)};
    }
-
 `;
 
 export const CMItemsListWrapper = styled.div<{ isDarkTheme: boolean }>`
