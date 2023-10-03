@@ -23,7 +23,10 @@ export default function DetailsContextMenu(): JSX.Element {
    function handleClick(name: string): void {
       if (isPortableDevice) {
          setBottomPanelHeading(`New ${name}`);
-         setBottomPanelContent(<div>Opened Bottom Panel!</div>);
+         setBottomPanelContent(
+            <div>Opened Bottom Panel!</div>,
+            //TODO: CREATE FORMS FOR NEW ACCOUNT, INCOME, EXPENSE HERE
+         );
          setBottomPanelZIndex(0);
          setIsBottomPanelOpen(true);
          toggleMenu();

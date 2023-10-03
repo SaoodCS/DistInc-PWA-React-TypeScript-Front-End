@@ -9,7 +9,7 @@ import IncomeSlide from './components/Income/IncomeSlide';
 import AccountsSlide from './components/accounts/AccountsSlide';
 import DetailsContextMenu from './components/contextMenu/DetailsContextMenu';
 import ExpenseSlide from './components/expense/ExpenseSlide';
-import { Heading, SlideHeadings } from './style/Style';
+import { Heading, HeightAdjuster, SlideHeadings } from './style/Style';
 
 export default function Details(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Details');
@@ -51,17 +51,19 @@ export default function Details(): JSX.Element {
                Accounts
             </Heading>
          </SlideHeadings>
-         <CarouselContainer ref={containerRef} style={{ height: 'calc(100% - 2.5em)' }}>
-            <CarouselSlide height="auto" style={carouselBorderRight}>
-               <IncomeSlide />
-            </CarouselSlide>
-            <CarouselSlide height="auto" style={carouselBorderRight}>
-               <ExpenseSlide />
-            </CarouselSlide>
-            <CarouselSlide height="auto" style={carouselBorderRight}>
-               <AccountsSlide />
-            </CarouselSlide>
-         </CarouselContainer>
+         <HeightAdjuster>
+            <CarouselContainer ref={containerRef}>
+               <CarouselSlide height="auto" style={carouselBorderRight}>
+                  <IncomeSlide />
+               </CarouselSlide>
+               <CarouselSlide height="auto" style={carouselBorderRight}>
+                  <ExpenseSlide />
+               </CarouselSlide>
+               <CarouselSlide height="auto" style={carouselBorderRight}>
+                  <AccountsSlide />
+               </CarouselSlide>
+            </CarouselContainer>
+         </HeightAdjuster>
       </>
    );
 }
