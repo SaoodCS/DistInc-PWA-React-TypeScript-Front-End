@@ -11,6 +11,8 @@ export default function useHeaderContext(): IHeaderContext {
       handleBackBtnClick,
       setHandleBackBtnClick,
       hideAndResetBackBtn,
+      headerRightElement,
+      setHeaderRightElement,
    } = useContext(HeaderContext);
    return {
       headerTitle,
@@ -20,5 +22,7 @@ export default function useHeaderContext(): IHeaderContext {
       showBackBtn,
       setShowBackBtn,
       hideAndResetBackBtn,
+      headerRightElement,
+      setHeaderRightElement,
    };
 }
