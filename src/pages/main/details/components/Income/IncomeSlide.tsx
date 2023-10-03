@@ -1,4 +1,3 @@
-import { HorizontalMenuDots } from '../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import {
@@ -22,13 +21,13 @@ export default function IncomeSlide(): JSX.Element {
          <FlatListItem isDarkTheme={isDarkTheme}>
             <FirstRowWrapper>
                <ItemTitleWrapper>
-                  <ItemTitle>Contact Lenses</ItemTitle>
+                  <ItemTitle>Wages</ItemTitle>
                </ItemTitleWrapper>
-               <ItemValue>£16.64</ItemValue>
+               <ItemValue>£2094.00</ItemValue>
             </FirstRowWrapper>
             <SecondRowTagsWrapper>
-               <Tag bgColor={'red'}>Expense</Tag>
-               <Tag bgColor={'blue'}>Subscription</Tag>
+               <Tag bgColor={'green'}>Income</Tag>
+               <Tag bgColor={'blue'}>Wages</Tag>
             </SecondRowTagsWrapper>
          </FlatListItem>
       </FlatListWrapper>
