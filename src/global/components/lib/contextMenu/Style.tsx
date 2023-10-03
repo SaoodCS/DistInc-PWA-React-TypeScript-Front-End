@@ -45,7 +45,6 @@ export const ContextMenuWrapper = styled.div<{
    bottom: ${({ bottom }) => bottom && `${bottom}px`};
    right: ${({ right }) => right && `${right}px`};
    border-radius: 10px;
-   padding: 0.5em;
    z-index: 100;
    width: ${({ widthPx }) => widthPx}px;
    background-color: ${({ isDarkTheme }) =>
