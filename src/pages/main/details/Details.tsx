@@ -1,4 +1,5 @@
 import { CSSProperties, useEffect } from 'react';
+import styled from 'styled-components';
 import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Style';
 import useCarousel from '../../../global/components/lib/carousel/hooks/useCarousel';
 import HeaderHooks from '../../../global/context/header/hooks/HeaderHooks';
@@ -9,7 +10,7 @@ import IncomeSlide from './components/Income/IncomeSlide';
 import AccountsSlide from './components/accounts/AccountsSlide';
 import DetailsContextMenu from './components/contextMenu/DetailsContextMenu';
 import ExpenseSlide from './components/expense/ExpenseSlide';
-import { Heading, HeightAdjuster, SlideHeadings } from './style/Style';
+import { Heading, HeadingsAndCarouselContainer, SlideHeadings } from './style/Style';
 
 export default function Details(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Details');
@@ -27,7 +28,7 @@ export default function Details(): JSX.Element {
    }, []);
 
    return (
-      <>
+      <HeadingsAndCarouselContainer>
          <SlideHeadings isDarkTheme={isDarkTheme}>
             <Heading
                onClick={() => scrollToSlide(1)}
@@ -51,19 +52,17 @@ export default function Details(): JSX.Element {
                Accounts
             </Heading>
          </SlideHeadings>
-         <HeightAdjuster>
-            <CarouselContainer ref={containerRef}>
-               <CarouselSlide height="auto" style={carouselBorderRight}>
-                  <IncomeSlide />
-               </CarouselSlide>
-               <CarouselSlide height="auto" style={carouselBorderRight}>
-                  <ExpenseSlide />
-               </CarouselSlide>
-               <CarouselSlide height="auto" style={carouselBorderRight}>
-                  <AccountsSlide />
-               </CarouselSlide>
-            </CarouselContainer>
-         </HeightAdjuster>
-      </>
+         <CarouselContainer ref={containerRef}>
+            <CarouselSlide height="auto" style={carouselBorderRight}>
+               <IncomeSlide />
+            </CarouselSlide>
+            <CarouselSlide height="auto" style={carouselBorderRight}>
+               <ExpenseSlide />
+            </CarouselSlide>
+            <CarouselSlide height="auto" style={carouselBorderRight}>
+               <AccountsSlide />
+            </CarouselSlide>
+         </CarouselContainer>
+      </HeadingsAndCarouselContainer>
    );
 }

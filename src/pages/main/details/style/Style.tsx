@@ -2,7 +2,14 @@ import styled from 'styled-components';
 import Clickables from '../../../../global/helpers/styledComponents/clickables';
 import Color from '../../../../global/theme/colors';
 
-const headingsHeight = '2.5em';
+export const HeadingsAndCarouselContainer = styled.div`
+   height: 100%;
+   display: flex;
+   flex-direction: column;
+   & > :nth-child(2) {
+      flex: 1;
+   }
+`;
 
 export const Heading = styled.button<{ isActive: boolean; isDarkTheme: boolean }>`
    ${Clickables.removeDefaultEffects};
@@ -30,9 +37,3 @@ export const SlideHeadings = styled.div<{ isDarkTheme: boolean }>`
    border-bottom-right-radius: 10px;
 `;
 
-export const HeightAdjuster = styled.div`
-   height: calc(100% - ${headingsHeight});
-   & > div {
-      height: 100%;
-   }
-`;
