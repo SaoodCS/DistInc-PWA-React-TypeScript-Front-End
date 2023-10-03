@@ -8,32 +8,7 @@ import Color from '../../../global/theme/colors';
 import IncomeSlide from './components/Income/IncomeSlide';
 import AccountsSlide from './components/accounts/AccountsSlide';
 import ExpenseSlide from './components/expense/ExpenseSlide';
-
-const Heading = styled.button<{ isActive: boolean; isDarkTheme: boolean }>`
-   ${Clickables.removeDefaultEffects};
-   border-bottom: ${({ isActive, isDarkTheme }) =>
-      isActive
-         ? isDarkTheme
-            ? `1.5px solid ${Color.darkThm.accent}`
-            : `1.5px solid ${Color.lightThm.accent}`
-         : 'none'};
-   transition: border-bottom 0.2s ease-in-out;
-   box-sizing: border-box;
-`;
-
-const SlideHeadings = styled.div<{ isDarkTheme: boolean }>`
-   width: 100%;
-   height: 2.5em;
-   z-index: 100;
-   display: flex;
-   justify-content: space-around;
-   align-items: center;
-   box-sizing: border-box;
-   border-bottom: 1px solid
-      ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.border : Color.lightThm.border)};
-   border-bottom-left-radius: 10px;
-   border-bottom-right-radius: 10px;
-`;
+import { Heading, SlideHeadings } from './style/Style';
 
 export default function Details(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Details');

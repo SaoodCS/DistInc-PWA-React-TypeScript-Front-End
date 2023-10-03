@@ -23,7 +23,6 @@ export default function IncomeSlide(): JSX.Element {
             <FirstRowWrapper>
                <ItemTitleWrapper>
                   <ItemTitle>Contact Lenses</ItemTitle>
-                  <HorizontalMenuDots />
                </ItemTitleWrapper>
                <ItemValue>£16.64</ItemValue>
             </FirstRowWrapper>
