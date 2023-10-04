@@ -12,6 +12,8 @@ export type InputArray<FormInputs> = {
    [FieldName in keyof FormInputs]: InputObject<FieldName, FormInputs[FieldName]>;
 }[keyof FormInputs][];
 
+export type OptionalNumberInput = number | '';
+
 export default class FormHelper {
    static createInitialState<T>(arr: InputArray<T>): T {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -24,7 +26,7 @@ export default class FormHelper {
             initialState[input.name] = '';
          }
          if (input.type === 'number') {
-            initialState[input.name] = 0;
+            initialState[input.name] = '';
          }
       });
       return initialState as T;

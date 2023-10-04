@@ -2,6 +2,7 @@ import { Bank } from '@styled-icons/bootstrap/Bank';
 import { CashStack as Dollar } from '@styled-icons/bootstrap/CashStack';
 import { Receipt } from '@styled-icons/bootstrap/Receipt';
 import { Add } from '@styled-icons/fluentui-system-filled/Add';
+import { Savings } from '@styled-icons/fluentui-system-regular/Savings';
 import { useContext } from 'react';
 import { TextBtn } from '../../../../../global/components/lib/button/textBtn/Style';
 import ContextMenu from '../../../../../global/components/lib/contextMenu/ContextMenu';
@@ -9,7 +10,8 @@ import useContextMenu from '../../../../../global/components/lib/contextMenu/hoo
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import IncomeForm from '../Income/form/IncomeForm';
-import AccountForm from '../accounts/form/AccountForm';
+import { default as AccountForm, default as CurrentForm } from '../accounts/form/Current/CurrentForm';
+import SavingsForm from '../accounts/form/Savings/SavingsForm';
 import ExpenseForm from '../expense/form/ExpenseForm';
 import { CMItemContainer, CMItemTitle, CMItemsListWrapper, DetailsCMOpenerWrapper } from './Style';
 
@@ -26,9 +28,10 @@ export default function DetailsContextMenu(): JSX.Element {
    function handleClick(name: string): void {
       if (isPortableDevice) {
          setBottomPanelHeading(`New ${name}`);
-         if (name === 'Account') setBottomPanelContent(<AccountForm />);
-         if (name === 'Expense') setBottomPanelContent(<ExpenseForm />);
+         if (name === 'Current') setBottomPanelContent(<CurrentForm />);
+         if (name === 'Savings') setBottomPanelContent(<SavingsForm />);
          if (name === 'Income') setBottomPanelContent(<IncomeForm />);
+         if (name === 'Expense') setBottomPanelContent(<ExpenseForm />);
          setBottomPanelZIndex(2);
          setIsBottomPanelOpen(true);
          toggleMenu();
@@ -55,9 +58,13 @@ export default function DetailsContextMenu(): JSX.Element {
             widthPx={200}
          >
             <CMItemsListWrapper isDarkTheme={isDarkTheme}>
-               <CMItemContainer onClick={() => handleClick('Account')} isDarkTheme={isDarkTheme}>
-                  <CMItemTitle> New Bank Account</CMItemTitle>
+               <CMItemContainer onClick={() => handleClick('Current')} isDarkTheme={isDarkTheme}>
+                  <CMItemTitle> New Current Account</CMItemTitle>
                   <Bank />
+               </CMItemContainer>
+               <CMItemContainer onClick={() => handleClick('Savings')} isDarkTheme={isDarkTheme}>
+                  <CMItemTitle> New Savings Account</CMItemTitle>
+                  <Savings />
                </CMItemContainer>
                <CMItemContainer onClick={() => handleClick('Income')} isDarkTheme={isDarkTheme}>
                   <CMItemTitle> New Income</CMItemTitle>

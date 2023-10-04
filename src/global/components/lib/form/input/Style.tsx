@@ -47,7 +47,7 @@ export const InputLabel = styled.div<IInputLabel>`
 `;
 
 export const TextInput = styled.input.attrs<IInputAttr>(({ isRequired }) => ({
-   isRequired: isRequired,
+   required: isRequired,
 }))<ITextInput>`
    all: unset;
    font-size: 1em;
