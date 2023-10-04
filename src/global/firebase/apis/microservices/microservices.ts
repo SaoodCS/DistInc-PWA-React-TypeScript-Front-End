@@ -15,6 +15,10 @@ const microservices = {
       name: 'resetUser',
       los: 1,
    },
+   setSavingsAccount: {
+      name: 'setSavingsAccount',
+      los: 1,
+   },
 };
 
 export default microservices;
