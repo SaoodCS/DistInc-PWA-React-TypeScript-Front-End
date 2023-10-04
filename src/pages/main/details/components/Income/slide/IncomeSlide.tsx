@@ -1,5 +1,5 @@
-import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
-import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
+import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
+import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
 import {
    FirstRowWrapper,
    FlatListItem,
@@ -9,11 +9,11 @@ import {
    ItemValue,
    SecondRowTagsWrapper,
    Tag,
-} from '../Style';
+} from '../../style/Style';
 
-export default function ExpenseSlide(): JSX.Element {
+export default function IncomeSlide(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
-   const identifier = 'dahsboardCarousel.expensesSlide';
+   const identifier = 'dahsboardCarousel.incomeSlide';
    const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(identifier);
 
    return (
@@ -21,13 +21,13 @@ export default function ExpenseSlide(): JSX.Element {
          <FlatListItem isDarkTheme={isDarkTheme}>
             <FirstRowWrapper>
                <ItemTitleWrapper>
-                  <ItemTitle>Contact Lenses</ItemTitle>
+                  <ItemTitle>Wages</ItemTitle>
                </ItemTitleWrapper>
-               <ItemValue>£16.64</ItemValue>
+               <ItemValue>£2094.00</ItemValue>
             </FirstRowWrapper>
             <SecondRowTagsWrapper>
-               <Tag bgColor={'red'}>Expense</Tag>
-               <Tag bgColor={'blue'}>Subscription</Tag>
+               <Tag bgColor={'green'}>Income</Tag>
+               <Tag bgColor={'blue'}>Wages</Tag>
             </SecondRowTagsWrapper>
          </FlatListItem>
       </FlatListWrapper>

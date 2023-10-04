@@ -1,5 +1,5 @@
-import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
-import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
+import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
+import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
 import {
    FirstRowWrapper,
    FlatListItem,
@@ -9,7 +9,7 @@ import {
    ItemValue,
    SecondRowTagsWrapper,
    Tag,
-} from '../Style';
+} from '../../style/Style';
 
 export default function AccountsSlide(): JSX.Element {
    const { isDarkTheme } = useThemeContext();

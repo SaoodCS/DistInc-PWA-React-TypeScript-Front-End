@@ -8,6 +8,9 @@ import ContextMenu from '../../../../../global/components/lib/contextMenu/Contex
 import useContextMenu from '../../../../../global/components/lib/contextMenu/hooks/useContextMenu';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
+import IncomeForm from '../Income/form/IncomeForm';
+import AccountForm from '../accounts/form/AccountForm';
+import ExpenseForm from '../expense/form/ExpenseForm';
 import { CMItemContainer, CMItemTitle, CMItemsListWrapper, DetailsCMOpenerWrapper } from './Style';
 
 export default function DetailsContextMenu(): JSX.Element {
@@ -23,11 +26,10 @@ export default function DetailsContextMenu(): JSX.Element {
    function handleClick(name: string): void {
       if (isPortableDevice) {
          setBottomPanelHeading(`New ${name}`);
-         setBottomPanelContent(
-            <div>Opened Bottom Panel!</div>,
-            //TODO: CREATE FORMS FOR NEW ACCOUNT, INCOME, EXPENSE HERE
-         );
-         setBottomPanelZIndex(0);
+         if (name === 'Account') setBottomPanelContent(<AccountForm />);
+         if (name === 'Expense') setBottomPanelContent(<ExpenseForm />);
+         if (name === 'Income') setBottomPanelContent(<IncomeForm />);
+         setBottomPanelZIndex(2);
          setIsBottomPanelOpen(true);
          toggleMenu();
       }

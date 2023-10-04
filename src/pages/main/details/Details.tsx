@@ -6,10 +6,10 @@ import HeaderHooks from '../../../global/context/header/hooks/HeaderHooks';
 import useHeaderContext from '../../../global/context/header/hooks/useHeaderContext';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import Color from '../../../global/theme/colors';
-import IncomeSlide from './components/Income/IncomeSlide';
-import AccountsSlide from './components/accounts/AccountsSlide';
+import IncomeSlide from './components/Income/slide/IncomeSlide';
+import AccountsSlide from './components/accounts/slide/AccountsSlide';
 import DetailsContextMenu from './components/contextMenu/DetailsContextMenu';
-import ExpenseSlide from './components/expense/ExpenseSlide';
+import ExpenseSlide from './components/expense/slide/ExpenseSlide';
 import { Heading, HeadingsAndCarouselContainer, SlideHeadings } from './style/Style';
 
 export default function Details(): JSX.Element {

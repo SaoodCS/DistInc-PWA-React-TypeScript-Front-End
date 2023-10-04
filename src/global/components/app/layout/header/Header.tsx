@@ -23,7 +23,7 @@ export const Header = styled.div<{ isDarkTheme: boolean }>`
       padding-left: 1.5em;
       font-size: 3em;
    }
-   z-index: 99999999;
+   z-index: 1;
 `;
 
 export const StyledBackArr = styled(ArrowIosBack)<{ darktheme: string }>`
