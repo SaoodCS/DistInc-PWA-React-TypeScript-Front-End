@@ -10,9 +10,9 @@ import {
    MenuListWrapper,
 } from '../../../global/components/lib/menuList/Style';
 import ConditionalRender from '../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
-import HeaderHooks from '../../../global/context/header/hooks/HeaderHooks';
-import useHeaderContext from '../../../global/context/header/hooks/useHeaderContext';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
+import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
+import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 import { auth } from '../../../global/firebase/config/config';
 import StringHelper from '../../../global/helpers/dataTypes/string/StringHelper';
 import useSessionStorage from '../../../global/hooks/useSessionStorage';

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
-import useFuncState from '../../hooks/useFuncState';
 import { HeaderContext } from './HeaderContext';
+import useFuncState from '../../../hooks/useFuncState';
 
 interface IHeaderContextProvider {
    children: ReactNode;

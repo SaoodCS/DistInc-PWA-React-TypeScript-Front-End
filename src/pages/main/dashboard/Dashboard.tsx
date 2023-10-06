@@ -1,4 +1,4 @@
-import HeaderHooks from '../../../global/context/header/hooks/HeaderHooks';
+import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
 
 export default function Dashboard(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Dashboard');
