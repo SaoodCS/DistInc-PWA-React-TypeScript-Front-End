@@ -1,4 +1,3 @@
-
 import { Outlet } from 'react-router-dom';
 import { Body } from '../../global/components/app/layout/body/Body';
 import Footer from '../../global/components/app/layout/footer/Footer';

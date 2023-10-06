@@ -10,7 +10,7 @@ import useContextMenu from '../../../../../global/components/lib/contextMenu/hoo
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import IncomeForm from '../Income/form/IncomeForm';
-import { default as AccountForm, default as CurrentForm } from '../accounts/form/Current/CurrentForm';
+import { default as CurrentForm } from '../accounts/form/Current/CurrentForm';
 import SavingsForm from '../accounts/form/Savings/SavingsForm';
 import ExpenseForm from '../expense/form/ExpenseForm';
 import { CMItemContainer, CMItemTitle, CMItemsListWrapper, DetailsCMOpenerWrapper } from './Style';

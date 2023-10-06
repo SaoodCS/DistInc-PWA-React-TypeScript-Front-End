@@ -17,7 +17,7 @@ export default function CurrentForm(): JSX.Element {
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
-      if (!isFormValid) return;
+      // if (!isFormValid) return;
    }
 
    return (

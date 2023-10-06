@@ -6,7 +6,6 @@ import {
    FlatListWrapper,
    ItemTitle,
    ItemTitleWrapper,
-   ItemValue,
    SecondRowTagsWrapper,
    Tag,
 } from '../../style/Style';

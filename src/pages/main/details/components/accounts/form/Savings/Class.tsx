@@ -1,7 +1,8 @@
-import FormHelper, {
+import type {
    InputArray,
    OptionalNumberInput,
 } from '../../../../../../../global/helpers/react/form/FormHelper';
+import FormHelper from '../../../../../../../global/helpers/react/form/FormHelper';
 
 export interface ISavingsFormInputs {
    accountName: string;

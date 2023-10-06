@@ -1,5 +1,5 @@
-import { CSSProperties, useEffect } from 'react';
-import styled from 'styled-components';
+import type { CSSProperties } from 'react';
+import { useEffect } from 'react';
 import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Style';
 import useCarousel from '../../../global/components/lib/carousel/hooks/useCarousel';
 import HeaderHooks from '../../../global/context/header/hooks/HeaderHooks';

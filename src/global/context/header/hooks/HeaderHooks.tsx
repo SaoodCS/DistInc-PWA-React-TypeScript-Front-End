@@ -12,15 +12,19 @@ export default class HeaderHooks {
          handleBackBtnClick,
          setHandleBackBtnClick,
          hideAndResetBackBtn,
+         headerRightElement,
+         setHeaderRightElement,
       } = useContext(HeaderContext);
       return {
          headerTitle,
          setHeaderTitle,
-         handleBackBtnClick,
-         setHandleBackBtnClick,
          showBackBtn,
          setShowBackBtn,
+         handleBackBtnClick,
+         setHandleBackBtnClick,
          hideAndResetBackBtn,
+         headerRightElement,
+         setHeaderRightElement,
       };
    }
 
