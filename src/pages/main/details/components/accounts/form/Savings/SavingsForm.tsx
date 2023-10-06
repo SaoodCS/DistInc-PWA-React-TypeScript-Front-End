@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { StaticButton } from '../../../../../../../global/components/lib/button/staticButton/Style';
 import { StyledForm } from '../../../../../../../global/components/lib/form/form/Style';
 import InputComponent from '../../../../../../../global/components/lib/form/input/Input';
+import ConditionalRender from '../../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
 import APIHelper from '../../../../../../../global/firebase/apis/helper/NApiHelper';
@@ -61,8 +62,13 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
             />
          ))}
          <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>
-            Add Account
+            {`${inputValues ? 'Update' : 'Add'} Account`}
          </StaticButton>
+         <ConditionalRender condition={!!inputValues}>
+            <StaticButton isDarkTheme={isDarkTheme} type={'button'} isDangerBtn>
+               Delete Account
+            </StaticButton>
+         </ConditionalRender>
       </StyledForm>
    );
 }
