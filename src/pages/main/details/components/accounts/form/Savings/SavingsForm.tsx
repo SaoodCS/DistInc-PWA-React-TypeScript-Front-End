@@ -3,8 +3,11 @@ import { StyledForm } from '../../../../../../../global/components/lib/form/form
 import InputComponent from '../../../../../../../global/components/lib/form/input/Input';
 import useThemeContext from '../../../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
+import APIHelper from '../../../../../../../global/firebase/apis/helper/NApiHelper';
+import microservices from '../../../../../../../global/firebase/apis/microservices/microservices';
+import { useCustomMutation } from '../../../../../../../global/hooks/useCustomMutation';
 import useForm from '../../../../../../../global/hooks/useForm';
-import SavingsFormClass from './Class';
+import SavingsFormClass, { ISavingsFormInputs } from './Class';
 
 export default function SavingsForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
@@ -14,11 +17,18 @@ export default function SavingsForm(): JSX.Element {
       SavingsFormClass.initialErrors,
       SavingsFormClass.validate,
    );
+   const setSavingAccountInFirestore = useCustomMutation(async (formData: ISavingsFormInputs) => {
+      const body = APIHelper.createBody(formData);
+      const method = 'POST';
+      const microserviceName = microservices.setSavingsAccount.name;
+      await APIHelper.gatewayCall(body, method, microserviceName);
+   });
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
-      if (!isFormValid) return;
       console.log(form);
+      if (!isFormValid) return;
+      await setSavingAccountInFirestore.mutateAsync(form);
    }
 
    return (

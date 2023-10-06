@@ -88,7 +88,7 @@ export namespace APIHelper {
             'Internal Client: Microservice misconfigured in microservices object',
          );
       }
-      if (los > 1) {
+      if (los >= 1) {
          const idToken = await auth.currentUser?.getIdToken(true);
          if (!idToken) throw new ErrorThrower('Unauthorized');
          headers.append('Authorization', `Bearer ${idToken}`);

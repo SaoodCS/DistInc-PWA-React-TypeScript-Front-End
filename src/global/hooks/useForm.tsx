@@ -33,7 +33,15 @@ export default function useForm<T>(
    }
 
    function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
-      const { name, value } = e.target;
+      const { name, value, type } = e.target;
+      if (type === 'number') {
+         setForm((prevState) => ({ ...prevState, [name]: Number(value) }));
+         return;
+      }
+      if (type === 'checkbox') {
+         setForm((prevState) => ({ ...prevState, [name]: Boolean(value) }));
+         return;
+      }
       setForm((prevState) => ({ ...prevState, [name]: value }));
    }
 

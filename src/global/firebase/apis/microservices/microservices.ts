@@ -19,6 +19,10 @@ const microservices = {
       name: 'setSavingsAccount',
       los: 1,
    },
+   getSavingsAccount: {
+      name: 'getSavingsAccount',
+      los: 1,
+   },
 };
 
 export default microservices;
