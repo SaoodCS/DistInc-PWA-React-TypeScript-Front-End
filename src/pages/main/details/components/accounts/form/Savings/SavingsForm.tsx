@@ -39,10 +39,29 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
       },
    );
 
+   const deleteSavingAccountInFirestore = useCustomMutation(
+      async (formData: ISavingsFormInputs) => {
+         const body = APIHelper.createBody({ id: formData.id });
+         const method = 'POST';
+         const microserviceName = microservices.deleteSavingsAccount.name;
+         await APIHelper.gatewayCall(body, method, microserviceName);
+      },
+      {
+         onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['getSavingsAccounts'] });
+         },
+      },
+   );
+
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
       if (!isFormValid) return;
       await setSavingAccountInFirestore.mutateAsync(form);
+   }
+
+   async function handleDelete(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> {
+      e.preventDefault();
+      await deleteSavingAccountInFirestore.mutateAsync(form);
    }
 
    return (
@@ -65,7 +84,12 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
             {`${inputValues ? 'Update' : 'Add'} Account`}
          </StaticButton>
          <ConditionalRender condition={!!inputValues}>
-            <StaticButton isDarkTheme={isDarkTheme} type={'button'} isDangerBtn>
+            <StaticButton
+               isDarkTheme={isDarkTheme}
+               type={'button'}
+               isDangerBtn
+               onClick={(e) => handleDelete(e)}
+            >
                Delete Account
             </StaticButton>
          </ConditionalRender>
