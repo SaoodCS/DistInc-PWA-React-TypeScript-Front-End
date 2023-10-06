@@ -5,7 +5,7 @@ import * as ReactDOM from 'react-dom/client';
 import App from './App';
 import InstallAppModal from './global/components/app/modals/installAppModal/InstallAppModal';
 import AuthContextProvider from './global/context/auth/AuthContextProvider';
-import { ThemeContextProvider } from './global/context/theme/ThemeContextProvider';
+import ThemeContextProvider from './global/context/theme/ThemeContextProvider';
 import WidgetContextProviders from './global/context/widget/WidgetContextProviders';
 
 const queryClient = new QueryClient();

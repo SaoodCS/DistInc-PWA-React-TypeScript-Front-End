@@ -11,7 +11,7 @@ interface IThemeContextProvider {
    children: ReactNode;
 }
 
-export const ThemeContextProvider = (props: IThemeContextProvider): JSX.Element => {
+export default function ThemeContextProvider(props: IThemeContextProvider): JSX.Element {
    const { children } = props;
    const [isDarkTheme, setIsDarkTheme] = useLocalStorage(
       `isDarkTheme`,
@@ -62,4 +62,4 @@ export const ThemeContextProvider = (props: IThemeContextProvider): JSX.Element 
          </ThemeContext.Provider>
       </>
    );
-};
+}
