@@ -7,8 +7,22 @@ import InstallAppModal from './global/components/app/modals/installAppModal/Inst
 import AuthContextProvider from './global/context/auth/AuthContextProvider';
 import ThemeContextProvider from './global/context/theme/ThemeContextProvider';
 import WidgetContextProviders from './global/context/widget/WidgetContextProviders';
+import NumberHelper from './global/helpers/dataTypes/number/NumberHelper';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+   defaultOptions: {
+      queries: {
+         networkMode: 'offlineFirst',
+         retry: false,
+         retryOnMount: true,
+         refetchOnMount: true,
+         refetchOnWindowFocus: true,
+         refetchOnReconnect: true,
+         staleTime: NumberHelper.minsToMs(5),
+         // cacheTime: minsToMs(1),
+      }
+   }
+});
 
 function Root(): JSX.Element {
    return (

@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useContext } from 'react';
 import FetchError from '../../../../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import {
@@ -7,6 +8,7 @@ import {
    PlaceholderRect,
 } from '../../../../../../global/components/lib/fetch/placeholders/Style';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
+import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
@@ -20,22 +22,25 @@ import {
    SecondRowTagsWrapper,
    Tag,
 } from '../../style/Style';
+import { ISavingsFormInputs } from '../form/Savings/Class';
+import SavingsForm from '../form/Savings/SavingsForm';
 
 interface ISavingsAccountFirebase {
-   [id: string]: {
-      targetToReach: number;
-      accountName: string;
-      currentBalance: number;
-      id: string | number;
-   };
+   [id: string]: ISavingsFormInputs;
 }
 
 export default function AccountsSlide(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const identifier = 'dahsboardCarousel.accountsSlide';
    const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(identifier);
+   const {
+      setIsBottomPanelOpen,
+      setBottomPanelContent,
+      setBottomPanelHeading,
+      setBottomPanelZIndex,
+   } = useContext(BottomPanelContext);
 
-   const { isLoading, error, data, isPaused, refetch } = useQuery(['getSavingsAccounts'], () =>
+   const { isLoading, error, data, isPaused, isFetching } = useQuery(['getSavingsAccounts'], () =>
       APIHelper.gatewayCall<ISavingsAccountFirebase>(
          undefined,
          'GET',
@@ -55,6 +60,13 @@ export default function AccountsSlide(): JSX.Element {
    if (isPaused) return <OfflineFetch />;
    if (error) return <FetchError />;
 
+   function handleClick(data: ISavingsFormInputs) {
+      setIsBottomPanelOpen(true);
+      setBottomPanelHeading(data.accountName);
+      setBottomPanelContent(<SavingsForm inputValues={data} />);
+      setBottomPanelZIndex(100);
+   }
+
    return (
       <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
          <FlatListItem isDarkTheme={isDarkTheme}>
@@ -69,10 +81,14 @@ export default function AccountsSlide(): JSX.Element {
                <Tag bgColor={'red'}>Min Cushion: £300.00</Tag>
             </SecondRowTagsWrapper>
          </FlatListItem>
-         {data &&
+         {!!data &&
             Object.keys(data).map((id) => {
                return (
-                  <FlatListItem key={id} isDarkTheme={isDarkTheme}>
+                  <FlatListItem
+                     key={id}
+                     isDarkTheme={isDarkTheme}
+                     onClick={() => handleClick(data[id])}
+                  >
                      <FirstRowWrapper>
                         <ItemTitleWrapper>
                            <ItemTitle>{data[id].accountName}</ItemTitle>
