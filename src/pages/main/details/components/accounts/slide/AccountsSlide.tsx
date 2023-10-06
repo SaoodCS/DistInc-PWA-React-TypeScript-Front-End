@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import FetchError from '../../../../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
+import JSXHelper from '../../../../../../global/helpers/dataTypes/jsx/jsxHelper';
 import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
 import DetailsPlaceholder from '../../../style/Placeholder';
 import {
@@ -34,28 +35,26 @@ export default function AccountsSlide(): JSX.Element {
       setBottomPanelContent,
       setBottomPanelHeading,
       setBottomPanelZIndex,
+      handleCloseBottomPanel,
    } = useContext(BottomPanelContext);
 
-   const { isLoading, error, data, isPaused, isFetching } = useQuery(['getSavingsAccounts'], () =>
-      APIHelper.gatewayCall<ISavingsAccountFirebase>(
-         undefined,
-         'GET',
-         microservices.getSavingsAccount.name,
-      ),
+   const { isLoading, error, data, isPaused } = useQuery(
+      ['getSavingsAccounts'],
+      () =>
+         APIHelper.gatewayCall<ISavingsAccountFirebase>(
+            undefined,
+            'GET',
+            microservices.getSavingsAccount.name,
+         ),
+      {
+         onSettled: () => {
+            handleCloseBottomPanel();
+         },
+      },
    );
 
    if (isLoading && !isPaused) {
-      return (
-         <FlatListWrapper>
-            <DetailsPlaceholder />
-            <DetailsPlaceholder />
-            <DetailsPlaceholder />
-            <DetailsPlaceholder />
-            <DetailsPlaceholder />
-            <DetailsPlaceholder />
-            <DetailsPlaceholder />
-         </FlatListWrapper>
-      );
+      return <FlatListWrapper>{JSXHelper.repeatJSX(<DetailsPlaceholder />, 7)}</FlatListWrapper>;
    }
    if (isPaused) return <OfflineFetch />;
    if (error) return <FetchError />;

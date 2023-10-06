@@ -1,3 +1,5 @@
+import { Fragment } from 'react';
+
 export default class JSXHelper {
    static hasScrolledToBottom(elementId: string): boolean {
       const element = document.getElementById(`${elementId}`);
@@ -8,5 +10,11 @@ export default class JSXHelper {
       }
       console.error(`Internal Error: No element with Id: ${elementId} found.`);
       return false;
+   }
+
+   static repeatJSX(element: JSX.Element, times: number): JSX.Element[] {
+      return Array.from({ length: times }, (_, index) => (
+         <Fragment key={index}>{element}</Fragment>
+      ));
    }
 }
