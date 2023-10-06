@@ -1,6 +1,6 @@
 const microservices = {
    testMicroservice: {
-      name: 'getUserDetails',
+      name: 'deleteUserDetails',
       los: 1,
    },
    registerUser: {
@@ -21,6 +21,10 @@ const microservices = {
    },
    getSavingsAccount: {
       name: 'getSavingsAccount',
+      los: 1,
+   },
+   deleteSavingsAccount: {
+      name: 'deleteSavingsAccount',
       los: 1,
    },
 };
