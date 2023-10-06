@@ -1,17 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import FetchError from '../../../../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
-import {
-   PlaceholderCircle,
-   PlaceholderLine,
-   PlaceholderRect,
-} from '../../../../../../global/components/lib/fetch/placeholders/Style';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
+import DetailsPlaceholder from '../../../style/Placeholder';
 import {
    FirstRowWrapper,
    FlatListItem,
@@ -50,11 +46,15 @@ export default function AccountsSlide(): JSX.Element {
 
    if (isLoading && !isPaused) {
       return (
-         <>
-            <PlaceholderCircle isDarkTheme={isDarkTheme} size="50px" />
-            <PlaceholderRect isDarkTheme={isDarkTheme} height="50px" width="50px" />
-            <PlaceholderLine isDarkTheme={isDarkTheme} />
-         </>
+         <FlatListWrapper>
+            <DetailsPlaceholder />
+            <DetailsPlaceholder />
+            <DetailsPlaceholder />
+            <DetailsPlaceholder />
+            <DetailsPlaceholder />
+            <DetailsPlaceholder />
+            <DetailsPlaceholder />
+         </FlatListWrapper>
       );
    }
    if (isPaused) return <OfflineFetch />;
@@ -68,41 +68,43 @@ export default function AccountsSlide(): JSX.Element {
    }
 
    return (
-      <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
-         <FlatListItem isDarkTheme={isDarkTheme}>
-            <FirstRowWrapper>
-               <ItemTitleWrapper>
-                  <ItemTitle>Lloyds Salary & Expenses</ItemTitle>
-               </ItemTitleWrapper>
-            </FirstRowWrapper>
-            <SecondRowTagsWrapper>
-               <Tag bgColor={'orange'}>Account</Tag>
-               <Tag bgColor={'blue'}>Salary & Expenses</Tag>
-               <Tag bgColor={'red'}>Min Cushion: £300.00</Tag>
-            </SecondRowTagsWrapper>
-         </FlatListItem>
-         {!!data &&
-            Object.keys(data).map((id) => {
-               return (
-                  <FlatListItem
-                     key={id}
-                     isDarkTheme={isDarkTheme}
-                     onClick={() => handleClick(data[id])}
-                  >
-                     <FirstRowWrapper>
-                        <ItemTitleWrapper>
-                           <ItemTitle>{data[id].accountName}</ItemTitle>
-                        </ItemTitleWrapper>
-                        <ItemValue>£{data[id].currentBalance}</ItemValue>
-                     </FirstRowWrapper>
-                     <SecondRowTagsWrapper>
-                        <Tag bgColor={'orange'}>Account</Tag>
-                        <Tag bgColor={'blue'}>Savings</Tag>
-                        <Tag bgColor={'red'}>{`Target: £${data[id].targetToReach}`}</Tag>
-                     </SecondRowTagsWrapper>
-                  </FlatListItem>
-               );
-            })}
-      </FlatListWrapper>
+      <>
+         <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
+            <FlatListItem isDarkTheme={isDarkTheme}>
+               <FirstRowWrapper>
+                  <ItemTitleWrapper>
+                     <ItemTitle>Lloyds Salary & Expenses</ItemTitle>
+                  </ItemTitleWrapper>
+               </FirstRowWrapper>
+               <SecondRowTagsWrapper>
+                  <Tag bgColor={'orange'}>Account</Tag>
+                  <Tag bgColor={'blue'}>Salary & Expenses</Tag>
+                  <Tag bgColor={'red'}>Min Cushion: £300.00</Tag>
+               </SecondRowTagsWrapper>
+            </FlatListItem>
+            {!!data &&
+               Object.keys(data).map((id) => {
+                  return (
+                     <FlatListItem
+                        key={id}
+                        isDarkTheme={isDarkTheme}
+                        onClick={() => handleClick(data[id])}
+                     >
+                        <FirstRowWrapper>
+                           <ItemTitleWrapper>
+                              <ItemTitle>{data[id].accountName}</ItemTitle>
+                           </ItemTitleWrapper>
+                           <ItemValue>£{data[id].currentBalance}</ItemValue>
+                        </FirstRowWrapper>
+                        <SecondRowTagsWrapper>
+                           <Tag bgColor={'orange'}>Account</Tag>
+                           <Tag bgColor={'blue'}>Savings</Tag>
+                           <Tag bgColor={'red'}>{`Target: £${data[id].targetToReach}`}</Tag>
+                        </SecondRowTagsWrapper>
+                     </FlatListItem>
+                  );
+               })}
+         </FlatListWrapper>
+      </>
    );
 }
