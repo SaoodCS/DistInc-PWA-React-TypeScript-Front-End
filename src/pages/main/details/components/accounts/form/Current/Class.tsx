@@ -41,7 +41,7 @@ export default class CurrentFormClass {
          id: 'account-type',
          placeholder: 'Account Type',
          type: 'string',
-         isRequired: false,
+         isRequired: true,
          validator: (value: string): string | true => {
             if (!value) return 'Please choose your account type';
             return true;
@@ -53,6 +53,7 @@ export default class CurrentFormClass {
          placeholder: 'Transfer Leftovers To',
          type: 'string',
          isRequired: false,
+         isDropDown: true,
          validator: (value: string): string | true => {
             if (value && typeof value !== 'string') {
                return 'Please choose where to transfer leftovers to';

@@ -7,7 +7,7 @@ interface IUseFormReturn<T> {
    setForm: React.Dispatch<React.SetStateAction<T>>;
    errors: Record<keyof T, string>;
    setErrors: React.Dispatch<React.SetStateAction<Record<keyof T, string>>>;
-   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
    initHandleSubmit: (e: React.FormEvent<HTMLFormElement>) => { isFormValid: boolean };
 }
 
@@ -32,7 +32,7 @@ export default function useForm<T>(
       return { isFormValid: true };
    }
 
-   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
+   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void {
       const { name, value, type } = e.target;
       if (type === 'number') {
          setForm((prevState) => ({ ...prevState, [name]: value === '' ? '' : Number(value) }));

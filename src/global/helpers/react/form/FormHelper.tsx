@@ -6,6 +6,7 @@ type InputObject<FieldName, ValueType> = {
    isRequired: boolean;
    autoComplete?: 'current-password' | 'new-password';
    validator: (value: ValueType) => string | true;
+   isDropDown?: boolean;
 };
 
 export type InputArray<FormInputs> = {

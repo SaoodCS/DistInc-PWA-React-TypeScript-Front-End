@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { QueryObserverOptions, UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { useContext } from 'react';
 import FetchError from '../../../../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
@@ -25,8 +25,21 @@ import {
 import { ISavingsFormInputs } from '../form/Savings/Class';
 import SavingsForm from '../form/Savings/SavingsForm';
 
-interface ISavingsAccountFirebase {
+export interface ISavingsAccountFirebase {
    [id: string]: ISavingsFormInputs;
+}
+
+export function useSavingsAccounts(options: UseQueryOptions<ISavingsAccountFirebase> = {}) {
+   return useQuery({
+      queryKey: ['getSavingsAccounts'],
+      queryFn: () =>
+         APIHelper.gatewayCall<ISavingsAccountFirebase>(
+            undefined,
+            'GET',
+            microservices.getSavingsAccount.name,
+         ),
+      ...options,
+   });
 }
 
 export default function AccountsSlide(): JSX.Element {
@@ -41,20 +54,11 @@ export default function AccountsSlide(): JSX.Element {
       handleCloseBottomPanel,
    } = useContext(BottomPanelContext);
 
-   const { isLoading, error, data, isPaused, refetch } = useQuery(
-      ['getSavingsAccounts'],
-      () =>
-         APIHelper.gatewayCall<ISavingsAccountFirebase>(
-            undefined,
-            'GET',
-            microservices.getSavingsAccount.name,
-         ),
-      {
-         onSettled: () => {
-            handleCloseBottomPanel();
-         },
+   const { isLoading, error, data, isPaused, refetch } = useSavingsAccounts({
+      onSettled: () => {
+         handleCloseBottomPanel();
       },
-   );
+   });
 
    if (isLoading && !isPaused) {
       return <FlatListWrapper>{JSXHelper.repeatJSX(<DetailsPlaceholder />, 7)}</FlatListWrapper>;
