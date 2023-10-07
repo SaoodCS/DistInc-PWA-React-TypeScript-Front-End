@@ -76,7 +76,7 @@ export default function AccountsSlide(): JSX.Element {
       if (tag === 'Savings') {
          return Color.setRgbOpacity(
             isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent,
-            0.4,
+            0.35,
          );
       }
       return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.error : Color.lightThm.error, 0.7);
