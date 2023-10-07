@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useContext } from 'react';
 import FetchError from '../../../../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
+import PullToRefresh from '../../../../../../global/components/lib/pullToRefresh/PullToRefresh';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
@@ -38,7 +39,7 @@ export default function AccountsSlide(): JSX.Element {
       handleCloseBottomPanel,
    } = useContext(BottomPanelContext);
 
-   const { isLoading, error, data, isPaused } = useQuery(
+   const { isLoading, error, data, isPaused, refetch } = useQuery(
       ['getSavingsAccounts'],
       () =>
          APIHelper.gatewayCall<ISavingsAccountFirebase>(
@@ -68,42 +69,44 @@ export default function AccountsSlide(): JSX.Element {
 
    return (
       <>
-         <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
-            <FlatListItem isDarkTheme={isDarkTheme}>
-               <FirstRowWrapper>
-                  <ItemTitleWrapper>
-                     <ItemTitle>Lloyds Salary & Expenses</ItemTitle>
-                  </ItemTitleWrapper>
-               </FirstRowWrapper>
-               <SecondRowTagsWrapper>
-                  <Tag bgColor={'orange'}>Account</Tag>
-                  <Tag bgColor={'blue'}>Salary & Expenses</Tag>
-                  <Tag bgColor={'red'}>Min Cushion: £300.00</Tag>
-               </SecondRowTagsWrapper>
-            </FlatListItem>
-            {!!data &&
-               Object.keys(data).map((id) => {
-                  return (
-                     <FlatListItem
-                        key={id}
-                        isDarkTheme={isDarkTheme}
-                        onClick={() => handleClick(data[id])}
-                     >
-                        <FirstRowWrapper>
-                           <ItemTitleWrapper>
-                              <ItemTitle>{data[id].accountName}</ItemTitle>
-                           </ItemTitleWrapper>
-                           <ItemValue>£{data[id].currentBalance}</ItemValue>
-                        </FirstRowWrapper>
-                        <SecondRowTagsWrapper>
-                           <Tag bgColor={'orange'}>Account</Tag>
-                           <Tag bgColor={'blue'}>Savings</Tag>
-                           <Tag bgColor={'red'}>{`Target: £${data[id].targetToReach}`}</Tag>
-                        </SecondRowTagsWrapper>
-                     </FlatListItem>
-                  );
-               })}
-         </FlatListWrapper>
+         <PullToRefresh onRefresh={refetch} isDarkTheme={isDarkTheme}>
+            <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
+               <FlatListItem isDarkTheme={isDarkTheme}>
+                  <FirstRowWrapper>
+                     <ItemTitleWrapper>
+                        <ItemTitle>Lloyds Salary & Expenses</ItemTitle>
+                     </ItemTitleWrapper>
+                  </FirstRowWrapper>
+                  <SecondRowTagsWrapper>
+                     <Tag bgColor={'orange'}>Account</Tag>
+                     <Tag bgColor={'blue'}>Salary & Expenses</Tag>
+                     <Tag bgColor={'red'}>Min Cushion: £300.00</Tag>
+                  </SecondRowTagsWrapper>
+               </FlatListItem>
+               {!!data &&
+                  Object.keys(data).map((id) => {
+                     return (
+                        <FlatListItem
+                           key={id}
+                           isDarkTheme={isDarkTheme}
+                           onClick={() => handleClick(data[id])}
+                        >
+                           <FirstRowWrapper>
+                              <ItemTitleWrapper>
+                                 <ItemTitle>{data[id].accountName}</ItemTitle>
+                              </ItemTitleWrapper>
+                              <ItemValue>£{data[id].currentBalance}</ItemValue>
+                           </FirstRowWrapper>
+                           <SecondRowTagsWrapper>
+                              <Tag bgColor={'orange'}>Account</Tag>
+                              <Tag bgColor={'blue'}>Savings</Tag>
+                              <Tag bgColor={'red'}>{`Target: £${data[id].targetToReach}`}</Tag>
+                           </SecondRowTagsWrapper>
+                        </FlatListItem>
+                     );
+                  })}
+            </FlatListWrapper>
+         </PullToRefresh>
       </>
    );
 }
