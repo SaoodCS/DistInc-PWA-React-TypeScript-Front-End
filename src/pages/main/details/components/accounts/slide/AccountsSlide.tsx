@@ -3,12 +3,14 @@ import { useContext } from 'react';
 import FetchError from '../../../../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import PullToRefresh from '../../../../../../global/components/lib/pullToRefresh/PullToRefresh';
+import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import JSXHelper from '../../../../../../global/helpers/dataTypes/jsx/jsxHelper';
 import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
+import Color from '../../../../../../global/theme/colors';
 import DetailsPlaceholder from '../../../style/Placeholder';
 import {
    FirstRowWrapper,
@@ -67,46 +69,66 @@ export default function AccountsSlide(): JSX.Element {
       setBottomPanelZIndex(100);
    }
 
+   function handleTagColor(tag: string): string {
+      if (tag === 'Account') {
+         return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.3);
+      }
+      if (tag === 'Savings') {
+         return Color.setRgbOpacity(
+            isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent,
+            0.4,
+         );
+      }
+      return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.error : Color.lightThm.error, 0.7);
+   }
+
    return (
       <>
          <PullToRefresh onRefresh={refetch} isDarkTheme={isDarkTheme}>
             <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
-               <FlatListItem isDarkTheme={isDarkTheme}>
-                  <FirstRowWrapper>
-                     <ItemTitleWrapper>
-                        <ItemTitle>Lloyds Salary & Expenses</ItemTitle>
-                     </ItemTitleWrapper>
-                  </FirstRowWrapper>
-                  <SecondRowTagsWrapper>
-                     <Tag bgColor={'orange'}>Account</Tag>
-                     <Tag bgColor={'blue'}>Salary & Expenses</Tag>
-                     <Tag bgColor={'red'}>Min Cushion: £300.00</Tag>
-                  </SecondRowTagsWrapper>
-               </FlatListItem>
                {!!data &&
-                  Object.keys(data).map((id) => {
-                     return (
-                        <FlatListItem
-                           key={id}
-                           isDarkTheme={isDarkTheme}
-                           onClick={() => handleClick(data[id])}
-                        >
-                           <FirstRowWrapper>
-                              <ItemTitleWrapper>
-                                 <ItemTitle>{data[id].accountName}</ItemTitle>
-                              </ItemTitleWrapper>
+                  Object.keys(data).map((id) => (
+                     <FlatListItem
+                        key={id}
+                        isDarkTheme={isDarkTheme}
+                        onClick={() => handleClick(data[id])}
+                     >
+                        <FirstRowWrapper>
+                           <ItemTitleWrapper>
+                              <ItemTitle>{data[id].accountName}</ItemTitle>
+                           </ItemTitleWrapper>
+                           <ConditionalRender condition={!!data[id].currentBalance}>
                               <ItemValue>£{data[id].currentBalance}</ItemValue>
-                           </FirstRowWrapper>
-                           <SecondRowTagsWrapper>
-                              <Tag bgColor={'orange'}>Account</Tag>
-                              <Tag bgColor={'blue'}>Savings</Tag>
-                              <Tag bgColor={'red'}>{`Target: £${data[id].targetToReach}`}</Tag>
-                           </SecondRowTagsWrapper>
-                        </FlatListItem>
-                     );
-                  })}
+                           </ConditionalRender>
+                        </FirstRowWrapper>
+                        <SecondRowTagsWrapper>
+                           <Tag bgColor={handleTagColor('Account')}>Account</Tag>
+                           <Tag bgColor={handleTagColor('Savings')}>Savings</Tag>
+                           <ConditionalRender condition={!!data[id].targetToReach}>
+                              <Tag
+                                 bgColor={handleTagColor('Target')}
+                              >{`Target: £${data[id].targetToReach}`}</Tag>
+                           </ConditionalRender>
+                        </SecondRowTagsWrapper>
+                     </FlatListItem>
+                  ))}
             </FlatListWrapper>
          </PullToRefresh>
       </>
    );
+}
+
+{
+   /* <FlatListItem isDarkTheme={isDarkTheme}>
+<FirstRowWrapper>
+   <ItemTitleWrapper>
+      <ItemTitle>Lloyds Salary & Expenses</ItemTitle>
+   </ItemTitleWrapper>
+</FirstRowWrapper>
+<SecondRowTagsWrapper>
+   <Tag bgColor={'orange'}>Account</Tag>
+   <Tag bgColor={'blue'}>Salary & Expenses</Tag>
+   <Tag bgColor={'red'}>Min Cushion: £300.00</Tag>
+</SecondRowTagsWrapper>
+</FlatListItem> */
 }

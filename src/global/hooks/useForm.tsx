@@ -35,7 +35,7 @@ export default function useForm<T>(
    function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
       const { name, value, type } = e.target;
       if (type === 'number') {
-         setForm((prevState) => ({ ...prevState, [name]: Number(value) }));
+         setForm((prevState) => ({ ...prevState, [name]: value === '' ? '' : Number(value) }));
          return;
       }
       if (type === 'checkbox') {
