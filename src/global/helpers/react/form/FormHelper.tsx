@@ -1,3 +1,5 @@
+import { IDropDownOption } from "../../../components/lib/form/dropDown/DropDownInput";
+
 type InputObject<FieldName, ValueType> = {
    name: FieldName;
    id: string;
@@ -7,6 +9,7 @@ type InputObject<FieldName, ValueType> = {
    autoComplete?: 'current-password' | 'new-password';
    validator: (value: ValueType) => string | true;
    isDropDown?: boolean;
+   dropDownOptions?: IDropDownOption[];
 };
 
 export type InputArray<FormInputs> = {

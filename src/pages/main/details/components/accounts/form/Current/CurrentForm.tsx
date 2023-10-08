@@ -5,7 +5,7 @@ import InputCombination from '../../../../../../../global/components/lib/form/in
 import useThemeContext from '../../../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
 import useForm from '../../../../../../../global/hooks/useForm';
-import { ISavingsAccountFirebase, useSavingsAccounts } from '../../slide/AccountsSlide';
+import { useSavingsAccounts } from '../../slide/AccountsSlide';
 import CurrentFormClass from './Class';
 
 export default function CurrentForm(): JSX.Element {
@@ -23,12 +23,16 @@ export default function CurrentForm(): JSX.Element {
       // if (!isFormValid) return;
    }
 
-   function transferToInputOptions(data: ISavingsAccountFirebase | undefined): IDropDownOption[] {
+   function dropDownOptions(input: (typeof CurrentFormClass.inputs)[0]) {
+      if (!input.isDropDown) return undefined;
       if (!data) return [];
-      return Object.entries(data).map(([id, account]) => ({
-         value: id,
-         label: account.accountName,
-      }));
+      if (!input.dropDownOptions) {
+         return Object.entries(data).map(([id, account]) => ({
+            value: id,
+            label: account.accountName,
+         })) as IDropDownOption[];
+      }
+      return input.dropDownOptions;
    }
 
    return (
@@ -45,7 +49,7 @@ export default function CurrentForm(): JSX.Element {
                id={input.id}
                type={input.type}
                value={form[input.name]}
-               dropDownOptions={!!input.isDropDown ? transferToInputOptions(data) : undefined}
+               dropDownOptions={dropDownOptions(input)}
             />
          ))}
          <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>

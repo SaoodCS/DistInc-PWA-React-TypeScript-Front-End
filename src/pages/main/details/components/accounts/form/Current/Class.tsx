@@ -42,6 +42,12 @@ export default class CurrentFormClass {
          placeholder: 'Account Type',
          type: 'string',
          isRequired: true,
+         isDropDown: true,
+         dropDownOptions: [
+            { value: 'salaryexpenses', label: 'Salary & Expenses' },
+            { value: 'spending', label: 'Spending' },
+         ],
+
          validator: (value: string): string | true => {
             if (!value) return 'Please choose your account type';
             return true;
