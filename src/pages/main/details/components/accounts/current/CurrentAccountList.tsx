@@ -10,9 +10,8 @@ import {
    SecondRowTagsWrapper,
    Tag,
 } from '../../style/Style';
-import { useCurrentAccounts } from '../AccountsSlide';
 import CurrentForm from './CurrentForm';
-import { ICurrentFormInputs } from './class/Class';
+import CurrentClass, { ICurrentFormInputs } from './class/Class';
 
 export default function CurrentAccountList() {
    const { isDarkTheme } = useThemeContext();
@@ -23,7 +22,7 @@ export default function CurrentAccountList() {
       setBottomPanelZIndex,
    } = useContext(BottomPanelContext);
 
-   const { data } = useCurrentAccounts();
+   const { data } = CurrentClass.useQuery.getCurrentAccounts();
 
    function handleCurrentsClick(data: ICurrentFormInputs) {
       setIsBottomPanelOpen(true);

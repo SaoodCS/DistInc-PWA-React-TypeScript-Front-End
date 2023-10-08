@@ -17,12 +17,13 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
    const { inputValues } = props;
    const { isDarkTheme } = useThemeContext();
    const { apiError } = useApiErrorContext();
-   const queryClient = useQueryClient();
    const { form, errors, handleChange, initHandleSubmit } = useForm(
       inputValues ? inputValues : SavingsClass.form.initialState,
       SavingsClass.form.initialErrors,
       SavingsClass.form.validate,
    );
+
+   const queryClient = useQueryClient();
 
    const setSavingAccountInFirestore = SavingsClass.useMutation.setSavingsAccount({
       onSuccess: () => {

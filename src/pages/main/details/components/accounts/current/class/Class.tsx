@@ -1,5 +1,9 @@
+import { UseMutationOptions, UseQueryOptions, useQuery } from '@tanstack/react-query';
+import APIHelper from '../../../../../../../global/firebase/apis/helper/NApiHelper';
+import microservices from '../../../../../../../global/firebase/apis/microservices/microservices';
 import type { InputArray } from '../../../../../../../global/helpers/react/form/FormHelper';
 import FormHelper from '../../../../../../../global/helpers/react/form/FormHelper';
+import { useCustomMutation } from '../../../../../../../global/hooks/useCustomMutation';
 
 export interface ICurrentFormInputs {
    accountName: string;
@@ -9,8 +13,12 @@ export interface ICurrentFormInputs {
    id: string;
 }
 
-export default class CurrentFormClass {
-   static inputs: InputArray<ICurrentFormInputs> = [
+interface ICurrentAccountFirebase {
+   [id: string]: ICurrentFormInputs;
+}
+
+export default class CurrentClass {
+   private static inputs: InputArray<ICurrentFormInputs> = [
       {
          name: 'accountName',
          id: 'current-account-name',
@@ -69,13 +77,76 @@ export default class CurrentFormClass {
          },
       },
    ];
-   static initialState: ICurrentFormInputs = FormHelper.createInitialState(CurrentFormClass.inputs);
+   private static initialState: ICurrentFormInputs = FormHelper.createInitialState(
+      CurrentClass.inputs,
+   );
 
-   static initialErrors = FormHelper.createInitialErrors(CurrentFormClass.inputs);
+   private static initialErrors = FormHelper.createInitialErrors(CurrentClass.inputs);
 
-   static validate(formValues: ICurrentFormInputs): Record<keyof ICurrentFormInputs, string> {
-      const formValidation = FormHelper.validation(formValues, CurrentFormClass.inputs);
-
+   private static validate(
+      formValues: ICurrentFormInputs,
+   ): Record<keyof ICurrentFormInputs, string> {
+      const formValidation = FormHelper.validation(formValues, CurrentClass.inputs);
       return formValidation;
    }
+
+   private static useCurrentAccountsQuery(options: UseQueryOptions<ICurrentAccountFirebase> = {}) {
+      return useQuery({
+         queryKey: [microservices.getCurrentAccount.name],
+         queryFn: () =>
+            APIHelper.gatewayCall<ICurrentAccountFirebase>(
+               undefined,
+               'GET',
+               microservices.getCurrentAccount.name,
+            ),
+         ...options,
+      });
+   }
+
+   private static useSetCurrentAccountMutation(
+      options: UseMutationOptions<void, unknown, ICurrentFormInputs>,
+   ) {
+      return useCustomMutation(
+         async (formData: ICurrentFormInputs) => {
+            const body = APIHelper.createBody(formData);
+            const method = 'POST';
+            const microserviceName = microservices.setCurrentAccount.name;
+            await APIHelper.gatewayCall(body, method, microserviceName);
+         },
+         {
+            ...options,
+         },
+      );
+   }
+
+   private static useDelCurrentAccountMutation(
+      options: UseMutationOptions<void, unknown, ICurrentFormInputs>,
+   ) {
+      return useCustomMutation(
+         async (formData: ICurrentFormInputs) => {
+            const body = APIHelper.createBody({ id: formData.id });
+            const method = 'POST';
+            const microserviceName = microservices.deleteCurrentAccount.name;
+            await APIHelper.gatewayCall(body, method, microserviceName);
+         },
+         {
+            ...options,
+         },
+      );
+   }
+
+   static form = {
+      inputs: CurrentClass.inputs,
+      initialState: CurrentClass.initialState,
+      initialErrors: CurrentClass.initialErrors,
+      validate: CurrentClass.validate,
+   };
+
+   static useQuery = {
+      getCurrentAccounts: CurrentClass.useCurrentAccountsQuery,
+   };
+   static useMutation = {
+      setCurrentAccount: CurrentClass.useSetCurrentAccountMutation,
+      delCurrentAccount: CurrentClass.useDelCurrentAccountMutation,
+   };
 }

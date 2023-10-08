@@ -6,15 +6,13 @@ import InputCombination from '../../../../../../global/components/lib/form/input
 import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
-import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
-import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
 import useForm from '../../../../../../global/hooks/useForm';
 import SavingsClass from '../savings/class/Class';
-import CurrentFormClass, { ICurrentFormInputs } from './class/Class';
+import CurrentClass, { ICurrentFormInputs } from './class/Class';
 
 interface ICurrentForm {
-   inputValues: ICurrentFormInputs;
+   inputValues?: ICurrentFormInputs;
 }
 
 export default function CurrentForm(props: ICurrentForm): JSX.Element {
@@ -22,40 +20,25 @@ export default function CurrentForm(props: ICurrentForm): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const { apiError } = useApiErrorContext();
    const { form, errors, handleChange, initHandleSubmit } = useForm(
-      inputValues ? inputValues : CurrentFormClass.initialState,
-      CurrentFormClass.initialErrors,
-      CurrentFormClass.validate,
+      inputValues ? inputValues : CurrentClass.form.initialState,
+      CurrentClass.form.initialErrors,
+      CurrentClass.form.validate,
    );
-   const { data } = SavingsClass.useQuery.getSavingsAccounts();
+
    const queryClient = useQueryClient();
+   const { data } = SavingsClass.useQuery.getSavingsAccounts();
 
-   const setCurrentAccountInFirestore = useCustomMutation(
-      async (formData: ICurrentFormInputs) => {
-         const body = APIHelper.createBody(formData);
-         const method = 'POST';
-         const microserviceName = microservices.setCurrentAccount.name;
-         await APIHelper.gatewayCall(body, method, microserviceName);
+   const setCurrentAccountInFirestore = CurrentClass.useMutation.setCurrentAccount({
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [microservices.getCurrentAccount.name] });
       },
-      {
-         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['getCurrentAccounts'] });
-         },
-      },
-   );
+   });
 
-   const deleteCurrentAccountInFirestore = useCustomMutation(
-      async (formData: ICurrentFormInputs) => {
-         const body = APIHelper.createBody({ id: formData.id });
-         const method = 'POST';
-         const microserviceName = microservices.deleteCurrentAccount.name;
-         await APIHelper.gatewayCall(body, method, microserviceName);
+   const deleteCurrentAccountInFirestore = CurrentClass.useMutation.delCurrentAccount({
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [microservices.getCurrentAccount.name] });
       },
-      {
-         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['getCurrentAccounts'] });
-         },
-      },
-   );
+   });
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
@@ -68,7 +51,7 @@ export default function CurrentForm(props: ICurrentForm): JSX.Element {
       await deleteCurrentAccountInFirestore.mutateAsync(form);
    }
 
-   function dropDownOptions(input: (typeof CurrentFormClass.inputs)[0]) {
+   function dropDownOptions(input: (typeof CurrentClass.form.inputs)[0]) {
       if (!input.isDropDown) return undefined;
       if (!data) return [];
       if (!input.dropDownOptions) {
@@ -82,7 +65,7 @@ export default function CurrentForm(props: ICurrentForm): JSX.Element {
 
    return (
       <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
-         {CurrentFormClass.inputs.map((input) => (
+         {CurrentClass.form.inputs.map((input) => (
             <InputCombination
                key={input.id}
                placeholder={input.placeholder}
