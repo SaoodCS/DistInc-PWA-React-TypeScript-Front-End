@@ -59,9 +59,9 @@ export default function DropDownInput(props: IDropDownInput) {
             onBlur={handleBlur}
             isRequired={isRequired || false}
          >
-            <option value="" disabled selected></option>
+            <option defaultValue=""></option>
             {options.map((option) => (
-               <StyledOption isDarkTheme={isDarkTheme} value={option.value}>
+               <StyledOption isDarkTheme={isDarkTheme} value={option.value} key={option.value}>
                   {option.label}
                </StyledOption>
             ))}
