@@ -27,6 +27,18 @@ const microservices = {
       name: 'deleteSavingsAccount',
       los: 1,
    },
+   setCurrentAccount: {
+      name: 'setCurrentAccount',
+      los: 1,
+   },
+   getCurrentAccount: {
+      name: 'getCurrentAccount',
+      los: 1,
+   },
+   deleteCurrentAccount: {
+      name: 'deleteCurrentAccount',
+      los: 1,
+   },
 };
 
 export default microservices;

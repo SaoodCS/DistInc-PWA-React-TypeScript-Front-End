@@ -6,6 +6,7 @@ export interface ICurrentFormInputs {
    minCushion: number;
    accountType: string;
    transferLeftoversTo: string;
+   id: string;
 }
 
 export default class CurrentFormClass {
