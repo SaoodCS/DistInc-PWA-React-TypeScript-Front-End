@@ -1,32 +1,27 @@
-import { QueryObserverOptions, UseQueryOptions, useQuery } from '@tanstack/react-query';
+import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { useContext } from 'react';
 import FetchError from '../../../../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import PullToRefresh from '../../../../../../global/components/lib/pullToRefresh/PullToRefresh';
-import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import JSXHelper from '../../../../../../global/helpers/dataTypes/jsx/jsxHelper';
 import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
-import Color from '../../../../../../global/theme/colors';
 import DetailsPlaceholder from '../../../style/Placeholder';
-import {
-   FirstRowWrapper,
-   FlatListItem,
-   FlatListWrapper,
-   ItemTitle,
-   ItemTitleWrapper,
-   ItemValue,
-   SecondRowTagsWrapper,
-   Tag,
-} from '../../style/Style';
+import { FlatListWrapper } from '../../style/Style';
+import CurrentAccountList from '../CurrentAccountList';
+import SavingsAccountList from '../SavingsAccountList';
+import { ICurrentFormInputs } from '../form/Current/Class';
 import { ISavingsFormInputs } from '../form/Savings/Class';
-import SavingsForm from '../form/Savings/SavingsForm';
 
 export interface ISavingsAccountFirebase {
    [id: string]: ISavingsFormInputs;
+}
+
+export interface ICurrentAccountFirebase {
+   [id: string]: ICurrentFormInputs;
 }
 
 export function useSavingsAccounts(options: UseQueryOptions<ISavingsAccountFirebase> = {}) {
@@ -42,97 +37,66 @@ export function useSavingsAccounts(options: UseQueryOptions<ISavingsAccountFireb
    });
 }
 
+export function useCurrentAccounts(options: UseQueryOptions<ICurrentAccountFirebase> = {}) {
+   return useQuery({
+      queryKey: ['getCurrentAccounts'],
+      queryFn: () =>
+         APIHelper.gatewayCall<ICurrentAccountFirebase>(
+            undefined,
+            'GET',
+            microservices.getCurrentAccount.name,
+         ),
+      ...options,
+   });
+}
+
 export default function AccountsSlide(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const identifier = 'dahsboardCarousel.accountsSlide';
    const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(identifier);
-   const {
-      setIsBottomPanelOpen,
-      setBottomPanelContent,
-      setBottomPanelHeading,
-      setBottomPanelZIndex,
-      handleCloseBottomPanel,
-   } = useContext(BottomPanelContext);
+   const { handleCloseBottomPanel } = useContext(BottomPanelContext);
 
-   const { isLoading, error, data, isPaused, refetch } = useSavingsAccounts({
+   const {
+      isLoading: isLoadingSavings,
+      error: errorSavings,
+      isPaused: isPausedSavings,
+      refetch: refetchSavings,
+   } = useSavingsAccounts({
       onSettled: () => {
          handleCloseBottomPanel();
       },
    });
 
-   if (isLoading && !isPaused) {
+   const {
+      isLoading: isLoadingCurrent,
+      error: errorCurrent,
+      isPaused: isPausedCurrent,
+      refetch: refetchCurrent,
+   } = useCurrentAccounts({
+      onSettled: () => {
+         handleCloseBottomPanel();
+      },
+   });
+
+   if ((isLoadingSavings && !isPausedSavings) || (isLoadingCurrent && !isPausedCurrent)) {
       return <FlatListWrapper>{JSXHelper.repeatJSX(<DetailsPlaceholder />, 7)}</FlatListWrapper>;
    }
-   if (isPaused) return <OfflineFetch />;
-   if (error) return <FetchError />;
+   if (isPausedSavings || isPausedCurrent) return <OfflineFetch />;
+   if (errorSavings || errorCurrent) return <FetchError />;
 
-   function handleClick(data: ISavingsFormInputs) {
-      setIsBottomPanelOpen(true);
-      setBottomPanelHeading(data.accountName);
-      setBottomPanelContent(<SavingsForm inputValues={data} />);
-      setBottomPanelZIndex(100);
-   }
-
-   function handleTagColor(tag: string): string {
-      if (tag === 'Account') {
-         return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.3);
-      }
-      if (tag === 'Savings') {
-         return Color.setRgbOpacity(
-            isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent,
-            0.35,
-         );
-      }
-      return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.error : Color.lightThm.error, 0.7);
+   async function handleOnRefresh() {
+      refetchSavings();
+      refetchCurrent();
    }
 
    return (
       <>
-         <PullToRefresh onRefresh={refetch} isDarkTheme={isDarkTheme}>
+         <PullToRefresh onRefresh={handleOnRefresh} isDarkTheme={isDarkTheme}>
             <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
-               {!!data &&
-                  Object.keys(data).map((id) => (
-                     <FlatListItem
-                        key={id}
-                        isDarkTheme={isDarkTheme}
-                        onClick={() => handleClick(data[id])}
-                     >
-                        <FirstRowWrapper>
-                           <ItemTitleWrapper>
-                              <ItemTitle>{data[id].accountName}</ItemTitle>
-                           </ItemTitleWrapper>
-                           <ConditionalRender condition={!!data[id].currentBalance}>
-                              <ItemValue>£{data[id].currentBalance}</ItemValue>
-                           </ConditionalRender>
-                        </FirstRowWrapper>
-                        <SecondRowTagsWrapper>
-                           <Tag bgColor={handleTagColor('Account')}>Account</Tag>
-                           <Tag bgColor={handleTagColor('Savings')}>Savings</Tag>
-                           <ConditionalRender condition={!!data[id].targetToReach}>
-                              <Tag
-                                 bgColor={handleTagColor('Target')}
-                              >{`Target: £${data[id].targetToReach}`}</Tag>
-                           </ConditionalRender>
-                        </SecondRowTagsWrapper>
-                     </FlatListItem>
-                  ))}
+               <SavingsAccountList />
+               <CurrentAccountList />
             </FlatListWrapper>
          </PullToRefresh>
       </>
    );
-}
-
-{
-   /* <FlatListItem isDarkTheme={isDarkTheme}>
-<FirstRowWrapper>
-   <ItemTitleWrapper>
-      <ItemTitle>Lloyds Salary & Expenses</ItemTitle>
-   </ItemTitleWrapper>
-</FirstRowWrapper>
-<SecondRowTagsWrapper>
-   <Tag bgColor={'orange'}>Account</Tag>
-   <Tag bgColor={'blue'}>Salary & Expenses</Tag>
-   <Tag bgColor={'red'}>Min Cushion: £300.00</Tag>
-</SecondRowTagsWrapper>
-</FlatListItem> */
 }
