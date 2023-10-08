@@ -1,8 +1,12 @@
+import { UseMutationOptions, UseQueryOptions, useQuery } from '@tanstack/react-query';
+import APIHelper from '../../../../../../../global/firebase/apis/helper/NApiHelper';
+import microservices from '../../../../../../../global/firebase/apis/microservices/microservices';
 import type {
    InputArray,
    OptionalNumberInput,
 } from '../../../../../../../global/helpers/react/form/FormHelper';
 import FormHelper from '../../../../../../../global/helpers/react/form/FormHelper';
+import { useCustomMutation } from '../../../../../../../global/hooks/useCustomMutation';
 
 export interface ISavingsFormInputs {
    accountName: string;
@@ -11,8 +15,12 @@ export interface ISavingsFormInputs {
    id: string;
 }
 
-export default class SavingsFormClass {
-   static inputs: InputArray<ISavingsFormInputs> = [
+interface ISavingsAccountFirebase {
+   [id: string]: ISavingsFormInputs;
+}
+
+export default class SavingsClass {
+   private static inputs: InputArray<ISavingsFormInputs> = [
       {
          name: 'accountName',
          id: 'savings-account-name',
@@ -52,13 +60,76 @@ export default class SavingsFormClass {
          },
       },
    ];
-   static initialState: ISavingsFormInputs = FormHelper.createInitialState(SavingsFormClass.inputs);
+   private static initialState: ISavingsFormInputs = FormHelper.createInitialState(
+      SavingsClass.inputs,
+   );
 
-   static initialErrors = FormHelper.createInitialErrors(SavingsFormClass.inputs);
+   private static initialErrors = FormHelper.createInitialErrors(SavingsClass.inputs);
 
-   static validate(formValues: ISavingsFormInputs): Record<keyof ISavingsFormInputs, string> {
-      const formValidation = FormHelper.validation(formValues, SavingsFormClass.inputs);
-
+   private static validate(
+      formValues: ISavingsFormInputs,
+   ): Record<keyof ISavingsFormInputs, string> {
+      const formValidation = FormHelper.validation(formValues, SavingsClass.inputs);
       return formValidation;
    }
+
+   private static useSavingsAccountsQuery(options: UseQueryOptions<ISavingsAccountFirebase> = {}) {
+      return useQuery({
+         queryKey: [microservices.getSavingsAccount.name],
+         queryFn: () =>
+            APIHelper.gatewayCall<ISavingsAccountFirebase>(
+               undefined,
+               'GET',
+               microservices.getSavingsAccount.name,
+            ),
+         ...options,
+      });
+   }
+
+   private static useSetSavingsAccountMutation(
+      options: UseMutationOptions<void, unknown, ISavingsFormInputs>,
+   ) {
+      return useCustomMutation(
+         async (formData: ISavingsFormInputs) => {
+            const body = APIHelper.createBody(formData);
+            const method = 'POST';
+            const microserviceName = microservices.setSavingsAccount.name;
+            await APIHelper.gatewayCall(body, method, microserviceName);
+         },
+         {
+            ...options,
+         },
+      );
+   }
+
+   private static useDelSavingsAccountMutation(
+      options: UseMutationOptions<void, unknown, ISavingsFormInputs>,
+   ) {
+      return useCustomMutation(
+         async (formData: ISavingsFormInputs) => {
+            const body = APIHelper.createBody({ id: formData.id });
+            const method = 'POST';
+            const microserviceName = microservices.deleteSavingsAccount.name;
+            await APIHelper.gatewayCall(body, method, microserviceName);
+         },
+         {
+            ...options,
+         },
+      );
+   }
+
+   static form = {
+      inputs: SavingsClass.inputs,
+      initialState: SavingsClass.initialState,
+      initialErrors: SavingsClass.initialErrors,
+      validate: SavingsClass.validate,
+   };
+
+   static useQuery = {
+      getSavingsAccounts: SavingsClass.useSavingsAccountsQuery,
+   };
+   static useMutation = {
+      setSavingsAccount: SavingsClass.useSetSavingsAccountMutation,
+      delSavingsAccount: SavingsClass.useDelSavingsAccountMutation,
+   };
 }

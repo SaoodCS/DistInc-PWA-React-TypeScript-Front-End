@@ -5,11 +5,9 @@ import InputComponent from '../../../../../../../global/components/lib/form/inpu
 import ConditionalRender from '../../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
-import APIHelper from '../../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../../global/firebase/apis/microservices/microservices';
-import { useCustomMutation } from '../../../../../../../global/hooks/useCustomMutation';
 import useForm from '../../../../../../../global/hooks/useForm';
-import SavingsFormClass, { ISavingsFormInputs } from './Class';
+import SavingsClass, { ISavingsFormInputs } from './Class';
 
 interface ISavingsFormComponent {
    inputValues?: ISavingsFormInputs;
@@ -21,37 +19,22 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
    const { apiError } = useApiErrorContext();
    const queryClient = useQueryClient();
    const { form, errors, handleChange, initHandleSubmit } = useForm(
-      inputValues ? inputValues : SavingsFormClass.initialState,
-      SavingsFormClass.initialErrors,
-      SavingsFormClass.validate,
-   );
-   const setSavingAccountInFirestore = useCustomMutation(
-      async (formData: ISavingsFormInputs) => {
-         const body = APIHelper.createBody(formData);
-         const method = 'POST';
-         const microserviceName = microservices.setSavingsAccount.name;
-         await APIHelper.gatewayCall(body, method, microserviceName);
-      },
-      {
-         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['getSavingsAccounts'] });
-         },
-      },
+      inputValues ? inputValues : SavingsClass.form.initialState,
+      SavingsClass.form.initialErrors,
+      SavingsClass.form.validate,
    );
 
-   const deleteSavingAccountInFirestore = useCustomMutation(
-      async (formData: ISavingsFormInputs) => {
-         const body = APIHelper.createBody({ id: formData.id });
-         const method = 'POST';
-         const microserviceName = microservices.deleteSavingsAccount.name;
-         await APIHelper.gatewayCall(body, method, microserviceName);
+   const setSavingAccountInFirestore = SavingsClass.useMutation.setSavingsAccount({
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [microservices.getSavingsAccount.name] });
       },
-      {
-         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['getSavingsAccounts'] });
-         },
+   });
+
+   const delSavingAccountInFirestore = SavingsClass.useMutation.delSavingsAccount({
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [microservices.getSavingsAccount.name] });
       },
-   );
+   });
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
@@ -61,12 +44,12 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
 
    async function handleDelete(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> {
       e.preventDefault();
-      await deleteSavingAccountInFirestore.mutateAsync(form);
+      await delSavingAccountInFirestore.mutateAsync(form);
    }
 
    return (
       <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
-         {SavingsFormClass.inputs.map((input) => (
+         {SavingsClass.form.inputs.map((input) => (
             <InputComponent
                placeholder={input.placeholder}
                type={input.type}

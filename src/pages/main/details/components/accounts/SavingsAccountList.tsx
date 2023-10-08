@@ -1,10 +1,7 @@
-import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { useContext } from 'react';
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
-import APIHelper from '../../../../../global/firebase/apis/helper/NApiHelper';
-import microservices from '../../../../../global/firebase/apis/microservices/microservices';
 import Color from '../../../../../global/theme/colors';
 import {
    FirstRowWrapper,
@@ -15,9 +12,8 @@ import {
    SecondRowTagsWrapper,
    Tag,
 } from '../style/Style';
-import { ISavingsFormInputs } from './form/Savings/Class';
+import SavingsClass, { ISavingsFormInputs } from './form/Savings/Class';
 import SavingsForm from './form/Savings/SavingsForm';
-import { useSavingsAccounts } from './slide/AccountsSlide';
 
 export default function SavingsAccountList() {
    const { isDarkTheme } = useThemeContext();
@@ -27,12 +23,13 @@ export default function SavingsAccountList() {
       setBottomPanelHeading,
       setBottomPanelZIndex,
    } = useContext(BottomPanelContext);
-   const { data } = useSavingsAccounts();
 
-   function handleSavingsClick(data: ISavingsFormInputs) {
+   const { data } = SavingsClass.useQuery.getSavingsAccounts();
+
+   function handleSavingsClick(item: ISavingsFormInputs) {
       setIsBottomPanelOpen(true);
-      setBottomPanelHeading(data.accountName);
-      setBottomPanelContent(<SavingsForm inputValues={data} />);
+      setBottomPanelHeading(item.accountName);
+      setBottomPanelContent(<SavingsForm inputValues={item} />);
       setBottomPanelZIndex(100);
    }
 

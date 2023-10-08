@@ -10,7 +10,7 @@ import APIHelper from '../../../../../../../global/firebase/apis/helper/NApiHelp
 import microservices from '../../../../../../../global/firebase/apis/microservices/microservices';
 import { useCustomMutation } from '../../../../../../../global/hooks/useCustomMutation';
 import useForm from '../../../../../../../global/hooks/useForm';
-import { useSavingsAccounts } from '../../slide/AccountsSlide';
+import SavingsClass from '../Savings/Class';
 import CurrentFormClass, { ICurrentFormInputs } from './Class';
 
 interface ICurrentForm {
@@ -26,7 +26,7 @@ export default function CurrentForm(props: ICurrentForm): JSX.Element {
       CurrentFormClass.initialErrors,
       CurrentFormClass.validate,
    );
-   const { data } = useSavingsAccounts();
+   const { data } = SavingsClass.useQuery.getSavingsAccounts();
    const queryClient = useQueryClient();
 
    const setCurrentAccountInFirestore = useCustomMutation(

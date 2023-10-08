@@ -14,27 +14,10 @@ import { FlatListWrapper } from '../../style/Style';
 import CurrentAccountList from '../CurrentAccountList';
 import SavingsAccountList from '../SavingsAccountList';
 import { ICurrentFormInputs } from '../form/Current/Class';
-import { ISavingsFormInputs } from '../form/Savings/Class';
+import SavingsClass from '../form/Savings/Class';
 
-export interface ISavingsAccountFirebase {
-   [id: string]: ISavingsFormInputs;
-}
-
-export interface ICurrentAccountFirebase {
+interface ICurrentAccountFirebase {
    [id: string]: ICurrentFormInputs;
-}
-
-export function useSavingsAccounts(options: UseQueryOptions<ISavingsAccountFirebase> = {}) {
-   return useQuery({
-      queryKey: ['getSavingsAccounts'],
-      queryFn: () =>
-         APIHelper.gatewayCall<ISavingsAccountFirebase>(
-            undefined,
-            'GET',
-            microservices.getSavingsAccount.name,
-         ),
-      ...options,
-   });
 }
 
 export function useCurrentAccounts(options: UseQueryOptions<ICurrentAccountFirebase> = {}) {
@@ -55,13 +38,12 @@ export default function AccountsSlide(): JSX.Element {
    const identifier = 'dahsboardCarousel.accountsSlide';
    const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(identifier);
    const { handleCloseBottomPanel } = useContext(BottomPanelContext);
-
    const {
       isLoading: isLoadingSavings,
       error: errorSavings,
       isPaused: isPausedSavings,
       refetch: refetchSavings,
-   } = useSavingsAccounts({
+   } = SavingsClass.useQuery.getSavingsAccounts({
       onSettled: () => {
          handleCloseBottomPanel();
       },
