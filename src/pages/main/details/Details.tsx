@@ -3,14 +3,14 @@ import { useEffect } from 'react';
 import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Style';
 import useCarousel from '../../../global/components/lib/carousel/hooks/useCarousel';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
+import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
+import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 import Color from '../../../global/theme/colors';
 import IncomeSlide from './components/Income/slide/IncomeSlide';
-import AccountsSlide from './components/accounts/slide/AccountsSlide';
+import AccountsSlide from './components/accounts/AccountsSlide';
 import DetailsContextMenu from './components/contextMenu/DetailsContextMenu';
 import ExpenseSlide from './components/expense/slide/ExpenseSlide';
 import { Heading, HeadingsAndCarouselContainer, SlideHeadings } from './style/Style';
-import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
-import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 
 export default function Details(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Details');

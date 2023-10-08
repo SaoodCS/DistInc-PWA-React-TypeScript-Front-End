@@ -1,7 +1,7 @@
 import { useContext } from 'react';
-import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
-import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
-import Color from '../../../../../global/theme/colors';
+import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
+import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
+import Color from '../../../../../../global/theme/colors';
 import {
    FirstRowWrapper,
    FlatListItem,
@@ -9,10 +9,10 @@ import {
    ItemTitleWrapper,
    SecondRowTagsWrapper,
    Tag,
-} from '../style/Style';
-import { ICurrentFormInputs } from './form/Current/Class';
-import CurrentForm from './form/Current/CurrentForm';
-import { useCurrentAccounts } from './slide/AccountsSlide';
+} from '../../style/Style';
+import { useCurrentAccounts } from '../AccountsSlide';
+import CurrentForm from './CurrentForm';
+import { ICurrentFormInputs } from './class/Class';
 
 export default function CurrentAccountList() {
    const { isDarkTheme } = useThemeContext();

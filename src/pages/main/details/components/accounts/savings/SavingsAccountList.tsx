@@ -1,8 +1,8 @@
 import { useContext } from 'react';
-import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
-import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
-import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
-import Color from '../../../../../global/theme/colors';
+import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
+import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
+import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
+import Color from '../../../../../../global/theme/colors';
 import {
    FirstRowWrapper,
    FlatListItem,
@@ -11,9 +11,9 @@ import {
    ItemValue,
    SecondRowTagsWrapper,
    Tag,
-} from '../style/Style';
-import SavingsClass, { ISavingsFormInputs } from './form/Savings/Class';
-import SavingsForm from './form/Savings/SavingsForm';
+} from '../../style/Style';
+import SavingsForm from './SavingsForm';
+import SavingsClass, { ISavingsFormInputs } from './class/Class';
 
 export default function SavingsAccountList() {
    const { isDarkTheme } = useThemeContext();
