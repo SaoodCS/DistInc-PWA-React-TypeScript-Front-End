@@ -21,6 +21,7 @@ export const Heading = styled.button<{ isActive: boolean; isDarkTheme: boolean }
          : 'none'};
    transition: border-bottom 0.2s ease-in-out;
    box-sizing: border-box;
+   cursor: pointer;
 `;
 
 export const SlideHeadings = styled.div<{ isDarkTheme: boolean }>`

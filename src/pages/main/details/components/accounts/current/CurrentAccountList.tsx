@@ -35,7 +35,7 @@ export default function CurrentAccountList() {
       if (tag === 'Account') {
          return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.3);
       }
-      if (tag === 'Savings') {
+      if (tag === 'Type') {
          return Color.setRgbOpacity(
             isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent,
             0.35,
@@ -43,6 +43,14 @@ export default function CurrentAccountList() {
       }
       return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.error : Color.lightThm.error, 0.7);
    }
+
+   // TODO: update the value of the types in the current form input to be "Salary & Expenses" and "Spendings" so i don't have to do this and so the values are consistent and match the labels
+   function handleTypeLabel(type: string) {
+      if (type === 'salaryexpenses') return 'Salary & Expenses';
+      if (type === 'spendings') return 'Spendings';
+   }
+
+   //TODO: add a tag for the transferLeftoversTo value
 
    return (
       <>
@@ -60,7 +68,9 @@ export default function CurrentAccountList() {
                   </FirstRowWrapper>
                   <SecondRowTagsWrapper>
                      <Tag bgColor={handleTagColor('Account')}>Account</Tag>
-                     <Tag bgColor={handleTagColor('Savings')}>{data[id].accountType}</Tag>
+                     <Tag bgColor={handleTagColor('Type')}>
+                        {handleTypeLabel(data[id].accountType)}
+                     </Tag>
                      <Tag
                         bgColor={handleTagColor('Target')}
                      >{`Min Cushion: £${data[id].minCushion}`}</Tag>

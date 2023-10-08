@@ -1,7 +1,9 @@
 import styled from 'styled-components';
+import Scrollbar from '../../../../../global/helpers/styledComponents/scrollbars';
 
 export const FlatListWrapper = styled.div`
    width: 100%;
+   ${Scrollbar.hide};
 `;
 
 export const ItemTitle = styled.div`

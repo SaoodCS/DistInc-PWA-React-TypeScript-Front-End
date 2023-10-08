@@ -4,12 +4,14 @@ import styled, { css } from 'styled-components';
 import Color from '../../../theme/colors';
 import { ModalCloseButton } from '../modal/Style';
 
+const darkModeColorTop: string = Color.setRgbOpacity(Color.darkThm.bg, 0.95);
+const darkModeColorBottom: string = Color.setRgbOpacity(Color.darkThm.bg, 0.99);
+
 const commonHeaderStyles = (darktheme: boolean): FlattenSimpleInterpolation => css`
-   background-color: ${darktheme ? Color.darkThm.bg : Color.lightThm.bg};
+   background-color: ${darktheme ? darkModeColorTop : Color.lightThm.bg};
    display: flex;
    justify-content: center;
    align-items: center;
-   font-size: 1.1em;
    border-top-left-radius: 7px;
    border-top-right-radius: 7px;
 `;
@@ -22,48 +24,50 @@ export const CustomPanelHeader = styled.div<{ darktheme: string }>`
    ${({ darktheme }) => commonHeaderStyles(darktheme === 'true')};
    padding-top: 1em;
    padding-bottom: 1em;
+   font-size: 1em;
+   background-color: ${({ darktheme }) =>
+      darktheme === 'true' ? Color.darkThm.bg : Color.lightThm.bg};
 `;
 
 export const CustomBottomPanelSheet = styled(Sheet)<{ darktheme: string }>`
-   //border-radius: 10px;
    .react-modal-sheet-backdrop {
-      backdrop-filter: blur(1px);
    }
    .react-modal-sheet-container {
    }
    .react-modal-sheet-header {
       ${({ darktheme }) => commonHeaderStyles(darktheme === 'true')};
-
-      padding-top: 0.5em;
-      padding-bottom: 0.5em;
+      padding-top: 0.1em;
    }
    .react-modal-sheet-drag-indicator {
-      /* custom styles */
    }
    .react-modal-sheet-content {
-      background-color: ${({ darktheme }) =>
+      background: ${({ darktheme }) =>
          darktheme === 'true'
-            ? Color.setRgbOpacity(Color.darkThm.bg, 0.9)
-            : Color.setRgbOpacity(Color.lightThm.txt, 0.1)};
+            ? `linear-gradient(${darkModeColorTop}, ${darkModeColorBottom})`
+            : Color.lightThm.bg};
    }
 `;
 
 export const PanelCloseButton = styled(ModalCloseButton)`
-   margin-left: 1em;
-   font-size: 1.1em;
+   font-size: 1.05em;
 `;
 
 export const HeaderColumnLeft = styled.div`
-   min-width: 33%;
-   max-width: 33%;
+   width: 25%;
+   padding-left: 1em;
+   display: flex;
+   justify-content: left;
 `;
 
 export const HeaderColumnCenter = styled(HeaderColumnLeft)`
    display: flex;
    justify-content: center;
+   width: 50%;
 `;
 
 export const HeaderColumnRight = styled(HeaderColumnLeft)`
    display: flex;
    justify-content: right;
+   width: 25%;
+   padding-right: 1em;
 `;

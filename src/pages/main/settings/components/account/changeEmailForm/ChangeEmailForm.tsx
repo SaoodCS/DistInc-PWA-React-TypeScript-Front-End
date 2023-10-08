@@ -45,7 +45,7 @@ export default function ChangeEmailForm(): JSX.Element {
                setShowSuccessMsg(true);
                return;
             }
-            setModalZIndex(1);
+            setModalZIndex(2);
             setModalHeader('Verify New Email');
             setModalContent(ChangeEmailClass.SuccessJSX(form.newEmail));
             setIsModalOpen(true);

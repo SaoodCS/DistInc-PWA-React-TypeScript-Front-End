@@ -50,7 +50,7 @@ export default function AccountSlide(): JSX.Element {
       if (isPortableDevice) {
          setBottomPanelHeading(item.heading);
          setBottomPanelContent(item.content);
-         setBottomPanelZIndex(0);
+         setBottomPanelZIndex(1);
          setIsBottomPanelOpen(true);
       } else {
          setModalHeader(item.heading);
