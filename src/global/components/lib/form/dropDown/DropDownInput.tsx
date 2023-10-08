@@ -16,10 +16,11 @@ interface IDropDownInput {
    error: string;
    options: IDropDownOption[];
    id: string;
+   value: string | number;
 }
 
 export default function DropDownInput(props: IDropDownInput) {
-   const { placeholder, name, isRequired, handleChange, error, options, id } = props;
+   const { placeholder, name, isRequired, handleChange, error, options, id, value } = props;
    const { isDarkTheme } = useThemeContext();
    const [isActive, setIsActive] = useState(false);
    const [isEmpty, setIsEmpty] = useState(true);
@@ -42,7 +43,7 @@ export default function DropDownInput(props: IDropDownInput) {
             <InputLabel
                focusedInput={isActive}
                isRequired={isRequired || false}
-               inputHasValue={!isEmpty}
+               inputHasValue={!isEmpty || !!value}
                isDarkTheme={isDarkTheme}
             >
                {placeholder}
@@ -58,8 +59,9 @@ export default function DropDownInput(props: IDropDownInput) {
             onFocus={handleFocus}
             onBlur={handleBlur}
             isRequired={isRequired || false}
+            value={value}
          >
-            <option defaultValue=""></option>
+            <StyledOption isDarkTheme={isDarkTheme} value="" hidden={isRequired || false} />
             {options.map((option) => (
                <StyledOption isDarkTheme={isDarkTheme} value={option.value} key={option.value}>
                   {option.label}

@@ -49,6 +49,7 @@ export default function InputCombination(props: IInputCombination) {
                name={name}
                options={dropDownOptions}
                isRequired={isRequired}
+               value={value}
                error={error}
                handleChange={handleChange}
                id={id}

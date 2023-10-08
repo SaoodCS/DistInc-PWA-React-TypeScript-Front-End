@@ -47,8 +47,7 @@ export default function AccountsSlide(): JSX.Element {
    if (errorSavings || errorCurrent) return <FetchError />;
 
    async function handleOnRefresh() {
-      refetchSavings();
-      refetchCurrent();
+      await Promise.all([refetchSavings(), refetchCurrent()]);
    }
 
    return (
