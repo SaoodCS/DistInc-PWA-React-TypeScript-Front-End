@@ -56,11 +56,10 @@ export default function SavingsAccountList() {
                      <ItemTitleWrapper>
                         <ItemTitle>{data[id].accountName}</ItemTitle>
                      </ItemTitleWrapper>
-                     <ConditionalRender condition={!!data[id].currentBalance}>
-                        <ItemValue>
-                           {NumberHelper.asCurrencyStr(data[id].currentBalance as number)}
-                        </ItemValue>
-                     </ConditionalRender>
+                     <ItemValue>
+                        {!!data[id].currentBalance &&
+                           NumberHelper.asCurrencyStr(data[id].currentBalance as number)}
+                     </ItemValue>
                   </FirstRowWrapper>
                   <SecondRowTagsWrapper>
                      <Tag bgColor={tagColor('account')}>Account</Tag>
