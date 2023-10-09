@@ -10,6 +10,7 @@ import {
    SecondRowTagsWrapper,
    Tag,
 } from '../../style/Style';
+import SavingsClass from '../savings/class/Class';
 import CurrentForm from './CurrentForm';
 import CurrentClass, { ICurrentFormInputs } from './class/Class';
 
@@ -23,6 +24,7 @@ export default function CurrentAccountList() {
    } = useContext(BottomPanelContext);
 
    const { data } = CurrentClass.useQuery.getCurrentAccounts();
+   const { data: savingsData } = SavingsClass.useQuery.getSavingsAccounts();
 
    function handleCurrentsClick(data: ICurrentFormInputs) {
       setIsBottomPanelOpen(true);
@@ -31,26 +33,21 @@ export default function CurrentAccountList() {
       setBottomPanelZIndex(100);
    }
 
-   function handleTagColor(tag: string): string {
-      if (tag === 'Account') {
-         return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.3);
-      }
-      if (tag === 'Type') {
-         return Color.setRgbOpacity(
-            isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent,
-            0.35,
-         );
-      }
-      return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.error : Color.lightThm.error, 0.7);
+   function tagColor(tag: string): string {
+      const mapper: { [key: string]: string } = {
+         account: isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt,
+         type: isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent,
+         cushion: isDarkTheme ? Color.darkThm.error : Color.lightThm.error,
+         transfer: isDarkTheme ? Color.darkThm.success : Color.lightThm.success,
+      };
+      return Color.setRgbOpacity(mapper[tag], 0.4);
    }
 
-   // TODO: update the value of the types in the current form input to be "Salary & Expenses" and "Spendings" so i don't have to do this and so the values are consistent and match the labels
-   function handleTypeLabel(type: string) {
-      if (type === 'salaryexpenses') return 'Salary & Expenses';
-      if (type === 'spendings') return 'Spendings';
+   function leftoversTag(transferLeftoversId: string) {
+      const savingsAccount = savingsData?.[transferLeftoversId];
+      if (!savingsAccount) return;
+      return savingsAccount.accountName;
    }
-
-   //TODO: add a tag for the transferLeftoversTo value
 
    return (
       <>
@@ -67,13 +64,12 @@ export default function CurrentAccountList() {
                      </ItemTitleWrapper>
                   </FirstRowWrapper>
                   <SecondRowTagsWrapper>
-                     <Tag bgColor={handleTagColor('Account')}>Account</Tag>
-                     <Tag bgColor={handleTagColor('Type')}>
-                        {handleTypeLabel(data[id].accountType)}
+                     <Tag bgColor={tagColor('account')}>Account</Tag>
+                     <Tag bgColor={tagColor('type')}>{data[id].accountType}</Tag>
+                     <Tag bgColor={tagColor('cushion')}>{`Cushion: £${data[id].minCushion}`}</Tag>
+                     <Tag bgColor={tagColor('transfer')}>
+                        {`Leftovers → ${leftoversTag(data[id].transferLeftoversTo,)}`}
                      </Tag>
-                     <Tag
-                        bgColor={handleTagColor('Target')}
-                     >{`Min Cushion: £${data[id].minCushion}`}</Tag>
                   </SecondRowTagsWrapper>
                </FlatListItem>
             ))}

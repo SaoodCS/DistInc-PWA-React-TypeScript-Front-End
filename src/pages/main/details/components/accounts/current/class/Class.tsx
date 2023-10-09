@@ -53,8 +53,8 @@ export default class CurrentClass {
          isRequired: true,
          isDropDown: true,
          dropDownOptions: [
-            { value: 'salaryexpenses', label: 'Salary & Expenses' },
-            { value: 'spending', label: 'Spending' },
+            { value: 'Salary & Expenses', label: 'Salary & Expenses' },
+            { value: 'Spending', label: 'Spending' },
          ],
 
          validator: (value: string): string | true => {

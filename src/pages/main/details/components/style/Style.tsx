@@ -12,6 +12,7 @@ export const ItemTitle = styled.div`
 
 export const SecondRowTagsWrapper = styled.div`
    display: flex;
+   flex-wrap: wrap;
 `;
 
 export const ItemValue = styled.div``;
@@ -31,7 +32,7 @@ export const Tag = styled.div<{ bgColor: string }>`
    padding-top: 0.25em;
    padding-bottom: 0.25em;
    margin-left: 0.25em;
-   margin-right: 0.25em;
+   margin: 0.25em;
    background-color: ${({ bgColor }) => bgColor};
 `;
 
