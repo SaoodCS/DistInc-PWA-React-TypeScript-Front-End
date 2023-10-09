@@ -1,3 +1,6 @@
+import { useContext } from 'react';
+import FetchError from '../../../../../../global/components/lib/fetch/fetchError/FetchError';
+import OfflineFetch from '../../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import {
    FirstRowWrapper,
    FlatListItem,
@@ -8,28 +11,71 @@ import {
    SecondRowTagsWrapper,
    Tag,
 } from '../../../../../../global/components/lib/flatList/Style';
+import DetailsPlaceholder from '../../../../../../global/components/lib/flatList/placeholder/Placeholder';
+import PullToRefresh from '../../../../../../global/components/lib/pullToRefresh/PullToRefresh';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
+import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
+import JSXHelper from '../../../../../../global/helpers/dataTypes/jsx/jsxHelper';
 import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
+import Color from '../../../../../../global/theme/colors';
+import IncomeClass, { IIncomeFormInputs } from '../class/Class';
+import IncomeForm from '../form/IncomeForm';
 
 export default function IncomeSlide(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
+   const {
+      setIsBottomPanelOpen,
+      setBottomPanelContent,
+      setBottomPanelHeading,
+      setBottomPanelZIndex,
+   } = useContext(BottomPanelContext);
    const identifier = 'dahsboardCarousel.incomeSlide';
    const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(identifier);
+   const { handleCloseBottomPanel } = useContext(BottomPanelContext);
+   const { isLoading, error, isPaused, refetch, data } = IncomeClass.useQuery.getIncomes({
+      onSettled: () => {
+         handleCloseBottomPanel();
+      },
+   });
+   if (isLoading && !isPaused) {
+      return <FlatListWrapper>{JSXHelper.repeatJSX(<DetailsPlaceholder />, 7)}</FlatListWrapper>;
+   }
+   if (isPaused) return <OfflineFetch />;
+   if (error) return <FetchError />;
+
+   function handleClick(data: IIncomeFormInputs) {
+      setIsBottomPanelOpen(true);
+      setBottomPanelHeading(data.incomeName);
+      setBottomPanelContent(<IncomeForm inputValues={data} />);
+      setBottomPanelZIndex(100);
+   }
+
+   function tagColor(): string {
+      return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.4);
+   }
 
    return (
-      <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
-         <FlatListItem isDarkTheme={isDarkTheme}>
-            <FirstRowWrapper>
-               <ItemTitleWrapper>
-                  <ItemTitle>Wages</ItemTitle>
-               </ItemTitleWrapper>
-               <ItemValue>£2094.00</ItemValue>
-            </FirstRowWrapper>
-            <SecondRowTagsWrapper>
-               <Tag bgColor={'green'}>Income</Tag>
-               <Tag bgColor={'blue'}>Wages</Tag>
-            </SecondRowTagsWrapper>
-         </FlatListItem>
-      </FlatListWrapper>
+      <PullToRefresh onRefresh={refetch} isDarkTheme={isDarkTheme}>
+         <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
+            {!!data &&
+               Object.keys(data).map((id) => (
+                  <FlatListItem
+                     isDarkTheme={isDarkTheme}
+                     key={id}
+                     onClick={() => handleClick(data[id])}
+                  >
+                     <FirstRowWrapper>
+                        <ItemTitleWrapper>
+                           <ItemTitle>{data[id].incomeName}</ItemTitle>
+                        </ItemTitleWrapper>
+                        <ItemValue>£{data[id].incomeValue}</ItemValue>
+                     </FirstRowWrapper>
+                     <SecondRowTagsWrapper>
+                        <Tag bgColor={tagColor()}>Income</Tag>
+                     </SecondRowTagsWrapper>
+                  </FlatListItem>
+               ))}
+         </FlatListWrapper>
+      </PullToRefresh>
    );
 }
