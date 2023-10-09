@@ -33,17 +33,13 @@ export default function SavingsAccountList() {
       setBottomPanelZIndex(100);
    }
 
-   function handleTagColor(tag: string): string {
-      if (tag === 'Account') {
-         return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.3);
-      }
-      if (tag === 'Savings') {
-         return Color.setRgbOpacity(
-            isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent,
-            0.35,
-         );
-      }
-      return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.error : Color.lightThm.error, 0.7);
+   function tagColor(tag: string): string {
+      const mapper: { [key: string]: string } = {
+         account: isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt,
+         type: isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent,
+         target: isDarkTheme ? Color.darkThm.error : Color.lightThm.error,
+      };
+      return Color.setRgbOpacity(mapper[tag], 0.4);
    }
 
    return (
@@ -64,12 +60,12 @@ export default function SavingsAccountList() {
                      </ConditionalRender>
                   </FirstRowWrapper>
                   <SecondRowTagsWrapper>
-                     <Tag bgColor={handleTagColor('Account')}>Account</Tag>
-                     <Tag bgColor={handleTagColor('Savings')}>Savings</Tag>
+                     <Tag bgColor={tagColor('account')}>Account</Tag>
+                     <Tag bgColor={tagColor('type')}>Savings</Tag>
                      <ConditionalRender condition={!!data[id].targetToReach}>
-                        <Tag
-                           bgColor={handleTagColor('Target')}
-                        >{`Target: £${data[id].targetToReach}`}</Tag>
+                        <Tag bgColor={tagColor('target')}>
+                           {`Target: £${data[id].targetToReach}`}
+                        </Tag>
                      </ConditionalRender>
                   </SecondRowTagsWrapper>
                </FlatListItem>
