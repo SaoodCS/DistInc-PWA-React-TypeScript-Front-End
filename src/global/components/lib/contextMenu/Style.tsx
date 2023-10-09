@@ -3,6 +3,8 @@ import styled, { keyframes } from 'styled-components';
 import Color from '../../../theme/colors';
 import type { TButtonPos } from './ContextMenu';
 
+//TODO: create an example ui component for the context menu using all the styles here
+
 const relativeExpander = (btnPosition: TButtonPos): Keyframes => keyframes`
    0% {
       transform: scale(0);
@@ -61,4 +63,29 @@ export const ContextMenuWrapper = styled.div<{
          isOpen ? relativeExpander(btnPosition) : relativeContractor(btnPosition)}
       0.25s ease-in-out;
    animation-fill-mode: forwards;
+`;
+
+export const CMItemsListWrapper = styled.div<{ isDarkTheme: boolean }>`
+   & > *:not(:last-child) {
+      border-bottom: 1px solid
+         ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.border : Color.lightThm.border)};
+   }
+`;
+
+export const CMItemContainer = styled.div<{ isDarkTheme: boolean }>`
+   padding: 0.5em;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   & > *:nth-child(2) {
+      height: 1em;
+   }
+   &:hover:active {
+      background-color: ${({ isDarkTheme }) =>
+         Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.1)};
+   }
+`;
+
+export const CMItemTitle = styled.div`
+   font-size: 0.9em;
 `;

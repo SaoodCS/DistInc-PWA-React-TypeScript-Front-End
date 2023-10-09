@@ -7,13 +7,13 @@ import {
    ItemValue,
    SecondRowTagsWrapper,
    Tag,
-} from '../../../../../../global/components/lib/flatList/Style';
-import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
-import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
-import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
-import Color from '../../../../../../global/theme/colors';
-import SavingsForm from './SavingsForm';
-import SavingsClass, { ISavingsFormInputs } from './class/Class';
+} from '../../../../../../../global/components/lib/flatList/Style';
+import ConditionalRender from '../../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
+import useThemeContext from '../../../../../../../global/context/theme/hooks/useThemeContext';
+import { BottomPanelContext } from '../../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
+import Color from '../../../../../../../global/theme/colors';
+import SavingsClass, { ISavingsFormInputs } from '../class/Class';
+import SavingsForm from '../form/SavingsForm';
 
 export default function SavingsAccountList() {
    const { isDarkTheme } = useThemeContext();

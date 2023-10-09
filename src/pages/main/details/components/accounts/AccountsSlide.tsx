@@ -8,10 +8,10 @@ import useThemeContext from '../../../../../global/context/theme/hooks/useThemeC
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import JSXHelper from '../../../../../global/helpers/dataTypes/jsx/jsxHelper';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
-import CurrentAccountList from './current/CurrentAccountList';
 import CurrentClass from './current/class/Class';
-import SavingsAccountList from './savings/SavingsAccountList';
+import CurrentAccountList from './current/flatList/CurrentAccountList';
 import SavingsClass from './savings/class/Class';
+import SavingsAccountList from './savings/flatList/SavingsAccountList';
 
 export default function AccountsSlide(): JSX.Element {
    const { isDarkTheme } = useThemeContext();

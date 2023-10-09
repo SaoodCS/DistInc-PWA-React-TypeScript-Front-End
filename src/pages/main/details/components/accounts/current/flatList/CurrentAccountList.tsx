@@ -6,13 +6,13 @@ import {
    ItemTitleWrapper,
    SecondRowTagsWrapper,
    Tag,
-} from '../../../../../../global/components/lib/flatList/Style';
-import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
-import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
-import Color from '../../../../../../global/theme/colors';
-import SavingsClass from '../savings/class/Class';
-import CurrentForm from './CurrentForm';
-import CurrentClass, { ICurrentFormInputs } from './class/Class';
+} from '../../../../../../../global/components/lib/flatList/Style';
+import useThemeContext from '../../../../../../../global/context/theme/hooks/useThemeContext';
+import { BottomPanelContext } from '../../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
+import Color from '../../../../../../../global/theme/colors';
+import SavingsClass from '../../savings/class/Class';
+import CurrentClass, { ICurrentFormInputs } from '../class/Class';
+import CurrentForm from '../form/CurrentForm';
 
 export default function CurrentAccountList() {
    const { isDarkTheme } = useThemeContext();

@@ -1,4 +1,3 @@
-import React from 'react';
 import { InlineTxtBtn } from '../../../../../../global/components/lib/button/inlineTextBtn/Style';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';

@@ -6,14 +6,19 @@ import { Savings } from '@styled-icons/fluentui-system-regular/Savings';
 import { useContext } from 'react';
 import { TextBtn } from '../../../../../global/components/lib/button/textBtn/Style';
 import ContextMenu from '../../../../../global/components/lib/contextMenu/ContextMenu';
+import {
+   CMItemContainer,
+   CMItemTitle,
+   CMItemsListWrapper,
+} from '../../../../../global/components/lib/contextMenu/Style';
 import useContextMenu from '../../../../../global/components/lib/contextMenu/hooks/useContextMenu';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import IncomeForm from '../Income/form/IncomeForm';
-import { default as CurrentForm } from '../accounts/current/CurrentForm';
-import SavingsForm from '../accounts/savings/SavingsForm';
+import { default as CurrentForm } from '../accounts/current/form/CurrentForm';
+import SavingsForm from '../accounts/savings/form/SavingsForm';
 import ExpenseForm from '../expense/form/ExpenseForm';
-import { CMItemContainer, CMItemTitle, CMItemsListWrapper, DetailsCMOpenerWrapper } from './Style';
+import { DetailsCMOpenerWrapper } from './Style';
 
 export default function DetailsContextMenu(): JSX.Element {
    const { showMenu, toggleMenu, buttonRef } = useContextMenu();
