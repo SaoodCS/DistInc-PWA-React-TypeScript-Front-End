@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import {
    FirstRowWrapper,
    FlatListItem,
@@ -10,11 +11,15 @@ import {
 } from '../../../../../../global/components/lib/flatList/Style';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
+import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 
 export default function ExpenseSlide(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const identifier = 'dahsboardCarousel.expensesSlide';
    const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(identifier);
+   const { handleCloseBottomPanel } = useContext(BottomPanelContext);
+
+   
 
    return (
       <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>

@@ -39,6 +39,30 @@ const microservices = {
       name: 'deleteCurrentAccount',
       los: 1,
    },
+   setExpense: {
+      name: 'setExpense',
+      los: 1,
+   },
+   getExpenses: {
+      name: 'getExpenses',
+      los: 1,
+   },
+   deleteExpense: {
+      name: 'deleteExpense',
+      los: 1,
+   },
+   setIncome: {
+      name: 'setIncome',
+      los: 1,
+   },
+   getIncomes: {
+      name: 'getIncomes',
+      los: 1,
+   },
+   deleteIncome: {
+      name: 'deleteIncome',
+      los: 1,
+   },
 };
 
 export default microservices;
