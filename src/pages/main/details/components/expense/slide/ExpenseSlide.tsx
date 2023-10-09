@@ -23,6 +23,7 @@ import Color from '../../../../../../global/theme/colors';
 import SavingsClass from '../../accounts/savings/class/Class';
 import ExpensesClass, { IExpenseFormInputs } from '../class/ExpensesClass';
 import ExpenseForm from '../form/ExpenseForm';
+import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 
 export default function ExpenseSlide(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
@@ -87,7 +88,7 @@ export default function ExpenseSlide(): JSX.Element {
                         <ItemTitleWrapper>
                            <ItemTitle>{data[id].expenseName}</ItemTitle>
                         </ItemTitleWrapper>
-                        <ItemValue>£{data[id].expenseValue}</ItemValue>
+                        <ItemValue>{NumberHelper.asCurrencyStr(data[id].expenseValue)}</ItemValue>
                      </FirstRowWrapper>
                      <SecondRowTagsWrapper>
                         <Tag bgColor={tagColor('expense')}>Expense</Tag>

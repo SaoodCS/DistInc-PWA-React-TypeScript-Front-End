@@ -16,6 +16,7 @@ import PullToRefresh from '../../../../../../global/components/lib/pullToRefresh
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import JSXHelper from '../../../../../../global/helpers/dataTypes/jsx/jsxHelper';
+import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
 import Color from '../../../../../../global/theme/colors';
 import IncomeClass, { IIncomeFormInputs } from '../class/Class';
@@ -68,7 +69,7 @@ export default function IncomeSlide(): JSX.Element {
                         <ItemTitleWrapper>
                            <ItemTitle>{data[id].incomeName}</ItemTitle>
                         </ItemTitleWrapper>
-                        <ItemValue>£{data[id].incomeValue}</ItemValue>
+                        <ItemValue>{NumberHelper.asCurrencyStr(data[id].incomeValue)}</ItemValue>
                      </FirstRowWrapper>
                      <SecondRowTagsWrapper>
                         <Tag bgColor={tagColor()}>Income</Tag>

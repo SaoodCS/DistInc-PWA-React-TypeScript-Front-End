@@ -11,6 +11,7 @@ import {
 import ConditionalRender from '../../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
+import NumberHelper from '../../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import Color from '../../../../../../../global/theme/colors';
 import SavingsClass, { ISavingsFormInputs } from '../class/Class';
 import SavingsForm from '../form/SavingsForm';
@@ -56,7 +57,9 @@ export default function SavingsAccountList() {
                         <ItemTitle>{data[id].accountName}</ItemTitle>
                      </ItemTitleWrapper>
                      <ConditionalRender condition={!!data[id].currentBalance}>
-                        <ItemValue>£{data[id].currentBalance}</ItemValue>
+                        <ItemValue>
+                           {NumberHelper.asCurrencyStr(data[id].currentBalance as number)}
+                        </ItemValue>
                      </ConditionalRender>
                   </FirstRowWrapper>
                   <SecondRowTagsWrapper>
