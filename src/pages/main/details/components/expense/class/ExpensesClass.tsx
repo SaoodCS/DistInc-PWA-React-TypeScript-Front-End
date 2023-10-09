@@ -8,7 +8,7 @@ export interface IExpenseFormInputs {
    expenseName: string;
    expenseValue: number;
    expenseType: string;
-   paused: string;
+   paused: 'true' | 'false';
    paymentType: string;
    id: string;
 }

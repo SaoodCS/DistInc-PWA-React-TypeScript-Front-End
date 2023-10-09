@@ -13,11 +13,14 @@ import {
 } from '../../../../../../global/components/lib/flatList/Style';
 import DetailsPlaceholder from '../../../../../../global/components/lib/flatList/placeholder/Placeholder';
 import PullToRefresh from '../../../../../../global/components/lib/pullToRefresh/PullToRefresh';
+import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
+import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import JSXHelper from '../../../../../../global/helpers/dataTypes/jsx/jsxHelper';
 import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
 import Color from '../../../../../../global/theme/colors';
+import SavingsClass from '../../accounts/savings/class/Class';
 import ExpensesClass, { IExpenseFormInputs } from '../class/ExpensesClass';
 import ExpenseForm from '../form/ExpenseForm';
 
@@ -37,6 +40,9 @@ export default function ExpenseSlide(): JSX.Element {
          handleCloseBottomPanel();
       },
    });
+
+   const { data: savingsAccounts } = SavingsClass.useQuery.getSavingsAccounts();
+
    if (isLoading && !isPaused) {
       return <FlatListWrapper>{JSXHelper.repeatJSX(<DetailsPlaceholder />, 7)}</FlatListWrapper>;
    }
@@ -60,6 +66,13 @@ export default function ExpenseSlide(): JSX.Element {
       return Color.setRgbOpacity(mapper[tag], 0.4);
    }
 
+   function expenseTypeLabel(expenseType: string) {
+      if (!expenseType.includes('Savings')) return expenseType;
+      const id = expenseType.split(':')[1];
+      const savingsAccount = savingsAccounts?.[id];
+      return `Transfer: ${savingsAccount?.accountName}` || 'Savings Transfer';
+   }
+
    return (
       <PullToRefresh onRefresh={refetch} isDarkTheme={isDarkTheme}>
          <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
@@ -78,9 +91,13 @@ export default function ExpenseSlide(): JSX.Element {
                      </FirstRowWrapper>
                      <SecondRowTagsWrapper>
                         <Tag bgColor={tagColor('expense')}>Expense</Tag>
-                        <Tag bgColor={tagColor('type')}>{data[id].expenseType}</Tag>
-                        <Tag bgColor={tagColor('paused')}>{data[id].paused}</Tag>
+                        <Tag bgColor={tagColor('type')}>
+                           {expenseTypeLabel(data[id].expenseType)}
+                        </Tag>
                         <Tag bgColor={tagColor('paymentType')}>{data[id].paymentType}</Tag>
+                        <ConditionalRender condition={BoolHelper.convert(data[id].paused)}>
+                           <Tag bgColor={tagColor('paused')}>Paused</Tag>
+                        </ConditionalRender>
                      </SecondRowTagsWrapper>
                   </FlatListItem>
                ))}
