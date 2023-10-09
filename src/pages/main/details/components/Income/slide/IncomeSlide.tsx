@@ -18,11 +18,14 @@ import { BottomPanelContext } from '../../../../../../global/context/widget/bott
 import JSXHelper from '../../../../../../global/helpers/dataTypes/jsx/jsxHelper';
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
+import useURLState from '../../../../../../global/hooks/useURLState';
 import Color from '../../../../../../global/theme/colors';
+import { NDetails } from '../../../namespace/NDetails';
 import IncomeClass, { IIncomeFormInputs } from '../class/Class';
 import IncomeForm from '../form/IncomeForm';
 
 export default function IncomeSlide(): JSX.Element {
+   const [sortBy] = useURLState('sortBy');
    const { isDarkTheme } = useThemeContext();
    const {
       setIsBottomPanelOpen,
@@ -30,8 +33,9 @@ export default function IncomeSlide(): JSX.Element {
       setBottomPanelHeading,
       setBottomPanelZIndex,
    } = useContext(BottomPanelContext);
-   const identifier = 'dahsboardCarousel.incomeSlide';
-   const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(identifier);
+   const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(
+      NDetails.key.incomeSlide,
+   );
    const { handleCloseBottomPanel } = useContext(BottomPanelContext);
    const { isLoading, error, isPaused, refetch, data } = IncomeClass.useQuery.getIncomes({
       onSettled: () => {

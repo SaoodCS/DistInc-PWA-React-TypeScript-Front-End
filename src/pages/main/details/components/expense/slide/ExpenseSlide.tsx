@@ -18,12 +18,13 @@ import useThemeContext from '../../../../../../global/context/theme/hooks/useThe
 import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import JSXHelper from '../../../../../../global/helpers/dataTypes/jsx/jsxHelper';
+import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
 import Color from '../../../../../../global/theme/colors';
+import { NDetails } from '../../../namespace/NDetails';
 import SavingsClass from '../../accounts/savings/class/Class';
 import ExpensesClass, { IExpenseFormInputs } from '../class/ExpensesClass';
 import ExpenseForm from '../form/ExpenseForm';
-import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 
 export default function ExpenseSlide(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
@@ -33,8 +34,9 @@ export default function ExpenseSlide(): JSX.Element {
       setBottomPanelHeading,
       setBottomPanelZIndex,
    } = useContext(BottomPanelContext);
-   const identifier = 'dahsboardCarousel.expensesSlide';
-   const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(identifier);
+   const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(
+      NDetails.key.expenseSlide,
+   );
    const { handleCloseBottomPanel } = useContext(BottomPanelContext);
    const { isLoading, error, isPaused, refetch, data } = ExpensesClass.useQuery.getExpenses({
       onSettled: () => {
@@ -75,34 +77,38 @@ export default function ExpenseSlide(): JSX.Element {
    }
 
    return (
-      <PullToRefresh onRefresh={refetch} isDarkTheme={isDarkTheme}>
-         <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
-            {!!data &&
-               Object.keys(data).map((id) => (
-                  <FlatListItem
-                     isDarkTheme={isDarkTheme}
-                     key={id}
-                     onClick={() => handleClick(data[id])}
-                  >
-                     <FirstRowWrapper>
-                        <ItemTitleWrapper>
-                           <ItemTitle>{data[id].expenseName}</ItemTitle>
-                        </ItemTitleWrapper>
-                        <ItemValue>{NumberHelper.asCurrencyStr(data[id].expenseValue)}</ItemValue>
-                     </FirstRowWrapper>
-                     <SecondRowTagsWrapper>
-                        <Tag bgColor={tagColor('expense')}>Expense</Tag>
-                        <Tag bgColor={tagColor('type')}>
-                           {expenseTypeLabel(data[id].expenseType)}
-                        </Tag>
-                        <Tag bgColor={tagColor('paymentType')}>{data[id].paymentType}</Tag>
-                        <ConditionalRender condition={BoolHelper.convert(data[id].paused)}>
-                           <Tag bgColor={tagColor('paused')}>Paused</Tag>
-                        </ConditionalRender>
-                     </SecondRowTagsWrapper>
-                  </FlatListItem>
-               ))}
-         </FlatListWrapper>
-      </PullToRefresh>
+      <>
+         <PullToRefresh onRefresh={refetch} isDarkTheme={isDarkTheme}>
+            <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
+               {!!data &&
+                  Object.keys(data).map((id) => (
+                     <FlatListItem
+                        isDarkTheme={isDarkTheme}
+                        key={id}
+                        onClick={() => handleClick(data[id])}
+                     >
+                        <FirstRowWrapper>
+                           <ItemTitleWrapper>
+                              <ItemTitle>{data[id].expenseName}</ItemTitle>
+                           </ItemTitleWrapper>
+                           <ItemValue>
+                              {NumberHelper.asCurrencyStr(data[id].expenseValue)}
+                           </ItemValue>
+                        </FirstRowWrapper>
+                        <SecondRowTagsWrapper>
+                           <Tag bgColor={tagColor('expense')}>Expense</Tag>
+                           <Tag bgColor={tagColor('type')}>
+                              {expenseTypeLabel(data[id].expenseType)}
+                           </Tag>
+                           <Tag bgColor={tagColor('paymentType')}>{data[id].paymentType}</Tag>
+                           <ConditionalRender condition={BoolHelper.convert(data[id].paused)}>
+                              <Tag bgColor={tagColor('paused')}>Paused</Tag>
+                           </ConditionalRender>
+                        </SecondRowTagsWrapper>
+                     </FlatListItem>
+                  ))}
+            </FlatListWrapper>
+         </PullToRefresh>
+      </>
    );
 }

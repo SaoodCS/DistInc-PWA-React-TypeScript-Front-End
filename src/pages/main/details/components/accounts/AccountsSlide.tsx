@@ -8,6 +8,7 @@ import useThemeContext from '../../../../../global/context/theme/hooks/useThemeC
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import JSXHelper from '../../../../../global/helpers/dataTypes/jsx/jsxHelper';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
+import { NDetails } from '../../namespace/NDetails';
 import CurrentClass from './current/class/Class';
 import CurrentAccountList from './current/flatList/CurrentAccountList';
 import SavingsClass from './savings/class/Class';
@@ -15,8 +16,9 @@ import SavingsAccountList from './savings/flatList/SavingsAccountList';
 
 export default function AccountsSlide(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
-   const identifier = 'dahsboardCarousel.accountsSlide';
-   const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(identifier);
+   const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(
+      NDetails.key.accountsSlide,
+   );
    const { handleCloseBottomPanel } = useContext(BottomPanelContext);
    const {
       isLoading: isLoadingSavings,

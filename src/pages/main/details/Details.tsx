@@ -11,61 +11,49 @@ import useThemeContext from '../../../global/context/theme/hooks/useThemeContext
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
 import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 import Color from '../../../global/theme/colors';
-import IncomeSlide from './components/Income/slide/IncomeSlide';
-import AccountsSlide from './components/accounts/AccountsSlide';
 import DetailsContextMenu from './components/contextMenu/DetailsContextMenu';
-import ExpenseSlide from './components/expense/slide/ExpenseSlide';
+import Filterer from './components/filterer/Filterer';
+import NDetails from './namespace/NDetails';
 
 export default function Details(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Details');
    const { setHeaderRightElement } = useHeaderContext();
-   const identifier = 'dashboardCarousel.currentSlide';
-   const { containerRef, scrollToSlide, currentSlide } = useCarousel(1, identifier);
+   const { containerRef, scrollToSlide, currentSlide } = useCarousel(1, NDetails.key.currentSlide);
    const { isDarkTheme } = useThemeContext();
    const carouselBorderRight: CSSProperties = {
       borderRight: `1px solid ${isDarkTheme ? Color.darkThm.border : Color.lightThm.border}`,
    };
 
    useEffect(() => {
-      setHeaderRightElement(<DetailsContextMenu />);
+      setHeaderRightElement(
+         <>
+            <Filterer currentSlide={currentSlide} />
+            <DetailsContextMenu />
+         </>,
+      );
       return () => setHeaderRightElement(null);
-   }, []);
+   }, [currentSlide]);
 
    return (
       <CarouselAndNavBarWrapper>
          <NavBarContainer isDarkTheme={isDarkTheme}>
-            <NavBarHeading
-               onClick={() => scrollToSlide(1)}
-               isDarkTheme={isDarkTheme}
-               isActive={currentSlide === 1}
-            >
-               Income
-            </NavBarHeading>
-            <NavBarHeading
-               onClick={() => scrollToSlide(2)}
-               isDarkTheme={isDarkTheme}
-               isActive={currentSlide === 2}
-            >
-               Expenses
-            </NavBarHeading>
-            <NavBarHeading
-               onClick={() => scrollToSlide(3)}
-               isDarkTheme={isDarkTheme}
-               isActive={currentSlide === 3}
-            >
-               Accounts
-            </NavBarHeading>
+            {NDetails.slides.map((slide) => (
+               <NavBarHeading
+                  key={slide.slideNo}
+                  onClick={() => scrollToSlide(slide.slideNo)}
+                  isDarkTheme={isDarkTheme}
+                  isActive={currentSlide === slide.slideNo}
+               >
+                  {slide.name}
+               </NavBarHeading>
+            ))}
          </NavBarContainer>
          <CarouselContainer ref={containerRef}>
-            <CarouselSlide height="auto" style={carouselBorderRight}>
-               <IncomeSlide />
-            </CarouselSlide>
-            <CarouselSlide height="auto" style={carouselBorderRight}>
-               <ExpenseSlide />
-            </CarouselSlide>
-            <CarouselSlide height="auto" style={carouselBorderRight}>
-               <AccountsSlide />
-            </CarouselSlide>
+            {NDetails.slides.map((slide) => (
+               <CarouselSlide key={slide.slideNo} height="auto" style={carouselBorderRight}>
+                  {slide.component}
+               </CarouselSlide>
+            ))}
          </CarouselContainer>
       </CarouselAndNavBarWrapper>
    );

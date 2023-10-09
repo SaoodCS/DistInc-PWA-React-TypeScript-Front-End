@@ -25,4 +25,8 @@ export default class ObjectOfObjects {
       }
       return undefined;
    }
+
+   static convertToArrayOfObj<T extends Record<string, T[keyof T]>>(obj: T): T[keyof T][] {
+      return Object.keys(obj).map((key) => obj[key]);
+   }
 }
