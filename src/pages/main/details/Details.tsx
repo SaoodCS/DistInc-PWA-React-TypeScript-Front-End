@@ -1,6 +1,11 @@
 import type { CSSProperties } from 'react';
 import { useEffect } from 'react';
-import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Style';
+import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Carousel';
+import {
+   CarouselAndNavBarWrapper,
+   NavBarContainer,
+   NavBarHeading,
+} from '../../../global/components/lib/carousel/NavBar';
 import useCarousel from '../../../global/components/lib/carousel/hooks/useCarousel';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
@@ -10,7 +15,6 @@ import IncomeSlide from './components/Income/slide/IncomeSlide';
 import AccountsSlide from './components/accounts/AccountsSlide';
 import DetailsContextMenu from './components/contextMenu/DetailsContextMenu';
 import ExpenseSlide from './components/expense/slide/ExpenseSlide';
-import { Heading, HeadingsAndCarouselContainer, SlideHeadings } from './style/Style';
 
 export default function Details(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Details');
@@ -28,30 +32,30 @@ export default function Details(): JSX.Element {
    }, []);
 
    return (
-      <HeadingsAndCarouselContainer>
-         <SlideHeadings isDarkTheme={isDarkTheme}>
-            <Heading
+      <CarouselAndNavBarWrapper>
+         <NavBarContainer isDarkTheme={isDarkTheme}>
+            <NavBarHeading
                onClick={() => scrollToSlide(1)}
                isDarkTheme={isDarkTheme}
                isActive={currentSlide === 1}
             >
                Income
-            </Heading>
-            <Heading
+            </NavBarHeading>
+            <NavBarHeading
                onClick={() => scrollToSlide(2)}
                isDarkTheme={isDarkTheme}
                isActive={currentSlide === 2}
             >
                Expenses
-            </Heading>
-            <Heading
+            </NavBarHeading>
+            <NavBarHeading
                onClick={() => scrollToSlide(3)}
                isDarkTheme={isDarkTheme}
                isActive={currentSlide === 3}
             >
                Accounts
-            </Heading>
-         </SlideHeadings>
+            </NavBarHeading>
+         </NavBarContainer>
          <CarouselContainer ref={containerRef}>
             <CarouselSlide height="auto" style={carouselBorderRight}>
                <IncomeSlide />
@@ -63,6 +67,6 @@ export default function Details(): JSX.Element {
                <AccountsSlide />
             </CarouselSlide>
          </CarouselContainer>
-      </HeadingsAndCarouselContainer>
+      </CarouselAndNavBarWrapper>
    );
 }

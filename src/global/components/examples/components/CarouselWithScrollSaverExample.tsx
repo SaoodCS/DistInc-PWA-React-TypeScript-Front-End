@@ -4,8 +4,8 @@ import { useState } from 'react';
 import useThemeContext from '../../../context/theme/hooks/useThemeContext';
 import { DummyData } from '../../../helpers/dummyContent/dummyData';
 import useScrollSaver from '../../../hooks/useScrollSaver';
+import { CarouselContainer, CarouselSlide } from '../../lib/carousel/Carousel';
 import useCarousel from '../../lib/carousel/hooks/useCarousel';
-import { CarouselContainer, CarouselSlide } from '../../lib/carousel/Style';
 import FetchError from '../../lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../lib/fetch/offlineFetch/offlineFetch';
 import {

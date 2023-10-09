@@ -1,7 +1,4 @@
 import { useContext } from 'react';
-import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
-import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
-import Color from '../../../../../../global/theme/colors';
 import {
    FirstRowWrapper,
    FlatListItem,
@@ -9,7 +6,10 @@ import {
    ItemTitleWrapper,
    SecondRowTagsWrapper,
    Tag,
-} from '../../style/Style';
+} from '../../../../../../global/components/lib/flatList/Style';
+import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
+import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
+import Color from '../../../../../../global/theme/colors';
 import SavingsClass from '../savings/class/Class';
 import CurrentForm from './CurrentForm';
 import CurrentClass, { ICurrentFormInputs } from './class/Class';
@@ -68,7 +68,7 @@ export default function CurrentAccountList() {
                      <Tag bgColor={tagColor('type')}>{data[id].accountType}</Tag>
                      <Tag bgColor={tagColor('cushion')}>{`Cushion: £${data[id].minCushion}`}</Tag>
                      <Tag bgColor={tagColor('transfer')}>
-                        {`Leftovers → ${leftoversTag(data[id].transferLeftoversTo,)}`}
+                        {`Leftovers → ${leftoversTag(data[id].transferLeftoversTo)}`}
                      </Tag>
                   </SecondRowTagsWrapper>
                </FlatListItem>

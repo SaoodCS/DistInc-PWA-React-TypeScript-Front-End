@@ -2,7 +2,7 @@ import { Github } from '@styled-icons/bootstrap/Github';
 import { LinkedinWithCircle } from '@styled-icons/entypo-social/LinkedinWithCircle';
 import { MailWithCircle } from '@styled-icons/entypo-social/MailWithCircle';
 import Logo from '../../global/components/app/logo/Logo';
-import { CarouselContainer, CarouselSlide } from '../../global/components/lib/carousel/Style';
+import { CarouselContainer, CarouselSlide } from '../../global/components/lib/carousel/Carousel';
 import useCarousel from '../../global/components/lib/carousel/hooks/useCarousel';
 import useThemeContext from '../../global/context/theme/hooks/useThemeContext';
 import Color from '../../global/theme/colors';

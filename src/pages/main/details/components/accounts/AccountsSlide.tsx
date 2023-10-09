@@ -1,13 +1,13 @@
 import { useContext } from 'react';
 import FetchError from '../../../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
+import { FlatListWrapper } from '../../../../../global/components/lib/flatList/Style';
+import DetailsPlaceholder from '../../../../../global/components/lib/flatList/placeholder/Placeholder';
 import PullToRefresh from '../../../../../global/components/lib/pullToRefresh/PullToRefresh';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import JSXHelper from '../../../../../global/helpers/dataTypes/jsx/jsxHelper';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
-import DetailsPlaceholder from '../../style/Placeholder';
-import { FlatListWrapper } from '../style/Style';
 import CurrentAccountList from './current/CurrentAccountList';
 import CurrentClass from './current/class/Class';
 import SavingsAccountList from './savings/SavingsAccountList';

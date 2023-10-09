@@ -1,5 +1,3 @@
-import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
-import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
 import {
    FirstRowWrapper,
    FlatListItem,
@@ -9,7 +7,9 @@ import {
    ItemValue,
    SecondRowTagsWrapper,
    Tag,
-} from '../../style/Style';
+} from '../../../../../../global/components/lib/flatList/Style';
+import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
+import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
 
 export default function ExpenseSlide(): JSX.Element {
    const { isDarkTheme } = useThemeContext();

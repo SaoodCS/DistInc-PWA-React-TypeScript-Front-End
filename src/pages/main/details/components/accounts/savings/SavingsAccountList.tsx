@@ -1,8 +1,4 @@
 import { useContext } from 'react';
-import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
-import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
-import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
-import Color from '../../../../../../global/theme/colors';
 import {
    FirstRowWrapper,
    FlatListItem,
@@ -11,7 +7,11 @@ import {
    ItemValue,
    SecondRowTagsWrapper,
    Tag,
-} from '../../style/Style';
+} from '../../../../../../global/components/lib/flatList/Style';
+import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
+import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
+import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
+import Color from '../../../../../../global/theme/colors';
 import SavingsForm from './SavingsForm';
 import SavingsClass, { ISavingsFormInputs } from './class/Class';
 

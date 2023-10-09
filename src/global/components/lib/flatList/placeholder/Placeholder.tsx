@@ -1,5 +1,5 @@
-import { PlaceholderLine } from '../../../../global/components/lib/fetch/placeholders/Style';
-import useThemeContext from '../../../../global/context/theme/hooks/useThemeContext';
+import useThemeContext from '../../../../context/theme/hooks/useThemeContext';
+import { PlaceholderLine } from '../../fetch/placeholders/Style';
 import {
    FirstRowWrapper,
    FlatListItem,
@@ -7,7 +7,7 @@ import {
    ItemTitleWrapper,
    ItemValue,
    SecondRowTagsWrapper,
-} from '../components/style/Style';
+} from '../Style';
 
 export default function DetailsPlaceholder(): JSX.Element {
    const { isDarkTheme } = useThemeContext();

@@ -1,8 +1,8 @@
 // Note -> Scroll animations for this component may not work on desktop browser if animation effects are turned off in Windows settings.
 import { useState } from 'react';
 import { DummyData } from '../../../helpers/dummyContent/dummyData';
+import { CarouselContainer, CarouselSlide } from '../../lib/carousel/Carousel';
 import useCarousel from '../../lib/carousel/hooks/useCarousel';
-import { CarouselContainer, CarouselSlide } from '../../lib/carousel/Style';
 import ConditionalRender from '../../lib/renderModifiers/conditionalRender/ConditionalRender';
 
 export default function CarouselExample(): JSX.Element {

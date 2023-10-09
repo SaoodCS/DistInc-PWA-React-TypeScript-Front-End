@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Switcher } from '../../../global/components/lib/button/switch/Style';
-import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Style';
+import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Carousel';
 import useCarousel from '../../../global/components/lib/carousel/hooks/useCarousel';
 import {
    IconAndNameWrapper,
