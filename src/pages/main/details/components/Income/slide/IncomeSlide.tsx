@@ -15,17 +15,21 @@ import DetailsPlaceholder from '../../../../../../global/components/lib/flatList
 import PullToRefresh from '../../../../../../global/components/lib/pullToRefresh/PullToRefresh';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
+import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import JSXHelper from '../../../../../../global/helpers/dataTypes/jsx/jsxHelper';
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
+import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
 import useURLState from '../../../../../../global/hooks/useURLState';
 import Color from '../../../../../../global/theme/colors';
 import { NDetails } from '../../../namespace/NDetails';
 import IncomeClass, { IIncomeFormInputs } from '../class/Class';
 import IncomeForm from '../form/IncomeForm';
+import Filterer from '../../filterer/Filterer';
 
 export default function IncomeSlide(): JSX.Element {
-   const [sortBy] = useURLState('sortBy');
+   const [sortBy, setSortBy] = useURLState({ key: 'sortBy' });
+   const [order, setOrder] = useURLState({ key: 'order' });
    const { isDarkTheme } = useThemeContext();
    const {
       setIsBottomPanelOpen,
@@ -59,21 +63,33 @@ export default function IncomeSlide(): JSX.Element {
       return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.4);
    }
 
+   function renderedData(fetchedData: typeof data) {
+      if (!fetchedData) return [];
+      const dataAsArr = ObjectOfObjects.convertToArrayOfObj(fetchedData);
+      if (!sortBy?.includes('income')) return dataAsArr;
+      const extractKey = sortBy.split('-')[1] as keyof IIncomeFormInputs;
+      const desc = order?.includes('desc');
+      const sortedData = ArrayOfObjects.sort(dataAsArr, extractKey, desc);
+      return sortedData;
+   }
+
    return (
+      <div style = {{display:'flex', flexDirection:'column'}}>
+      <div><Filterer/></div>
       <PullToRefresh onRefresh={refetch} isDarkTheme={isDarkTheme}>
          <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
             {!!data &&
-               Object.keys(data).map((id) => (
+               renderedData(data).map((item) => (
                   <FlatListItem
                      isDarkTheme={isDarkTheme}
-                     key={id}
-                     onClick={() => handleClick(data[id])}
+                     key={item.id}
+                     onClick={() => setSortBy('newest')}
                   >
                      <FirstRowWrapper>
                         <ItemTitleWrapper>
-                           <ItemTitle>{data[id].incomeName}</ItemTitle>
+                           <ItemTitle>{item.incomeName}</ItemTitle>
                         </ItemTitleWrapper>
-                        <ItemValue>{NumberHelper.asCurrencyStr(data[id].incomeValue)}</ItemValue>
+                        <ItemValue>{NumberHelper.asCurrencyStr(item.incomeValue)}</ItemValue>
                      </FirstRowWrapper>
                      <SecondRowTagsWrapper>
                         <Tag bgColor={tagColor()}>Income</Tag>
@@ -82,5 +98,6 @@ export default function IncomeSlide(): JSX.Element {
                ))}
          </FlatListWrapper>
       </PullToRefresh>
+      </div>
    );
 }

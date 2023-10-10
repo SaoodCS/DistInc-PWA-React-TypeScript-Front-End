@@ -27,7 +27,7 @@ export default function Details(): JSX.Element {
    useEffect(() => {
       setHeaderRightElement(
          <>
-            <Filterer currentSlide={currentSlide} />
+            <Filterer  />
             <DetailsContextMenu />
          </>,
       );
