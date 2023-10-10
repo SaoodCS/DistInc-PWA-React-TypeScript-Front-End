@@ -27,6 +27,21 @@ export default class ObjectOfObjects {
    }
 
    static convertToArrayOfObj<T extends Record<string, T[keyof T]>>(obj: T): T[keyof T][] {
-      return Object.keys(obj).map((key) => obj[key]);
+      return Object.keys(obj).map((key) => obj[key as keyof T]);
+   }
+
+   static addPropsToAll<T extends Record<string, any>>(
+      obj: T,
+      props: { [key: string]: unknown },
+   ): T {
+      const newObj = { ...obj } as { [key: string]: T[keyof T] };
+      Object.keys(newObj).forEach((key) => {
+         const objKey = key as keyof typeof newObj;
+         Object.keys(props).forEach((prop) => {
+            const propKey = prop as keyof typeof props;
+            newObj[objKey][propKey] = props[propKey];
+         });
+      });
+      return newObj as T;
    }
 }

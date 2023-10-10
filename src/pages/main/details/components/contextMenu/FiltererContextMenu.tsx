@@ -15,7 +15,6 @@ import useURLState from '../../../../../global/hooks/useURLState';
 import NDetails from '../../namespace/NDetails';
 import { FiltererCMOpenerWrapper } from './Style';
 
-
 interface IFilterer {
    currentSlide: number;
 }
@@ -26,10 +25,9 @@ export default function FiltererContextMenu(props: IFilterer): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const [sortBy, setSortBy] = useURLState({ key: 'sortBy' });
    const [order, setOrder] = useURLState({ key: 'order' });
-
-   const options = NDetails.slides
+   const filterOptions = NDetails.slides
       .filter((slide) => slide.slideNo === currentSlide)
-      .map((slide) => slide.inputNamesAndPlaceholders)[0];
+      .map((slide) => slide.sortDataOptions)[0];
 
    function changeSortBy(name: string): void {
       setSortBy(name);
@@ -62,7 +60,7 @@ export default function FiltererContextMenu(props: IFilterer): JSX.Element {
                <CMListHeader isTopHeader isDarkTheme={isDarkTheme}>
                   Sort By
                </CMListHeader>
-               {options.map((option) => (
+               {filterOptions.map((option) => (
                   <CMItemContainer
                      key={option.name}
                      onClick={() => changeSortBy(`${option.prefix}-${option.name}`)}

@@ -135,6 +135,16 @@ export default class CurrentClass {
       );
    }
 
+   private static isItemCurrent(item: unknown): item is ICurrentFormInputs {
+      return (
+         (item as ICurrentFormInputs).accountName !== undefined &&
+         (item as ICurrentFormInputs).accountType !== undefined &&
+         (item as ICurrentFormInputs).minCushion !== undefined &&
+         (item as ICurrentFormInputs).transferLeftoversTo !== undefined &&
+         (item as ICurrentFormInputs).id !== undefined
+      );
+   }
+
    static form = {
       inputs: CurrentClass.inputs,
       initialState: CurrentClass.initialState,
@@ -148,5 +158,9 @@ export default class CurrentClass {
    static useMutation = {
       setCurrentAccount: CurrentClass.useSetCurrentAccountMutation,
       delCurrentAccount: CurrentClass.useDelCurrentAccountMutation,
+   };
+
+   static isType = {
+      currentItem: CurrentClass.isItemCurrent,
    };
 }

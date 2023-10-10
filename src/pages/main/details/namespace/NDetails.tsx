@@ -1,4 +1,3 @@
-import AccountClass from '../../settings/components/account/class/AccountClass';
 import IncomeClass from '../components/Income/class/Class';
 import IncomeSlide from '../components/Income/slide/IncomeSlide';
 import AccountsSlide from '../components/accounts/AccountsSlide';
@@ -12,7 +11,7 @@ export namespace NDetails {
          slideNo: 1,
          name: 'Income',
          component: <IncomeSlide />,
-         inputNamesAndPlaceholders: IncomeClass.form.inputs.map((input) => ({
+         sortDataOptions: IncomeClass.form.inputs.map((input) => ({
             prefix: 'income',
             name: input.name,
             placeholder: input.placeholder,
@@ -22,7 +21,7 @@ export namespace NDetails {
          slideNo: 2,
          name: 'Expense',
          component: <ExpenseSlide />,
-         inputNamesAndPlaceholders: ExpensesClass.form.inputs.map((input) => ({
+         sortDataOptions: ExpensesClass.form.inputs.map((input) => ({
             prefix: 'expense',
             name: input.name,
             placeholder: input.placeholder,
@@ -32,11 +31,20 @@ export namespace NDetails {
          slideNo: 3,
          name: 'Accounts',
          component: <AccountsSlide />,
-         inputNamesAndPlaceholders: CurrentClass.form.inputs.map((input) => ({
-            prefix: 'account',
-            name: input.name,
-            placeholder: input.placeholder,
-         })),
+         sortDataOptions: [
+            ...CurrentClass.form.inputs
+               .filter((input) => input.name.includes('accountName' || 'accountType'))
+               .map((input) => ({
+                  prefix: 'account',
+                  name: input.name,
+                  placeholder: input.placeholder,
+               })),
+            {
+               prefix: 'account',
+               name: 'category',
+               placeholder: 'Category',
+            },
+         ],
       },
    ];
 

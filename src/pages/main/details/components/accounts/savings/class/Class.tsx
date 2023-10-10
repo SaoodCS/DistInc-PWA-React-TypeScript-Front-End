@@ -118,6 +118,15 @@ export default class SavingsClass {
       );
    }
 
+   private static isItemSavings(item: unknown): item is ISavingsFormInputs {
+      return (
+         (item as ISavingsFormInputs).targetToReach !== undefined &&
+         (item as ISavingsFormInputs).currentBalance !== undefined &&
+         (item as ISavingsFormInputs).id !== undefined &&
+         (item as ISavingsFormInputs).accountName !== undefined
+      );
+   }
+
    static form = {
       inputs: SavingsClass.inputs,
       initialState: SavingsClass.initialState,
@@ -132,4 +141,8 @@ export default class SavingsClass {
       setSavingsAccount: SavingsClass.useSetSavingsAccountMutation,
       delSavingsAccount: SavingsClass.useDelSavingsAccountMutation,
    };
+
+   static isType = {
+      savingsItem: SavingsClass.isItemSavings,
+   }
 }
