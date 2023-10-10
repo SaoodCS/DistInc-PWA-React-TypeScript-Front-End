@@ -16,10 +16,13 @@ import PullToRefresh from '../../../../../../global/components/lib/pullToRefresh
 import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
+import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import JSXHelper from '../../../../../../global/helpers/dataTypes/jsx/jsxHelper';
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
+import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
+import useURLState from '../../../../../../global/hooks/useURLState';
 import Color from '../../../../../../global/theme/colors';
 import { NDetails } from '../../../namespace/NDetails';
 import SavingsClass from '../../accounts/savings/class/Class';
@@ -27,6 +30,8 @@ import ExpensesClass, { IExpenseFormInputs } from '../class/ExpensesClass';
 import ExpenseForm from '../form/ExpenseForm';
 
 export default function ExpenseSlide(): JSX.Element {
+   const [sortBy, setSortBy] = useURLState({ key: 'sortBy' });
+   const [order] = useURLState({ key: 'order' });
    const { isDarkTheme } = useThemeContext();
    const {
       setIsBottomPanelOpen,
@@ -76,32 +81,40 @@ export default function ExpenseSlide(): JSX.Element {
       return `Transfer: ${savingsAccount?.accountName}` || 'Savings Transfer';
    }
 
+   function sortData(fetchedData: typeof data) {
+      if (!fetchedData) return [];
+      const dataAsArr = ObjectOfObjects.convertToArrayOfObj(fetchedData);
+      if (!sortBy?.includes('expense')) return dataAsArr;
+      const extractKey = sortBy.split('-')[1] as keyof (typeof dataAsArr)[0];
+      const desc = order?.includes('desc');
+      const sortedData = ArrayOfObjects.sort(dataAsArr, extractKey, desc);
+      return sortedData;
+   }
+
    return (
       <>
          <PullToRefresh onRefresh={refetch} isDarkTheme={isDarkTheme}>
             <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
                {!!data &&
-                  Object.keys(data).map((id) => (
+                  sortData(data).map((item) => (
                      <FlatListItem
                         isDarkTheme={isDarkTheme}
-                        key={id}
-                        onClick={() => handleClick(data[id])}
+                        key={item.id}
+                        onClick={() => handleClick(item)}
                      >
                         <FirstRowWrapper>
                            <ItemTitleWrapper>
-                              <ItemTitle>{data[id].expenseName}</ItemTitle>
+                              <ItemTitle>{item.expenseName}</ItemTitle>
                            </ItemTitleWrapper>
-                           <ItemValue>
-                              {NumberHelper.asCurrencyStr(data[id].expenseValue)}
-                           </ItemValue>
+                           <ItemValue>{NumberHelper.asCurrencyStr(item.expenseValue)}</ItemValue>
                         </FirstRowWrapper>
                         <SecondRowTagsWrapper>
                            <Tag bgColor={tagColor('expense')}>Expense</Tag>
                            <Tag bgColor={tagColor('type')}>
-                              {expenseTypeLabel(data[id].expenseType)}
+                              {expenseTypeLabel(item.expenseType)}
                            </Tag>
-                           <Tag bgColor={tagColor('paymentType')}>{data[id].paymentType}</Tag>
-                           <ConditionalRender condition={BoolHelper.convert(data[id].paused)}>
+                           <Tag bgColor={tagColor('paymentType')}>{item.paymentType}</Tag>
+                           <ConditionalRender condition={BoolHelper.convert(item.paused)}>
                               <Tag bgColor={tagColor('paused')}>Paused</Tag>
                            </ConditionalRender>
                         </SecondRowTagsWrapper>

@@ -1,9 +1,15 @@
 import styled from 'styled-components';
-import Color from '../../../../../global/theme/colors';
 
-export const IconWrapper = styled.div<{ isDarkTheme: boolean }>`
+export const FiltererCMOpenerWrapper = styled.div`
+   display: flex;
    position: fixed;
-   right: 0;
+   align-items: center;
+   right: 0px;
+   top: 0px;
+   height: 10%;
    margin-right: 3em;
-   color: ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent)};
+   & > *:first-child {
+      margin: 0;
+      padding: 0;
+   }
 `;

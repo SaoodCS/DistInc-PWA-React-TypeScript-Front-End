@@ -72,6 +72,21 @@ export const CMItemsListWrapper = styled.div<{ isDarkTheme: boolean }>`
    }
 `;
 
+export const CMListHeader = styled.div<{ isTopHeader?: boolean; isDarkTheme: boolean }>`
+   font-size: 0.8em;
+   padding-left: 0.5em;
+   justify-content: center;
+   display: flex;
+   background-color: grey;
+   background-color: ${({ isDarkTheme }) =>
+      Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.3)};
+   align-items: center;
+   border-top-left-radius: ${({ isTopHeader }) => (isTopHeader ? '10px' : '0px')};
+   border-top-right-radius: ${({ isTopHeader }) => (isTopHeader ? '10px' : '0px')};
+   padding-top: 0.5em;
+   padding-bottom: 0.5em;
+`;
+
 export const CMItemContainer = styled.div<{ isDarkTheme: boolean }>`
    padding: 0.5em;
    display: flex;
