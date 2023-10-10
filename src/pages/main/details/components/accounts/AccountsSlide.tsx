@@ -72,7 +72,7 @@ export default function AccountsSlide(): JSX.Element {
       });
       const savingsAndCurrentConcat = { ...savingsWithFilterProps, ...currentWithFilterProps };
       const dataAsArr = ObjectOfObjects.convertToArrayOfObj(savingsAndCurrentConcat);
-      if (!sortAccountBy?.includes('account')) return dataAsArr;
+      if (!sortAccountBy) return dataAsArr;
       const desc = orderAccount?.includes('desc');
       const sortedData = ArrayOfObjects.sort(
          dataAsArr,

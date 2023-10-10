@@ -66,7 +66,7 @@ export default function IncomeSlide(): JSX.Element {
    function sortData(fetchedData: typeof data): IIncomeFormInputs[] {
       if (!fetchedData) return [];
       const dataAsArr = ObjectOfObjects.convertToArrayOfObj(fetchedData);
-      if (!sortIncomeBy?.includes('income')) return dataAsArr;
+      if (!sortIncomeBy) return dataAsArr;
       const desc = orderIncome?.includes('desc');
       const sortedData = ArrayOfObjects.sort(
          dataAsArr,

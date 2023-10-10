@@ -22,7 +22,8 @@ export const FirstRowWrapper = styled.div`
    display: flex;
    justify-content: space-between;
    align-items: center;
-   margin-bottom: 0.35em;
+   margin-bottom: 0.2em;
+   margin-left: 0.4em;
 `;
 
 export const ItemTitleWrapper = styled.div`
@@ -51,6 +52,6 @@ export const Tag = styled.div<{ bgColor: string }>`
    padding-top: 0.25em;
    padding-bottom: 0.25em;
    margin-left: 0.25em;
-   margin: 0.25em;
+   margin: 0.4em;
    background-color: ${({ bgColor }) => bgColor};
 `;

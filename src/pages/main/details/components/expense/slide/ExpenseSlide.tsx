@@ -85,7 +85,7 @@ export default function ExpenseSlide(): JSX.Element {
    function sortData(fetchedData: typeof data): IExpenseFormInputs[] {
       if (!fetchedData) return [];
       const dataAsArr = ObjectOfObjects.convertToArrayOfObj(fetchedData);
-      if (!sortExpenseBy?.includes('expense')) return dataAsArr;
+      if (!sortExpenseBy) return dataAsArr;
       const desc = orderExpense?.includes('desc');
       const sortedData = ArrayOfObjects.sort(
          dataAsArr,
