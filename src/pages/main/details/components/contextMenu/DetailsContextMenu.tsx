@@ -20,7 +20,7 @@ import SavingsForm from '../accounts/savings/form/SavingsForm';
 import ExpenseForm from '../expense/form/ExpenseForm';
 import { DetailsCMOpenerWrapper } from './Style';
 
-export default function DetailsContextMenu(): JSX.Element {
+export default function NewFormContextMenu(): JSX.Element {
    const { showMenu, toggleMenu, buttonRef } = useContextMenu();
    const { isDarkTheme, isPortableDevice } = useThemeContext();
    const {

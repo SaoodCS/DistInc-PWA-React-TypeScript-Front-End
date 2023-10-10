@@ -1,15 +1,26 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const DetailsCMOpenerWrapper = styled.div`
+const commonOpenerCSS = css`
    display: flex;
    position: fixed;
    align-items: center;
    right: 0px;
    top: 0px;
    height: 10%;
-   margin-right: 1em;
    & > *:first-child {
       margin: 0;
       padding: 0;
    }
+`;
+
+
+export const DetailsCMOpenerWrapper = styled.div`
+  ${commonOpenerCSS};
+   margin-right: 1em;
+   
+`;
+
+export const FiltererCMOpenerWrapper = styled.div`
+   ${commonOpenerCSS};
+   margin-right: 3em;
 `;

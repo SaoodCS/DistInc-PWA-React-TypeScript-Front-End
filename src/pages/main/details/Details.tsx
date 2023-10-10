@@ -11,8 +11,8 @@ import useThemeContext from '../../../global/context/theme/hooks/useThemeContext
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
 import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 import Color from '../../../global/theme/colors';
-import DetailsContextMenu from './components/contextMenu/DetailsContextMenu';
-import Filterer from './components/filterer/Filterer';
+import NewFormContextMenu from './components/contextMenu/DetailsContextMenu';
+import FiltererContextMenu from './components/contextMenu/FiltererContextMenu';
 import NDetails from './namespace/NDetails';
 
 export default function Details(): JSX.Element {
@@ -27,8 +27,8 @@ export default function Details(): JSX.Element {
    useEffect(() => {
       setHeaderRightElement(
          <>
-            <Filterer currentSlide={currentSlide} />
-            <DetailsContextMenu />
+            <FiltererContextMenu currentSlide={currentSlide} />
+            <NewFormContextMenu />
          </>,
       );
       return () => setHeaderRightElement(null);

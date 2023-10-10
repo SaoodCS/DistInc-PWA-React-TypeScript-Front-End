@@ -15,11 +15,12 @@ import useURLState from '../../../../../global/hooks/useURLState';
 import NDetails from '../../namespace/NDetails';
 import { FiltererCMOpenerWrapper } from './Style';
 
+
 interface IFilterer {
    currentSlide: number;
 }
 
-export default function Filterer(props: IFilterer): JSX.Element {
+export default function FiltererContextMenu(props: IFilterer): JSX.Element {
    const { currentSlide } = props;
    const { showMenu, toggleMenu, buttonRef } = useContextMenu();
    const { isDarkTheme } = useThemeContext();
