@@ -72,15 +72,15 @@ export namespace NDetails {
          },
       },
    };
-
-   function getSearchParamKey(
-      slides: typeof NDetails.slides,
-      slideName: string,
-      sortOrOrder: 'sort' | 'order',
-   ): string {
-      const slide = slides.filter((slide) => slide.name === slideName)[0];
-      return slide.sortDataOptions[0][`${sortOrOrder}UrlKey`];
-   }
 }
 
 export default NDetails;
+
+function getSearchParamKey(
+   slides: typeof NDetails.slides,
+   slideName: string,
+   sortOrOrder: 'sort' | 'order',
+): string {
+   const slide = slides.filter((slide) => slide.name === slideName)[0];
+   return slide.sortDataOptions[0][`${sortOrOrder}UrlKey`];
+}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Fragment } from 'react';
 
 export default class JSXHelper {
