@@ -33,7 +33,7 @@ export namespace NDetails {
          component: <AccountsSlide />,
          sortDataOptions: [
             ...CurrentClass.form.inputs
-               .filter((input) => input.name.includes('accountName' || 'accountType'))
+               .filter((input) => input.name === 'accountName' || input.name === 'accountType')
                .map((input) => ({
                   prefix: 'account',
                   name: input.name,

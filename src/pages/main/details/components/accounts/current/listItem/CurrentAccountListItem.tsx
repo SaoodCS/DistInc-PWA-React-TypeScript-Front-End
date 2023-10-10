@@ -14,7 +14,12 @@ import SavingsClass from '../../savings/class/Class';
 import CurrentClass, { ICurrentFormInputs } from '../class/Class';
 import CurrentForm from '../form/CurrentForm';
 
-export default function CurrentAccountList() {
+interface ICurrentAccountListItem {
+   item: ICurrentFormInputs;
+}
+
+export default function CurrentAccountListItem(props: ICurrentAccountListItem) {
+   const { item } = props;
    const { isDarkTheme } = useThemeContext();
    const {
       setIsBottomPanelOpen,
@@ -23,13 +28,12 @@ export default function CurrentAccountList() {
       setBottomPanelZIndex,
    } = useContext(BottomPanelContext);
 
-   const { data } = CurrentClass.useQuery.getCurrentAccounts();
    const { data: savingsData } = SavingsClass.useQuery.getSavingsAccounts();
 
-   function handleCurrentsClick(data: ICurrentFormInputs) {
+   function handleClick(item: ICurrentFormInputs) {
       setIsBottomPanelOpen(true);
-      setBottomPanelHeading(data.accountName);
-      setBottomPanelContent(<CurrentForm inputValues={data} />);
+      setBottomPanelHeading(item.accountName);
+      setBottomPanelContent(<CurrentForm inputValues={item} />);
       setBottomPanelZIndex(100);
    }
 
@@ -51,28 +55,23 @@ export default function CurrentAccountList() {
 
    return (
       <>
-         {!!data &&
-            Object.keys(data).map((id) => (
-               <FlatListItem
-                  key={id}
-                  isDarkTheme={isDarkTheme}
-                  onClick={() => handleCurrentsClick(data[id])}
-               >
-                  <FirstRowWrapper>
-                     <ItemTitleWrapper>
-                        <ItemTitle>{data[id].accountName}</ItemTitle>
-                     </ItemTitleWrapper>
-                  </FirstRowWrapper>
-                  <SecondRowTagsWrapper>
-                     <Tag bgColor={tagColor('account')}>Account</Tag>
-                     <Tag bgColor={tagColor('type')}>{data[id].accountType}</Tag>
-                     <Tag bgColor={tagColor('cushion')}>{`Cushion: £${data[id].minCushion}`}</Tag>
-                     <Tag bgColor={tagColor('transfer')}>
-                        {`Leftovers → ${leftoversTag(data[id].transferLeftoversTo)}`}
-                     </Tag>
-                  </SecondRowTagsWrapper>
-               </FlatListItem>
-            ))}
+         {CurrentClass.isType.currentItem(item) && (
+            <FlatListItem key={item.id} isDarkTheme={isDarkTheme} onClick={() => handleClick(item)}>
+               <FirstRowWrapper>
+                  <ItemTitleWrapper>
+                     <ItemTitle>{item.accountName}</ItemTitle>
+                  </ItemTitleWrapper>
+               </FirstRowWrapper>
+               <SecondRowTagsWrapper>
+                  <Tag bgColor={tagColor('account')}>Current Account</Tag>
+                  <Tag bgColor={tagColor('type')}>{item.accountType}</Tag>
+                  <Tag bgColor={tagColor('cushion')}>{`Cushion: £${item.minCushion}`}</Tag>
+                  <Tag bgColor={tagColor('transfer')}>
+                     {`Leftovers → ${leftoversTag(item.transferLeftoversTo)}`}
+                  </Tag>
+               </SecondRowTagsWrapper>
+            </FlatListItem>
+         )}
       </>
    );
 }

@@ -22,7 +22,7 @@ export const FirstRowWrapper = styled.div`
    display: flex;
    justify-content: space-between;
    align-items: center;
-   margin-bottom: 0.75em;
+   margin-bottom: 0.35em;
 `;
 
 export const ItemTitleWrapper = styled.div`

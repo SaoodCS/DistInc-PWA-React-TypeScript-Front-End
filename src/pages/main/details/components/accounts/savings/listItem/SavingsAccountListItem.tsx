@@ -16,7 +16,12 @@ import Color from '../../../../../../../global/theme/colors';
 import SavingsClass, { ISavingsFormInputs } from '../class/Class';
 import SavingsForm from '../form/SavingsForm';
 
-export default function SavingsAccountList() {
+interface ISavingsAccountListItem {
+   item: ISavingsFormInputs;
+}
+
+export default function SavingsAccountListItem(props: ISavingsAccountListItem) {
+   const { item } = props;
    const { isDarkTheme } = useThemeContext();
    const {
       setIsBottomPanelOpen,
@@ -25,9 +30,7 @@ export default function SavingsAccountList() {
       setBottomPanelZIndex,
    } = useContext(BottomPanelContext);
 
-   const { data } = SavingsClass.useQuery.getSavingsAccounts();
-
-   function handleSavingsClick(item: ISavingsFormInputs) {
+   function handleClick(item: ISavingsFormInputs) {
       setIsBottomPanelOpen(true);
       setBottomPanelHeading(item.accountName);
       setBottomPanelContent(<SavingsForm inputValues={item} />);
@@ -45,33 +48,26 @@ export default function SavingsAccountList() {
 
    return (
       <>
-         {!!data &&
-            Object.keys(data).map((id) => (
-               <FlatListItem
-                  key={id}
-                  isDarkTheme={isDarkTheme}
-                  onClick={() => handleSavingsClick(data[id])}
-               >
-                  <FirstRowWrapper>
-                     <ItemTitleWrapper>
-                        <ItemTitle>{data[id].accountName}</ItemTitle>
-                     </ItemTitleWrapper>
-                     <ItemValue>
-                        {!!data[id].currentBalance &&
-                           NumberHelper.asCurrencyStr(data[id].currentBalance as number)}
-                     </ItemValue>
-                  </FirstRowWrapper>
-                  <SecondRowTagsWrapper>
-                     <Tag bgColor={tagColor('account')}>Account</Tag>
-                     <Tag bgColor={tagColor('type')}>Savings</Tag>
-                     <ConditionalRender condition={!!data[id].targetToReach}>
-                        <Tag bgColor={tagColor('target')}>
-                           {`Target: £${data[id].targetToReach}`}
-                        </Tag>
-                     </ConditionalRender>
-                  </SecondRowTagsWrapper>
-               </FlatListItem>
-            ))}
+         {SavingsClass.isType.savingsItem(item) && (
+            <FlatListItem key={item.id} isDarkTheme={isDarkTheme} onClick={() => handleClick(item)}>
+               <FirstRowWrapper>
+                  <ItemTitleWrapper>
+                     <ItemTitle>{item.accountName}</ItemTitle>
+                  </ItemTitleWrapper>
+                  <ItemValue>
+                     {!!item.currentBalance &&
+                        NumberHelper.asCurrencyStr(item.currentBalance as number)}
+                  </ItemValue>
+               </FirstRowWrapper>
+               <SecondRowTagsWrapper>
+                  <Tag bgColor={tagColor('account')}>Savings Account</Tag>
+                  <Tag bgColor={tagColor('type')}>Savings</Tag>
+                  <ConditionalRender condition={!!item.targetToReach}>
+                     <Tag bgColor={tagColor('target')}>{`Target: £${item.targetToReach}`}</Tag>
+                  </ConditionalRender>
+               </SecondRowTagsWrapper>
+            </FlatListItem>
+         )}
       </>
    );
 }
