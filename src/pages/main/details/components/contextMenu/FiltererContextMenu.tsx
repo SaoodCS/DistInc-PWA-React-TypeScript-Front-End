@@ -12,7 +12,6 @@ import useContextMenu from '../../../../../global/components/lib/contextMenu/hoo
 import { TransparentOverlay } from '../../../../../global/components/lib/overlay/transparentOverlay/TransparentOverlay';
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
-import StringHelper from '../../../../../global/helpers/dataTypes/string/StringHelper';
 import useURLState from '../../../../../global/hooks/useURLState';
 import NDetails from '../../namespace/NDetails';
 import { FiltererCMOpenerWrapper } from './Style';
