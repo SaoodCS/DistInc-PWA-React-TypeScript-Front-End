@@ -9,6 +9,7 @@ import {
    CMListHeader,
 } from '../../../../../global/components/lib/contextMenu/Style';
 import useContextMenu from '../../../../../global/components/lib/contextMenu/hooks/useContextMenu';
+import { TransparentOverlay } from '../../../../../global/components/lib/overlay/transparentOverlay/TransparentOverlay';
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import StringHelper from '../../../../../global/helpers/dataTypes/string/StringHelper';
@@ -51,6 +52,9 @@ export default function FiltererContextMenu(props: IFilterer): JSX.Element {
                <Filter height={'1.5em'} />
             </TextBtn>
          </FiltererCMOpenerWrapper>
+         <ConditionalRender condition={showMenu}>
+            <TransparentOverlay />
+         </ConditionalRender>
          <ContextMenu
             ref={buttonRef}
             isOpen={showMenu}

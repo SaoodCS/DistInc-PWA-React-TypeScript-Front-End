@@ -1,6 +1,7 @@
 import type { ReactNode, RefObject } from 'react';
 import { forwardRef, useContext, useEffect, useRef, useState } from 'react';
 import { ThemeContext } from '../../../context/theme/ThemeContext';
+import { TransparentOverlay } from '../overlay/transparentOverlay/TransparentOverlay';
 import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalRender';
 import { ContextMenuWrapper } from './Style';
 

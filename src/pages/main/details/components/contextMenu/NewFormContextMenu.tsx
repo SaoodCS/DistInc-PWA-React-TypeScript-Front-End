@@ -12,6 +12,8 @@ import {
    CMItemsListWrapper,
 } from '../../../../../global/components/lib/contextMenu/Style';
 import useContextMenu from '../../../../../global/components/lib/contextMenu/hooks/useContextMenu';
+import { TransparentOverlay } from '../../../../../global/components/lib/overlay/transparentOverlay/TransparentOverlay';
+import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import IncomeForm from '../Income/form/IncomeForm';
@@ -55,6 +57,9 @@ export default function NewFormContextMenu(): JSX.Element {
                <Add height="1.5em" />
             </TextBtn>
          </DetailsCMOpenerWrapper>
+         <ConditionalRender condition={showMenu}>
+            <TransparentOverlay />
+         </ConditionalRender>
          <ContextMenu
             ref={buttonRef}
             isOpen={showMenu}
