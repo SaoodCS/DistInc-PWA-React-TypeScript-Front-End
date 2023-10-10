@@ -26,11 +26,12 @@ import useURLState from '../../../../../../global/hooks/useURLState';
 import Color from '../../../../../../global/theme/colors';
 import { NDetails } from '../../../namespace/NDetails';
 import SavingsClass from '../../accounts/savings/class/Class';
-import ExpensesClass, { IExpenseFormInputs } from '../class/ExpensesClass';
+import type { IExpenseFormInputs } from '../class/ExpensesClass';
+import ExpensesClass from '../class/ExpensesClass';
 import ExpenseForm from '../form/ExpenseForm';
 
 export default function ExpenseSlide(): JSX.Element {
-   const [sortBy, setSortBy] = useURLState({ key: 'sortBy' });
+   const [sortBy] = useURLState({ key: 'sortBy' });
    const [order] = useURLState({ key: 'order' });
    const { isDarkTheme } = useThemeContext();
    const {
@@ -57,7 +58,7 @@ export default function ExpenseSlide(): JSX.Element {
    if (isPaused) return <OfflineFetch />;
    if (error) return <FetchError />;
 
-   function handleClick(item: IExpenseFormInputs) {
+   function handleClick(item: IExpenseFormInputs): void {
       setIsBottomPanelOpen(true);
       setBottomPanelHeading(item.expenseName);
       setBottomPanelContent(<ExpenseForm inputValues={item} />);
@@ -74,14 +75,14 @@ export default function ExpenseSlide(): JSX.Element {
       return Color.setRgbOpacity(mapper[tag], 0.4);
    }
 
-   function expenseTypeLabel(expenseType: string) {
+   function expenseTypeLabel(expenseType: string): string {
       if (!expenseType.includes('Savings')) return expenseType;
       const id = expenseType.split(':')[1];
       const savingsAccount = savingsAccounts?.[id];
       return `Transfer: ${savingsAccount?.accountName}` || 'Savings Transfer';
    }
 
-   function sortData(fetchedData: typeof data) {
+   function sortData(fetchedData: typeof data): IExpenseFormInputs[] {
       if (!fetchedData) return [];
       const dataAsArr = ObjectOfObjects.convertToArrayOfObj(fetchedData);
       if (!sortBy?.includes('expense')) return dataAsArr;

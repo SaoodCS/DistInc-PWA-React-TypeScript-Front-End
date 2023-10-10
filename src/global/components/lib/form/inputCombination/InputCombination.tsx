@@ -1,4 +1,5 @@
-import DropDownInput, { IDropDownOption } from '../dropDown/DropDownInput';
+import type { IDropDownOption } from '../dropDown/DropDownInput';
+import DropDownInput from '../dropDown/DropDownInput';
 import InputComponent from '../input/Input';
 
 interface IInputCombination {
@@ -14,7 +15,7 @@ interface IInputCombination {
    autoComplete?: 'current-password' | 'new-password';
 }
 
-export default function InputCombination(props: IInputCombination) {
+export default function InputCombination(props: IInputCombination): JSX.Element {
    const {
       placeholder,
       name,

@@ -12,8 +12,10 @@ import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObj
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useURLState from '../../../../../global/hooks/useURLState';
 import { NDetails } from '../../namespace/NDetails';
+import type { ICurrentFormInputs } from './current/class/Class';
 import CurrentClass from './current/class/Class';
 import CurrentAccountListItem from './current/listItem/CurrentAccountListItem';
+import type { ISavingsFormInputs } from './savings/class/Class';
 import SavingsClass from './savings/class/Class';
 import SavingsAccountListItem from './savings/listItem/SavingsAccountListItem';
 
@@ -55,11 +57,11 @@ export default function AccountsSlide(): JSX.Element {
    if (isPausedSavings || isPausedCurrent) return <OfflineFetch />;
    if (errorSavings || errorCurrent) return <FetchError />;
 
-   async function handleOnRefresh() {
+   async function handleOnRefresh(): Promise<void> {
       await Promise.all([refetchSavings(), refetchCurrent()]);
    }
 
-   function sortData() {
+   function sortData(): (ISavingsFormInputs | ICurrentFormInputs)[] {
       if (!savingsData || !currentData) return [];
       const savingsWithFilterProps = ObjectOfObjects.addPropsToAll(savingsData, {
          accountType: 'Savings',

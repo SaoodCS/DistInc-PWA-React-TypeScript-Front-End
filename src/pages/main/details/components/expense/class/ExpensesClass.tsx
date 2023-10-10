@@ -1,7 +1,14 @@
-import { UseMutationOptions, UseQueryOptions, useQuery } from '@tanstack/react-query';
+import type {
+   UseMutationOptions,
+   UseMutationResult,
+   UseQueryOptions,
+   UseQueryResult,
+} from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
-import FormHelper, { InputArray } from '../../../../../../global/helpers/react/form/FormHelper';
+import type { InputArray } from '../../../../../../global/helpers/react/form/FormHelper';
+import FormHelper from '../../../../../../global/helpers/react/form/FormHelper';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
 
 export interface IExpenseFormInputs {
@@ -111,7 +118,9 @@ export default class ExpensesClass {
       return formValidation;
    }
 
-   private static useExpensesQuery(options: UseQueryOptions<IExpensesFirebase> = {}) {
+   private static useExpensesQuery(
+      options: UseQueryOptions<IExpensesFirebase> = {},
+   ): UseQueryResult<IExpensesFirebase, unknown> {
       return useQuery({
          queryKey: [microservices.getExpenses.name],
          queryFn: () =>
@@ -126,7 +135,7 @@ export default class ExpensesClass {
 
    private static useSetExpenseMutation(
       options: UseMutationOptions<void, unknown, IExpenseFormInputs>,
-   ) {
+   ): UseMutationResult<void, unknown, IExpenseFormInputs, void> {
       return useCustomMutation(
          async (formData: IExpenseFormInputs) => {
             const body = APIHelper.createBody(formData);
@@ -142,7 +151,7 @@ export default class ExpensesClass {
 
    private static useDelExpenseMutation(
       options: UseMutationOptions<void, unknown, IExpenseFormInputs>,
-   ) {
+   ): UseMutationResult<void, unknown, IExpenseFormInputs, void> {
       return useCustomMutation(
          async (formData: IExpenseFormInputs) => {
             const body = APIHelper.createBody({ id: formData.id });

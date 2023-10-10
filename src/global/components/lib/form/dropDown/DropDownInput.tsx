@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import useThemeContext from '../../../../context/theme/hooks/useThemeContext';
-import { ErrorLabel, InputContainer, InputLabel, LabelWrapper } from '../input/Style';
+import { ErrorLabel, InputContainer, InputLabel } from '../input/Style';
 import { DropDownArrow, DropDownLabelWrapper, StyledOption, StyledSelect } from './Style';
 
 export interface IDropDownOption {
@@ -19,7 +19,7 @@ interface IDropDownInput {
    value: string | number;
 }
 
-export default function DropDownInput(props: IDropDownInput) {
+export default function DropDownInput(props: IDropDownInput): JSX.Element {
    const { placeholder, name, isRequired, handleChange, error, options, id, value } = props;
    const { isDarkTheme } = useThemeContext();
    const [isActive, setIsActive] = useState(false);

@@ -1,4 +1,10 @@
-import { UseMutationOptions, UseQueryOptions, useQuery } from '@tanstack/react-query';
+import type {
+   UseMutationOptions,
+   UseMutationResult,
+   UseQueryOptions,
+   UseQueryResult,
+} from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import APIHelper from '../../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../../global/firebase/apis/microservices/microservices';
 import type {
@@ -73,7 +79,9 @@ export default class SavingsClass {
       return formValidation;
    }
 
-   private static useSavingsAccountsQuery(options: UseQueryOptions<ISavingsAccountFirebase> = {}) {
+   private static useSavingsAccountsQuery(
+      options: UseQueryOptions<ISavingsAccountFirebase> = {},
+   ): UseQueryResult<ISavingsAccountFirebase, unknown> {
       return useQuery({
          queryKey: [microservices.getSavingsAccount.name],
          queryFn: () =>
@@ -88,7 +96,7 @@ export default class SavingsClass {
 
    private static useSetSavingsAccountMutation(
       options: UseMutationOptions<void, unknown, ISavingsFormInputs>,
-   ) {
+   ): UseMutationResult<void, unknown, ISavingsFormInputs, void> {
       return useCustomMutation(
          async (formData: ISavingsFormInputs) => {
             const body = APIHelper.createBody(formData);
@@ -104,7 +112,7 @@ export default class SavingsClass {
 
    private static useDelSavingsAccountMutation(
       options: UseMutationOptions<void, unknown, ISavingsFormInputs>,
-   ) {
+   ): UseMutationResult<void, unknown, ISavingsFormInputs, void> {
       return useCustomMutation(
          async (formData: ISavingsFormInputs) => {
             const body = APIHelper.createBody({ id: formData.id });
@@ -144,5 +152,5 @@ export default class SavingsClass {
 
    static isType = {
       savingsItem: SavingsClass.isItemSavings,
-   }
+   };
 }

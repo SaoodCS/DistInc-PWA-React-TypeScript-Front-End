@@ -13,11 +13,9 @@ const commonOpenerCSS = css`
    }
 `;
 
-
 export const DetailsCMOpenerWrapper = styled.div`
-  ${commonOpenerCSS};
+   ${commonOpenerCSS};
    margin-right: 1em;
-   
 `;
 
 export const FiltererCMOpenerWrapper = styled.div`

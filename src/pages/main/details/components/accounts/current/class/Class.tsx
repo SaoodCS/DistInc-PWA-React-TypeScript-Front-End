@@ -1,4 +1,10 @@
-import { UseMutationOptions, UseQueryOptions, useQuery } from '@tanstack/react-query';
+import type {
+   UseMutationOptions,
+   UseMutationResult,
+   UseQueryOptions,
+   UseQueryResult,
+} from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import APIHelper from '../../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../../global/firebase/apis/microservices/microservices';
 import type { InputArray } from '../../../../../../../global/helpers/react/form/FormHelper';
@@ -90,7 +96,9 @@ export default class CurrentClass {
       return formValidation;
    }
 
-   private static useCurrentAccountsQuery(options: UseQueryOptions<ICurrentAccountFirebase> = {}) {
+   private static useCurrentAccountsQuery(
+      options: UseQueryOptions<ICurrentAccountFirebase> = {},
+   ): UseQueryResult<ICurrentAccountFirebase, unknown> {
       return useQuery({
          queryKey: [microservices.getCurrentAccount.name],
          queryFn: () =>
@@ -105,7 +113,7 @@ export default class CurrentClass {
 
    private static useSetCurrentAccountMutation(
       options: UseMutationOptions<void, unknown, ICurrentFormInputs>,
-   ) {
+   ): UseMutationResult<void, unknown, ICurrentFormInputs, void> {
       return useCustomMutation(
          async (formData: ICurrentFormInputs) => {
             const body = APIHelper.createBody(formData);
@@ -121,7 +129,7 @@ export default class CurrentClass {
 
    private static useDelCurrentAccountMutation(
       options: UseMutationOptions<void, unknown, ICurrentFormInputs>,
-   ) {
+   ): UseMutationResult<void, unknown, ICurrentFormInputs, void> {
       return useCustomMutation(
          async (formData: ICurrentFormInputs) => {
             const body = APIHelper.createBody({ id: formData.id });

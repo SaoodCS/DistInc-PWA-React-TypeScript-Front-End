@@ -23,11 +23,12 @@ import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
 import useURLState from '../../../../../../global/hooks/useURLState';
 import Color from '../../../../../../global/theme/colors';
 import { NDetails } from '../../../namespace/NDetails';
-import IncomeClass, { IIncomeFormInputs } from '../class/Class';
+import type { IIncomeFormInputs } from '../class/Class';
+import IncomeClass from '../class/Class';
 import IncomeForm from '../form/IncomeForm';
 
 export default function IncomeSlide(): JSX.Element {
-   const [sortBy, setSortBy] = useURLState({ key: 'sortBy' });
+   const [sortBy] = useURLState({ key: 'sortBy' });
    const [order] = useURLState({ key: 'order' });
    const { isDarkTheme } = useThemeContext();
    const {
@@ -51,7 +52,7 @@ export default function IncomeSlide(): JSX.Element {
    if (isPaused) return <OfflineFetch />;
    if (error) return <FetchError />;
 
-   function handleClick(data: IIncomeFormInputs) {
+   function handleClick(data: IIncomeFormInputs): void {
       setIsBottomPanelOpen(true);
       setBottomPanelHeading(data.incomeName);
       setBottomPanelContent(<IncomeForm inputValues={data} />);
@@ -62,7 +63,7 @@ export default function IncomeSlide(): JSX.Element {
       return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.4);
    }
 
-   function sortData(fetchedData: typeof data) {
+   function sortData(fetchedData: typeof data): IIncomeFormInputs[] {
       if (!fetchedData) return [];
       const dataAsArr = ObjectOfObjects.convertToArrayOfObj(fetchedData);
       if (!sortBy?.includes('income')) return dataAsArr;

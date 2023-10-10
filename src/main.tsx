@@ -20,8 +20,8 @@ const queryClient = new QueryClient({
          refetchOnReconnect: true,
          staleTime: NumberHelper.minsToMs(20),
          // cacheTime: minsToMs(1),
-      }
-   }
+      },
+   },
 });
 
 function Root(): JSX.Element {

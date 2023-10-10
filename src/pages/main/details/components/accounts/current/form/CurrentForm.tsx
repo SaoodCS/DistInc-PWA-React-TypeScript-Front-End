@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { useQueryClient } from '@tanstack/react-query';
 import { StaticButton } from '../../../../../../../global/components/lib/button/staticButton/Style';
-import { IDropDownOption } from '../../../../../../../global/components/lib/form/dropDown/DropDownInput';
+import type { IDropDownOption } from '../../../../../../../global/components/lib/form/dropDown/DropDownInput';
 import { StyledForm } from '../../../../../../../global/components/lib/form/form/Style';
 import InputCombination from '../../../../../../../global/components/lib/form/inputCombination/InputCombination';
 import ConditionalRender from '../../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
@@ -9,7 +10,8 @@ import useApiErrorContext from '../../../../../../../global/context/widget/apiEr
 import microservices from '../../../../../../../global/firebase/apis/microservices/microservices';
 import useForm from '../../../../../../../global/hooks/useForm';
 import SavingsClass from '../../savings/class/Class';
-import CurrentClass, { ICurrentFormInputs } from '../class/Class';
+import type { ICurrentFormInputs } from '../class/Class';
+import CurrentClass from '../class/Class';
 
 interface ICurrentForm {
    inputValues?: ICurrentFormInputs;
@@ -51,7 +53,9 @@ export default function CurrentForm(props: ICurrentForm): JSX.Element {
       await deleteCurrentAccountInFirestore.mutateAsync(form);
    }
 
-   function dropDownOptions(input: (typeof CurrentClass.form.inputs)[0]) {
+   function dropDownOptions(
+      input: (typeof CurrentClass.form.inputs)[0],
+   ): IDropDownOption[] | undefined {
       if (!input.isDropDown) return undefined;
       if (!data) return [];
       if (!input.dropDownOptions) {

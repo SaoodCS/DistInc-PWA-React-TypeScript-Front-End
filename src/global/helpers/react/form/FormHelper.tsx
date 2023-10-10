@@ -1,4 +1,4 @@
-import { IDropDownOption } from "../../../components/lib/form/dropDown/DropDownInput";
+import type { IDropDownOption } from '../../../components/lib/form/dropDown/DropDownInput';
 
 type InputObject<FieldName, ValueType> = {
    name: FieldName;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { useQueryClient } from '@tanstack/react-query';
 import { StaticButton } from '../../../../../../../global/components/lib/button/staticButton/Style';
 import { StyledForm } from '../../../../../../../global/components/lib/form/form/Style';
@@ -7,7 +8,8 @@ import useThemeContext from '../../../../../../../global/context/theme/hooks/use
 import useApiErrorContext from '../../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
 import microservices from '../../../../../../../global/firebase/apis/microservices/microservices';
 import useForm from '../../../../../../../global/hooks/useForm';
-import SavingsClass, { ISavingsFormInputs } from '../class/Class';
+import type { ISavingsFormInputs } from '../class/Class';
+import SavingsClass from '../class/Class';
 
 interface ISavingsFormComponent {
    inputValues?: ISavingsFormInputs;

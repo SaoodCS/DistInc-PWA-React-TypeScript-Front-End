@@ -11,14 +11,15 @@ import useThemeContext from '../../../../../../../global/context/theme/hooks/use
 import { BottomPanelContext } from '../../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import Color from '../../../../../../../global/theme/colors';
 import SavingsClass from '../../savings/class/Class';
-import CurrentClass, { ICurrentFormInputs } from '../class/Class';
+import type { ICurrentFormInputs } from '../class/Class';
+import CurrentClass from '../class/Class';
 import CurrentForm from '../form/CurrentForm';
 
 interface ICurrentAccountListItem {
    item: ICurrentFormInputs;
 }
 
-export default function CurrentAccountListItem(props: ICurrentAccountListItem) {
+export default function CurrentAccountListItem(props: ICurrentAccountListItem): JSX.Element {
    const { item } = props;
    const { isDarkTheme } = useThemeContext();
    const {
@@ -30,7 +31,7 @@ export default function CurrentAccountListItem(props: ICurrentAccountListItem) {
 
    const { data: savingsData } = SavingsClass.useQuery.getSavingsAccounts();
 
-   function handleClick(item: ICurrentFormInputs) {
+   function handleClick(item: ICurrentFormInputs): void {
       setIsBottomPanelOpen(true);
       setBottomPanelHeading(item.accountName);
       setBottomPanelContent(<CurrentForm inputValues={item} />);
@@ -47,7 +48,7 @@ export default function CurrentAccountListItem(props: ICurrentAccountListItem) {
       return Color.setRgbOpacity(mapper[tag], 0.4);
    }
 
-   function leftoversTag(transferLeftoversId: string) {
+   function leftoversTag(transferLeftoversId: string): string | undefined {
       const savingsAccount = savingsData?.[transferLeftoversId];
       if (!savingsAccount) return;
       return savingsAccount.accountName;

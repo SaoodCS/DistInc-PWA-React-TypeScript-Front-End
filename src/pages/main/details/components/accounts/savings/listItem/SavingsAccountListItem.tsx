@@ -13,14 +13,15 @@ import useThemeContext from '../../../../../../../global/context/theme/hooks/use
 import { BottomPanelContext } from '../../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import NumberHelper from '../../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import Color from '../../../../../../../global/theme/colors';
-import SavingsClass, { ISavingsFormInputs } from '../class/Class';
+import type { ISavingsFormInputs } from '../class/Class';
+import SavingsClass from '../class/Class';
 import SavingsForm from '../form/SavingsForm';
 
 interface ISavingsAccountListItem {
    item: ISavingsFormInputs;
 }
 
-export default function SavingsAccountListItem(props: ISavingsAccountListItem) {
+export default function SavingsAccountListItem(props: ISavingsAccountListItem): JSX.Element {
    const { item } = props;
    const { isDarkTheme } = useThemeContext();
    const {
@@ -30,7 +31,7 @@ export default function SavingsAccountListItem(props: ISavingsAccountListItem) {
       setBottomPanelZIndex,
    } = useContext(BottomPanelContext);
 
-   function handleClick(item: ISavingsFormInputs) {
+   function handleClick(item: ISavingsFormInputs): void {
       setIsBottomPanelOpen(true);
       setBottomPanelHeading(item.accountName);
       setBottomPanelContent(<SavingsForm inputValues={item} />);

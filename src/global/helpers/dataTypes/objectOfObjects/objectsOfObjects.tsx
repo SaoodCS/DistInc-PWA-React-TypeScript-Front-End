@@ -30,6 +30,7 @@ export default class ObjectOfObjects {
       return Object.keys(obj).map((key) => obj[key as keyof T]);
    }
 
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
    static addPropsToAll<T extends Record<string, any>>(
       obj: T,
       props: { [key: string]: unknown },

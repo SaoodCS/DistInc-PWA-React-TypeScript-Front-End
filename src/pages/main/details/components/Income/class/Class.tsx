@@ -1,7 +1,14 @@
-import { UseMutationOptions, UseQueryOptions, useQuery } from '@tanstack/react-query';
+import type {
+   UseMutationOptions,
+   UseMutationResult,
+   UseQueryOptions,
+   UseQueryResult,
+} from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
-import FormHelper, { InputArray } from '../../../../../../global/helpers/react/form/FormHelper';
+import type { InputArray } from '../../../../../../global/helpers/react/form/FormHelper';
+import FormHelper from '../../../../../../global/helpers/react/form/FormHelper';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
 
 export interface IIncomeFormInputs {
@@ -55,7 +62,9 @@ export default class IncomeClass {
       return formValidation;
    }
 
-   private static useIncomeQuery(options: UseQueryOptions<IIncomeFirebase> = {}) {
+   private static useIncomeQuery(
+      options: UseQueryOptions<IIncomeFirebase> = {},
+   ): UseQueryResult<IIncomeFirebase, unknown> {
       return useQuery({
          queryKey: [microservices.getIncomes.name],
          queryFn: () =>
@@ -66,7 +75,7 @@ export default class IncomeClass {
 
    private static useSetIncomeMutation(
       options: UseMutationOptions<void, unknown, IIncomeFormInputs>,
-   ) {
+   ): UseMutationResult<void, unknown, IIncomeFormInputs, void> {
       return useCustomMutation(
          async (formData: IIncomeFormInputs) => {
             const body = APIHelper.createBody(formData);
@@ -82,7 +91,7 @@ export default class IncomeClass {
 
    private static useDelIncomeMutation(
       options: UseMutationOptions<void, unknown, IIncomeFormInputs>,
-   ) {
+   ): UseMutationResult<void, unknown, IIncomeFormInputs, void> {
       return useCustomMutation(
          async (formData: IIncomeFormInputs) => {
             const body = APIHelper.createBody({ id: formData.id });
