@@ -12,7 +12,8 @@ export namespace NDetails {
          name: 'Income',
          component: <IncomeSlide />,
          sortDataOptions: IncomeClass.form.inputs.map((input) => ({
-            prefix: 'income',
+            sortUrlKey: 'sortIncomeBy',
+            orderUrlKey: 'orderIncome',
             name: input.name,
             placeholder: input.placeholder,
          })),
@@ -22,7 +23,8 @@ export namespace NDetails {
          name: 'Expense',
          component: <ExpenseSlide />,
          sortDataOptions: ExpensesClass.form.inputs.map((input) => ({
-            prefix: 'expense',
+            sortUrlKey: 'sortExpenseBy',
+            orderUrlKey: 'orderExpense',
             name: input.name,
             placeholder: input.placeholder,
          })),
@@ -35,12 +37,14 @@ export namespace NDetails {
             ...CurrentClass.form.inputs
                .filter((input) => input.name === 'accountName' || input.name === 'accountType')
                .map((input) => ({
-                  prefix: 'account',
+                  sortUrlKey: 'sortAccountsBy',
+                  orderUrlKey: 'orderAccounts',
                   name: input.name,
                   placeholder: input.placeholder,
                })),
             {
-               prefix: 'account',
+               sortUrlKey: 'sortAccountsBy',
+               orderUrlKey: 'orderAccounts',
                name: 'category',
                placeholder: 'Category',
             },
@@ -48,13 +52,35 @@ export namespace NDetails {
       },
    ];
 
-   const storageKeyPrefix = 'detailsCarousel';
-   export const key = {
-      currentSlide: `${storageKeyPrefix}.currentSlide`,
-      incomeSlide: `${storageKeyPrefix}.incomeSlide`,
-      expenseSlide: `${storageKeyPrefix}.expenseSlide`,
-      accountsSlide: `${storageKeyPrefix}.accountsSlide`,
+   export const keys = {
+      localStorage: {
+         currentSlide: `detailsCarousel.currentSlide`,
+         incomeSlide: `detailsCarousel.incomeSlide`,
+         expenseSlide: `detailsCarousel.expenseSlide`,
+         accountsSlide: `detailsCarousel.accountsSlide`,
+      },
+      searchParams: {
+         sort: {
+            income: getSearchParamKey(slides, 'Income', 'sort'),
+            expense: getSearchParamKey(slides, 'Expense', 'sort'),
+            accounts: getSearchParamKey(slides, 'Accounts', 'sort'),
+         },
+         order: {
+            income: getSearchParamKey(slides, 'Income', 'order'),
+            expense: getSearchParamKey(slides, 'Expense', 'order'),
+            accounts: getSearchParamKey(slides, 'Accounts', 'order'),
+         },
+      },
    };
+
+   function getSearchParamKey(
+      slides: typeof NDetails.slides,
+      slideName: string,
+      sortOrOrder: 'sort' | 'order',
+   ): string {
+      const slide = slides.filter((slide) => slide.name === slideName)[0];
+      return slide.sortDataOptions[0][`${sortOrOrder}UrlKey`];
+   }
 }
 
 export default NDetails;

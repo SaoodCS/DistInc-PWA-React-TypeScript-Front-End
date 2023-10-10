@@ -11,6 +11,7 @@ import {
 import useContextMenu from '../../../../../global/components/lib/contextMenu/hooks/useContextMenu';
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
+import StringHelper from '../../../../../global/helpers/dataTypes/string/StringHelper';
 import useURLState from '../../../../../global/hooks/useURLState';
 import NDetails from '../../namespace/NDetails';
 import { FiltererCMOpenerWrapper } from './Style';
@@ -23,19 +24,20 @@ export default function FiltererContextMenu(props: IFilterer): JSX.Element {
    const { currentSlide } = props;
    const { showMenu, toggleMenu, buttonRef } = useContextMenu();
    const { isDarkTheme } = useThemeContext();
-   const [sortBy, setSortBy] = useURLState({ key: 'sortBy' });
-   const [order, setOrder] = useURLState({ key: 'order' });
    const filterOptions = NDetails.slides
       .filter((slide) => slide.slideNo === currentSlide)
       .map((slide) => slide.sortDataOptions)[0];
 
-   function changeSortBy(name: string): void {
-      setSortBy(name);
-   }
+   const [sortState, setSortState] = useURLState({ key: filterOptions[0].sortUrlKey });
+   const [orderState, setOrderState] = useURLState({ key: filterOptions[0].orderUrlKey });
 
-   function changeOrder(newOrder: 'asc' | 'desc'): void {
-      setOrder(newOrder);
-   }
+   const changeSortBy = (newSortBy: string): void => {
+      setSortState(newSortBy);
+   };
+
+   const changeOrder = (newOrder: 'asc' | 'desc'): void => {
+      setOrderState(newOrder);
+   };
 
    return (
       <>
@@ -63,11 +65,11 @@ export default function FiltererContextMenu(props: IFilterer): JSX.Element {
                {filterOptions.map((option) => (
                   <CMItemContainer
                      key={option.name}
-                     onClick={() => changeSortBy(`${option.prefix}-${option.name}`)}
+                     onClick={() => changeSortBy(option.name)}
                      isDarkTheme={isDarkTheme}
                   >
                      <CMItemTitle> {option.placeholder}</CMItemTitle>
-                     <ConditionalRender condition={sortBy === `${option.prefix}-${option.name}`}>
+                     <ConditionalRender condition={sortState === option.name}>
                         <Check height={'1em'} />
                      </ConditionalRender>
                   </CMItemContainer>
@@ -75,13 +77,13 @@ export default function FiltererContextMenu(props: IFilterer): JSX.Element {
                <CMListHeader isDarkTheme={isDarkTheme}>Order</CMListHeader>
                <CMItemContainer onClick={() => changeOrder('asc')} isDarkTheme={isDarkTheme}>
                   <CMItemTitle>Ascending</CMItemTitle>
-                  <ConditionalRender condition={order === 'asc'}>
+                  <ConditionalRender condition={orderState === 'asc'}>
                      <Check height={'1em'} />
                   </ConditionalRender>
                </CMItemContainer>
                <CMItemContainer onClick={() => changeOrder('desc')} isDarkTheme={isDarkTheme}>
                   <CMItemTitle>Descending</CMItemTitle>
-                  <ConditionalRender condition={order === 'desc'}>
+                  <ConditionalRender condition={orderState === 'desc'}>
                      <Check height={'1em'} />
                   </ConditionalRender>
                </CMItemContainer>

@@ -20,11 +20,11 @@ import SavingsClass from './savings/class/Class';
 import SavingsAccountListItem from './savings/listItem/SavingsAccountListItem';
 
 export default function AccountsSlide(): JSX.Element {
-   const [sortBy] = useURLState({ key: 'sortBy' });
-   const [order] = useURLState({ key: 'order' });
+   const [sortAccountBy] = useURLState({ key: NDetails.keys.searchParams.sort.accounts });
+   const [orderAccount] = useURLState({ key: NDetails.keys.searchParams.order.accounts });
    const { isDarkTheme } = useThemeContext();
    const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(
-      NDetails.key.accountsSlide,
+      NDetails.keys.localStorage.accountsSlide,
    );
    const { handleCloseBottomPanel } = useContext(BottomPanelContext);
    const {
@@ -72,10 +72,13 @@ export default function AccountsSlide(): JSX.Element {
       });
       const savingsAndCurrentConcat = { ...savingsWithFilterProps, ...currentWithFilterProps };
       const dataAsArr = ObjectOfObjects.convertToArrayOfObj(savingsAndCurrentConcat);
-      if (!sortBy?.includes('account')) return dataAsArr;
-      const extractKey = sortBy.split('-')[1] as keyof (typeof dataAsArr)[0];
-      const desc = order?.includes('desc');
-      const sortedData = ArrayOfObjects.sort(dataAsArr, extractKey, desc);
+      if (!sortAccountBy?.includes('account')) return dataAsArr;
+      const desc = orderAccount?.includes('desc');
+      const sortedData = ArrayOfObjects.sort(
+         dataAsArr,
+         sortAccountBy as keyof (typeof dataAsArr)[0],
+         desc,
+      );
       return sortedData;
    }
 

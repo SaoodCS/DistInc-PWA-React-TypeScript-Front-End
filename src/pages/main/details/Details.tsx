@@ -11,14 +11,17 @@ import useThemeContext from '../../../global/context/theme/hooks/useThemeContext
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
 import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 import Color from '../../../global/theme/colors';
-import NewFormContextMenu from './components/contextMenu/NewFormContextMenu';
 import FiltererContextMenu from './components/contextMenu/FiltererContextMenu';
+import NewFormContextMenu from './components/contextMenu/NewFormContextMenu';
 import NDetails from './namespace/NDetails';
 
 export default function Details(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Details');
    const { setHeaderRightElement } = useHeaderContext();
-   const { containerRef, scrollToSlide, currentSlide } = useCarousel(1, NDetails.key.currentSlide);
+   const { containerRef, scrollToSlide, currentSlide } = useCarousel(
+      1,
+      NDetails.keys.localStorage.currentSlide,
+   );
    const { isDarkTheme } = useThemeContext();
    const carouselBorderRight: CSSProperties = {
       borderRight: `1px solid ${isDarkTheme ? Color.darkThm.border : Color.lightThm.border}`,

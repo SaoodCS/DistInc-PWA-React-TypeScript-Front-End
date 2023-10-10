@@ -28,8 +28,8 @@ import IncomeClass from '../class/Class';
 import IncomeForm from '../form/IncomeForm';
 
 export default function IncomeSlide(): JSX.Element {
-   const [sortBy] = useURLState({ key: 'sortBy' });
-   const [order] = useURLState({ key: 'order' });
+   const [sortIncomeBy] = useURLState({ key: NDetails.keys.searchParams.sort.income });
+   const [orderIncome] = useURLState({ key: NDetails.keys.searchParams.order.income });
    const { isDarkTheme } = useThemeContext();
    const {
       setIsBottomPanelOpen,
@@ -38,7 +38,7 @@ export default function IncomeSlide(): JSX.Element {
       setBottomPanelZIndex,
    } = useContext(BottomPanelContext);
    const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(
-      NDetails.key.incomeSlide,
+      NDetails.keys.localStorage.incomeSlide,
    );
    const { handleCloseBottomPanel } = useContext(BottomPanelContext);
    const { isLoading, error, isPaused, refetch, data } = IncomeClass.useQuery.getIncomes({
@@ -66,10 +66,13 @@ export default function IncomeSlide(): JSX.Element {
    function sortData(fetchedData: typeof data): IIncomeFormInputs[] {
       if (!fetchedData) return [];
       const dataAsArr = ObjectOfObjects.convertToArrayOfObj(fetchedData);
-      if (!sortBy?.includes('income')) return dataAsArr;
-      const extractKey = sortBy.split('-')[1] as keyof IIncomeFormInputs;
-      const desc = order?.includes('desc');
-      const sortedData = ArrayOfObjects.sort(dataAsArr, extractKey, desc);
+      if (!sortIncomeBy?.includes('income')) return dataAsArr;
+      const desc = orderIncome?.includes('desc');
+      const sortedData = ArrayOfObjects.sort(
+         dataAsArr,
+         sortIncomeBy as keyof IIncomeFormInputs,
+         desc,
+      );
       return sortedData;
    }
 
