@@ -3,6 +3,7 @@ import FetchError from '../../../../../global/components/lib/fetch/fetchError/Fe
 import OfflineFetch from '../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import { FlatListWrapper } from '../../../../../global/components/lib/flatList/Style';
 import DetailsPlaceholder from '../../../../../global/components/lib/flatList/placeholder/Placeholder';
+import Loader from '../../../../../global/components/lib/loader/Loader';
 import PullToRefresh from '../../../../../global/components/lib/pullToRefresh/PullToRefresh';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
@@ -22,7 +23,7 @@ import SavingsAccountListItem from './savings/listItem/SavingsAccountListItem';
 export default function AccountsSlide(): JSX.Element {
    const [sortAccountBy] = useURLState({ key: NDetails.keys.searchParams.sort.accounts });
    const [orderAccount] = useURLState({ key: NDetails.keys.searchParams.order.accounts });
-   const { isDarkTheme } = useThemeContext();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
    const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(
       NDetails.keys.localStorage.accountsSlide,
    );
@@ -52,6 +53,7 @@ export default function AccountsSlide(): JSX.Element {
    });
 
    if ((isLoadingSavings && !isPausedSavings) || (isLoadingCurrent && !isPausedCurrent)) {
+      if (!isPortableDevice) return <Loader isDisplayed />;
       return <FlatListWrapper>{JSXHelper.repeatJSX(<DetailsPlaceholder />, 7)}</FlatListWrapper>;
    }
    if (isPausedSavings || isPausedCurrent) return <OfflineFetch />;

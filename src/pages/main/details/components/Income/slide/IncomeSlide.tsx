@@ -12,6 +12,7 @@ import {
    Tag,
 } from '../../../../../../global/components/lib/flatList/Style';
 import DetailsPlaceholder from '../../../../../../global/components/lib/flatList/placeholder/Placeholder';
+import Loader from '../../../../../../global/components/lib/loader/Loader';
 import PullToRefresh from '../../../../../../global/components/lib/pullToRefresh/PullToRefresh';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
@@ -30,7 +31,7 @@ import IncomeForm from '../form/IncomeForm';
 export default function IncomeSlide(): JSX.Element {
    const [sortIncomeBy] = useURLState({ key: NDetails.keys.searchParams.sort.income });
    const [orderIncome] = useURLState({ key: NDetails.keys.searchParams.order.income });
-   const { isDarkTheme } = useThemeContext();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
    const {
       setIsBottomPanelOpen,
       setBottomPanelContent,
@@ -47,6 +48,7 @@ export default function IncomeSlide(): JSX.Element {
       },
    });
    if (isLoading && !isPaused) {
+      if (!isPortableDevice) return <Loader isDisplayed />;
       return <FlatListWrapper>{JSXHelper.repeatJSX(<DetailsPlaceholder />, 7)}</FlatListWrapper>;
    }
    if (isPaused) return <OfflineFetch />;

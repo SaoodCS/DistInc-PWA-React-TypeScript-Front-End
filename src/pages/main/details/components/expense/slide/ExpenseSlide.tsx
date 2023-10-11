@@ -12,6 +12,7 @@ import {
    Tag,
 } from '../../../../../../global/components/lib/flatList/Style';
 import DetailsPlaceholder from '../../../../../../global/components/lib/flatList/placeholder/Placeholder';
+import Loader from '../../../../../../global/components/lib/loader/Loader';
 import PullToRefresh from '../../../../../../global/components/lib/pullToRefresh/PullToRefresh';
 import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
@@ -33,7 +34,7 @@ import ExpenseForm from '../form/ExpenseForm';
 export default function ExpenseSlide(): JSX.Element {
    const [sortExpenseBy] = useURLState({ key: NDetails.keys.searchParams.sort.expense });
    const [orderExpense] = useURLState({ key: NDetails.keys.searchParams.order.expense });
-   const { isDarkTheme } = useThemeContext();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
    const {
       setIsBottomPanelOpen,
       setBottomPanelContent,
@@ -53,6 +54,7 @@ export default function ExpenseSlide(): JSX.Element {
    const { data: savingsAccounts } = SavingsClass.useQuery.getSavingsAccounts();
 
    if (isLoading && !isPaused) {
+      if (!isPortableDevice) return <Loader isDisplayed />;
       return <FlatListWrapper>{JSXHelper.repeatJSX(<DetailsPlaceholder />, 7)}</FlatListWrapper>;
    }
    if (isPaused) return <OfflineFetch />;
@@ -96,7 +98,6 @@ export default function ExpenseSlide(): JSX.Element {
    }
 
    return (
-      <>
          <PullToRefresh onRefresh={refetch} isDarkTheme={isDarkTheme}>
             <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
                {!!data &&
@@ -126,6 +127,5 @@ export default function ExpenseSlide(): JSX.Element {
                   ))}
             </FlatListWrapper>
          </PullToRefresh>
-      </>
    );
 }
