@@ -124,6 +124,11 @@ export const SidebarItem = styled.div<{ isActive: boolean; isDarkTheme: boolean 
       height: 1.5em;
       padding-right: 0.5em;
    }
+   @media (max-width: 950px) {
+      font-size: 0.9em;
+      padding: 1.25em;
+      padding-left:0.5em;
+   }
 `;
 
 export const ActiveTag = styled.div``;

@@ -6,7 +6,7 @@ export namespace MyCSS {
       static asNum = 850;
       static asPx = `${PortableBp.asNum}px`;
    }
-   //TODO replace all instances of these classes with this namespace version -> then delete the files clickables, layouts and scrollbar .ts
+   
    export class Clickables {
       static removeDefaultEffects = css`
          all: unset;
