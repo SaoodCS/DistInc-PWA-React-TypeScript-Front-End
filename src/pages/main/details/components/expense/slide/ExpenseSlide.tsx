@@ -18,6 +18,7 @@ import ConditionalRender from '../../../../../../global/components/lib/renderMod
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import { ModalContext } from '../../../../../../global/context/widget/modal/ModalContext';
+import Color from '../../../../../../global/css/colors';
 import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import JSXHelper from '../../../../../../global/helpers/dataTypes/jsx/jsxHelper';
@@ -25,7 +26,6 @@ import NumberHelper from '../../../../../../global/helpers/dataTypes/number/Numb
 import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
 import useURLState from '../../../../../../global/hooks/useURLState';
-import Color from '../../../../../../global/theme/colors';
 import { NDetails } from '../../../namespace/NDetails';
 import SavingsClass from '../../accounts/savings/class/Class';
 import type { IExpenseFormInputs } from '../class/ExpensesClass';

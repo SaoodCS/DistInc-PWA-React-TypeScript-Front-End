@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import useThemeContext from '../../../context/theme/hooks/useThemeContext';
-import Color from '../../../theme/colors';
+import Color from '../../../css/colors';
 import Logo from '../../app/logo/Logo';
 import Fader from '../animation/fader/Fader';
 import { OpaqueOverlay } from '../overlay/opaqueOverlay/Style';

@@ -1,4 +1,5 @@
 import { createContext } from 'react';
+import MyCSS from '../../css/MyCSS';
 
 export interface IThemeContext {
    isDarkTheme: boolean;
@@ -9,5 +10,5 @@ export interface IThemeContext {
 export const ThemeContext = createContext<IThemeContext>({
    isDarkTheme: localStorage.getItem(`isDarkTheme`) === `true` || false,
    toggleTheme: () => {},
-   isPortableDevice: window.innerWidth < 850,
+   isPortableDevice: window.innerWidth < MyCSS.PortableBp.asNum,
 });

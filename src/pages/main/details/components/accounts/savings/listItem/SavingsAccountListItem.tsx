@@ -12,8 +12,8 @@ import ConditionalRender from '../../../../../../../global/components/lib/render
 import useThemeContext from '../../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import { ModalContext } from '../../../../../../../global/context/widget/modal/ModalContext';
+import Color from '../../../../../../../global/css/colors';
 import NumberHelper from '../../../../../../../global/helpers/dataTypes/number/NumberHelper';
-import Color from '../../../../../../../global/theme/colors';
 import type { ISavingsFormInputs } from '../class/Class';
 import SavingsClass from '../class/Class';
 import SavingsForm from '../form/SavingsForm';

@@ -1,9 +1,9 @@
+import { AccountCircle } from '@styled-icons/material/AccountCircle';
 import { Fragment } from 'react';
 import { useLocation } from 'react-router-dom';
-import { AccountCircle } from '@styled-icons/material/AccountCircle';
 import useThemeContext from '../../../../context/theme/hooks/useThemeContext';
+import Color from '../../../../css/colors';
 import { auth } from '../../../../firebase/config/config';
-import Color from '../../../../theme/colors';
 import Logo from '../../../app/logo/Logo';
 import { StyledLink } from '../footer/Style';
 import NavItems from '../utils/navItems';

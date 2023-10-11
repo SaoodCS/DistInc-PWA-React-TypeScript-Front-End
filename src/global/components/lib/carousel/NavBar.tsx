@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import Clickables from '../../../helpers/styledComponents/clickables';
-import Color from '../../../theme/colors';
+import MyCSS from '../../../css/MyCSS';
+import Color from '../../../css/colors';
 
 export const CarouselAndNavBarWrapper = styled.div`
    height: 100%;
@@ -26,7 +26,7 @@ export const NavBarContainer = styled.div<{ isDarkTheme: boolean }>`
 `;
 
 export const NavBarHeading = styled.button<{ isActive: boolean; isDarkTheme: boolean }>`
-   ${Clickables.removeDefaultEffects};
+   ${MyCSS.Clickables.removeDefaultEffects};
    border-bottom: ${({ isActive, isDarkTheme }) =>
       isActive
          ? isDarkTheme

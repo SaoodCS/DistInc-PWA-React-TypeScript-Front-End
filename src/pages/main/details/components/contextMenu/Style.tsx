@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import MyCSS from '../../../../../global/css/MyCSS';
 
 const commonOpenerCSS = css`
    display: flex;
@@ -21,7 +22,7 @@ export const DetailsCMOpenerWrapper = styled.div`
 export const FiltererCMOpenerWrapper = styled.div`
    ${commonOpenerCSS};
    margin-right: 3em;
-   @media (min-width: 850px) {
+   @media (min-width: ${MyCSS.PortableBp.asPx}) {
       margin-right: 2.25em;
    }
 `;

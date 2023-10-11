@@ -17,13 +17,13 @@ import PullToRefresh from '../../../../../../global/components/lib/pullToRefresh
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import { ModalContext } from '../../../../../../global/context/widget/modal/ModalContext';
+import Color from '../../../../../../global/css/colors';
 import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import JSXHelper from '../../../../../../global/helpers/dataTypes/jsx/jsxHelper';
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
 import useURLState from '../../../../../../global/hooks/useURLState';
-import Color from '../../../../../../global/theme/colors';
 import { NDetails } from '../../../namespace/NDetails';
 import type { IIncomeFormInputs } from '../class/Class';
 import IncomeClass from '../class/Class';

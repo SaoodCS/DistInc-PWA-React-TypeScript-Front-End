@@ -87,7 +87,7 @@ export default function FiltererContextMenu(props: IFilterer): JSX.Element {
                <CMItemContainer onClick={() => changeOrder('desc')} isDarkTheme={isDarkTheme}>
                   <CMItemTitle>Descending</CMItemTitle>
                   <ConditionalRender condition={orderState === 'desc'}>
-                     <Check/>
+                     <Check />
                   </ConditionalRender>
                </CMItemContainer>
             </CMItemsListWrapper>

@@ -2,9 +2,10 @@ import type { ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import ConditionalRender from '../../components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import SplashScreen from '../../components/lib/splashScreen/SplashScreen';
+import MyCSS from '../../css/MyCSS';
+import Color from '../../css/colors';
+import { GlobalTheme } from '../../css/theme';
 import useLocalStorage from '../../hooks/useLocalStorage';
-import Color from '../../theme/colors';
-import { GlobalTheme } from '../../theme/theme';
 import { ThemeContext } from './ThemeContext';
 
 interface IThemeContextProvider {
@@ -17,7 +18,9 @@ export default function ThemeContextProvider(props: IThemeContextProvider): JSX.
       `isDarkTheme`,
       window.matchMedia(`(prefers-color-scheme: dark)`).matches,
    );
-   const [isPortableDevice, setIsPortableDevice] = useState<boolean>(window.innerWidth < 850);
+   const [isPortableDevice, setIsPortableDevice] = useState<boolean>(
+      window.innerWidth < MyCSS.PortableBp.asNum,
+   );
    const [showSplashScreen, setShowSplashScreen] = useState(
       window.matchMedia(`(display-mode: standalone)`).matches,
    );
@@ -27,7 +30,8 @@ export default function ThemeContextProvider(props: IThemeContextProvider): JSX.
       if (showSplashScreen) {
          timer = setTimeout(() => setShowSplashScreen(false), 1750);
       }
-      const handleResize = (): void => setIsPortableDevice(window.innerWidth < 850);
+      const handleResize = (): void =>
+         setIsPortableDevice(window.innerWidth < MyCSS.PortableBp.asNum);
       window.addEventListener(`resize`, handleResize);
       return () => {
          timer && clearTimeout(timer);

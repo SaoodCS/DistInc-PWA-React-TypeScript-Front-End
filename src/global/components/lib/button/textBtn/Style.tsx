@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import Clickables from '../../../../helpers/styledComponents/clickables';
-import Color from '../../../../theme/colors';
+import MyCSS from '../../../../css/MyCSS';
+import Color from '../../../../css/colors';
 
 interface ITextBtnAttrs {
    isDisabled?: boolean;
@@ -16,7 +16,7 @@ interface ITextBtn extends ITextBtnAttrs {
 export const TextBtn = styled.button.attrs<ITextBtnAttrs>(({ isDisabled }) => ({
    disabled: isDisabled,
 }))<ITextBtn>`
-   ${Clickables.removeDefaultEffects};
+   ${MyCSS.Clickables.removeDefaultEffects};
    font-size: 0.95em;
    padding: 0.5em;
    border-radius: 10px;
@@ -41,7 +41,7 @@ export const TextBtn = styled.button.attrs<ITextBtnAttrs>(({ isDisabled }) => ({
 
    :hover,
    :active {
-      @media (min-width: 850px) {
+      @media (min-width: ${MyCSS.PortableBp.asPx}) {
          background-color: ${({ isDarkTheme, isDisabled }) =>
             !isDisabled &&
             Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.1)};
@@ -51,7 +51,7 @@ export const TextBtn = styled.button.attrs<ITextBtnAttrs>(({ isDisabled }) => ({
    }
 
    :active {
-      @media (max-width: 850px) {
+      @media (max-width: ${MyCSS.PortableBp.asPx}) {
          color: ${({ isDarkTheme, isDisabled }) =>
             !isDisabled &&
             Color.setRgbOpacity(isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent, 0.5)};

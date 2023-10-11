@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from 'react';
+import Color from '../../../../css/colors';
 import useLocalStorage from '../../../../hooks/useLocalStorage';
-import Color from '../../../../theme/colors';
 import { TextColourizer } from '../../../lib/font/textColorizer/TextColourizer';
 import { TextIndenter } from '../../../lib/font/textIndenter/TextIndenter';
 import Modal from '../../../lib/modal/Modal';

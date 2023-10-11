@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import Clickables from '../../../../helpers/styledComponents/clickables';
-import Color from '../../../../theme/colors';
+import MyCSS from '../../../../css/MyCSS';
+import Color from '../../../../css/colors';
 
 export const InlineTxtBtn = styled.span<{
    isDarkTheme: boolean;
@@ -8,7 +8,7 @@ export const InlineTxtBtn = styled.span<{
    isDangerBtn?: boolean;
    isWarningBtn?: boolean;
 }>`
-   ${Clickables.removeDefaultEffects};
+   ${MyCSS.Clickables.removeDefaultEffects};
    cursor: pointer;
    color: ${({ isDarkTheme, isDisabled, isDangerBtn, isWarningBtn }) =>
       isDangerBtn

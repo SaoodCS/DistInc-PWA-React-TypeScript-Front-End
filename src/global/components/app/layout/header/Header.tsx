@@ -1,6 +1,7 @@
 import { ArrowIosBack } from '@styled-icons/evaicons-solid/ArrowIosBack';
 import styled from 'styled-components';
-import Color from '../../../../theme/colors';
+import MyCSS from '../../../../css/MyCSS';
+import Color from '../../../../css/colors';
 
 export const Header = styled.div<{ isDarkTheme: boolean }>`
    position: fixed;
@@ -15,7 +16,7 @@ export const Header = styled.div<{ isDarkTheme: boolean }>`
    justify-content: space-evenly;
    align-items: center;
    font-size: 1.1em;
-   @media (min-width: 850px) {
+   @media (min-width: ${MyCSS.PortableBp.asPx}) {
       left: 15%;
       width: 85dvw;
       border-bottom: none;
@@ -31,7 +32,7 @@ export const StyledBackArr = styled(ArrowIosBack)<{ darktheme: string }>`
    position: fixed;
    left: 0;
    padding-left: 1em;
-   @media (min-width: 850px) {
+   @media (min-width: ${MyCSS.PortableBp.asPx}) {
       left: 15%;
       padding-left: 0;
       height: 1.25em;

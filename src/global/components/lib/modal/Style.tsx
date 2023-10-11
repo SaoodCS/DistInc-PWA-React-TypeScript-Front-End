@@ -1,7 +1,7 @@
 import { Close } from '@styled-icons/evil/Close';
 import styled from 'styled-components';
-import Scrollbar from '../../../helpers/styledComponents/scrollbars';
-import Color from '../../../theme/colors';
+import MyCSS from '../../../css/MyCSS';
+import Color from '../../../css/colors';
 
 export const ModalHeader = styled.span<{ isDarkTheme: boolean }>`
    text-shadow: ${({ isDarkTheme }) =>
@@ -13,7 +13,7 @@ export const ModalBody = styled.div`
    max-height: 25em;
    overflow-x: hidden;
    overflow-y: auto;
-   ${Scrollbar.gradientStyle};
+   ${MyCSS.Scrollbar.gradientStyle};
    font-size: 0.85em;
 `;
 

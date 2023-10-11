@@ -10,7 +10,7 @@ import {
 import useThemeContext from '../../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import { ModalContext } from '../../../../../../../global/context/widget/modal/ModalContext';
-import Color from '../../../../../../../global/theme/colors';
+import Color from '../../../../../../../global/css/colors';
 import SavingsClass from '../../savings/class/Class';
 import type { ICurrentFormInputs } from '../class/Class';
 import CurrentClass from '../class/Class';

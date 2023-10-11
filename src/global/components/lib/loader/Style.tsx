@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Color from '../../../theme/colors';
+import Color from '../../../css/colors';
 
 export const CustomSpinner = styled.div<{
    isDarkTheme: boolean;

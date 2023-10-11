@@ -10,7 +10,7 @@ import useCarousel from '../../../global/components/lib/carousel/hooks/useCarous
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
 import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
-import Color from '../../../global/theme/colors';
+import Color from '../../../global/css/colors';
 import FiltererContextMenu from './components/contextMenu/FiltererContextMenu';
 import NewFormContextMenu from './components/contextMenu/NewFormContextMenu';
 import NDetails from './namespace/NDetails';

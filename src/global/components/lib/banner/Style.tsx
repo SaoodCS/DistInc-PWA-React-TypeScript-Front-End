@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import Scrollbar from '../../../helpers/styledComponents/scrollbars';
-import Color from '../../../theme/colors';
+import MyCSS from '../../../css/MyCSS';
+import Color from '../../../css/colors';
 
 export const BannerBackground = styled.div<{
    renderBanner: boolean;
@@ -14,7 +14,7 @@ export const BannerBackground = styled.div<{
    min-height: ${({ heightEm }) => heightEm * 1.3}em;
    max-height: ${({ heightEm }) => heightEm * 1.3}em;
    overflow: scroll;
-   ${Scrollbar.hide};
+   ${MyCSS.Scrollbar.hide};
    display: flex;
    align-items: center;
    flex-direction: column;

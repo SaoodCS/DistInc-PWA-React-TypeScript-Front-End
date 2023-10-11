@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import LayoutStyle from '../../../../helpers/styledComponents/layoutStyle';
-import Color from '../../../../theme/colors';
+import MyCSS from '../../../../css/MyCSS';
+import Color from '../../../../css/colors';
 
 export const StyledForm = styled.form<{ apiError?: string; padding?: number }>`
-   ${({ padding }) => LayoutStyle.paddingBorderBox(padding ? `${padding}em` : '0em')};
+   ${({ padding }) => MyCSS.LayoutStyle.paddingBorderBox(padding ? `${padding}em` : '0em')};
    border-radius: 0.7em;
    display: flex;
    flex-direction: column;

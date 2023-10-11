@@ -5,7 +5,7 @@ import Logo from '../../global/components/app/logo/Logo';
 import { CarouselContainer, CarouselSlide } from '../../global/components/lib/carousel/Carousel';
 import useCarousel from '../../global/components/lib/carousel/hooks/useCarousel';
 import useThemeContext from '../../global/context/theme/hooks/useThemeContext';
-import Color from '../../global/theme/colors';
+import Color from '../../global/css/colors';
 import LoginForm from './components/login/LoginForm';
 import RegisterForm from './components/registration/RegisterForm';
 import {

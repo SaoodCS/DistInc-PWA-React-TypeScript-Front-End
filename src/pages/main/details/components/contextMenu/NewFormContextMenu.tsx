@@ -51,7 +51,7 @@ export default function NewFormContextMenu(): JSX.Element {
          if (name === 'Savings') setModalContent(<SavingsForm />);
          if (name === 'Income') setModalContent(<IncomeForm />);
          if (name === 'Expense') setModalContent(<ExpenseForm />);
-         // TODO: add a JSX Success message to each of these forms if successfully updated if portable device 
+         // TODO: add a JSX Success message to each of these forms if successfully updated if portable device
          setModalZIndex(2);
          setIsModalOpen(true);
       }

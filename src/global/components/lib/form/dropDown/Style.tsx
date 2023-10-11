@@ -1,6 +1,6 @@
 import { DownArrow } from '@styled-icons/boxicons-solid/DownArrow';
 import styled from 'styled-components';
-import Color from '../../../../theme/colors';
+import Color from '../../../../css/colors';
 import { LabelWrapper } from '../input/Style';
 
 interface IStyledSelectAttr {

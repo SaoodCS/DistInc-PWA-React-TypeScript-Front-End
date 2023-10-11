@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { TextBtn } from '../../../global/components/lib/button/textBtn/Style';
-import Clickables from '../../../global/helpers/styledComponents/clickables';
-import Color from '../../../global/theme/colors';
+import MyCSS from '../../../global/css/MyCSS';
+import Color from '../../../global/css/colors';
 
 export const HeaderContainer = styled.div<{ isDarkTheme: boolean }>`
    width: 100%;
@@ -24,7 +24,7 @@ export const ScrollNavigatorBtn = styled.div<{
    isActive: boolean;
    navTo: number;
 }>`
-   ${Clickables.removeDefaultEffects};
+   ${MyCSS.Clickables.removeDefaultEffects};
    height: 100%;
    display: flex;
    justify-content: center;

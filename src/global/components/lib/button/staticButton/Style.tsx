@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import Clickables from '../../../../helpers/styledComponents/clickables';
-import Color from '../../../../theme/colors';
+import MyCSS from '../../../../css/MyCSS';
+import Color from '../../../../css/colors';
 
 interface IStaticButtonAttrs {
    isDisabled?: boolean;
@@ -16,7 +16,7 @@ interface IStaticButton extends IStaticButtonAttrs {
 export const StaticButton = styled.button.attrs<IStaticButtonAttrs>(({ isDisabled }) => ({
    disabled: isDisabled,
 }))<IStaticButton>`
-   ${Clickables.removeDefaultEffects};
+   ${MyCSS.Clickables.removeDefaultEffects};
    padding: 0.65em;
    text-align: center;
    border-radius: 10px;

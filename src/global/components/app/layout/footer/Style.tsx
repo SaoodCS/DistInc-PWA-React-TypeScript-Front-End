@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Clickables from '../../../../helpers/styledComponents/clickables';
-import Color from '../../../../theme/colors';
+import MyCSS from '../../../../css/MyCSS';
+import Color from '../../../../css/colors';
 
 export const StyledLink = styled(Link)`
-   ${Clickables.removeDefaultEffects};
+   ${MyCSS.Clickables.removeDefaultEffects};
 `;
 
 export const FooterItem = styled.div<{ isActive: boolean; isDarkTheme: boolean }>`

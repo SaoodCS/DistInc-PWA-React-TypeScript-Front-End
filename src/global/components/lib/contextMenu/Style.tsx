@@ -1,6 +1,7 @@
 import type { Keyframes } from 'styled-components';
 import styled, { keyframes } from 'styled-components';
-import Color from '../../../theme/colors';
+import MyCSS from '../../../css/MyCSS';
+import Color from '../../../css/colors';
 import type { TButtonPos } from './ContextMenu';
 
 //TODO: create an example ui component for the context menu using all the styles here
@@ -85,7 +86,7 @@ export const CMListHeader = styled.div<{ isTopHeader?: boolean; isDarkTheme: boo
    border-top-right-radius: ${({ isTopHeader }) => (isTopHeader ? '10px' : '0px')};
    padding-top: 0.5em;
    padding-bottom: 0.5em;
-   @media (min-width: 850px) {
+   @media (min-width: ${MyCSS.PortableBp.asPx}) {
       font-size: 0.3em;
       padding-top: 0.3em;
       padding-bottom: 0.3em;
@@ -104,7 +105,7 @@ export const CMItemContainer = styled.div<{ isDarkTheme: boolean }>`
       background-color: ${({ isDarkTheme }) =>
          Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.1)};
    }
-   @media (min-width: 850px) {
+   @media (min-width: ${MyCSS.PortableBp.asPx}) {
       padding: 0.3em;
       &:hover {
          background-color: ${({ isDarkTheme }) =>
@@ -119,7 +120,7 @@ export const CMItemContainer = styled.div<{ isDarkTheme: boolean }>`
 
 export const CMItemTitle = styled.div`
    font-size: 0.8em;
-   @media (min-width: 850px) {
+   @media (min-width: ${MyCSS.PortableBp.asPx}) {
       font-size: 0.3em;
    }
 `;

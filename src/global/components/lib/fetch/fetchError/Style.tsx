@@ -1,6 +1,6 @@
 import { Error } from '@styled-icons/material-twotone/Error';
 import styled from 'styled-components';
-import Color from '../../../../theme/colors';
+import Color from '../../../../css/colors';
 
 export const ErrorMsg = styled.div<{ isDarkTheme: boolean }>`
    font-size: 0.9em;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Color from '../../../../theme/colors';
+import Color from '../../../../css/colors';
 
 export const OpaqueOverlay = styled.div<{ isDarkTheme: boolean }>`
    position: fixed;
