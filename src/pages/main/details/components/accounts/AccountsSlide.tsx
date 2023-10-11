@@ -7,6 +7,7 @@ import Loader from '../../../../../global/components/lib/loader/Loader';
 import PullToRefresh from '../../../../../global/components/lib/pullToRefresh/PullToRefresh';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
+import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
 import ArrayOfObjects from '../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import JSXHelper from '../../../../../global/helpers/dataTypes/jsx/jsxHelper';
 import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
@@ -28,6 +29,7 @@ export default function AccountsSlide(): JSX.Element {
       NDetails.keys.localStorage.accountsSlide,
    );
    const { handleCloseBottomPanel } = useContext(BottomPanelContext);
+   const { handleCloseModal } = useContext(ModalContext);
    const {
       isLoading: isLoadingSavings,
       error: errorSavings,
@@ -48,7 +50,7 @@ export default function AccountsSlide(): JSX.Element {
       data: currentData,
    } = CurrentClass.useQuery.getCurrentAccounts({
       onSettled: () => {
-         handleCloseBottomPanel();
+         isPortableDevice ? handleCloseBottomPanel() : handleCloseModal();
       },
    });
 

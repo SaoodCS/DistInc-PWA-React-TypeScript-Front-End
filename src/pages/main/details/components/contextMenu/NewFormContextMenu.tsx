@@ -16,6 +16,7 @@ import { TransparentOverlay } from '../../../../../global/components/lib/overlay
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
+import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
 import IncomeForm from '../Income/form/IncomeForm';
 import { default as CurrentForm } from '../accounts/current/form/CurrentForm';
 import SavingsForm from '../accounts/savings/form/SavingsForm';
@@ -32,6 +33,9 @@ export default function NewFormContextMenu(): JSX.Element {
       setBottomPanelZIndex,
    } = useContext(BottomPanelContext);
 
+   const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader } =
+      useContext(ModalContext);
+
    function handleClick(name: string): void {
       if (isPortableDevice) {
          setBottomPanelHeading(`New ${name}`);
@@ -41,8 +45,17 @@ export default function NewFormContextMenu(): JSX.Element {
          if (name === 'Expense') setBottomPanelContent(<ExpenseForm />);
          setBottomPanelZIndex(2);
          setIsBottomPanelOpen(true);
-         toggleMenu();
+      } else {
+         setModalHeader(`New ${name}`);
+         if (name === 'Current') setModalContent(<CurrentForm />);
+         if (name === 'Savings') setModalContent(<SavingsForm />);
+         if (name === 'Income') setModalContent(<IncomeForm />);
+         if (name === 'Expense') setModalContent(<ExpenseForm />);
+         // TODO: add a JSX Success message to each of these forms if successfully updated if portable device 
+         setModalZIndex(2);
+         setIsModalOpen(true);
       }
+      toggleMenu();
    }
 
    return (
@@ -54,7 +67,7 @@ export default function NewFormContextMenu(): JSX.Element {
                ref={buttonRef}
                isDisabled={showMenu}
             >
-               <Add height={isPortableDevice ? "1.5em" : '1em'} />
+               <Add height={isPortableDevice ? '1.5em' : '1em'} />
             </TextBtn>
          </DetailsCMOpenerWrapper>
          <ConditionalRender condition={showMenu}>

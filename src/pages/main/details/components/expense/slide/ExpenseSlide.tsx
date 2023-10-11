@@ -17,6 +17,7 @@ import PullToRefresh from '../../../../../../global/components/lib/pullToRefresh
 import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
+import { ModalContext } from '../../../../../../global/context/widget/modal/ModalContext';
 import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import JSXHelper from '../../../../../../global/helpers/dataTypes/jsx/jsxHelper';
@@ -41,13 +42,17 @@ export default function ExpenseSlide(): JSX.Element {
       setBottomPanelHeading,
       setBottomPanelZIndex,
    } = useContext(BottomPanelContext);
+
+   const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader, handleCloseModal } =
+      useContext(ModalContext);
+
    const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(
       NDetails.keys.localStorage.expenseSlide,
    );
    const { handleCloseBottomPanel } = useContext(BottomPanelContext);
    const { isLoading, error, isPaused, refetch, data } = ExpensesClass.useQuery.getExpenses({
       onSettled: () => {
-         handleCloseBottomPanel();
+         isPortableDevice ? handleCloseBottomPanel() : handleCloseModal();
       },
    });
 
@@ -61,10 +66,17 @@ export default function ExpenseSlide(): JSX.Element {
    if (error) return <FetchError />;
 
    function handleClick(item: IExpenseFormInputs): void {
-      setIsBottomPanelOpen(true);
-      setBottomPanelHeading(item.expenseName);
-      setBottomPanelContent(<ExpenseForm inputValues={item} />);
-      setBottomPanelZIndex(100);
+      if (isPortableDevice) {
+         setIsBottomPanelOpen(true);
+         setBottomPanelHeading(item.expenseName);
+         setBottomPanelContent(<ExpenseForm inputValues={item} />);
+         setBottomPanelZIndex(100);
+      } else {
+         setModalHeader(item.expenseName);
+         setModalContent(<ExpenseForm inputValues={item} />);
+         setModalZIndex(100);
+         setIsModalOpen(true);
+      }
    }
 
    function tagColor(tag: string): string {
@@ -98,34 +110,32 @@ export default function ExpenseSlide(): JSX.Element {
    }
 
    return (
-         <PullToRefresh onRefresh={refetch} isDarkTheme={isDarkTheme}>
-            <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
-               {!!data &&
-                  sortData(data).map((item) => (
-                     <FlatListItem
-                        isDarkTheme={isDarkTheme}
-                        key={item.id}
-                        onClick={() => handleClick(item)}
-                     >
-                        <FirstRowWrapper>
-                           <ItemTitleWrapper>
-                              <ItemTitle>{item.expenseName}</ItemTitle>
-                           </ItemTitleWrapper>
-                           <ItemValue>{NumberHelper.asCurrencyStr(item.expenseValue)}</ItemValue>
-                        </FirstRowWrapper>
-                        <SecondRowTagsWrapper>
-                           <Tag bgColor={tagColor('expense')}>Expense</Tag>
-                           <Tag bgColor={tagColor('type')}>
-                              {expenseTypeLabel(item.expenseType)}
-                           </Tag>
-                           <Tag bgColor={tagColor('paymentType')}>{item.paymentType}</Tag>
-                           <ConditionalRender condition={BoolHelper.convert(item.paused)}>
-                              <Tag bgColor={tagColor('paused')}>Paused</Tag>
-                           </ConditionalRender>
-                        </SecondRowTagsWrapper>
-                     </FlatListItem>
-                  ))}
-            </FlatListWrapper>
-         </PullToRefresh>
+      <PullToRefresh onRefresh={refetch} isDarkTheme={isDarkTheme}>
+         <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
+            {!!data &&
+               sortData(data).map((item) => (
+                  <FlatListItem
+                     isDarkTheme={isDarkTheme}
+                     key={item.id}
+                     onClick={() => handleClick(item)}
+                  >
+                     <FirstRowWrapper>
+                        <ItemTitleWrapper>
+                           <ItemTitle>{item.expenseName}</ItemTitle>
+                        </ItemTitleWrapper>
+                        <ItemValue>{NumberHelper.asCurrencyStr(item.expenseValue)}</ItemValue>
+                     </FirstRowWrapper>
+                     <SecondRowTagsWrapper>
+                        <Tag bgColor={tagColor('expense')}>Expense</Tag>
+                        <Tag bgColor={tagColor('type')}>{expenseTypeLabel(item.expenseType)}</Tag>
+                        <Tag bgColor={tagColor('paymentType')}>{item.paymentType}</Tag>
+                        <ConditionalRender condition={BoolHelper.convert(item.paused)}>
+                           <Tag bgColor={tagColor('paused')}>Paused</Tag>
+                        </ConditionalRender>
+                     </SecondRowTagsWrapper>
+                  </FlatListItem>
+               ))}
+         </FlatListWrapper>
+      </PullToRefresh>
    );
 }

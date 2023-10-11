@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Scrollbar from '../../../helpers/styledComponents/scrollbars';
+import Color from '../../../theme/colors';
 
 export const FlatListWrapper = styled.div`
    width: 100%;
@@ -16,6 +17,13 @@ export const FlatListItem = styled.div<{ isDarkTheme: boolean }>`
    justify-content: center;
    border-bottom: 1px solid
       ${({ isDarkTheme }) => (isDarkTheme ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)')};
+   @media (min-width: 850px) {
+      &:hover {
+         background-color: ${({ isDarkTheme }) =>
+            Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.1)};
+         cursor: pointer;
+      }
+   }
 `;
 
 export const FirstRowWrapper = styled.div`

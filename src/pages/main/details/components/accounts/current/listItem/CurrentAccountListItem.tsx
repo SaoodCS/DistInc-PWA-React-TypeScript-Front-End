@@ -9,6 +9,7 @@ import {
 } from '../../../../../../../global/components/lib/flatList/Style';
 import useThemeContext from '../../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
+import { ModalContext } from '../../../../../../../global/context/widget/modal/ModalContext';
 import Color from '../../../../../../../global/theme/colors';
 import SavingsClass from '../../savings/class/Class';
 import type { ICurrentFormInputs } from '../class/Class';
@@ -21,7 +22,7 @@ interface ICurrentAccountListItem {
 
 export default function CurrentAccountListItem(props: ICurrentAccountListItem): JSX.Element {
    const { item } = props;
-   const { isDarkTheme } = useThemeContext();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
    const {
       setIsBottomPanelOpen,
       setBottomPanelContent,
@@ -29,13 +30,23 @@ export default function CurrentAccountListItem(props: ICurrentAccountListItem): 
       setBottomPanelZIndex,
    } = useContext(BottomPanelContext);
 
+   const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader } =
+      useContext(ModalContext);
+
    const { data: savingsData } = SavingsClass.useQuery.getSavingsAccounts();
 
    function handleClick(item: ICurrentFormInputs): void {
-      setIsBottomPanelOpen(true);
-      setBottomPanelHeading(item.accountName);
-      setBottomPanelContent(<CurrentForm inputValues={item} />);
-      setBottomPanelZIndex(100);
+      if (isPortableDevice) {
+         setIsBottomPanelOpen(true);
+         setBottomPanelHeading(item.accountName);
+         setBottomPanelContent(<CurrentForm inputValues={item} />);
+         setBottomPanelZIndex(100);
+      } else {
+         setModalHeader(item.accountName);
+         setModalContent(<CurrentForm inputValues={item} />);
+         setModalZIndex(100);
+         setIsModalOpen(true);
+      }
    }
 
    function tagColor(tag: string): string {

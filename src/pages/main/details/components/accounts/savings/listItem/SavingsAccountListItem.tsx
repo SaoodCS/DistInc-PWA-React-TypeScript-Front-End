@@ -11,6 +11,7 @@ import {
 import ConditionalRender from '../../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
+import { ModalContext } from '../../../../../../../global/context/widget/modal/ModalContext';
 import NumberHelper from '../../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import Color from '../../../../../../../global/theme/colors';
 import type { ISavingsFormInputs } from '../class/Class';
@@ -23,7 +24,7 @@ interface ISavingsAccountListItem {
 
 export default function SavingsAccountListItem(props: ISavingsAccountListItem): JSX.Element {
    const { item } = props;
-   const { isDarkTheme } = useThemeContext();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
    const {
       setIsBottomPanelOpen,
       setBottomPanelContent,
@@ -31,11 +32,21 @@ export default function SavingsAccountListItem(props: ISavingsAccountListItem): 
       setBottomPanelZIndex,
    } = useContext(BottomPanelContext);
 
+   const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader } =
+      useContext(ModalContext);
+
    function handleClick(item: ISavingsFormInputs): void {
-      setIsBottomPanelOpen(true);
-      setBottomPanelHeading(item.accountName);
-      setBottomPanelContent(<SavingsForm inputValues={item} />);
-      setBottomPanelZIndex(100);
+      if (isPortableDevice) {
+         setIsBottomPanelOpen(true);
+         setBottomPanelHeading(item.accountName);
+         setBottomPanelContent(<SavingsForm inputValues={item} />);
+         setBottomPanelZIndex(100);
+      } else {
+         setModalHeader(item.accountName);
+         setModalContent(<SavingsForm inputValues={item} />);
+         setModalZIndex(100);
+         setIsModalOpen(true);
+      }
    }
 
    function tagColor(tag: string): string {

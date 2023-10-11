@@ -16,6 +16,7 @@ import Loader from '../../../../../../global/components/lib/loader/Loader';
 import PullToRefresh from '../../../../../../global/components/lib/pullToRefresh/PullToRefresh';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
+import { ModalContext } from '../../../../../../global/context/widget/modal/ModalContext';
 import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import JSXHelper from '../../../../../../global/helpers/dataTypes/jsx/jsxHelper';
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
@@ -37,14 +38,16 @@ export default function IncomeSlide(): JSX.Element {
       setBottomPanelContent,
       setBottomPanelHeading,
       setBottomPanelZIndex,
+      handleCloseBottomPanel,
    } = useContext(BottomPanelContext);
    const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(
       NDetails.keys.localStorage.incomeSlide,
    );
-   const { handleCloseBottomPanel } = useContext(BottomPanelContext);
+   const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader, handleCloseModal } =
+      useContext(ModalContext);
    const { isLoading, error, isPaused, refetch, data } = IncomeClass.useQuery.getIncomes({
       onSettled: () => {
-         handleCloseBottomPanel();
+         isPortableDevice ? handleCloseBottomPanel() : handleCloseModal();
       },
    });
    if (isLoading && !isPaused) {
@@ -55,10 +58,17 @@ export default function IncomeSlide(): JSX.Element {
    if (error) return <FetchError />;
 
    function handleClick(data: IIncomeFormInputs): void {
-      setIsBottomPanelOpen(true);
-      setBottomPanelHeading(data.incomeName);
-      setBottomPanelContent(<IncomeForm inputValues={data} />);
-      setBottomPanelZIndex(100);
+      if (isPortableDevice) {
+         setIsBottomPanelOpen(true);
+         setBottomPanelHeading(data.incomeName);
+         setBottomPanelContent(<IncomeForm inputValues={data} />);
+         setBottomPanelZIndex(100);
+      } else {
+         setModalHeader(data.incomeName);
+         setModalContent(<IncomeForm inputValues={data} />);
+         setModalZIndex(100);
+         setIsModalOpen(true);
+      }
    }
 
    function tagColor(): string {

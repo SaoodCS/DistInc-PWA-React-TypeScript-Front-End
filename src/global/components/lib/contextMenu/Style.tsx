@@ -97,7 +97,6 @@ export const CMItemContainer = styled.div<{ isDarkTheme: boolean }>`
    display: flex;
    justify-content: space-between;
    align-items: center;
-   user-select: none;
    & > *:nth-child(2) {
       height: 1em;
    }

@@ -8,6 +8,7 @@ interface IModalContext {
    modalContent: JSX.Element;
    modalZIndex: number | undefined;
    setModalZIndex: Dispatch<SetStateAction<number | undefined>>;
+   handleCloseModal: () => void;
 }
 
 export const ModalContext = createContext<IModalContext>({
@@ -17,4 +18,5 @@ export const ModalContext = createContext<IModalContext>({
    modalContent: <></>,
    modalZIndex: undefined,
    setModalZIndex: () => {},
+   handleCloseModal: () => {},
 });
