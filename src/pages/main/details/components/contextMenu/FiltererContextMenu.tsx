@@ -23,7 +23,7 @@ interface IFilterer {
 export default function FiltererContextMenu(props: IFilterer): JSX.Element {
    const { currentSlide } = props;
    const { showMenu, toggleMenu, buttonRef } = useContextMenu();
-   const { isDarkTheme } = useThemeContext();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
    const filterOptions = NDetails.slides
       .filter((slide) => slide.slideNo === currentSlide)
       .map((slide) => slide.sortDataOptions)[0];
@@ -48,7 +48,7 @@ export default function FiltererContextMenu(props: IFilterer): JSX.Element {
                ref={buttonRef}
                isDisabled={showMenu}
             >
-               <Filter height={'1.5em'} />
+               <Filter height={isPortableDevice ? '1.5em' : '1em'} />
             </TextBtn>
          </FiltererCMOpenerWrapper>
          <ConditionalRender condition={showMenu}>
@@ -81,13 +81,13 @@ export default function FiltererContextMenu(props: IFilterer): JSX.Element {
                <CMItemContainer onClick={() => changeOrder('asc')} isDarkTheme={isDarkTheme}>
                   <CMItemTitle>Ascending</CMItemTitle>
                   <ConditionalRender condition={orderState === 'asc'}>
-                     <Check height={'1em'} />
+                     <Check />
                   </ConditionalRender>
                </CMItemContainer>
                <CMItemContainer onClick={() => changeOrder('desc')} isDarkTheme={isDarkTheme}>
                   <CMItemTitle>Descending</CMItemTitle>
                   <ConditionalRender condition={orderState === 'desc'}>
-                     <Check height={'1em'} />
+                     <Check/>
                   </ConditionalRender>
                </CMItemContainer>
             </CMItemsListWrapper>

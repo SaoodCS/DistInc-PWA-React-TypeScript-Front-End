@@ -1,7 +1,6 @@
 import type { ReactNode, RefObject } from 'react';
 import { forwardRef, useContext, useEffect, useRef, useState } from 'react';
 import { ThemeContext } from '../../../context/theme/ThemeContext';
-import { TransparentOverlay } from '../overlay/transparentOverlay/TransparentOverlay';
 import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalRender';
 import { ContextMenuWrapper } from './Style';
 
@@ -24,7 +23,7 @@ interface IContextMenuPos {
 
 const ContextMenu = forwardRef<HTMLButtonElement, IContextMenu>((props, ref) => {
    const { btnPosition, children, isOpen, toggleClose, widthPx } = props;
-   const { isDarkTheme } = useContext(ThemeContext);
+   const { isDarkTheme, isPortableDevice } = useContext(ThemeContext);
    const contextMenuWrapperRef = useRef<HTMLDivElement>(null);
    const [contextMenuPosition, setContextMenuPosition] = useState<IContextMenuPos>({});
    const [renderMenu, setRenderMenu] = useState(false);
@@ -76,9 +75,11 @@ const ContextMenu = forwardRef<HTMLButtonElement, IContextMenu>((props, ref) => 
                   left: btnRect.left,
                });
             } else if (btnPosition === 'top right') {
+               const forPortable = window.innerWidth - btnRect.right;
+               const forDesktop = window.innerWidth - (btnRect.right - btnRect.width * 2);
                setContextMenuPosition({
                   top: btnRect.bottom,
-                  right: window.innerWidth - btnRect.right,
+                  right: isPortableDevice ? forPortable : forDesktop,
                });
             } else if (btnPosition === 'bottom left') {
                setContextMenuPosition({

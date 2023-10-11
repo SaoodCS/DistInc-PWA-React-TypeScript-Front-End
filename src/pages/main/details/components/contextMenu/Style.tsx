@@ -21,4 +21,7 @@ export const DetailsCMOpenerWrapper = styled.div`
 export const FiltererCMOpenerWrapper = styled.div`
    ${commonOpenerCSS};
    margin-right: 3em;
+   @media (min-width: 850px) {
+      margin-right: 2.25em;
+   }
 `;

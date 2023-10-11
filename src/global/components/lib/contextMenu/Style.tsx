@@ -85,6 +85,11 @@ export const CMListHeader = styled.div<{ isTopHeader?: boolean; isDarkTheme: boo
    border-top-right-radius: ${({ isTopHeader }) => (isTopHeader ? '10px' : '0px')};
    padding-top: 0.5em;
    padding-bottom: 0.5em;
+   @media (min-width: 850px) {
+      font-size: 0.3em;
+      padding-top: 0.3em;
+      padding-bottom: 0.3em;
+   }
 `;
 
 export const CMItemContainer = styled.div<{ isDarkTheme: boolean }>`
@@ -92,6 +97,7 @@ export const CMItemContainer = styled.div<{ isDarkTheme: boolean }>`
    display: flex;
    justify-content: space-between;
    align-items: center;
+   user-select: none;
    & > *:nth-child(2) {
       height: 1em;
    }
@@ -99,8 +105,22 @@ export const CMItemContainer = styled.div<{ isDarkTheme: boolean }>`
       background-color: ${({ isDarkTheme }) =>
          Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.1)};
    }
+   @media (min-width: 850px) {
+      padding: 0.3em;
+      &:hover {
+         background-color: ${({ isDarkTheme }) =>
+            Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.1)};
+      }
+      cursor: pointer;
+      & > *:nth-child(2) {
+         height: 0.3em;
+      }
+   }
 `;
 
 export const CMItemTitle = styled.div`
-   font-size: 0.9em;
+   font-size: 0.8em;
+   @media (min-width: 850px) {
+      font-size: 0.3em;
+   }
 `;

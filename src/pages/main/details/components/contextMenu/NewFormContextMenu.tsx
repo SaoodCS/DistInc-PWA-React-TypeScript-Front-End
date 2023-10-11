@@ -54,7 +54,7 @@ export default function NewFormContextMenu(): JSX.Element {
                ref={buttonRef}
                isDisabled={showMenu}
             >
-               <Add height="1.5em" />
+               <Add height={isPortableDevice ? "1.5em" : '1em'} />
             </TextBtn>
          </DetailsCMOpenerWrapper>
          <ConditionalRender condition={showMenu}>
