@@ -5,7 +5,7 @@ import NotFound from '../../pages/error/NotFound';
 import MainLayout from '../../pages/main/MainLayout';
 import Dashboard from '../../pages/main/dashboard/Dashboard';
 import Details from '../../pages/main/details/Details';
-import History from '../../pages/main/history/History';
+import History from '../../pages/main/distribute/Distribute';
 import Settings from '../../pages/main/settings/Settings';
 
 export default function MainRoutes(): JSX.Element {
@@ -19,7 +19,7 @@ export default function MainRoutes(): JSX.Element {
                <Route index element={<Navigate to="dashboard" />} />
                <Route path="dashboard" element={<Dashboard />} />
                <Route path="details" element={<Details />} />
-               <Route path="history" element={<History />} />
+               <Route path="distribute" element={<History />} />
                <Route path="settings" element={<Settings />} />
             </Route>
          </Route>

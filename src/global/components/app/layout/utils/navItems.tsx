@@ -15,7 +15,7 @@ export default class NavItems {
          icon: <DataFunnel />,
       },
       {
-         name: 'history',
+         name: 'distribute',
          icon: <ChatHistory />,
       },
       {
