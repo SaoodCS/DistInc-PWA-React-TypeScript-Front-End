@@ -4,6 +4,7 @@ import IncomeClass from '../details/components/Income/class/Class';
 import CurrentClass from '../details/components/accounts/current/class/Class';
 import SavingsClass from '../details/components/accounts/savings/class/Class';
 import ExpensesClass from '../details/components/expense/class/ExpensesClass';
+import DistributeForm from './components/distributerForm/DistributerForm';
 
 export default function Distribute(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Distribute');
@@ -14,31 +15,7 @@ export default function Distribute(): JSX.Element {
 
    return (
       <>
-         <StyledForm>
-           
-         </StyledForm>
+         <DistributeForm />
       </>
    );
-}
-
-interface ICalcSchema {
-   distributer: {
-      timestamp: string;
-      msgs: string[];
-   }[];
-   savingsAccounts: {
-      id: string;
-      balance: number;
-      timestamp: string;
-   }[];
-   calculations: {
-      totalIncomes: number;
-      totalExpenses: number;
-      prevMonth: {
-         totalSpendings: number;
-         totalDisposableSpending: number;
-         totalSavings: number;
-      };
-      timestamp: string;
-   }[];
 }
