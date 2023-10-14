@@ -7,7 +7,10 @@ import type {
 import { useQuery } from '@tanstack/react-query';
 import APIHelper from '../../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../../global/firebase/apis/microservices/microservices';
-import type { InputArray } from '../../../../../../../global/helpers/react/form/FormHelper';
+import type {
+   InputArray,
+   OptionalNumberInput,
+} from '../../../../../../../global/helpers/react/form/FormHelper';
 import FormHelper from '../../../../../../../global/helpers/react/form/FormHelper';
 import { useCustomMutation } from '../../../../../../../global/hooks/useCustomMutation';
 
@@ -15,7 +18,7 @@ export interface ICurrentFormInputs {
    accountName: string;
    minCushion: number;
    accountType: string;
-   transferLeftoversTo: string;
+   transferLeftoversTo: OptionalNumberInput;
    id: number;
 }
 
@@ -72,11 +75,11 @@ export default class CurrentClass {
          name: 'transferLeftoversTo',
          id: 'transfer-leftovers-to',
          placeholder: 'Transfer Leftovers To',
-         type: 'string',
+         type: 'number',
          isRequired: false,
          isDropDown: true,
-         validator: (value: string): string | true => {
-            if (value && typeof value !== 'string') {
+         validator: (value: OptionalNumberInput): string | true => {
+            if (value && typeof value !== 'number') {
                return 'Please choose where to transfer leftovers to';
             }
             return true;

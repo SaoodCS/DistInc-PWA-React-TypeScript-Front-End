@@ -4,7 +4,7 @@ import { ErrorLabel, InputContainer, InputLabel } from '../input/Style';
 import { DropDownArrow, DropDownLabelWrapper, StyledOption, StyledSelect } from './Style';
 
 export interface IDropDownOption {
-   value: string;
+   value: string | number;
    label: string;
 }
 

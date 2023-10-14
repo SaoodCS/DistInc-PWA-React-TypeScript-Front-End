@@ -17,7 +17,7 @@ export interface IExpenseFormInputs {
    expenseType: string;
    paused: 'true' | 'false';
    paymentType: string;
-   id: string;
+   id: number;
 }
 
 export interface IExpensesFirebase {

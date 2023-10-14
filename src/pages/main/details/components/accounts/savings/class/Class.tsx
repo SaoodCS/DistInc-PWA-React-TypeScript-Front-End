@@ -18,7 +18,7 @@ export interface ISavingsFormInputs {
    accountName: string;
    targetToReach: OptionalNumberInput;
    currentBalance: OptionalNumberInput;
-   id: string;
+   id: number;
 }
 
 export interface ISavingsAccountFirebase {

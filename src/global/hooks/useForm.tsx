@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import useApiErrorContext from '../context/widget/apiError/hooks/useApiErrorContext';
 import FormHelper from '../helpers/react/form/FormHelper';
+import StringHelper from '../helpers/dataTypes/string/StringHelper';
 
 interface IUseFormReturn<T> {
    form: T;
@@ -33,8 +34,10 @@ export default function useForm<T>(
    }
 
    function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void {
+      const isESelect = e.target instanceof HTMLSelectElement;
+      const selectElIsNumber = isESelect && StringHelper.isNumber(e.target.value);
       const { name, value, type } = e.target;
-      if (type === 'number') {
+      if (type === 'number' || selectElIsNumber) {
          setForm((prevState) => ({ ...prevState, [name]: value === '' ? '' : Number(value) }));
          return;
       }

@@ -28,7 +28,7 @@ export default function CurrentForm(props: ICurrentForm): JSX.Element {
    );
 
    const queryClient = useQueryClient();
-   const { data } = SavingsClass.useQuery.getSavingsAccounts();
+   const { data: savingsAccount } = SavingsClass.useQuery.getSavingsAccounts();
 
    const setCurrentAccountInFirestore = CurrentClass.useMutation.setCurrentAccount({
       onSuccess: () => {
@@ -57,10 +57,10 @@ export default function CurrentForm(props: ICurrentForm): JSX.Element {
       input: (typeof CurrentClass.form.inputs)[0],
    ): IDropDownOption[] | undefined {
       if (!input.isDropDown) return undefined;
-      if (!data) return [];
+      if (!savingsAccount) return [];
       if (!input.dropDownOptions) {
-         return Object.entries(data).map(([id, account]) => ({
-            value: id,
+         return Object.entries(savingsAccount).map(([_, account]) => ({
+            value: account.id,
             label: account.accountName,
          })) as IDropDownOption[];
       }

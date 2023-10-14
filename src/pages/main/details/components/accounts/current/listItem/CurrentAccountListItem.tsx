@@ -15,6 +15,8 @@ import SavingsClass from '../../savings/class/Class';
 import type { ICurrentFormInputs } from '../class/Class';
 import CurrentClass from '../class/Class';
 import CurrentForm from '../form/CurrentForm';
+import { OptionalNumberInput } from '../../../../../../../global/helpers/react/form/FormHelper';
+import ConditionalRender from '../../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 
 interface ICurrentAccountListItem {
    item: ICurrentFormInputs;
@@ -59,7 +61,7 @@ export default function CurrentAccountListItem(props: ICurrentAccountListItem): 
       return Color.setRgbOpacity(mapper[tag], 0.4);
    }
 
-   function leftoversTag(transferLeftoversId: string): string | undefined {
+   function leftoversTag(transferLeftoversId: OptionalNumberInput): string | undefined {
       const savingsAccount = savingsData?.[transferLeftoversId];
       if (!savingsAccount) return;
       return savingsAccount.accountName;
@@ -78,9 +80,11 @@ export default function CurrentAccountListItem(props: ICurrentAccountListItem): 
                   <Tag bgColor={tagColor('account')}>Current Account</Tag>
                   <Tag bgColor={tagColor('type')}>{item.accountType}</Tag>
                   <Tag bgColor={tagColor('cushion')}>{`Cushion: £${item.minCushion}`}</Tag>
+                  <ConditionalRender condition={!!item.transferLeftoversTo}>
                   <Tag bgColor={tagColor('transfer')}>
                      {`Leftovers → ${leftoversTag(item.transferLeftoversTo)}`}
                   </Tag>
+                  </ConditionalRender>
                </SecondRowTagsWrapper>
             </FlatListItem>
          )}

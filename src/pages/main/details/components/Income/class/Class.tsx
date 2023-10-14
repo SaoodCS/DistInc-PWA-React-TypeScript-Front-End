@@ -14,7 +14,7 @@ import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutat
 export interface IIncomeFormInputs {
    incomeName: string;
    incomeValue: number;
-   id: string;
+   id: number;
 }
 
 export interface IIncomeFirebase {
