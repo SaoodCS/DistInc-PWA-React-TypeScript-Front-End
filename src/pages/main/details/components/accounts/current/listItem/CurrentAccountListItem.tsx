@@ -7,16 +7,16 @@ import {
    SecondRowTagsWrapper,
    Tag,
 } from '../../../../../../../global/components/lib/flatList/Style';
+import ConditionalRender from '../../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import { ModalContext } from '../../../../../../../global/context/widget/modal/ModalContext';
 import Color from '../../../../../../../global/css/colors';
+import type { OptionalNumberInput } from '../../../../../../../global/helpers/react/form/FormHelper';
 import SavingsClass from '../../savings/class/Class';
 import type { ICurrentFormInputs } from '../class/Class';
 import CurrentClass from '../class/Class';
 import CurrentForm from '../form/CurrentForm';
-import { OptionalNumberInput } from '../../../../../../../global/helpers/react/form/FormHelper';
-import ConditionalRender from '../../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 
 interface ICurrentAccountListItem {
    item: ICurrentFormInputs;
@@ -81,9 +81,9 @@ export default function CurrentAccountListItem(props: ICurrentAccountListItem): 
                   <Tag bgColor={tagColor('type')}>{item.accountType}</Tag>
                   <Tag bgColor={tagColor('cushion')}>{`Cushion: £${item.minCushion}`}</Tag>
                   <ConditionalRender condition={!!item.transferLeftoversTo}>
-                  <Tag bgColor={tagColor('transfer')}>
-                     {`Leftovers → ${leftoversTag(item.transferLeftoversTo)}`}
-                  </Tag>
+                     <Tag bgColor={tagColor('transfer')}>
+                        {`Leftovers → ${leftoversTag(item.transferLeftoversTo)}`}
+                     </Tag>
                   </ConditionalRender>
                </SecondRowTagsWrapper>
             </FlatListItem>
