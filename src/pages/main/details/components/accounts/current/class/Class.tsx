@@ -16,10 +16,10 @@ export interface ICurrentFormInputs {
    minCushion: number;
    accountType: string;
    transferLeftoversTo: string;
-   id: string;
+   id: number;
 }
 
-interface ICurrentAccountFirebase {
+export interface ICurrentAccountFirebase {
    [id: string]: ICurrentFormInputs;
 }
 

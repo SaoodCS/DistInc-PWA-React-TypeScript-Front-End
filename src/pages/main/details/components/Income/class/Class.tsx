@@ -17,7 +17,7 @@ export interface IIncomeFormInputs {
    id: string;
 }
 
-interface IIncomeFirebase {
+export interface IIncomeFirebase {
    [id: string]: IIncomeFormInputs;
 }
 

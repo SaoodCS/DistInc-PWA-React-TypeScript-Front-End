@@ -6,7 +6,7 @@ export namespace MyCSS {
       static asNum = 850;
       static asPx = `${PortableBp.asNum}px`;
    }
-   
+
    export class Clickables {
       static removeDefaultEffects = css`
          all: unset;

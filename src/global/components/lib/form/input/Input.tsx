@@ -5,7 +5,7 @@ import { ErrorLabel, InputContainer, InputLabel, LabelWrapper, TextInput } from 
 interface IInput {
    placeholder: string;
    type: string;
-   name: string;
+   name: string | number;
    isRequired?: boolean;
    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
    error: string;
@@ -30,7 +30,7 @@ export default function InputComponent(props: IInput): JSX.Element {
 
    return (
       <InputContainer>
-         <LabelWrapper htmlFor={id || name}>
+         <LabelWrapper htmlFor={id || name.toString()}>
             <InputLabel
                focusedInput={isActive}
                isRequired={isRequired || false}
@@ -41,11 +41,11 @@ export default function InputComponent(props: IInput): JSX.Element {
             </InputLabel>
          </LabelWrapper>
          <TextInput
-            id={id || name}
+            id={id || name.toString()}
             onFocus={handleFocus}
             onBlur={handleBlur}
             type={type}
-            name={name}
+            name={name.toString()}
             isRequired={isRequired || false}
             onChange={handleChange}
             value={value}

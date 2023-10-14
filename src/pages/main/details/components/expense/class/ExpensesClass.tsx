@@ -20,7 +20,7 @@ export interface IExpenseFormInputs {
    id: string;
 }
 
-interface IExpensesFirebase {
+export interface IExpensesFirebase {
    [id: string]: IExpenseFormInputs;
 }
 

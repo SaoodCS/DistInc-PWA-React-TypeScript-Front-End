@@ -21,7 +21,7 @@ export interface ISavingsFormInputs {
    id: string;
 }
 
-interface ISavingsAccountFirebase {
+export interface ISavingsAccountFirebase {
    [id: string]: ISavingsFormInputs;
 }
 

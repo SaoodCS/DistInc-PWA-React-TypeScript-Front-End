@@ -1,48 +1,26 @@
-import styled from 'styled-components';
 import { StaticButton } from '../../../../../global/components/lib/button/staticButton/Style';
+import { Card } from '../../../../../global/components/lib/card/Card';
 import { StyledForm } from '../../../../../global/components/lib/form/form/Style';
 import InputCombination from '../../../../../global/components/lib/form/inputCombination/InputCombination';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
-import Color from '../../../../../global/css/colors';
 import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import useForm from '../../../../../global/hooks/useForm';
+import IncomeClass from '../../../details/components/Income/class/Class';
 import CurrentClass from '../../../details/components/accounts/current/class/Class';
+import SavingsClass from '../../../details/components/accounts/savings/class/Class';
+import ExpensesClass from '../../../details/components/expense/class/ExpensesClass';
+import CalculationsClass from '../calculationsClass/CalculationsClass';
 import DistributerClass from './class/DistributerClass';
 
-interface ICalcSchema {
-   distributer: {
-      timestamp: string;
-      msgs: string[];
-   }[];
-   savingsAccounts: {
-      id: string;
-      balance: number;
-      timestamp: string;
-   }[];
-   calculations: {
-      totalIncomes: number;
-      totalExpenses: number;
-      prevMonth: {
-         totalSpendings: number;
-         totalDisposableSpending: number;
-         totalSavings: number;
-      };
-      timestamp: string;
-   }[];
-}
-
-const FormWrapper = styled.div<{ isDarkTheme: boolean }>`
-   border: ${({ isDarkTheme }) =>
-      isDarkTheme ? `1px solid ${Color.darkThm.border}` : `1px solid ${Color.lightThm.border}`};
-   margin: 1em;
-   border-radius: 10px;
-`;
-
-export default function DistributeForm() {
+export default function DistributeForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const { apiError } = useApiErrorContext();
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
+   const { data: savingsAccount } = SavingsClass.useQuery.getSavingsAccounts();
+   const { data: incomes } = IncomeClass.useQuery.getIncomes();
+   const { data: expenses } = ExpensesClass.useQuery.getExpenses();
+
    const currentAccAsArr = ObjectOfObjects.convertToArrayOfObj(
       currentAccounts ? currentAccounts : {},
    );
@@ -53,16 +31,23 @@ export default function DistributeForm() {
       dist.form.validate,
    );
 
-   if (!currentAccounts) return <></>;
-
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
+      console.log(form);
       if (!isFormValid) return;
-      // TODO: add the calculations functionality here and then the functionality to upload the calculations to firebase
+      const calcClass = new CalculationsClass(
+         savingsAccount || {},
+         currentAccounts || {},
+         incomes || {},
+         expenses || {},
+         form,
+      );
+
+      console.log(calcClass.currentAccWithLeftovers);
    }
 
    return (
-      <FormWrapper isDarkTheme={isDarkTheme}>
+      <Card isDarkTheme={isDarkTheme}>
          <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
             {currentAccounts &&
                dist.form.inputs.map((input) => (
@@ -83,6 +68,6 @@ export default function DistributeForm() {
                Distribute
             </StaticButton>
          </StyledForm>
-      </FormWrapper>
+      </Card>
    );
 }

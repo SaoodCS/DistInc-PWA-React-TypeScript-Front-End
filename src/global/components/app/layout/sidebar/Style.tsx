@@ -127,7 +127,7 @@ export const SidebarItem = styled.div<{ isActive: boolean; isDarkTheme: boolean 
    @media (max-width: 950px) {
       font-size: 0.9em;
       padding: 1.25em;
-      padding-left:0.5em;
+      padding-left: 0.5em;
    }
 `;
 

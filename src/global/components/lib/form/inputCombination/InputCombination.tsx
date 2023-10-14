@@ -4,7 +4,7 @@ import InputComponent from '../input/Input';
 
 interface IInputCombination {
    placeholder: string;
-   name: string;
+   name: string | number;
    isRequired?: boolean;
    handleChange: (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => void;
    error: string;

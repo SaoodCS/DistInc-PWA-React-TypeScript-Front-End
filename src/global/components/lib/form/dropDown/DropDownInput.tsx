@@ -10,7 +10,7 @@ export interface IDropDownOption {
 
 interface IDropDownInput {
    placeholder: string;
-   name: string;
+   name: number | string;
    isRequired?: boolean;
    handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
    error: string;
@@ -39,7 +39,7 @@ export default function DropDownInput(props: IDropDownInput): JSX.Element {
 
    return (
       <InputContainer>
-         <DropDownLabelWrapper htmlFor={id || name}>
+         <DropDownLabelWrapper htmlFor={id || name.toString()}>
             <InputLabel
                focusedInput={isActive}
                isRequired={isRequired || false}
@@ -51,7 +51,7 @@ export default function DropDownInput(props: IDropDownInput): JSX.Element {
             <DropDownArrow darktheme={isDarkTheme.toString()} focusedinput={isActive.toString()} />
          </DropDownLabelWrapper>
          <StyledSelect
-            name={name}
+            name={name.toString()}
             onChange={selectCurrentValue}
             id={id}
             hasError={!!error}
