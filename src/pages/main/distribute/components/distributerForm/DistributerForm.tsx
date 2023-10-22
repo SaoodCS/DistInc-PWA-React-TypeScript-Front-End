@@ -43,7 +43,7 @@ export default function DistributeForm(): JSX.Element {
          form,
       );
 
-      console.log(calcClass.currentAccWithLeftovers);
+      //console.log(calcClass.currentAccWithLeftovers);
    }
 
    return (

@@ -22,4 +22,8 @@ export default class ArrayOfObjects {
          return 0;
       });
    }
+
+   static getObjWithKeyValuePair<T>(arr: T[], key: keyof T, value: T[keyof T]): T {
+      return arr.find((obj) => obj[key] === value) as T;
+   }
 }
