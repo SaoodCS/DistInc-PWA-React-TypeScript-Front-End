@@ -10,7 +10,7 @@ import IncomeClass from '../../../details/components/Income/class/Class';
 import CurrentClass from '../../../details/components/accounts/current/class/Class';
 import SavingsClass from '../../../details/components/accounts/savings/class/Class';
 import ExpensesClass from '../../../details/components/expense/class/ExpensesClass';
-import CalculationsClass from '../calculationsClass/CalculationsClass';
+import calculateDist from '../calculateDist';
 import DistributerClass from './class/DistributerClass';
 
 export default function DistributeForm(): JSX.Element {
@@ -33,17 +33,15 @@ export default function DistributeForm(): JSX.Element {
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
-      console.log(form);
       if (!isFormValid) return;
-      const calcClass = new CalculationsClass(
+      const calculations = calculateDist(
          savingsAccount || {},
          currentAccounts || {},
          incomes || {},
          expenses || {},
          form,
       );
-
-      //console.log(calcClass.currentAccWithLeftovers);
+      console.log(calculations);
    }
 
    return (
