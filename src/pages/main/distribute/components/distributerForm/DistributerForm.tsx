@@ -1,5 +1,4 @@
 import { StaticButton } from '../../../../../global/components/lib/button/staticButton/Style';
-import { Card } from '../../../../../global/components/lib/card/Card';
 import { StyledForm } from '../../../../../global/components/lib/form/form/Style';
 import InputCombination from '../../../../../global/components/lib/form/inputCombination/InputCombination';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
@@ -42,30 +41,29 @@ export default function DistributeForm(): JSX.Element {
          form,
       );
       console.log(calculations);
+      // TODO: upload the calculations to firestore from here
    }
 
    return (
-      <Card isDarkTheme={isDarkTheme}>
-         <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
-            {currentAccounts &&
-               dist.form.inputs.map((input) => (
-                  <InputCombination
-                     key={input.id}
-                     placeholder={input.placeholder}
-                     name={input.name}
-                     isRequired={input.isRequired}
-                     autoComplete={input.autoComplete}
-                     handleChange={handleChange}
-                     error={errors[input.name]}
-                     id={input.id}
-                     type={input.type}
-                     value={form[input.name]}
-                  />
-               ))}
-            <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>
-               Distribute
-            </StaticButton>
-         </StyledForm>
-      </Card>
+      <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
+         {currentAccounts &&
+            dist.form.inputs.map((input) => (
+               <InputCombination
+                  key={input.id}
+                  placeholder={input.placeholder}
+                  name={input.name}
+                  isRequired={input.isRequired}
+                  autoComplete={input.autoComplete}
+                  handleChange={handleChange}
+                  error={errors[input.name]}
+                  id={input.id}
+                  type={input.type}
+                  value={form[input.name]}
+               />
+            ))}
+         <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>
+            Distribute
+         </StaticButton>
+      </StyledForm>
    );
 }

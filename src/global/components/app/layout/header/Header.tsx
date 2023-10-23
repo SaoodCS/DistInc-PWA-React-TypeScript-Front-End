@@ -46,3 +46,17 @@ export const StyledBackArr = styled(ArrowIosBack)<{ darktheme: string }>`
       }
    }
 `;
+
+export const HeaderRightElWrapper = styled.div`
+   display: flex;
+   position: fixed;
+   align-items: center;
+   right: 0px;
+   top: 0px;
+   height: 10%;
+   & > *:first-child {
+      margin: 0;
+      padding: 0;
+   }
+   margin-right: 1em;
+`;

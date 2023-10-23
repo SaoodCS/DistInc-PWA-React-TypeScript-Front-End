@@ -1,4 +1,5 @@
 import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
+import NumberHelper from '../../../../global/helpers/dataTypes/number/NumberHelper';
 import ObjectOfObjects from '../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import { IIncomeFirebase } from '../../details/components/Income/class/Class';
 import { ICurrentAccountFirebase } from '../../details/components/accounts/current/class/Class';
@@ -87,16 +88,15 @@ export default function calculateDist(
 
    const salaryExpToSavingsAccMsg = `Leftover amount to transfer from ${
       salaryExpAcc.accountName
-   } to ${salaryExpTransferLeftoversToName}: £${salaryExpToSavingsAcc.toFixed(2)}`;
+   } to ${salaryExpTransferLeftoversToName}: ${NumberHelper.asCurrencyStr(salaryExpToSavingsAcc)}`;
    const salaryExpToSpendingAccMsg = `Leftover amount to transfer from ${
       salaryExpAcc.accountName
-   } to ${spendingAcc.accountName}: £${salaryExpToSpendingAcc.toFixed(2)}`;
+   } to ${spendingAcc.accountName}: ${NumberHelper.asCurrencyStr(salaryExpToSpendingAcc)}`;
    const spendingsToSavingsAccMsg = `Leftover amount to transfer from ${
       spendingAcc.accountName
-   } to ${spendingsTransferLeftoversToName}: £${spendingsToSavingsAcc.toFixed(2)}`;
+   } to ${spendingsTransferLeftoversToName}: ${NumberHelper.asCurrencyStr(spendingsToSavingsAcc)}`;
 
    // Manual Expense Calculations:
-   // get all objects from the expenseArr that's paymentType is 'Manual' and paused is 'false'
    let savingsAccHistory = [];
    let manualExpenseMsgs: string[] = [];
    const manualExpenses = expenseArr
@@ -114,7 +114,7 @@ export default function calculateDist(
          manualExpenseMsgs.push(
             `Amount to transfer from ${salaryExpAcc.accountName} to ${
                savingsAcc.accountName
-            }: £${manualExpenses[i].expenseValue.toFixed(2)}`,
+            }: £${NumberHelper.asCurrencyStr(manualExpenses[i].expenseValue)}`,
          );
          if (savingsAcc.targetToReach) {
             const savingsAccHistoryObj = {
@@ -129,7 +129,7 @@ export default function calculateDist(
          manualExpenseMsgs.push(
             `Make Manual Payment from ${salaryExpAcc.accountName} for expense ${
                manualExpenses[i].expenseName
-            }: £${manualExpenses[i].expenseValue.toFixed(2)}`,
+            }: £${NumberHelper.asCurrencyStr(manualExpenses[i].expenseValue)}`,
          );
       }
    }

@@ -45,4 +45,9 @@ export default class ObjectOfObjects {
       });
       return newObj as T;
    }
+
+   // check if objectOfObjects is {} i.e. empty:
+   static isEmpty<T extends Record<string, T[keyof T]>>(obj: T): boolean {
+      return Object.keys(obj).length === 0;
+   }
 }
