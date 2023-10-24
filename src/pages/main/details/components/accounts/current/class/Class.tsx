@@ -44,6 +44,22 @@ export default class CurrentClass {
          },
       },
       {
+         name: 'accountType',
+         id: 'account-type',
+         placeholder: 'Account Type',
+         type: 'text',
+         isRequired: true,
+         isDropDown: true,
+         dropDownOptions: [
+            { value: 'Salary & Expenses', label: 'Salary & Expenses' },
+            { value: 'Spending', label: 'Spending' },
+         ],
+         validator: (value: string): string | true => {
+            if (!value) return 'Please choose your account type';
+            return true;
+         },
+      },
+      {
          name: 'minCushion',
          id: 'min-cushion',
          placeholder: 'Min Cushion (£)',
@@ -51,23 +67,6 @@ export default class CurrentClass {
          isRequired: true,
          validator: (value: number): string | true => {
             if (typeof value !== 'number') return 'Minimum cushion must be a number';
-            return true;
-         },
-      },
-      {
-         name: 'accountType',
-         id: 'account-type',
-         placeholder: 'Account Type',
-         type: 'string',
-         isRequired: true,
-         isDropDown: true,
-         dropDownOptions: [
-            { value: 'Salary & Expenses', label: 'Salary & Expenses' },
-            { value: 'Spending', label: 'Spending' },
-         ],
-
-         validator: (value: string): string | true => {
-            if (!value) return 'Please choose your account type';
             return true;
          },
       },
@@ -96,6 +95,9 @@ export default class CurrentClass {
       formValues: ICurrentFormInputs,
    ): Record<keyof ICurrentFormInputs, string> {
       const formValidation = FormHelper.validation(formValues, CurrentClass.inputs);
+      if (formValues.accountType === 'Spending') {
+         formValidation.minCushion = '';
+      }
       return formValidation;
    }
 

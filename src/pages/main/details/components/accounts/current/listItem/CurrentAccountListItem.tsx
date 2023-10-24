@@ -79,7 +79,9 @@ export default function CurrentAccountListItem(props: ICurrentAccountListItem): 
                <SecondRowTagsWrapper>
                   <Tag bgColor={tagColor('account')}>Current Account</Tag>
                   <Tag bgColor={tagColor('type')}>{item.accountType}</Tag>
-                  <Tag bgColor={tagColor('cushion')}>{`Cushion: £${item.minCushion}`}</Tag>
+                  <ConditionalRender condition={!!item.minCushion}>
+                     <Tag bgColor={tagColor('cushion')}>{`Cushion: £${item.minCushion}`}</Tag>
+                  </ConditionalRender>
                   <ConditionalRender condition={!!item.transferLeftoversTo}>
                      <Tag bgColor={tagColor('transfer')}>
                         {`Leftovers → ${leftoversTag(item.transferLeftoversTo)}`}

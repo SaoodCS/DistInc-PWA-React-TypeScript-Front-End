@@ -68,9 +68,16 @@ export default function CurrentForm(props: ICurrentForm): JSX.Element {
       return input.dropDownOptions;
    }
 
+   function formInputs() {
+      if (form.accountType === 'Salary & Expenses') {
+         return CurrentClass.form.inputs;
+      }
+      return CurrentClass.form.inputs.filter((input) => input.name !== 'minCushion');
+   }
+
    return (
       <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
-         {CurrentClass.form.inputs.map((input) => (
+         {formInputs().map((input) => (
             <InputCombination
                key={input.id}
                placeholder={input.placeholder}

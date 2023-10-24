@@ -36,6 +36,8 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
    const delSavingAccountInFirestore = SavingsClass.useMutation.delSavingsAccount({
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: [microservices.getSavingsAccount.name] });
+         queryClient.invalidateQueries({ queryKey: [microservices.getCurrentAccount.name] });
+         queryClient.invalidateQueries({ queryKey: [microservices.getExpenses.name] });
       },
    });
 
