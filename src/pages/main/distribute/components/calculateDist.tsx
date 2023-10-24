@@ -1,10 +1,10 @@
 import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import NumberHelper from '../../../../global/helpers/dataTypes/number/NumberHelper';
 import ObjectOfObjects from '../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
-import { IIncomeFirebase } from '../../details/components/Income/class/Class';
-import { ICurrentAccountFirebase } from '../../details/components/accounts/current/class/Class';
-import { ISavingsAccountFirebase } from '../../details/components/accounts/savings/class/Class';
-import { IExpensesFirebase } from '../../details/components/expense/class/ExpensesClass';
+import type { IIncomeFirebase } from '../../details/components/Income/class/Class';
+import type { ICurrentAccountFirebase } from '../../details/components/accounts/current/class/Class';
+import type { ISavingsAccountFirebase } from '../../details/components/accounts/savings/class/Class';
+import type { IExpensesFirebase } from '../../details/components/expense/class/ExpensesClass';
 
 interface ICalcSchema {
    distributer: {
@@ -60,7 +60,7 @@ export default function calculateDist(
    const totalIncome = ArrayOfObjects.sumKeyValues(incomeArr, 'incomeValue');
    const totalExpenses = ArrayOfObjects.sumKeyValues(expenseArr, 'expenseValue');
 
-   let messages: string[] = [];
+   const messages: string[] = [];
 
    // Current Acc Calculations:
    let salaryExpToSavingsAcc: number = 0;
@@ -136,7 +136,7 @@ export default function calculateDist(
    }
 
    // Manual Expense Calculations:
-   let savingsAccHistory = [];
+   const savingsAccHistory = [];
    const manualExpenses = expenseArr
       .filter((exp) => exp.paymentType === 'Manual')
       .filter((exp) => exp.paused === 'false');

@@ -40,7 +40,6 @@ export default function DistributeForm(): JSX.Element {
          expenses || {},
          form,
       );
-      console.log(calculations);
       // TODO: upload the calculations to firestore from here
    }
 

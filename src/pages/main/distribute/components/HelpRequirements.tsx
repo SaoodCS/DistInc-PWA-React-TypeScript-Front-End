@@ -33,8 +33,8 @@ export default function HelpRequirements(): JSX.Element {
             The following are required in order to calculate your income distribution:
          </TextColourizer>
          <BulletList>
-            <ListItem color={itemColor('salaryExp')}>"Salary & Expense" Current Account</ListItem>
-            <ListItem color={itemColor('spending')}>"Spending" Current Account</ListItem>
+            <ListItem color={itemColor('salaryExp')}>Salary & Expenses Current Account</ListItem>
+            <ListItem color={itemColor('spending')}>Spendings Current Account</ListItem>
             <ListItem color={itemColor('income')}>At least 1 Income</ListItem>
             <ListItem color={itemColor('expense')}>At least 1 Expense</ListItem>
          </BulletList>

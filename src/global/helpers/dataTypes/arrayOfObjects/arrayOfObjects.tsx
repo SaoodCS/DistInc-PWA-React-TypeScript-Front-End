@@ -29,7 +29,5 @@ export default class ArrayOfObjects {
 
    static sumKeyValues<T>(arr: T[], key: keyof T): number {
       return arr.reduce((acc, curr) => acc + Number(curr[key]), 0);
-   };
-
-
+   }
 }

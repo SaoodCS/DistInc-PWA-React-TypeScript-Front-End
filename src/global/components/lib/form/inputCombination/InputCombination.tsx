@@ -28,7 +28,7 @@ export default function InputCombination(props: IInputCombination): JSX.Element 
       type,
       value,
       autoComplete,
-      isDisabled
+      isDisabled,
    } = props;
 
    return (

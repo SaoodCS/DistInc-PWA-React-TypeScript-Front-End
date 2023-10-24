@@ -1,4 +1,3 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { sendEmailVerification, signInWithEmailAndPassword } from 'firebase/auth';
 import { StaticButton } from '../../../../global/components/lib/button/staticButton/Style';
 import { StyledForm } from '../../../../global/components/lib/form/form/Style';
@@ -10,9 +9,8 @@ import microservices from '../../../../global/firebase/apis/microservices/micros
 import { auth } from '../../../../global/firebase/config/config';
 import { useCustomMutation } from '../../../../global/hooks/useCustomMutation';
 import useForm from '../../../../global/hooks/useForm';
-import CurrentClass, {
-   ICurrentFormInputs,
-} from '../../../main/details/components/accounts/current/class/Class';
+import type { ICurrentFormInputs } from '../../../main/details/components/accounts/current/class/Class';
+import CurrentClass from '../../../main/details/components/accounts/current/class/Class';
 import type { IRegInputs } from './Class';
 import RegClass from './Class';
 

@@ -47,7 +47,7 @@ export default function CurrentForm(props: ICurrentForm): JSX.Element {
       if (!input.isDropDown) return undefined;
       if (!savingsAccount) return [];
       if (!input.dropDownOptions) {
-         // eslint-disable-next-line @typescript-eslint/naming-convention
+         // eslint-disable-next-line @typescript-eslint/naming-convention, unused-imports/no-unused-vars
          return Object.entries(savingsAccount).map(([_, account]) => ({
             value: account.id,
             label: account.accountName,
@@ -56,7 +56,7 @@ export default function CurrentForm(props: ICurrentForm): JSX.Element {
       return input.dropDownOptions;
    }
 
-   function formInputs() {
+   function formInputs(): typeof CurrentClass.form.inputs {
       if (form.accountType === 'Salary & Expenses') {
          return CurrentClass.form.inputs;
       }

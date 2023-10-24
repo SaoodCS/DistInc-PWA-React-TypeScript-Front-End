@@ -28,7 +28,6 @@ export default function Distribute(): JSX.Element {
    } = useContext(BottomPanelContext);
    const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader } =
       useContext(ModalContext);
-   const { data: savingsAccounts } = SavingsClass.useQuery.getSavingsAccounts();
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
    const { data: income } = IncomeClass.useQuery.getIncomes();
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
