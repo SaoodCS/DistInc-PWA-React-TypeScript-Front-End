@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { sendEmailVerification, signInWithEmailAndPassword } from 'firebase/auth';
 import { StaticButton } from '../../../../global/components/lib/button/staticButton/Style';
 import { StyledForm } from '../../../../global/components/lib/form/form/Style';
@@ -9,6 +10,9 @@ import microservices from '../../../../global/firebase/apis/microservices/micros
 import { auth } from '../../../../global/firebase/config/config';
 import { useCustomMutation } from '../../../../global/hooks/useCustomMutation';
 import useForm from '../../../../global/hooks/useForm';
+import CurrentClass, {
+   ICurrentFormInputs,
+} from '../../../main/details/components/accounts/current/class/Class';
 import type { IRegInputs } from './Class';
 import RegClass from './Class';
 
@@ -22,12 +26,26 @@ export default function RegisterForm(): JSX.Element {
       initHandleSubmit,
    } = useForm(RegClass.initialState, RegClass.initialErrors, RegClass.validate);
 
+   const setCurrentAccountInFirestore = CurrentClass.useMutation.setCurrentAccount({});
+
    const registerUser = useCustomMutation(async (formData: IRegInputs) => {
       const body = APIHelper.createBody(formData);
       const method = 'POST';
       const microserviceName = microservices.registerUser.name;
       await APIHelper.gatewayCall(body, method, microserviceName);
       const signInUser = await signInWithEmailAndPassword(auth, formData.email, formData.password);
+      await setCurrentAccountInFirestore.mutateAsync({
+         accountName: 'Salary And Expenses',
+         minCushion: 0,
+         accountType: 'Salary & Expenses',
+         transferLeftoversTo: '',
+      } as ICurrentFormInputs);
+      await setCurrentAccountInFirestore.mutateAsync({
+         accountName: 'Spendings',
+         minCushion: 0,
+         accountType: 'Spending',
+         transferLeftoversTo: '',
+      } as ICurrentFormInputs);
       await sendEmailVerification(signInUser.user);
    });
 
