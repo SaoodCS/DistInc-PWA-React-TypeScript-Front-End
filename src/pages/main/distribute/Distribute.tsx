@@ -1,4 +1,4 @@
-import { Question } from '@styled-icons/bootstrap/Question';
+import { QuestionMark } from '@styled-icons/boxicons-regular/QuestionMark';
 import { Add } from '@styled-icons/fluentui-system-filled/Add';
 import { useContext, useEffect } from 'react';
 import { HeaderRightElWrapper } from '../../../global/components/app/layout/header/Header';
@@ -66,7 +66,7 @@ export default function Distribute(): JSX.Element {
                   }}
                   isDarkTheme={isDarkTheme}
                >
-                  <Question height={isPortableDevice ? '1.5em' : '1em'} />
+                  <QuestionMark height={isPortableDevice ? '1.5em' : '1em'} />
                </TextBtn>
             </HeaderRightElWrapper>,
          );
