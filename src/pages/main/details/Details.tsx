@@ -17,6 +17,7 @@ import NDetails from './namespace/NDetails';
 
 export default function Details(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Details');
+   HeaderHooks.useOnUnMount.resetHeaderRightEl();
    const { setHeaderRightElement } = useHeaderContext();
    const { containerRef, scrollToSlide, currentSlide } = useCarousel(
       1,
@@ -34,7 +35,6 @@ export default function Details(): JSX.Element {
             <NewFormContextMenu />
          </>,
       );
-      return () => setHeaderRightElement(null);
    }, [currentSlide]);
 
    return (

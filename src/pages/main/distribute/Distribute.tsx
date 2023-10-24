@@ -11,13 +11,13 @@ import { ModalContext } from '../../../global/context/widget/modal/ModalContext'
 import ObjectOfObjects from '../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import IncomeClass from '../details/components/Income/class/Class';
 import CurrentClass from '../details/components/accounts/current/class/Class';
-import SavingsClass from '../details/components/accounts/savings/class/Class';
 import ExpensesClass from '../details/components/expense/class/ExpensesClass';
 import HelpRequirements from './components/HelpRequirements';
 import DistributeForm from './components/distributerForm/DistributerForm';
 
 export default function Distribute(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Distribute');
+   HeaderHooks.useOnUnMount.resetHeaderRightEl();
    const { setHeaderRightElement } = useHeaderContext();
    const { isDarkTheme, isPortableDevice } = useThemeContext();
    const {

@@ -18,6 +18,7 @@ import StringHelper from '../../../global/helpers/dataTypes/string/StringHelper'
 import useSessionStorage from '../../../global/hooks/useSessionStorage';
 import AccountSlide from './components/account/AccountSlide';
 import NSettings from './namespace/NSettings';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function Settings(): JSX.Element {
    const { toggleTheme, isDarkTheme } = useThemeContext();
@@ -26,6 +27,7 @@ export default function Settings(): JSX.Element {
    const [prevScrollPos, setPrevScrollPos] = useState<number>(0);
    const { setHeaderTitle, setHandleBackBtnClick, hideAndResetBackBtn } = useHeaderContext();
    HeaderHooks.useOnUnMount.hideAndResetBackBtn();
+   const queryClient = useQueryClient();
 
    useEffect(() => {
       if (currentSlide === 1) {
@@ -52,6 +54,8 @@ export default function Settings(): JSX.Element {
          setSlide2(item.name as NSettings.TSlides);
          scrollToSlide(2);
       } else if (item.name === 'Logout') {
+         sessionStorage.clear();
+         queryClient.clear();
          await auth.signOut();
       } else if (item.withToggle) {
          toggleTheme();

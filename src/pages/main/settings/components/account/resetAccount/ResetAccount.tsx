@@ -9,6 +9,8 @@ import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper'
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import { auth } from '../../../../../../global/firebase/config/config';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
+import type { ICurrentFormInputs } from '../../../../details/components/accounts/current/class/Class';
+import CurrentClass from '../../../../details/components/accounts/current/class/Class';
 
 export default function ResetAccount(): JSX.Element {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
@@ -16,6 +18,7 @@ export default function ResetAccount(): JSX.Element {
    const [showSuccessMsg, setShowSuccessMsg] = useState<boolean>(false);
    const { setIsModalOpen, setModalContent, setModalHeader, setModalZIndex } =
       useContext(ModalContext);
+   const setCurrentAccountInFirestore = CurrentClass.useMutation.setCurrentAccount({});
 
    const resetAccount = useCustomMutation(
       async (email: string) => {
@@ -23,8 +26,19 @@ export default function ResetAccount(): JSX.Element {
          const method = 'POST';
          const microserviceName = microservices.resetUser.name;
          await APIHelper.gatewayCall(body, method, microserviceName);
+         await setCurrentAccountInFirestore.mutateAsync({
+            accountName: 'Salary And Expenses',
+            minCushion: 0,
+            accountType: 'Salary & Expenses',
+            transferLeftoversTo: '',
+         } as ICurrentFormInputs);
+         await setCurrentAccountInFirestore.mutateAsync({
+            accountName: 'Spendings',
+            minCushion: 0,
+            accountType: 'Spending',
+            transferLeftoversTo: '',
+         } as ICurrentFormInputs);
       },
-
       {
          onError: () => {
             console.error(apiError);

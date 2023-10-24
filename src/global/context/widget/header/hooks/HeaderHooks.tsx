@@ -46,5 +46,13 @@ export default class HeaderHooks {
             };
          }, []);
       },
+      resetHeaderRightEl: () => {
+         const { setHeaderRightElement } = HeaderHooks.useHeaderContext();
+         useEffect(() => {
+            return () => {
+               setHeaderRightElement(null);
+            };
+         }, []);
+      },
    };
 }

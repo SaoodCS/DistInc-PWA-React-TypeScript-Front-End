@@ -1,4 +1,5 @@
 import { AccountCircle } from '@styled-icons/material/AccountCircle';
+import { useQueryClient } from '@tanstack/react-query';
 import { Fragment } from 'react';
 import { useLocation } from 'react-router-dom';
 import useThemeContext from '../../../../context/theme/hooks/useThemeContext';
@@ -20,6 +21,7 @@ import {
 export default function Sidebar(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const location = useLocation();
+   const queryClient = useQueryClient();
 
    function handleLogoCardColor(): string {
       return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.8);
@@ -33,6 +35,12 @@ export default function Sidebar(): JSX.Element {
       const email = auth.currentUser?.email;
       if (!email) return;
       return email;
+   }
+
+   async function handleSignOut(): Promise<void> {
+      sessionStorage.clear();
+      queryClient.clear();
+      await auth.signOut();
    }
 
    return (
@@ -55,7 +63,7 @@ export default function Sidebar(): JSX.Element {
                   <SidebarItem
                      isActive={location.pathname.includes(item.name)}
                      isDarkTheme={isDarkTheme}
-                     onClick={item.name === 'signout' ? () => auth.signOut() : undefined}
+                     onClick={item.name === 'signout' ? () => handleSignOut() : undefined}
                   >
                      <ActiveTag />
                      {item.icon}
