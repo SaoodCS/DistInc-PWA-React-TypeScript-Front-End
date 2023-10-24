@@ -35,13 +35,10 @@ export default function Distribute(): JSX.Element {
 
    useEffect(() => {
       if (
-         currentAccounts &&
-         ObjectOfObjects.findObjFromUniqueVal(currentAccounts, 'Salary & Expenses') &&
-         ObjectOfObjects.findObjFromUniqueVal(currentAccounts, 'Spending') &&
-         income &&
-         !ObjectOfObjects.isEmpty(income) &&
-         expenses &&
-         !ObjectOfObjects.isEmpty(expenses)
+         ObjectOfObjects.findObjFromUniqueVal(currentAccounts || {}, 'Salary & Expenses') &&
+         ObjectOfObjects.findObjFromUniqueVal(currentAccounts || {}, 'Spending') &&
+         !ObjectOfObjects.isEmpty(income || {}) &&
+         !ObjectOfObjects.isEmpty(expenses || {})
       ) {
          setHeaderRightElement(
             <HeaderRightElWrapper>

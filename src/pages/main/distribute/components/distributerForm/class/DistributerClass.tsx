@@ -18,7 +18,7 @@ export default class DistributerClass {
             type: 'number',
             isRequired: true,
             validator: (value: number): string | true => {
-               if (!value) return 'Leftover amount is required';
+               if (typeof value !== 'number') return 'Leftover amount is required';
                if (value < 0) return 'Leftover amount cannot be negative';
                return true;
             },

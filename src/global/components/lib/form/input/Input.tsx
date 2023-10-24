@@ -34,7 +34,7 @@ export default function InputComponent(props: IInput): JSX.Element {
             <InputLabel
                focusedInput={isActive}
                isRequired={isRequired || false}
-               inputHasValue={!!value}
+               inputHasValue={!!value || value === 0}
                isDarkTheme={isDarkTheme}
             >
                {placeholder}

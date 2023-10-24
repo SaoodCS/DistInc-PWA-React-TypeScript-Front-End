@@ -14,21 +14,14 @@ export default function HelpRequirements(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
 
    function itemColor(requirement: 'salaryExp' | 'spending' | 'income' | 'expense'): string {
-      const salaryExpAcc =
-         currentAccounts &&
-         ObjectOfObjects.findObjFromUniqueVal(currentAccounts, 'Salary & Expenses');
-      const spendingAcc =
-         currentAccounts && ObjectOfObjects.findObjFromUniqueVal(currentAccounts, 'Spending');
-      if (requirement === 'salaryExp' && salaryExpAcc) {
-         return isDarkTheme ? Color.darkThm.success : Color.lightThm.success;
-      }
-      if (requirement === 'spending' && spendingAcc) {
-         return isDarkTheme ? Color.darkThm.success : Color.lightThm.success;
-      }
-      if (requirement === 'income' && income && !ObjectOfObjects.isEmpty(income)) {
-         return isDarkTheme ? Color.darkThm.success : Color.lightThm.success;
-      }
-      if (requirement === 'expense' && expenses && !ObjectOfObjects.isEmpty(expenses)) {
+      if (
+         (requirement === 'salaryExp' &&
+            ObjectOfObjects.findObjFromUniqueVal(currentAccounts || {}, 'Salary & Expenses')) ||
+         (requirement === 'spending' &&
+            ObjectOfObjects.findObjFromUniqueVal(currentAccounts || {}, 'Spending')) ||
+         (requirement === 'income' && !ObjectOfObjects.isEmpty(income || {})) ||
+         (requirement === 'expense' && !ObjectOfObjects.isEmpty(expenses || {}))
+      ) {
          return isDarkTheme ? Color.darkThm.success : Color.lightThm.success;
       }
       return 'red';
