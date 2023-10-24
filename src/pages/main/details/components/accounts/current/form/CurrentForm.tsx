@@ -4,7 +4,6 @@ import { StaticButton } from '../../../../../../../global/components/lib/button/
 import type { IDropDownOption } from '../../../../../../../global/components/lib/form/dropDown/DropDownInput';
 import { StyledForm } from '../../../../../../../global/components/lib/form/form/Style';
 import InputCombination from '../../../../../../../global/components/lib/form/inputCombination/InputCombination';
-import ConditionalRender from '../../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
 import microservices from '../../../../../../../global/firebase/apis/microservices/microservices';
@@ -14,7 +13,7 @@ import type { ICurrentFormInputs } from '../class/Class';
 import CurrentClass from '../class/Class';
 
 interface ICurrentForm {
-   inputValues?: ICurrentFormInputs;
+   inputValues: ICurrentFormInputs;
 }
 
 export default function CurrentForm(props: ICurrentForm): JSX.Element {
@@ -22,7 +21,7 @@ export default function CurrentForm(props: ICurrentForm): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const { apiError } = useApiErrorContext();
    const { form, errors, handleChange, initHandleSubmit } = useForm(
-      inputValues ? inputValues : CurrentClass.form.initialState,
+      inputValues,
       CurrentClass.form.initialErrors,
       CurrentClass.form.validate,
    );
@@ -36,21 +35,10 @@ export default function CurrentForm(props: ICurrentForm): JSX.Element {
       },
    });
 
-   const deleteCurrentAccountInFirestore = CurrentClass.useMutation.delCurrentAccount({
-      onSuccess: () => {
-         queryClient.invalidateQueries({ queryKey: [microservices.getCurrentAccount.name] });
-      },
-   });
-
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
       if (!isFormValid) return;
       await setCurrentAccountInFirestore.mutateAsync(form);
-   }
-
-   async function handleDelete(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> {
-      e.preventDefault();
-      await deleteCurrentAccountInFirestore.mutateAsync(form);
    }
 
    function dropDownOptions(
@@ -90,21 +78,12 @@ export default function CurrentForm(props: ICurrentForm): JSX.Element {
                type={input.type}
                value={form[input.name]}
                dropDownOptions={dropDownOptions(input)}
+               isDisabled={input.name === 'accountType'}
             />
          ))}
          <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>
-            {`${inputValues ? 'Update' : 'Add'} Account`}
+            {`Update Account`}
          </StaticButton>
-         <ConditionalRender condition={!!inputValues}>
-            <StaticButton
-               isDarkTheme={isDarkTheme}
-               type={'button'}
-               isDangerBtn
-               onClick={(e) => handleDelete(e)}
-            >
-               Delete Account
-            </StaticButton>
-         </ConditionalRender>
       </StyledForm>
    );
 }

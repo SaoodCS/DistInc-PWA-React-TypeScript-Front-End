@@ -13,6 +13,7 @@ interface IInputCombination {
    type: string;
    value: string | number;
    autoComplete?: 'current-password' | 'new-password';
+   isDisabled?: boolean | undefined;
 }
 
 export default function InputCombination(props: IInputCombination): JSX.Element {
@@ -27,6 +28,7 @@ export default function InputCombination(props: IInputCombination): JSX.Element 
       type,
       value,
       autoComplete,
+      isDisabled
    } = props;
 
    return (
@@ -42,6 +44,7 @@ export default function InputCombination(props: IInputCombination): JSX.Element 
                value={value}
                error={error}
                id={id}
+               isDisabled={isDisabled}
             />
          )}
          {!!dropDownOptions && (
@@ -54,6 +57,7 @@ export default function InputCombination(props: IInputCombination): JSX.Element 
                error={error}
                handleChange={handleChange}
                id={id}
+               isDisabled={isDisabled}
             />
          )}
       </>

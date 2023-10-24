@@ -1,4 +1,3 @@
-import { Bank } from '@styled-icons/bootstrap/Bank';
 import { CashStack as Dollar } from '@styled-icons/bootstrap/CashStack';
 import { Receipt } from '@styled-icons/bootstrap/Receipt';
 import { Add } from '@styled-icons/fluentui-system-filled/Add';
@@ -18,7 +17,6 @@ import useThemeContext from '../../../../../global/context/theme/hooks/useThemeC
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
 import IncomeForm from '../Income/form/IncomeForm';
-import { default as CurrentForm } from '../accounts/current/form/CurrentForm';
 import SavingsForm from '../accounts/savings/form/SavingsForm';
 import ExpenseForm from '../expense/form/ExpenseForm';
 import { DetailsCMOpenerWrapper } from './Style';
@@ -39,7 +37,6 @@ export default function NewFormContextMenu(): JSX.Element {
    function handleClick(name: string): void {
       if (isPortableDevice) {
          setBottomPanelHeading(`New ${name}`);
-         if (name === 'Current') setBottomPanelContent(<CurrentForm />);
          if (name === 'Savings') setBottomPanelContent(<SavingsForm />);
          if (name === 'Income') setBottomPanelContent(<IncomeForm />);
          if (name === 'Expense') setBottomPanelContent(<ExpenseForm />);
@@ -47,7 +44,6 @@ export default function NewFormContextMenu(): JSX.Element {
          setIsBottomPanelOpen(true);
       } else {
          setModalHeader(`New ${name}`);
-         if (name === 'Current') setModalContent(<CurrentForm />);
          if (name === 'Savings') setModalContent(<SavingsForm />);
          if (name === 'Income') setModalContent(<IncomeForm />);
          if (name === 'Expense') setModalContent(<ExpenseForm />);
@@ -80,10 +76,6 @@ export default function NewFormContextMenu(): JSX.Element {
             widthPx={200}
          >
             <CMItemsListWrapper isDarkTheme={isDarkTheme}>
-               <CMItemContainer onClick={() => handleClick('Current')} isDarkTheme={isDarkTheme}>
-                  <CMItemTitle> New Current Account</CMItemTitle>
-                  <Bank />
-               </CMItemContainer>
                <CMItemContainer onClick={() => handleClick('Savings')} isDarkTheme={isDarkTheme}>
                   <CMItemTitle> New Savings Account</CMItemTitle>
                   <Savings />

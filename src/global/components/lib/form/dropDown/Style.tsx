@@ -5,6 +5,7 @@ import { LabelWrapper } from '../input/Style';
 
 interface IStyledSelectAttr {
    isRequired: boolean;
+   isDisabled: boolean;
 }
 
 interface IStyledSelect extends IStyledSelectAttr {
@@ -12,15 +13,22 @@ interface IStyledSelect extends IStyledSelectAttr {
    isDarkTheme: boolean;
 }
 
-export const StyledSelect = styled.select.attrs<IStyledSelectAttr>(({ isRequired }) => ({
-   required: isRequired,
-}))<IStyledSelect>`
+export const StyledSelect = styled.select.attrs<IStyledSelectAttr>(
+   ({ isRequired, isDisabled }) => ({
+      required: isRequired,
+      disabled: isDisabled,
+   }),
+)<IStyledSelect>`
    all: unset;
    border-radius: 0;
    border: none;
    font-size: 1em;
    width: 100%;
    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+   color: ${({ isDisabled, isDarkTheme }) =>
+      isDisabled && Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.6)};
+
    border-bottom: ${({ hasError, isDarkTheme }) =>
       hasError
          ? `2px solid red`

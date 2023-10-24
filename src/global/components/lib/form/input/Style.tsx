@@ -3,6 +3,7 @@ import Color from '../../../../css/colors';
 
 interface IInputAttr {
    isRequired: boolean;
+   isDisabled: boolean;
 }
 
 interface ITextInput extends IInputAttr {
@@ -46,13 +47,16 @@ export const InputLabel = styled.div<IInputLabel>`
    }
 `;
 
-export const TextInput = styled.input.attrs<IInputAttr>(({ isRequired }) => ({
+export const TextInput = styled.input.attrs<IInputAttr>(({ isRequired, isDisabled }) => ({
    required: isRequired,
+   disabled: isDisabled,
 }))<ITextInput>`
    all: unset;
    font-size: 1em;
    width: 100%;
    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+   color: ${({ isDisabled, isDarkTheme }) =>
+      isDisabled && Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.6)};
    border-bottom: ${({ hasError, isDarkTheme }) =>
       hasError
          ? `2px solid red`

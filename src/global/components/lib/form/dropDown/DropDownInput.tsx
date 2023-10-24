@@ -17,10 +17,12 @@ interface IDropDownInput {
    options: IDropDownOption[];
    id: string;
    value: string | number;
+   isDisabled?: boolean | undefined;
 }
 
 export default function DropDownInput(props: IDropDownInput): JSX.Element {
-   const { placeholder, name, isRequired, handleChange, error, options, id, value } = props;
+   const { placeholder, name, isRequired, handleChange, error, options, id, value, isDisabled } =
+      props;
    const { isDarkTheme } = useThemeContext();
    const [isActive, setIsActive] = useState(false);
    const [isEmpty, setIsEmpty] = useState(true);
@@ -45,6 +47,7 @@ export default function DropDownInput(props: IDropDownInput): JSX.Element {
                isRequired={isRequired || false}
                inputHasValue={!isEmpty || !!value}
                isDarkTheme={isDarkTheme}
+               isDisabled={isDisabled || false}
             >
                {placeholder}
             </InputLabel>
@@ -60,6 +63,7 @@ export default function DropDownInput(props: IDropDownInput): JSX.Element {
             onBlur={handleBlur}
             isRequired={isRequired || false}
             value={value}
+            isDisabled={isDisabled || false}
          >
             <StyledOption isDarkTheme={isDarkTheme} value="" hidden={isRequired || false} />
             {options.map((option) => (
