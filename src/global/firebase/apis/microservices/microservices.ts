@@ -63,6 +63,18 @@ const microservices = {
       name: 'deleteIncome',
       los: 1,
    },
+   setCalculations: {
+      name: 'setCalculations',
+      los: 1,
+   },
+   getCalculationss: {
+      name: 'getCalculations',
+      los: 1,
+   },
+   deleteCalculations: {
+      name: 'deleteCalculations',
+      los: 1,
+   },
 };
 
 export default microservices;
