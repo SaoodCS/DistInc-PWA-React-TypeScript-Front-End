@@ -1,8 +1,10 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { StaticButton } from '../../../../../global/components/lib/button/staticButton/Style';
 import { StyledForm } from '../../../../../global/components/lib/form/form/Style';
 import InputCombination from '../../../../../global/components/lib/form/inputCombination/InputCombination';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
+import microservices from '../../../../../global/firebase/apis/microservices/microservices';
 import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import useForm from '../../../../../global/hooks/useForm';
 import IncomeClass from '../../../details/components/Income/class/Class';
@@ -30,6 +32,13 @@ export default function DistributeForm(): JSX.Element {
       dist.form.validate,
    );
 
+   const queryClient = useQueryClient();
+   const setCalcDistInFirestore = DistributerClass.useMutation.setCalcDist({
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
+      },
+   });
+
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
       if (!isFormValid) return;
@@ -40,7 +49,8 @@ export default function DistributeForm(): JSX.Element {
          expenses || {},
          form,
       );
-      // TODO: upload the calculations to firestore from here
+      //console.log(calculations);
+      await setCalcDistInFirestore.mutateAsync(calculations);
    }
 
    return (

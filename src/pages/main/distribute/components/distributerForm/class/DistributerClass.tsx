@@ -1,6 +1,17 @@
+import {
+   UseMutationOptions,
+   UseMutationResult,
+   UseQueryOptions,
+   useQuery,
+} from '@tanstack/react-query';
+import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
+import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import type { InputArray } from '../../../../../../global/helpers/react/form/FormHelper';
 import FormHelper from '../../../../../../global/helpers/react/form/FormHelper';
+import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
+import { IIncomeFormInputs } from '../../../../details/components/Income/class/Class';
 import type { ICurrentFormInputs } from '../../../../details/components/accounts/current/class/Class';
+import { ICalcSchema } from '../../calculateDist';
 
 export default class DistributerClass {
    constructor(currentAccounts: ICurrentFormInputs[]) {
@@ -61,4 +72,59 @@ export default class DistributerClass {
          validate: this.validate.bind(this),
       };
    }
+
+   private static useCalcDistQuery(options: UseQueryOptions<ICalcSchema>) {
+      return useQuery({
+         queryKey: [microservices.getCalculations.name],
+         queryFn: () =>
+            APIHelper.gatewayCall<ICalcSchema>(
+               undefined,
+               'GET',
+               microservices.getCalculations.name,
+            ),
+         ...options,
+      });
+   }
+
+   private static useSetCalcDistMutation(
+      options: UseMutationOptions<void, unknown, ICalcSchema>,
+   ): UseMutationResult<void, unknown, ICalcSchema> {
+      return useCustomMutation(
+         async (calculatedData: ICalcSchema) => {
+            const body = APIHelper.createBody(calculatedData);
+            const method = 'POST';
+            const microserviceName = microservices.setCalculations.name;
+            await APIHelper.gatewayCall(body, method, microserviceName);
+         },
+         {
+            ...options,
+         },
+      );
+   }
+
+   private static useDelCalcDistMutation(
+      options: UseMutationOptions<void, unknown, ICalcSchema>,
+   ): UseMutationResult<void, unknown, ICalcSchema> {
+      return useCustomMutation(
+         async (calculatedData: ICalcSchema) => {
+            const timestamp = calculatedData.analytics[0].timestamp;
+            const body = APIHelper.createBody({ timestamp });
+            const method = 'POST';
+            const microserviceName = microservices.deleteCalculations.name;
+            await APIHelper.gatewayCall(body, method, microserviceName);
+         },
+         {
+            ...options,
+         },
+      );
+   }
+
+   static useQuery = {
+      getCalcDist: DistributerClass.useCalcDistQuery,
+   };
+
+   static useMutation = {
+      setCalcDist: DistributerClass.useSetCalcDistMutation,
+      delCalcDist: DistributerClass.useDelCalcDistMutation,
+   };
 }

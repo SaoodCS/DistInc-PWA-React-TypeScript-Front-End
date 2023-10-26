@@ -1,4 +1,5 @@
 import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
+import DateHelper from '../../../../global/helpers/dataTypes/date/DateHelper';
 import NumberHelper from '../../../../global/helpers/dataTypes/number/NumberHelper';
 import ObjectOfObjects from '../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import type { IIncomeFirebase } from '../../details/components/Income/class/Class';
@@ -6,7 +7,7 @@ import type { ICurrentAccountFirebase } from '../../details/components/accounts/
 import type { ISavingsAccountFirebase } from '../../details/components/accounts/savings/class/Class';
 import type { IExpensesFirebase } from '../../details/components/expense/class/ExpensesClass';
 
-interface ICalcSchema {
+export interface ICalcSchema {
    distributer: {
       timestamp: string;
       msgs: string[];
@@ -36,6 +37,7 @@ export default function calculateDist(
    leftovers: { [id: number]: number },
 ): ICalcSchema {
    // Initial Setup:
+   let savingsAccHistory: ICalcSchema['savingsAccHistory'] = [];
    const currentAccArr = ObjectOfObjects.convertToArrayOfObj(currentAccounts);
    const savingsAccArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
    const incomeArr = ObjectOfObjects.convertToArrayOfObj(incomes);
@@ -72,18 +74,28 @@ export default function calculateDist(
    if (isLeftoverLessThanMinCushion) {
       salaryExpToSavingsAcc = salaryExpAcc.leftover;
       if (salaryExpHasTransferLeftoversTo) {
-         const salaryExpTransferLeftoversToName = ArrayOfObjects.getObjWithKeyValuePair(
+         const savingsAccToTransferTo = ArrayOfObjects.getObjWithKeyValuePair(
             savingsAccArr,
             'id',
             salaryExpAcc.transferLeftoversTo,
-         ).accountName;
-
+         );
+         const salaryExpTransferLeftoversToName = savingsAccToTransferTo.accountName;
          const salaryExpToTransferLeftoversAccMsg = `Leftover amount to transfer from ${
             salaryExpAcc.accountName
          } to ${salaryExpTransferLeftoversToName}: ${NumberHelper.asCurrencyStr(
             salaryExpToSavingsAcc,
          )}`;
          messages.push(salaryExpToTransferLeftoversAccMsg);
+
+         if (savingsAccToTransferTo.targetToReach) {
+            const balance = (savingsAccToTransferTo.currentBalance || 0) + salaryExpToSavingsAcc;
+            const savingsAccHistoryObj = {
+               id: savingsAccToTransferTo.id,
+               balance: balance,
+               timestamp: DateHelper.toDDMMYYYY(new Date()),
+            };
+            savingsAccHistory.push(savingsAccHistoryObj);
+         }
       }
       salaryExpToSpendingAcc = totalIncome - totalExpenses - salaryExpAcc.minCushion;
       salaryExpToSpendingAcc = salaryExpHasTransferLeftoversTo
@@ -98,17 +110,27 @@ export default function calculateDist(
    if (!isLeftoverLessThanMinCushion) {
       salaryExpToSavingsAcc = salaryExpAcc.leftover - salaryExpAcc.minCushion;
       if (salaryExpHasTransferLeftoversTo) {
-         const salaryExpTransferLeftoversToName = ArrayOfObjects.getObjWithKeyValuePair(
+         const savingsAccToTransferTo = ArrayOfObjects.getObjWithKeyValuePair(
             savingsAccArr,
             'id',
             salaryExpAcc.transferLeftoversTo,
-         ).accountName;
+         );
+         const salaryExpTransferLeftoversToName = savingsAccToTransferTo.accountName;
          const salaryExpToTransferLeftoversAccMsg = `Leftover amount to transfer from ${
             salaryExpAcc.accountName
          } to ${salaryExpTransferLeftoversToName}: ${NumberHelper.asCurrencyStr(
             salaryExpToSavingsAcc,
          )}`;
          messages.push(salaryExpToTransferLeftoversAccMsg);
+         if (savingsAccToTransferTo.targetToReach) {
+            const balance = (savingsAccToTransferTo.currentBalance || 0) + salaryExpToSavingsAcc;
+            const savingsAccHistoryObj = {
+               id: savingsAccToTransferTo.id,
+               balance: balance,
+               timestamp: DateHelper.toDDMMYYYY(new Date()),
+            };
+            savingsAccHistory.push(savingsAccHistoryObj);
+         }
       }
       salaryExpToSpendingAcc = totalIncome - totalExpenses;
       salaryExpToSpendingAcc = salaryExpHasTransferLeftoversTo
@@ -122,21 +144,48 @@ export default function calculateDist(
 
    if (spendingHasTransferLeftoversTo) {
       const spendingsToSavingsAcc = spendingAcc.leftover;
-      const spendingsTransferLeftoversToName = ArrayOfObjects.getObjWithKeyValuePair(
+      const savingsAccToTransferTo = ArrayOfObjects.getObjWithKeyValuePair(
          savingsAccArr,
          'id',
          spendingAcc.transferLeftoversTo,
-      ).accountName;
+      );
+      const spendingsTransferLeftoversToName = savingsAccToTransferTo.accountName;
       const spendingsToSavingsAccMsg = `Leftover amount to transfer from ${
          spendingAcc.accountName
       } to ${spendingsTransferLeftoversToName}: ${NumberHelper.asCurrencyStr(
          spendingsToSavingsAcc,
       )}`;
       messages.push(spendingsToSavingsAccMsg);
+
+      if (savingsAccToTransferTo.targetToReach) {
+         const savingsAccHistoryObj = ArrayOfObjects.getObjWithKeyValuePair(
+            savingsAccHistory,
+            'id',
+            savingsAccToTransferTo.id,
+         );
+         if (savingsAccHistoryObj) {
+            const balance = savingsAccHistoryObj.balance + spendingsToSavingsAcc;
+            savingsAccHistory = savingsAccHistory.filter(
+               (obj) => obj.id !== savingsAccToTransferTo.id,
+            );
+            savingsAccHistory.push({
+               ...savingsAccHistoryObj,
+               balance: balance,
+            });
+         } else {
+            const balance = (savingsAccToTransferTo.currentBalance || 0) + spendingsToSavingsAcc;
+            const savingsAccHistoryObj = {
+               id: savingsAccToTransferTo.id,
+               balance: balance,
+               timestamp: DateHelper.toDDMMYYYY(new Date()),
+            };
+            savingsAccHistory.push(savingsAccHistoryObj);
+         }
+      }
    }
 
    // Manual Expense Calculations:
-   const savingsAccHistory = [];
+   //const savingsAccHistory = [];
    const manualExpenses = expenseArr
       .filter((exp) => exp.paymentType === 'Manual')
       .filter((exp) => exp.paused === 'false');
@@ -155,20 +204,29 @@ export default function calculateDist(
             }: ${NumberHelper.asCurrencyStr(manualExpenses[i].expenseValue)}`,
          );
          if (savingsAcc.targetToReach) {
-            let balance = (savingsAcc.currentBalance || 0) + manualExpenses[i].expenseValue;
-            if (savingsAccId === salaryExpAcc.transferLeftoversTo) {
-               balance = balance + salaryExpToSavingsAcc;
+            // Update the savingsAccHistory array objects that match the savingsAccId
+            const savingsAccHistoryObj = ArrayOfObjects.getObjWithKeyValuePair(
+               savingsAccHistory,
+               'id',
+               savingsAccId,
+            );
+            if (savingsAccHistoryObj) {
+               const newBalance = savingsAccHistoryObj.balance + manualExpenses[i].expenseValue;
+               // update the savingsAccHistory array by removing the old object and adding the new one
+               savingsAccHistory = savingsAccHistory.filter((obj) => obj.id !== savingsAccId);
+               savingsAccHistory.push({
+                  ...savingsAccHistoryObj,
+                  balance: newBalance,
+               });
+            } else {
+               const balance = (savingsAcc.currentBalance || 0) + manualExpenses[i].expenseValue;
+               const savingsAccHistoryObj = {
+                  id: savingsAccId,
+                  balance: balance,
+                  timestamp: DateHelper.toDDMMYYYY(new Date()),
+               };
+               savingsAccHistory.push(savingsAccHistoryObj);
             }
-            if (savingsAccId === spendingAcc.transferLeftoversTo) {
-               balance = balance + spendingAcc.leftover;
-            }
-            const savingsAccHistoryObj = {
-               id: savingsAccId,
-               balance: balance,
-               timestamp: new Date().toISOString(),
-            };
-            savingsAccHistory.push(savingsAccHistoryObj);
-            // TODO: when uploading the calculations to firebase via microservice, update the savingsAccount doc's currentBalance as well
          }
       } else {
          messages.push(
@@ -181,7 +239,7 @@ export default function calculateDist(
 
    // Create Distributer object:
    const distributer = {
-      timestamp: new Date().toISOString(),
+      timestamp: DateHelper.toDDMMYYYY(new Date()),
       msgs: messages,
    };
 
@@ -194,7 +252,7 @@ export default function calculateDist(
          totalDisposableSpending: totalIncome - spendingAcc.leftover - totalExpenses,
          totalSavings: spendingAcc.leftover,
       },
-      timestamp: new Date().toISOString(),
+      timestamp: DateHelper.toDDMMYYYY(new Date()),
    };
 
    return {
@@ -203,139 +261,3 @@ export default function calculateDist(
       analytics: [analytics],
    };
 }
-
-// export default function calculateDist(
-//    savingsAccounts: ISavingsAccountFirebase,
-//    currentAccounts: ICurrentAccountFirebase,
-//    incomes: IIncomeFirebase,
-//    expenses: IExpensesFirebase,
-//    leftovers: { [id: number]: number },
-// ): ICalcSchema {
-//    // Initial Setup:
-//    const currentAccArr = ObjectOfObjects.convertToArrayOfObj(currentAccounts);
-//    const savingsAccArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
-//    const incomeArr = ObjectOfObjects.convertToArrayOfObj(incomes);
-//    const expenseArr = ObjectOfObjects.convertToArrayOfObj(expenses);
-//    const currentAccWithLeftovers = currentAccArr.map((acc) => {
-//       const leftover = leftovers[acc.id];
-//       return {
-//          ...acc,
-//          leftover,
-//       };
-//    });
-//    const salaryExpAcc = ArrayOfObjects.getObjWithKeyValuePair(
-//       currentAccWithLeftovers,
-//       'accountType',
-//       'Salary & Expenses',
-//    );
-//    const spendingAcc = ArrayOfObjects.getObjWithKeyValuePair(
-//       currentAccWithLeftovers,
-//       'accountType',
-//       'Spending',
-//    );
-//    const totalIncome = ArrayOfObjects.sumKeyValues(incomeArr, 'incomeValue');
-//    const totalExpenses = ArrayOfObjects.sumKeyValues(expenseArr, 'expenseValue');
-
-//    // Current Acc Calculations:
-//    let salaryExpToSavingsAcc: number = 0;
-//    let salaryExpToSpendingAcc: number = 0;
-//    const isLeftoverLessThanMinCushion = salaryExpAcc.leftover < salaryExpAcc.minCushion;
-//    if (isLeftoverLessThanMinCushion) {
-//       salaryExpToSavingsAcc = salaryExpAcc.leftover;
-//       salaryExpToSpendingAcc = totalIncome - totalExpenses - salaryExpAcc.minCushion;
-//    }
-//    if (!isLeftoverLessThanMinCushion) {
-//       salaryExpToSavingsAcc = salaryExpAcc.leftover - salaryExpAcc.minCushion;
-//       salaryExpToSpendingAcc = totalIncome - totalExpenses;
-//    }
-//    const spendingsToSavingsAcc = spendingAcc.leftover;
-
-//    const salaryExpTransferLeftoversToName = ArrayOfObjects.getObjWithKeyValuePair(
-//       savingsAccArr,
-//       'id',
-//       salaryExpAcc.transferLeftoversTo,
-//    ).accountName;
-
-//    const spendingsTransferLeftoversToName = ArrayOfObjects.getObjWithKeyValuePair(
-//       savingsAccArr,
-//       'id',
-//       spendingAcc.transferLeftoversTo,
-//    ).accountName;
-
-//    const salaryExpToSavingsAccMsg = `Leftover amount to transfer from ${
-//       salaryExpAcc.accountName
-//    } to ${salaryExpTransferLeftoversToName}: ${NumberHelper.asCurrencyStr(salaryExpToSavingsAcc)}`;
-//    const salaryExpToSpendingAccMsg = `Leftover amount to transfer from ${
-//       salaryExpAcc.accountName
-//    } to ${spendingAcc.accountName}: ${NumberHelper.asCurrencyStr(salaryExpToSpendingAcc)}`;
-//    const spendingsToSavingsAccMsg = `Leftover amount to transfer from ${
-//       spendingAcc.accountName
-//    } to ${spendingsTransferLeftoversToName}: ${NumberHelper.asCurrencyStr(spendingsToSavingsAcc)}`;
-
-//    // Manual Expense Calculations:
-//    let savingsAccHistory = [];
-//    let manualExpenseMsgs: string[] = [];
-//    const manualExpenses = expenseArr
-//       .filter((exp) => exp.paymentType === 'Manual')
-//       .filter((exp) => exp.paused === 'false');
-
-//    for (let i = 0; i < manualExpenses.length; i++) {
-//       if (manualExpenses[i].expenseType.includes('Savings Transfer')) {
-//          const savingsAccId = Number(manualExpenses[i].expenseType.split(':')[1]);
-//          const savingsAcc = ArrayOfObjects.getObjWithKeyValuePair(
-//             savingsAccArr,
-//             'id',
-//             savingsAccId,
-//          );
-//          manualExpenseMsgs.push(
-//             `Amount to transfer from ${salaryExpAcc.accountName} to ${
-//                savingsAcc.accountName
-//             }: £${NumberHelper.asCurrencyStr(manualExpenses[i].expenseValue)}`,
-//          );
-//          if (savingsAcc.targetToReach) {
-//             const savingsAccHistoryObj = {
-//                id: savingsAccId,
-//                balance: (savingsAcc.currentBalance || 0) + manualExpenses[i].expenseValue,
-//                timestamp: new Date().toISOString(),
-//             };
-//             savingsAccHistory.push(savingsAccHistoryObj);
-//             // TODO: when uploading the calculations to firebase via microservice, update the savingsAccount doc's currentBalance as well
-//          }
-//       } else {
-//          manualExpenseMsgs.push(
-//             `Make Manual Payment from ${salaryExpAcc.accountName} for expense ${
-//                manualExpenses[i].expenseName
-//             }: £${NumberHelper.asCurrencyStr(manualExpenses[i].expenseValue)}`,
-//          );
-//       }
-//    }
-
-//    // Create distributer object:
-//    const distributer = {
-//       timestamp: new Date().toISOString(),
-//       msgs: [
-//          salaryExpToSavingsAccMsg,
-//          salaryExpToSpendingAccMsg,
-//          spendingsToSavingsAccMsg,
-//          ...manualExpenseMsgs,
-//       ],
-//    };
-
-//    // create analytics object:
-//    const analytics = {
-//       totalIncomes: totalIncome,
-//       totalExpenses: totalExpenses,
-//       prevMonth: {
-//          totalSpendings: totalIncome - spendingAcc.leftover,
-//          totalDisposableSpending: totalIncome - spendingAcc.leftover - totalExpenses,
-//          totalSavings: spendingAcc.leftover,
-//       },
-//       timestamp: new Date().toISOString(),
-//    };
-
-//    return {
-//       distributer: [distributer],
-//       savingsAccHistory: savingsAccHistory,
-//       analytics: [analytics],
-//    };
-// }

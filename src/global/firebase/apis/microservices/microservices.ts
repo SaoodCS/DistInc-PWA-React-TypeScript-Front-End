@@ -67,7 +67,7 @@ const microservices = {
       name: 'setCalculations',
       los: 1,
    },
-   getCalculationss: {
+   getCalculations: {
       name: 'getCalculations',
       los: 1,
    },
