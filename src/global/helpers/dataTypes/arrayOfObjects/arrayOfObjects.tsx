@@ -30,4 +30,8 @@ export default class ArrayOfObjects {
    static sumKeyValues<T>(arr: T[], key: keyof T): number {
       return arr.reduce((acc, curr) => acc + Number(curr[key]), 0);
    }
+
+   static deleteDuplicates<T>(arr: T[], key: keyof T): T[] {
+      return arr.filter((obj, index, self) => self.findIndex((o) => o[key] === obj[key]) === index);
+   }
 }

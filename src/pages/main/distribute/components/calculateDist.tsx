@@ -3,9 +3,18 @@ import DateHelper from '../../../../global/helpers/dataTypes/date/DateHelper';
 import NumberHelper from '../../../../global/helpers/dataTypes/number/NumberHelper';
 import ObjectOfObjects from '../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import type { IIncomeFirebase } from '../../details/components/Income/class/Class';
-import type { ICurrentAccountFirebase } from '../../details/components/accounts/current/class/Class';
-import type { ISavingsAccountFirebase } from '../../details/components/accounts/savings/class/Class';
-import type { IExpensesFirebase } from '../../details/components/expense/class/ExpensesClass';
+import type {
+   ICurrentAccountFirebase,
+   ICurrentFormInputs,
+} from '../../details/components/accounts/current/class/Class';
+import type {
+   ISavingsAccountFirebase,
+   ISavingsFormInputs,
+} from '../../details/components/accounts/savings/class/Class';
+import type {
+   IExpenseFormInputs,
+   IExpensesFirebase,
+} from '../../details/components/expense/class/ExpensesClass';
 
 export interface ICalcSchema {
    distributer: {
@@ -38,204 +47,37 @@ export default function calculateDist(
 ): ICalcSchema {
    // Initial Setup:
    let savingsAccHistory: ICalcSchema['savingsAccHistory'] = [];
-   const currentAccArr = ObjectOfObjects.convertToArrayOfObj(currentAccounts);
+   let messages: ICalcSchema['distributer'][0]['msgs'] = [];
+
    const savingsAccArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
    const incomeArr = ObjectOfObjects.convertToArrayOfObj(incomes);
    const expenseArr = ObjectOfObjects.convertToArrayOfObj(expenses);
-   const currentAccWithLeftovers = currentAccArr.map((acc) => {
-      const leftover = leftovers[acc.id];
-      return {
-         ...acc,
-         leftover,
-      };
-   });
-   const salaryExpAcc = ArrayOfObjects.getObjWithKeyValuePair(
-      currentAccWithLeftovers,
-      'accountType',
-      'Salary & Expenses',
-   );
-   const spendingAcc = ArrayOfObjects.getObjWithKeyValuePair(
-      currentAccWithLeftovers,
-      'accountType',
-      'Spending',
-   );
    const totalIncome = ArrayOfObjects.sumKeyValues(incomeArr, 'incomeValue');
    const totalExpenses = ArrayOfObjects.sumKeyValues(expenseArr, 'expenseValue');
+   const currentAcc = formatCurrentAccounts(currentAccounts, leftovers);
 
-   const messages: string[] = [];
-
-   // Current Acc Calculations:
-   let salaryExpToSavingsAcc: number = 0;
-   let salaryExpToSpendingAcc: number = 0;
-   const isLeftoverLessThanMinCushion = salaryExpAcc.leftover < salaryExpAcc.minCushion;
-   const salaryExpHasTransferLeftoversTo = salaryExpAcc.transferLeftoversTo !== '';
-   const spendingHasTransferLeftoversTo = spendingAcc.transferLeftoversTo !== '';
-
-   if (isLeftoverLessThanMinCushion) {
-      salaryExpToSavingsAcc = salaryExpAcc.leftover;
-      if (salaryExpHasTransferLeftoversTo) {
-         const savingsAccToTransferTo = ArrayOfObjects.getObjWithKeyValuePair(
-            savingsAccArr,
-            'id',
-            salaryExpAcc.transferLeftoversTo,
-         );
-         const salaryExpTransferLeftoversToName = savingsAccToTransferTo.accountName;
-         const salaryExpToTransferLeftoversAccMsg = `Leftover amount to transfer from ${
-            salaryExpAcc.accountName
-         } to ${salaryExpTransferLeftoversToName}: ${NumberHelper.asCurrencyStr(
-            salaryExpToSavingsAcc,
-         )}`;
-         messages.push(salaryExpToTransferLeftoversAccMsg);
-
-         if (savingsAccToTransferTo.targetToReach) {
-            const balance = (savingsAccToTransferTo.currentBalance || 0) + salaryExpToSavingsAcc;
-            const savingsAccHistoryObj = {
-               id: savingsAccToTransferTo.id,
-               balance: balance,
-               timestamp: DateHelper.toDDMMYYYY(new Date()),
-            };
-            savingsAccHistory.push(savingsAccHistoryObj);
-         }
-      }
-      salaryExpToSpendingAcc = totalIncome - totalExpenses - salaryExpAcc.minCushion;
-      salaryExpToSpendingAcc = salaryExpHasTransferLeftoversTo
-         ? salaryExpToSpendingAcc
-         : salaryExpToSpendingAcc + salaryExpToSavingsAcc;
-      const salaryExpToSpendingAccMsg = `Leftover amount to transfer from ${
-         salaryExpAcc.accountName
-      } to ${spendingAcc.accountName}: ${NumberHelper.asCurrencyStr(salaryExpToSpendingAcc)}`;
-      messages.push(salaryExpToSpendingAccMsg);
-   }
-
-   if (!isLeftoverLessThanMinCushion) {
-      salaryExpToSavingsAcc = salaryExpAcc.leftover - salaryExpAcc.minCushion;
-      if (salaryExpHasTransferLeftoversTo) {
-         const savingsAccToTransferTo = ArrayOfObjects.getObjWithKeyValuePair(
-            savingsAccArr,
-            'id',
-            salaryExpAcc.transferLeftoversTo,
-         );
-         const salaryExpTransferLeftoversToName = savingsAccToTransferTo.accountName;
-         const salaryExpToTransferLeftoversAccMsg = `Leftover amount to transfer from ${
-            salaryExpAcc.accountName
-         } to ${salaryExpTransferLeftoversToName}: ${NumberHelper.asCurrencyStr(
-            salaryExpToSavingsAcc,
-         )}`;
-         messages.push(salaryExpToTransferLeftoversAccMsg);
-         if (savingsAccToTransferTo.targetToReach) {
-            const balance = (savingsAccToTransferTo.currentBalance || 0) + salaryExpToSavingsAcc;
-            const savingsAccHistoryObj = {
-               id: savingsAccToTransferTo.id,
-               balance: balance,
-               timestamp: DateHelper.toDDMMYYYY(new Date()),
-            };
-            savingsAccHistory.push(savingsAccHistoryObj);
-         }
-      }
-      salaryExpToSpendingAcc = totalIncome - totalExpenses;
-      salaryExpToSpendingAcc = salaryExpHasTransferLeftoversTo
-         ? salaryExpToSpendingAcc
-         : salaryExpToSpendingAcc + salaryExpToSavingsAcc;
-      const salaryExpToSpendingAccMsg = `Leftover amount to transfer from ${
-         salaryExpAcc.accountName
-      } to ${spendingAcc.accountName}: ${NumberHelper.asCurrencyStr(salaryExpToSpendingAcc)}`;
-      messages.push(salaryExpToSpendingAccMsg);
-   }
-
-   if (spendingHasTransferLeftoversTo) {
-      const spendingsToSavingsAcc = spendingAcc.leftover;
-      const savingsAccToTransferTo = ArrayOfObjects.getObjWithKeyValuePair(
-         savingsAccArr,
-         'id',
-         spendingAcc.transferLeftoversTo,
-      );
-      const spendingsTransferLeftoversToName = savingsAccToTransferTo.accountName;
-      const spendingsToSavingsAccMsg = `Leftover amount to transfer from ${
-         spendingAcc.accountName
-      } to ${spendingsTransferLeftoversToName}: ${NumberHelper.asCurrencyStr(
-         spendingsToSavingsAcc,
-      )}`;
-      messages.push(spendingsToSavingsAccMsg);
-
-      if (savingsAccToTransferTo.targetToReach) {
-         const savingsAccHistoryObj = ArrayOfObjects.getObjWithKeyValuePair(
-            savingsAccHistory,
-            'id',
-            savingsAccToTransferTo.id,
-         );
-         if (savingsAccHistoryObj) {
-            const balance = savingsAccHistoryObj.balance + spendingsToSavingsAcc;
-            savingsAccHistory = savingsAccHistory.filter(
-               (obj) => obj.id !== savingsAccToTransferTo.id,
-            );
-            savingsAccHistory.push({
-               ...savingsAccHistoryObj,
-               balance: balance,
-            });
-         } else {
-            const balance = (savingsAccToTransferTo.currentBalance || 0) + spendingsToSavingsAcc;
-            const savingsAccHistoryObj = {
-               id: savingsAccToTransferTo.id,
-               balance: balance,
-               timestamp: DateHelper.toDDMMYYYY(new Date()),
-            };
-            savingsAccHistory.push(savingsAccHistoryObj);
-         }
-      }
-   }
+   const currentAccCalculations = currentAccCalcs(
+      currentAcc,
+      totalIncome,
+      totalExpenses,
+      savingsAccArr,
+      savingsAccHistory,
+   );
+   messages.push(...currentAccCalculations.messages);
+   savingsAccHistory.push(...currentAccCalculations.savingsAccHistory);
 
    // Manual Expense Calculations:
-   //const savingsAccHistory = [];
-   const manualExpenses = expenseArr
-      .filter((exp) => exp.paymentType === 'Manual')
-      .filter((exp) => exp.paused === 'false');
+   const manualExpenseCalculations = expenseCalcs(
+      expenseArr,
+      savingsAccArr,
+      currentAcc,
+      savingsAccHistory,
+   );
+   messages.push(...manualExpenseCalculations.messages);
+   savingsAccHistory.push(...manualExpenseCalculations.savingsAccHistory);
 
-   for (let i = 0; i < manualExpenses.length; i++) {
-      if (manualExpenses[i].expenseType.includes('Savings Transfer')) {
-         const savingsAccId = Number(manualExpenses[i].expenseType.split(':')[1]);
-         const savingsAcc = ArrayOfObjects.getObjWithKeyValuePair(
-            savingsAccArr,
-            'id',
-            savingsAccId,
-         );
-         messages.push(
-            `Manual Expense: Amount to transfer from ${salaryExpAcc.accountName} to ${
-               savingsAcc.accountName
-            }: ${NumberHelper.asCurrencyStr(manualExpenses[i].expenseValue)}`,
-         );
-         if (savingsAcc.targetToReach) {
-            // Update the savingsAccHistory array objects that match the savingsAccId
-            const savingsAccHistoryObj = ArrayOfObjects.getObjWithKeyValuePair(
-               savingsAccHistory,
-               'id',
-               savingsAccId,
-            );
-            if (savingsAccHistoryObj) {
-               const newBalance = savingsAccHistoryObj.balance + manualExpenses[i].expenseValue;
-               // update the savingsAccHistory array by removing the old object and adding the new one
-               savingsAccHistory = savingsAccHistory.filter((obj) => obj.id !== savingsAccId);
-               savingsAccHistory.push({
-                  ...savingsAccHistoryObj,
-                  balance: newBalance,
-               });
-            } else {
-               const balance = (savingsAcc.currentBalance || 0) + manualExpenses[i].expenseValue;
-               const savingsAccHistoryObj = {
-                  id: savingsAccId,
-                  balance: balance,
-                  timestamp: DateHelper.toDDMMYYYY(new Date()),
-               };
-               savingsAccHistory.push(savingsAccHistoryObj);
-            }
-         }
-      } else {
-         messages.push(
-            `Manual Expense: Make Payment from ${salaryExpAcc.accountName} for expense: ${
-               manualExpenses[i].expenseName
-            }: ${NumberHelper.asCurrencyStr(manualExpenses[i].expenseValue)}`,
-         );
-      }
-   }
+   // Delete duplicates in savingsAccHistoryArray:
+   savingsAccHistory = ArrayOfObjects.deleteDuplicates(savingsAccHistory, 'id');
 
    // Create Distributer object:
    const distributer = {
@@ -248,9 +90,9 @@ export default function calculateDist(
       totalIncomes: totalIncome,
       totalExpenses: totalExpenses,
       prevMonth: {
-         totalSpendings: totalIncome - spendingAcc.leftover,
-         totalDisposableSpending: totalIncome - spendingAcc.leftover - totalExpenses,
-         totalSavings: spendingAcc.leftover,
+         totalSpendings: totalIncome - currentAcc.spendings.leftover,
+         totalDisposableSpending: totalIncome - currentAcc.spendings.leftover - totalExpenses,
+         totalSavings: currentAcc.spendings.leftover,
       },
       timestamp: DateHelper.toDDMMYYYY(new Date()),
    };
@@ -260,4 +102,211 @@ export default function calculateDist(
       savingsAccHistory: savingsAccHistory,
       analytics: [analytics],
    };
+}
+
+// --------------------------------------------------------------------------------------------------------------------- //
+
+function formatCurrentAccounts(
+   currentAccounts: ICurrentAccountFirebase,
+   leftovers: { [id: number]: number },
+) {
+   const currentAccArr = ObjectOfObjects.convertToArrayOfObj(currentAccounts);
+   const currentAccWithLeftovers = currentAccArr.map((acc) => {
+      const leftover = leftovers[acc.id];
+      const hasTransferLeftoversTo = acc.transferLeftoversTo !== '';
+      return {
+         ...acc,
+         leftover,
+         hasTransferLeftoversTo,
+      };
+   });
+
+   const salaryExp: ICurrentFormInputs & {
+      leftover: number;
+      hasTransferLeftoversTo: boolean;
+   } = ArrayOfObjects.getObjWithKeyValuePair(
+      currentAccWithLeftovers,
+      'accountType',
+      'Salary & Expenses',
+   );
+
+   const spendings: ICurrentFormInputs & {
+      leftover: number;
+      hasTransferLeftoversTo: boolean;
+   } = ArrayOfObjects.getObjWithKeyValuePair(currentAccWithLeftovers, 'accountType', 'Spending');
+
+   const currentAcc = {
+      salaryExp: salaryExp,
+      spendings,
+   };
+
+   return currentAcc;
+}
+
+// --------------------------------------------------------------------------------------------------------------------- //
+
+function currentAccCalcs(
+   currentAcc: {
+      salaryExp: ICurrentFormInputs & {
+         leftover: number;
+         hasTransferLeftoversTo: boolean;
+      };
+      spendings: ICurrentFormInputs & {
+         leftover: number;
+         hasTransferLeftoversTo: boolean;
+      };
+   },
+   totalIncome: number,
+   totalExpense: number,
+   savingsAccArr: ISavingsFormInputs[],
+   savingsAccHistory: ICalcSchema['savingsAccHistory'],
+) {
+   let salaryExpToTransferLeftoversAcc: number = 0;
+   let salaryExpToSpendingAcc: number = 0;
+   let messages: string[] = [];
+
+   const isLeftoverLessThanMinCushion =
+      currentAcc.salaryExp.leftover < currentAcc.salaryExp.minCushion;
+
+   if (isLeftoverLessThanMinCushion) {
+      salaryExpToTransferLeftoversAcc = currentAcc.salaryExp.leftover;
+      salaryExpToSpendingAcc = totalIncome - totalExpense - currentAcc.salaryExp.minCushion;
+   }
+   if (!isLeftoverLessThanMinCushion) {
+      salaryExpToTransferLeftoversAcc =
+         currentAcc.salaryExp.leftover - currentAcc.salaryExp.minCushion;
+      salaryExpToSpendingAcc = totalIncome - totalExpense;
+   }
+   if (!currentAcc.salaryExp.hasTransferLeftoversTo) {
+      salaryExpToSpendingAcc = salaryExpToSpendingAcc + salaryExpToTransferLeftoversAcc;
+   }
+
+   const salaryExpToSpendingAccMsg = `Leftover amount to transfer from ${
+      currentAcc.salaryExp.accountName
+   } to ${currentAcc.spendings.accountName}: ${NumberHelper.asCurrencyStr(salaryExpToSpendingAcc)}`;
+
+   messages.push(salaryExpToSpendingAccMsg);
+
+   for (const accountKey in currentAcc) {
+      if (currentAcc.hasOwnProperty(accountKey)) {
+         const acc = currentAcc[accountKey as keyof typeof currentAcc];
+         if (acc.hasTransferLeftoversTo) {
+            const savingsAccToTransferTo = ArrayOfObjects.getObjWithKeyValuePair(
+               savingsAccArr,
+               'id',
+               acc.transferLeftoversTo,
+            );
+            const transferLeftoverToAccName = savingsAccToTransferTo.accountName;
+            const amountToTransfer =
+               acc.accountType === 'Salary & Expenses'
+                  ? salaryExpToTransferLeftoversAcc
+                  : acc.leftover;
+            const leftoverToTransferToMsg = `Leftover amount to transfer from ${
+               acc.accountName
+            } to ${transferLeftoverToAccName}: ${NumberHelper.asCurrencyStr(amountToTransfer)}`;
+            messages.push(leftoverToTransferToMsg);
+
+            if (savingsAccToTransferTo.targetToReach) {
+               savingsAccHistory = updateSavingsAccHistory(
+                  savingsAccHistory,
+                  savingsAccToTransferTo,
+                  amountToTransfer,
+               );
+            }
+         }
+      }
+   }
+
+   return {
+      messages,
+      savingsAccHistory,
+   };
+}
+
+// --------------------------------------------------------------------------------------------------------------------- //
+
+function expenseCalcs(
+   expenseArr: IExpenseFormInputs[],
+   savingsAccArr: ISavingsFormInputs[],
+   currentAcc: {
+      salaryExp: ICurrentFormInputs & {
+         leftover: number;
+         hasTransferLeftoversTo: boolean;
+      };
+      spendings: ICurrentFormInputs & {
+         leftover: number;
+         hasTransferLeftoversTo: boolean;
+      };
+   },
+   savingsAccHistory: ICalcSchema['savingsAccHistory'],
+) {
+   let messages: string[] = [];
+
+   const activeExpenses = expenseArr.filter((exp) => exp.paused === 'false');
+   for (let i = 0; i < activeExpenses.length; i++) {
+      const isExpenseTypeSavingsTransfer =
+         activeExpenses[i].expenseType.includes('Savings Transfer');
+      if (isExpenseTypeSavingsTransfer) {
+         const savingsAccId = Number(activeExpenses[i].expenseType.split(':')[1]);
+         const savingsAcc = ArrayOfObjects.getObjWithKeyValuePair(
+            savingsAccArr,
+            'id',
+            savingsAccId,
+         );
+         if (savingsAcc.targetToReach) {
+            const amountToTransfer = activeExpenses[i].expenseValue;
+            savingsAccHistory = updateSavingsAccHistory(
+               savingsAccHistory,
+               savingsAcc,
+               amountToTransfer,
+            );
+         }
+         if (activeExpenses[i].paymentType === 'Manual') {
+            messages.push(
+               `Manual Expense: Amount to transfer from ${currentAcc.salaryExp.accountName} to ${
+                  savingsAcc.accountName
+               }: ${NumberHelper.asCurrencyStr(activeExpenses[i].expenseValue)}`,
+            );
+         }
+      }
+      if (!isExpenseTypeSavingsTransfer && activeExpenses[i].paymentType === 'Manual') {
+         messages.push(
+            `Manual Expense: Make Payment from ${currentAcc.salaryExp.accountName} for expense: ${
+               activeExpenses[i].expenseName
+            }: ${NumberHelper.asCurrencyStr(activeExpenses[i].expenseValue)}`,
+         );
+      }
+   }
+   return {
+      messages,
+      savingsAccHistory,
+   };
+}
+
+// --------------------------------------------------------------------------------------------------------------------- //
+
+function updateSavingsAccHistory(
+   savingsAccHistoryArr: ICalcSchema['savingsAccHistory'],
+   savingsAccToTransferTo: ISavingsFormInputs,
+   amountToTransfer: number,
+) {
+   const savingsAccHistoryArrCopy = [...savingsAccHistoryArr];
+   const doesExistInArray = savingsAccHistoryArr.find(
+      (item) => item.id === savingsAccToTransferTo.id,
+   );
+   if (doesExistInArray) {
+      const index = savingsAccHistoryArr.findIndex((item) => item.id === savingsAccToTransferTo.id);
+      const updatedBalance = savingsAccHistoryArr[index].balance + amountToTransfer;
+      savingsAccHistoryArrCopy[index].balance = updatedBalance;
+   }
+   if (!doesExistInArray) {
+      const balance = (savingsAccToTransferTo.currentBalance || 0) + amountToTransfer;
+      const savingsAccHistoryObj = {
+         id: savingsAccToTransferTo.id,
+         balance: balance,
+         timestamp: DateHelper.toDDMMYYYY(new Date()),
+      };
+      savingsAccHistoryArrCopy.push(savingsAccHistoryObj);
+   }
+   return savingsAccHistoryArrCopy;
 }
