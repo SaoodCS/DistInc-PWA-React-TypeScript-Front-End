@@ -38,6 +38,17 @@ export interface ICalcSchema {
    }[];
 }
 
+type IFormattedCurrentAcc = {
+   salaryExp: ICurrentFormInputs & {
+      leftover: number;
+      hasTransferLeftoversTo: boolean;
+   };
+   spendings: ICurrentFormInputs & {
+      leftover: number;
+      hasTransferLeftoversTo: boolean;
+   };
+};
+
 export default function calculateDist(
    savingsAccounts: ISavingsAccountFirebase,
    currentAccounts: ICurrentAccountFirebase,
@@ -48,35 +59,37 @@ export default function calculateDist(
    // Initial Setup:
    let savingsAccHistory: ICalcSchema['savingsAccHistory'] = [];
    let messages: ICalcSchema['distributer'][0]['msgs'] = [];
-
    const savingsAccArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
    const incomeArr = ObjectOfObjects.convertToArrayOfObj(incomes);
    const expenseArr = ObjectOfObjects.convertToArrayOfObj(expenses);
-   const totalIncome = ArrayOfObjects.sumKeyValues(incomeArr, 'incomeValue');
-   const totalExpenses = ArrayOfObjects.sumKeyValues(expenseArr, 'expenseValue');
    const currentAcc = formatCurrentAccounts(currentAccounts, leftovers);
 
-   const currentAccCalculations = currentAccCalcs(
+   // Calculate Total Income & Expenses:
+   const totalIncome = ArrayOfObjects.sumKeyValues(incomeArr, 'incomeValue');
+   const totalExpenses = ArrayOfObjects.sumKeyValues(expenseArr, 'expenseValue');
+
+   // Current Account Transfers:
+   const currentAccTransfers = calcCurrentAccTransfers(
       currentAcc,
       totalIncome,
       totalExpenses,
       savingsAccArr,
       savingsAccHistory,
    );
-   messages.push(...currentAccCalculations.messages);
-   savingsAccHistory.push(...currentAccCalculations.savingsAccHistory);
+   messages.push(...currentAccTransfers.messages);
+   savingsAccHistory.push(...currentAccTransfers.savingsAccHistory);
 
-   // Manual Expense Calculations:
-   const manualExpenseCalculations = expenseCalcs(
+   // Expenses Transfers:
+   const expensesTransfers = calcExpensesTransfers(
       expenseArr,
       savingsAccArr,
       currentAcc,
       savingsAccHistory,
    );
-   messages.push(...manualExpenseCalculations.messages);
-   savingsAccHistory.push(...manualExpenseCalculations.savingsAccHistory);
+   messages.push(...expensesTransfers.messages);
+   savingsAccHistory.push(...expensesTransfers.savingsAccHistory);
 
-   // Delete duplicates in savingsAccHistoryArray:
+   // Delete Duplicates in savingsAccHistory:
    savingsAccHistory = ArrayOfObjects.deleteDuplicates(savingsAccHistory, 'id');
 
    // Create Distributer object:
@@ -85,7 +98,7 @@ export default function calculateDist(
       msgs: messages,
    };
 
-   // create Analytics object:
+   // Create Analytics object:
    const analytics = {
       totalIncomes: totalIncome,
       totalExpenses: totalExpenses,
@@ -145,17 +158,8 @@ function formatCurrentAccounts(
 
 // --------------------------------------------------------------------------------------------------------------------- //
 
-function currentAccCalcs(
-   currentAcc: {
-      salaryExp: ICurrentFormInputs & {
-         leftover: number;
-         hasTransferLeftoversTo: boolean;
-      };
-      spendings: ICurrentFormInputs & {
-         leftover: number;
-         hasTransferLeftoversTo: boolean;
-      };
-   },
+function calcCurrentAccTransfers(
+   currentAcc: IFormattedCurrentAcc,
    totalIncome: number,
    totalExpense: number,
    savingsAccArr: ISavingsFormInputs[],
@@ -225,19 +229,10 @@ function currentAccCalcs(
 
 // --------------------------------------------------------------------------------------------------------------------- //
 
-function expenseCalcs(
+function calcExpensesTransfers(
    expenseArr: IExpenseFormInputs[],
    savingsAccArr: ISavingsFormInputs[],
-   currentAcc: {
-      salaryExp: ICurrentFormInputs & {
-         leftover: number;
-         hasTransferLeftoversTo: boolean;
-      };
-      spendings: ICurrentFormInputs & {
-         leftover: number;
-         hasTransferLeftoversTo: boolean;
-      };
-   },
+   currentAcc: IFormattedCurrentAcc,
    savingsAccHistory: ICalcSchema['savingsAccHistory'],
 ) {
    let messages: string[] = [];
