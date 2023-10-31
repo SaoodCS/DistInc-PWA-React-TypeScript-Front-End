@@ -49,6 +49,11 @@ type IFormattedCurrentAcc = {
    };
 };
 
+type ISavingsAccountTransfers = {
+   id: number;
+   amountToTransfer: number;
+}[];
+
 export default function calculateDist(
    savingsAccounts: ISavingsAccountFirebase,
    currentAccounts: ICurrentAccountFirebase,
@@ -57,8 +62,6 @@ export default function calculateDist(
    leftovers: { [id: number]: number },
 ): ICalcSchema {
    // Initial Setup:
-   let savingsAccHistory: ICalcSchema['savingsAccHistory'] = [];
-   let messages: ICalcSchema['distributer'][0]['msgs'] = [];
    const savingsAccArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
    const incomeArr = ObjectOfObjects.convertToArrayOfObj(incomes);
    const expenseArr = ObjectOfObjects.convertToArrayOfObj(expenses);
@@ -74,46 +77,47 @@ export default function calculateDist(
       totalIncome,
       totalExpenses,
       savingsAccArr,
-      savingsAccHistory,
    );
-   messages.push(...currentAccTransfers.messages);
-   savingsAccHistory.push(...currentAccTransfers.savingsAccHistory);
 
    // Expenses Transfers:
-   const expensesTransfers = calcExpensesTransfers(
-      expenseArr,
-      savingsAccArr,
-      currentAcc,
-      savingsAccHistory,
-   );
-   messages.push(...expensesTransfers.messages);
-   savingsAccHistory.push(...expensesTransfers.savingsAccHistory);
+   const expensesTransfers = calcExpensesTransfers(expenseArr, savingsAccArr, currentAcc);
 
-   // Delete Duplicates in savingsAccHistory:
-   savingsAccHistory = ArrayOfObjects.deleteDuplicates(savingsAccHistory, 'id');
+   // Create Savings Account History Array:
+   const savingsAccountTransfers = [
+      ...currentAccTransfers.savingsAccountTransfers,
+      ...expensesTransfers.savingsAccountTransfers,
+   ];
+   const savingsAccHistory = updateSavingsAccHistory(savingsAccountTransfers, savingsAccArr);
 
-   // Create Distributer object:
-   const distributer = {
-      timestamp: DateHelper.toDDMMYYYY(new Date()),
-      msgs: messages,
-   };
+   // Create Messages Array
+   const messages = [...currentAccTransfers.messages, ...expensesTransfers.messages];
 
-   // Create Analytics object:
-   const analytics = {
-      totalIncomes: totalIncome,
-      totalExpenses: totalExpenses,
-      prevMonth: {
-         totalSpendings: totalIncome - currentAcc.spendings.leftover,
-         totalDisposableSpending: totalIncome - currentAcc.spendings.leftover - totalExpenses,
-         totalSavings: currentAcc.spendings.leftover,
+   // Create Distributer Array:
+   const distributer = [
+      {
+         timestamp: DateHelper.toDDMMYYYY(new Date()),
+         msgs: messages,
       },
-      timestamp: DateHelper.toDDMMYYYY(new Date()),
-   };
+   ];
+
+   // Create Analytics Array:
+   const analytics = [
+      {
+         totalIncomes: totalIncome,
+         totalExpenses: totalExpenses,
+         prevMonth: {
+            totalSpendings: totalIncome - currentAcc.spendings.leftover,
+            totalDisposableSpending: totalIncome - currentAcc.spendings.leftover - totalExpenses,
+            totalSavings: currentAcc.spendings.leftover,
+         },
+         timestamp: DateHelper.toDDMMYYYY(new Date()),
+      },
+   ];
 
    return {
-      distributer: [distributer],
+      distributer: distributer,
       savingsAccHistory: savingsAccHistory,
-      analytics: [analytics],
+      analytics: analytics,
    };
 }
 
@@ -163,11 +167,11 @@ function calcCurrentAccTransfers(
    totalIncome: number,
    totalExpense: number,
    savingsAccArr: ISavingsFormInputs[],
-   savingsAccHistory: ICalcSchema['savingsAccHistory'],
 ) {
    let salaryExpToTransferLeftoversAcc: number = 0;
    let salaryExpToSpendingAcc: number = 0;
    let messages: string[] = [];
+   let savingsAccountTransfers = [];
 
    const isLeftoverLessThanMinCushion =
       currentAcc.salaryExp.leftover < currentAcc.salaryExp.minCushion;
@@ -211,11 +215,11 @@ function calcCurrentAccTransfers(
             messages.push(leftoverToTransferToMsg);
 
             if (savingsAccToTransferTo.targetToReach) {
-               savingsAccHistory = updateSavingsAccHistory(
-                  savingsAccHistory,
-                  savingsAccToTransferTo,
-                  amountToTransfer,
-               );
+               const savingsAccHistoryObj = {
+                  id: savingsAccToTransferTo.id,
+                  amountToTransfer: amountToTransfer,
+               };
+               savingsAccountTransfers.push(savingsAccHistoryObj);
             }
          }
       }
@@ -223,7 +227,7 @@ function calcCurrentAccTransfers(
 
    return {
       messages,
-      savingsAccHistory,
+      savingsAccountTransfers,
    };
 }
 
@@ -233,10 +237,10 @@ function calcExpensesTransfers(
    expenseArr: IExpenseFormInputs[],
    savingsAccArr: ISavingsFormInputs[],
    currentAcc: IFormattedCurrentAcc,
-   savingsAccHistory: ICalcSchema['savingsAccHistory'],
 ) {
    let messages: string[] = [];
    const activeExpenses = ArrayOfObjects.filterOut(expenseArr, 'paused', 'true');
+   let savingsAccountTransfers = [];
 
    for (let i = 0; i < activeExpenses.length; i++) {
       const isExpenseTypeSavingsTransfer = activeExpenses[i].expenseType.includes('Savings');
@@ -251,11 +255,11 @@ function calcExpensesTransfers(
          );
          if (savingsAcc.targetToReach) {
             const amountToTransfer = activeExpenses[i].expenseValue;
-            savingsAccHistory = updateSavingsAccHistory(
-               savingsAccHistory,
-               savingsAcc,
-               amountToTransfer,
-            );
+            const savingsAccHistoryObj = {
+               id: savingsAcc.id,
+               amountToTransfer: amountToTransfer,
+            };
+            savingsAccountTransfers.push(savingsAccHistoryObj);
          }
          if (isPaymentTypeManual) {
             messages.push(
@@ -275,34 +279,43 @@ function calcExpensesTransfers(
    }
    return {
       messages,
-      savingsAccHistory,
+      savingsAccountTransfers,
    };
 }
 
 // --------------------------------------------------------------------------------------------------------------------- //
 
 function updateSavingsAccHistory(
-   savingsAccHistoryArr: ICalcSchema['savingsAccHistory'],
-   savingsAccToTransferTo: ISavingsFormInputs,
-   amountToTransfer: number,
-) {
-   const savingsAccHistoryArrCopy = [...savingsAccHistoryArr];
-   const doesExistInArray = savingsAccHistoryArr.find(
-      (item) => item.id === savingsAccToTransferTo.id,
+   savingsAccountTransfers: ISavingsAccountTransfers,
+   savingsAccArr: ISavingsFormInputs[],
+): ICalcSchema['savingsAccHistory'] {
+   let savingsAccHistory: ICalcSchema['savingsAccHistory'] = [];
+
+   const savingsAccHistoryObjArr = savingsAccountTransfers.reduce(
+      (acc, curr) => {
+         const doesExistInArray = acc.find((item) => item.id === curr.id);
+         if (doesExistInArray) {
+            const index = acc.findIndex((item) => item.id === curr.id);
+            acc[index].amountToTransfer = acc[index].amountToTransfer + curr.amountToTransfer;
+         }
+         if (!doesExistInArray) {
+            acc.push(curr);
+         }
+         return acc;
+      },
+      [] as { id: number; amountToTransfer: number }[],
    );
-   if (doesExistInArray) {
-      const index = savingsAccHistoryArr.findIndex((item) => item.id === savingsAccToTransferTo.id);
-      const updatedBalance = savingsAccHistoryArr[index].balance + amountToTransfer;
-      savingsAccHistoryArrCopy[index].balance = updatedBalance;
-   }
-   if (!doesExistInArray) {
-      const balance = (savingsAccToTransferTo.currentBalance || 0) + amountToTransfer;
+
+   savingsAccHistoryObjArr.forEach((item) => {
+      const savingsAcc = ArrayOfObjects.getObjWithKeyValuePair(savingsAccArr, 'id', item.id);
+      const newBalance = (savingsAcc.currentBalance || 0) + item.amountToTransfer;
       const savingsAccHistoryObj = {
-         id: savingsAccToTransferTo.id,
-         balance: balance,
+         id: savingsAcc.id,
+         balance: newBalance,
          timestamp: DateHelper.toDDMMYYYY(new Date()),
       };
-      savingsAccHistoryArrCopy.push(savingsAccHistoryObj);
-   }
-   return savingsAccHistoryArrCopy;
+      savingsAccHistory.push(savingsAccHistoryObj);
+   });
+
+   return savingsAccHistory;
 }

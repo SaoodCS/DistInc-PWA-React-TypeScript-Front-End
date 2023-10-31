@@ -42,4 +42,8 @@ export default class ArrayOfObjects {
    static filterIn<T>(arr: T[], key: keyof T, value: T[keyof T]): T[] {
       return arr.filter((obj) => obj[key] === value);
    }
+
+   static combine<T>(arr1: T[], arr2: T[]): T[] {
+      return arr1.concat(arr2);
+   }
 }
