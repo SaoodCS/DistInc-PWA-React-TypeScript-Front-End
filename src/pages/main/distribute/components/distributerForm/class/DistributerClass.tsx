@@ -11,7 +11,8 @@ import FormHelper from '../../../../../../global/helpers/react/form/FormHelper';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
 import { IIncomeFormInputs } from '../../../../details/components/Income/class/Class';
 import type { ICurrentFormInputs } from '../../../../details/components/accounts/current/class/Class';
-import { ICalcSchema } from '../../calculateDist';
+import { ICalcSchema } from '../../calculation/CalculateDist';
+
 
 export default class DistributerClass {
    constructor(currentAccounts: ICurrentFormInputs[]) {

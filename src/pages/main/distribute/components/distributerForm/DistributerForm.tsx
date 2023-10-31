@@ -11,7 +11,7 @@ import IncomeClass from '../../../details/components/Income/class/Class';
 import CurrentClass from '../../../details/components/accounts/current/class/Class';
 import SavingsClass from '../../../details/components/accounts/savings/class/Class';
 import ExpensesClass from '../../../details/components/expense/class/ExpensesClass';
-import calculateDist from '../calculateDist';
+import CalculateDist from '../calculation/CalculateDist';
 import DistributerClass from './class/DistributerClass';
 
 export default function DistributeForm(): JSX.Element {
@@ -42,7 +42,8 @@ export default function DistributeForm(): JSX.Element {
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
       if (!isFormValid) return;
-      const calculations = calculateDist(
+
+      const calculations = CalculateDist.generateSchema(
          savingsAccount || {},
          currentAccounts || {},
          incomes || {},
@@ -50,7 +51,7 @@ export default function DistributeForm(): JSX.Element {
          form,
       );
       console.log(calculations);
-      //await setCalcDistInFirestore.mutateAsync(calculations);
+      await setCalcDistInFirestore.mutateAsync(calculations);
    }
 
    return (
