@@ -38,16 +38,12 @@ export interface ICalcSchema {
    }[];
 }
 
-type IFormattedCurrentAcc = {
-   salaryExp: ICurrentFormInputs & {
+interface IFormattedCurrentAcc {
+   [key: string]: ICurrentFormInputs & {
       leftover: number;
       hasTransferLeftoversTo: boolean;
    };
-   spendings: ICurrentFormInputs & {
-      leftover: number;
-      hasTransferLeftoversTo: boolean;
-   };
-};
+}
 
 type ISavingsAccountTransfers = {
    id: number;
@@ -67,11 +63,18 @@ export default function calculateDist(
    const expenseArr = ObjectOfObjects.convertToArrayOfObj(expenses);
    const currentAcc = formatCurrentAccounts(currentAccounts, leftovers);
 
-   // Calculate Total Income & Expenses:
+   // Calculate Total Incomes & Expenses:
    const totalIncome = ArrayOfObjects.sumKeyValues(incomeArr, 'incomeValue');
    const totalExpenses = ArrayOfObjects.sumKeyValues(expenseArr, 'expenseValue');
 
-   // Current Account Transfers:
+   // Calculate Prev Month Analytics:
+   const prevMonth = {
+      totalSpendings: totalIncome - currentAcc.spendings.leftover,
+      totalDisposableSpending: totalIncome - currentAcc.spendings.leftover - totalExpenses,
+      totalSavings: currentAcc.spendings.leftover,
+   };
+
+   // Calculate Current Account Transfers:
    const currentAccTransfers = calcCurrentAccTransfers(
       currentAcc,
       totalIncome,
@@ -79,7 +82,7 @@ export default function calculateDist(
       savingsAccArr,
    );
 
-   // Expenses Transfers:
+   // Calculate Expenses Transfers:
    const expensesTransfers = calcExpensesTransfers(expenseArr, savingsAccArr, currentAcc);
 
    // Create Savings Account History Array:
@@ -92,32 +95,24 @@ export default function calculateDist(
    // Create Messages Array
    const messages = [...currentAccTransfers.messages, ...expensesTransfers.messages];
 
-   // Create Distributer Array:
-   const distributer = [
-      {
-         timestamp: DateHelper.toDDMMYYYY(new Date()),
-         msgs: messages,
-      },
-   ];
+   // Create Distributer Obj:
+   const distributer = {
+      timestamp: DateHelper.toDDMMYYYY(new Date()),
+      msgs: messages,
+   };
 
-   // Create Analytics Array:
-   const analytics = [
-      {
-         totalIncomes: totalIncome,
-         totalExpenses: totalExpenses,
-         prevMonth: {
-            totalSpendings: totalIncome - currentAcc.spendings.leftover,
-            totalDisposableSpending: totalIncome - currentAcc.spendings.leftover - totalExpenses,
-            totalSavings: currentAcc.spendings.leftover,
-         },
-         timestamp: DateHelper.toDDMMYYYY(new Date()),
-      },
-   ];
+   // Create Analytics Obj:
+   const analytics = {
+      totalIncomes: totalIncome,
+      totalExpenses: totalExpenses,
+      prevMonth: prevMonth,
+      timestamp: DateHelper.toDDMMYYYY(new Date()),
+   };
 
    return {
-      distributer: distributer,
+      distributer: [distributer],
       savingsAccHistory: savingsAccHistory,
-      analytics: analytics,
+      analytics: [analytics],
    };
 }
 
@@ -171,7 +166,7 @@ function calcCurrentAccTransfers(
    let salaryExpToTransferLeftoversAcc: number = 0;
    let salaryExpToSpendingAcc: number = 0;
    let messages: string[] = [];
-   let savingsAccountTransfers = [];
+   let savingsAccountTransfers: ISavingsAccountTransfers = [];
 
    const isLeftoverLessThanMinCushion =
       currentAcc.salaryExp.leftover < currentAcc.salaryExp.minCushion;
@@ -240,7 +235,7 @@ function calcExpensesTransfers(
 ) {
    let messages: string[] = [];
    const activeExpenses = ArrayOfObjects.filterOut(expenseArr, 'paused', 'true');
-   let savingsAccountTransfers = [];
+   let savingsAccountTransfers: ISavingsAccountTransfers = [];
 
    for (let i = 0; i < activeExpenses.length; i++) {
       const isExpenseTypeSavingsTransfer = activeExpenses[i].expenseType.includes('Savings');
