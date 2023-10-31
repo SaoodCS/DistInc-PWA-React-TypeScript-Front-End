@@ -166,29 +166,28 @@ export default class CalculateDist {
 
       for (let i = 0; i < currentAccArr.length; i++) {
          const acc = currentAccArr[i];
-         if (acc.hasTransferLeftoversTo) {
-            const savingsAccToTransferTo = ArrayOfObjects.getObjWithKeyValuePair(
-               savingsAccArr,
-               'id',
-               acc.transferLeftoversTo,
-            );
-            const transferLeftoverToAccName = savingsAccToTransferTo.accountName;
-            const amountToTransfer =
-               acc.accountType === 'Salary & Expenses'
-                  ? salaryExpToTransferLeftoversAcc
-                  : acc.leftover;
-            const leftoverToTransferToMsg = `Leftover amount to transfer from ${
-               acc.accountName
-            } to ${transferLeftoverToAccName}: ${NumberHelper.asCurrencyStr(amountToTransfer)}`;
-            messages.push(leftoverToTransferToMsg);
+         if (!acc.hasTransferLeftoversTo) continue;
+         const savingsAccToTransferTo = ArrayOfObjects.getObjWithKeyValuePair(
+            savingsAccArr,
+            'id',
+            acc.transferLeftoversTo,
+         );
+         const transferLeftoverToAccName = savingsAccToTransferTo.accountName;
+         const amountToTransfer =
+            acc.accountType === 'Salary & Expenses'
+               ? salaryExpToTransferLeftoversAcc
+               : acc.leftover;
+         const leftoverToTransferToMsg = `Leftover amount to transfer from ${
+            acc.accountName
+         } to ${transferLeftoverToAccName}: ${NumberHelper.asCurrencyStr(amountToTransfer)}`;
+         messages.push(leftoverToTransferToMsg);
 
-            if (savingsAccToTransferTo.targetToReach) {
-               const savingsAccHistoryObj = {
-                  id: savingsAccToTransferTo.id,
-                  amountToTransfer: amountToTransfer,
-               };
-               savingsAccountTransfers.push(savingsAccHistoryObj);
-            }
+         if (savingsAccToTransferTo.targetToReach) {
+            const savingsAccHistoryObj = {
+               id: savingsAccToTransferTo.id,
+               amountToTransfer: amountToTransfer,
+            };
+            savingsAccountTransfers.push(savingsAccHistoryObj);
          }
       }
       return {
@@ -204,22 +203,23 @@ export default class CalculateDist {
       currentAcc: IFormattedCurrentAcc,
    ): ICalcTransfers {
       let messages: string[] = [];
-      const activeExpenses = ArrayOfObjects.filterOut(expenseArr, 'paused', 'true');
       let savingsAccountTransfers: ISavingsAccountTransfers = [];
 
-      for (let i = 0; i < activeExpenses.length; i++) {
-         const isExpenseTypeSavingsTransfer = activeExpenses[i].expenseType.includes('Savings');
-         const isPaymentTypeManual = activeExpenses[i].paymentType === 'Manual';
+      for (let i = 0; i < expenseArr.length; i++) {
+         const expense = expenseArr[i];
+         if (expense.paused === 'true') continue; //skip expense if paused
+         const isExpenseTypeSavingsTransfer = expense.expenseType.includes('Savings');
+         const isPaymentTypeManual = expense.paymentType === 'Manual';
 
          if (isExpenseTypeSavingsTransfer) {
-            const savingsAccId = Number(activeExpenses[i].expenseType.split(':')[1]);
+            const savingsAccId = Number(expense.expenseType.split(':')[1]);
             const savingsAcc = ArrayOfObjects.getObjWithKeyValuePair(
                savingsAccArr,
                'id',
                savingsAccId,
             );
             if (savingsAcc.targetToReach) {
-               const amountToTransfer = activeExpenses[i].expenseValue;
+               const amountToTransfer = expense.expenseValue;
                const savingsAccHistoryObj = {
                   id: savingsAcc.id,
                   amountToTransfer: amountToTransfer,
@@ -230,7 +230,7 @@ export default class CalculateDist {
                messages.push(
                   `Manual Expense: Amount to transfer from ${currentAcc.salaryExp.accountName} to ${
                      savingsAcc.accountName
-                  }: ${NumberHelper.asCurrencyStr(activeExpenses[i].expenseValue)}`,
+                  }: ${NumberHelper.asCurrencyStr(expense.expenseValue)}`,
                );
             }
          }
@@ -238,8 +238,8 @@ export default class CalculateDist {
             messages.push(
                `Manual Expense: Make Payment from ${
                   currentAcc.salaryExp.accountName
-               } for expense: ${activeExpenses[i].expenseName}: ${NumberHelper.asCurrencyStr(
-                  activeExpenses[i].expenseValue,
+               } for expense: ${expense.expenseName}: ${NumberHelper.asCurrencyStr(
+                  expense.expenseValue,
                )}`,
             );
          }
