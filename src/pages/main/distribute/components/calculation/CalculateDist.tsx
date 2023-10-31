@@ -38,23 +38,6 @@ export interface ICalcSchema {
    }[];
 }
 
-interface IFormattedCurrentAcc {
-   [key: string]: ICurrentFormInputs & {
-      leftover: number;
-      hasTransferLeftoversTo: boolean;
-   };
-}
-
-type ISavingsAccountTransfers = {
-   id: number;
-   amountToTransfer: number;
-}[];
-
-type ICalcTransfers = {
-   messages: string[];
-   savingsAccountTransfers: ISavingsAccountTransfers;
-};
-
 export default class CalculateDist {
    // -- MAIN FUNCTION -- //
    static generateSchema(
@@ -323,3 +306,22 @@ export default class CalculateDist {
       return currentAcc;
    }
 }
+
+// -- PRIVATE TYPES -- //
+
+interface IFormattedCurrentAcc {
+    [key: string]: ICurrentFormInputs & {
+       leftover: number;
+       hasTransferLeftoversTo: boolean;
+    };
+ }
+ 
+ type ISavingsAccountTransfers = {
+    id: number;
+    amountToTransfer: number;
+ }[];
+ 
+ type ICalcTransfers = {
+    messages: string[];
+    savingsAccountTransfers: ISavingsAccountTransfers;
+ };
