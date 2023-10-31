@@ -39,7 +39,7 @@ export default function Distribute(): JSX.Element {
    const { data: income } = IncomeClass.useQuery.getIncomes();
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
    const {
-      data: calculations,
+      data: calcDistData,
       isLoading,
       isPaused,
       error,
@@ -47,7 +47,7 @@ export default function Distribute(): JSX.Element {
       onSuccess: () => {
          setIsBottomPanelOpen(false);
          setIsModalOpen(false);
-      }
+      },
    });
 
    useEffect(() => {
@@ -91,7 +91,6 @@ export default function Distribute(): JSX.Element {
       }
    }, [currentAccounts, income, expenses]);
 
-   
    if (isLoading && !isPaused) {
       if (!isPortableDevice) return <Loader isDisplayed />;
       return <FlatListWrapper>{JSXHelper.repeatJSX(<DetailsPlaceholder />, 7)}</FlatListWrapper>;
@@ -99,5 +98,5 @@ export default function Distribute(): JSX.Element {
    if (isPaused) return <OfflineFetch />;
    if (error) return <FetchError />;
 
-   return <>{JSON.stringify(calculations || '')}</>;
+   return <>{JSON.stringify(calcDistData || '')}</>;
 }

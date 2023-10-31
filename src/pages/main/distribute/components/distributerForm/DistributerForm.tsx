@@ -1,11 +1,12 @@
 import { useQueryClient } from '@tanstack/react-query';
+import { useContext } from 'react';
 import { StaticButton } from '../../../../../global/components/lib/button/staticButton/Style';
 import { StyledForm } from '../../../../../global/components/lib/form/form/Style';
 import InputCombination from '../../../../../global/components/lib/form/inputCombination/InputCombination';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
+import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
 import microservices from '../../../../../global/firebase/apis/microservices/microservices';
-import DateHelper from '../../../../../global/helpers/dataTypes/date/DateHelper';
 import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import useForm from '../../../../../global/hooks/useForm';
 import IncomeClass from '../../../details/components/Income/class/Class';
@@ -14,19 +15,18 @@ import SavingsClass from '../../../details/components/accounts/savings/class/Cla
 import ExpensesClass from '../../../details/components/expense/class/ExpensesClass';
 import CalculateDist from '../calculation/CalculateDist';
 import DistributerClass from './class/DistributerClass';
-import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
-import { useContext } from 'react';
 import ConfirmUpdateExistingMonth from './confirmUpdateExistingMonth/ConfirmUpdateExistingMonth';
 
 export default function DistributeForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const { apiError } = useApiErrorContext();
-   const { setIsModalOpen,setModalContent, setModalHeader, setModalZIndex } = useContext(ModalContext)
+   const { setIsModalOpen, setModalContent, setModalHeader, setModalZIndex } =
+      useContext(ModalContext);
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
    const { data: savingsAccount } = SavingsClass.useQuery.getSavingsAccounts();
    const { data: incomes } = IncomeClass.useQuery.getIncomes();
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
-   const { data: calculations } = DistributerClass.useQuery.getCalcDist();
+   const { data: calcDistData } = DistributerClass.useQuery.getCalcDist();
 
    const currentAccAsArr = ObjectOfObjects.convertToArrayOfObj(
       currentAccounts ? currentAccounts : {},
@@ -49,30 +49,22 @@ export default function DistributeForm(): JSX.Element {
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
       if (!isFormValid) return;
-      if (!calculations) return;
-
-      const todayTimestamp = DateHelper.toDDMMYYYY(new Date());
-      const todayMonth = todayTimestamp.split('/')[1];
-      const { analytics } = calculations;
-      for (const analyticsObj of analytics) {
-         const analyticsObjMonth = analyticsObj.timestamp.split('/')[1];
-         if (analyticsObjMonth === todayMonth) {
-            setIsModalOpen(true);
-            setModalHeader('Update Existing Month?');
-            setModalZIndex(999);
-            setModalContent(<ConfirmUpdateExistingMonth form = {form} />);
-            return;
-         }
+      if (!calcDistData) return;
+      if (DistributerClass.existingData.hasCurrentMonth(calcDistData)) {
+         setIsModalOpen(true);
+         setModalHeader('Update Existing Month?');
+         setModalZIndex(999);
+         setModalContent(<ConfirmUpdateExistingMonth form={form} />);
+         return;
       }
-  
-      const generatedSchema = CalculateDist.generateSchema(
+      const newCalculatedDist = CalculateDist.calculate(
          savingsAccount || {},
          currentAccounts || {},
          incomes || {},
          expenses || {},
          form,
       );
-      await setCalcDistInFirestore.mutateAsync(generatedSchema);
+      await setCalcDistInFirestore.mutateAsync(newCalculatedDist);
    }
 
    return (

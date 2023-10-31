@@ -40,7 +40,7 @@ export interface ICalcSchema {
 
 export default class CalculateDist {
    // -- MAIN FUNCTION -- //
-   static generateSchema(
+   static calculate(
       savingsAccounts: ISavingsAccountFirebase,
       currentAccounts: ICurrentAccountFirebase,
       incomes: IIncomeFirebase,
@@ -310,18 +310,18 @@ export default class CalculateDist {
 // -- PRIVATE TYPES -- //
 
 interface IFormattedCurrentAcc {
-    [key: string]: ICurrentFormInputs & {
-       leftover: number;
-       hasTransferLeftoversTo: boolean;
-    };
- }
- 
- type ISavingsAccountTransfers = {
-    id: number;
-    amountToTransfer: number;
- }[];
- 
- type ICalcTransfers = {
-    messages: string[];
-    savingsAccountTransfers: ISavingsAccountTransfers;
- };
+   [key: string]: ICurrentFormInputs & {
+      leftover: number;
+      hasTransferLeftoversTo: boolean;
+   };
+}
+
+type ISavingsAccountTransfers = {
+   id: number;
+   amountToTransfer: number;
+}[];
+
+type ICalcTransfers = {
+   messages: string[];
+   savingsAccountTransfers: ISavingsAccountTransfers;
+};

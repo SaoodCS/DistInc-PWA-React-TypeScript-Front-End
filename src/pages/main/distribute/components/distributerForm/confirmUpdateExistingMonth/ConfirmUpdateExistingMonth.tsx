@@ -23,7 +23,6 @@ export default function ConfirmUpdateExistingMonth(props: IConfirmUpdateExisting
    const { data: savingsAccount } = SavingsClass.useQuery.getSavingsAccounts();
    const { data: incomes } = IncomeClass.useQuery.getIncomes();
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
-   const { data: calculations } = DistributerClass.useQuery.getCalcDist();
    const { isDarkTheme } = useThemeContext();
    const queryClient = useQueryClient();
 
@@ -35,14 +34,14 @@ export default function ConfirmUpdateExistingMonth(props: IConfirmUpdateExisting
    });
 
    async function handleSubmit() {
-      const generatedSchema = CalculateDist.generateSchema(
+      const newCalculatedDist = CalculateDist.calculate(
          savingsAccount || {},
          currentAccounts || {},
          incomes || {},
          expenses || {},
          form,
       );
-      await setCalcDistInFirestore.mutateAsync(generatedSchema);
+      await setCalcDistInFirestore.mutateAsync(newCalculatedDist);
    }
 
    return (
