@@ -195,32 +195,32 @@ function calcCurrentAccTransfers(
 
    messages.push(salaryExpToSpendingAccMsg);
 
-   for (const accountKey in currentAcc) {
-      if (currentAcc.hasOwnProperty(accountKey)) {
-         const acc = currentAcc[accountKey as keyof typeof currentAcc];
-         if (acc.hasTransferLeftoversTo) {
-            const savingsAccToTransferTo = ArrayOfObjects.getObjWithKeyValuePair(
-               savingsAccArr,
-               'id',
-               acc.transferLeftoversTo,
-            );
-            const transferLeftoverToAccName = savingsAccToTransferTo.accountName;
-            const amountToTransfer =
-               acc.accountType === 'Salary & Expenses'
-                  ? salaryExpToTransferLeftoversAcc
-                  : acc.leftover;
-            const leftoverToTransferToMsg = `Leftover amount to transfer from ${
-               acc.accountName
-            } to ${transferLeftoverToAccName}: ${NumberHelper.asCurrencyStr(amountToTransfer)}`;
-            messages.push(leftoverToTransferToMsg);
+   const currentAccArr = ObjectOfObjects.convertToArrayOfObj(currentAcc);
 
-            if (savingsAccToTransferTo.targetToReach) {
-               const savingsAccHistoryObj = {
-                  id: savingsAccToTransferTo.id,
-                  amountToTransfer: amountToTransfer,
-               };
-               savingsAccountTransfers.push(savingsAccHistoryObj);
-            }
+   for (let i = 0; i < currentAccArr.length; i++) {
+      const acc = currentAccArr[i];
+      if (acc.hasTransferLeftoversTo) {
+         const savingsAccToTransferTo = ArrayOfObjects.getObjWithKeyValuePair(
+            savingsAccArr,
+            'id',
+            acc.transferLeftoversTo,
+         );
+         const transferLeftoverToAccName = savingsAccToTransferTo.accountName;
+         const amountToTransfer =
+            acc.accountType === 'Salary & Expenses'
+               ? salaryExpToTransferLeftoversAcc
+               : acc.leftover;
+         const leftoverToTransferToMsg = `Leftover amount to transfer from ${
+            acc.accountName
+         } to ${transferLeftoverToAccName}: ${NumberHelper.asCurrencyStr(amountToTransfer)}`;
+         messages.push(leftoverToTransferToMsg);
+
+         if (savingsAccToTransferTo.targetToReach) {
+            const savingsAccHistoryObj = {
+               id: savingsAccToTransferTo.id,
+               amountToTransfer: amountToTransfer,
+            };
+            savingsAccountTransfers.push(savingsAccHistoryObj);
          }
       }
    }
