@@ -43,7 +43,12 @@ export default function Distribute(): JSX.Element {
       isLoading,
       isPaused,
       error,
-   } = DistributerClass.useQuery.getCalcDist();
+   } = DistributerClass.useQuery.getCalcDist({
+      onSuccess: () => {
+         setIsBottomPanelOpen(false);
+         setIsModalOpen(false);
+      }
+   });
 
    useEffect(() => {
       if (

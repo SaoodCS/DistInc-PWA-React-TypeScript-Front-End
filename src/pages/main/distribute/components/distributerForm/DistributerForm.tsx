@@ -5,6 +5,7 @@ import InputCombination from '../../../../../global/components/lib/form/inputCom
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
 import microservices from '../../../../../global/firebase/apis/microservices/microservices';
+import DateHelper from '../../../../../global/helpers/dataTypes/date/DateHelper';
 import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import useForm from '../../../../../global/hooks/useForm';
 import IncomeClass from '../../../details/components/Income/class/Class';
@@ -13,14 +14,19 @@ import SavingsClass from '../../../details/components/accounts/savings/class/Cla
 import ExpensesClass from '../../../details/components/expense/class/ExpensesClass';
 import CalculateDist from '../calculation/CalculateDist';
 import DistributerClass from './class/DistributerClass';
+import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
+import { useContext } from 'react';
+import ConfirmUpdateExistingMonth from './confirmUpdateExistingMonth/ConfirmUpdateExistingMonth';
 
 export default function DistributeForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const { apiError } = useApiErrorContext();
+   const { setIsModalOpen,setModalContent, setModalHeader, setModalZIndex } = useContext(ModalContext)
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
    const { data: savingsAccount } = SavingsClass.useQuery.getSavingsAccounts();
    const { data: incomes } = IncomeClass.useQuery.getIncomes();
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
+   const { data: calculations } = DistributerClass.useQuery.getCalcDist();
 
    const currentAccAsArr = ObjectOfObjects.convertToArrayOfObj(
       currentAccounts ? currentAccounts : {},
@@ -36,22 +42,37 @@ export default function DistributeForm(): JSX.Element {
    const setCalcDistInFirestore = DistributerClass.useMutation.setCalcDist({
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
-         queryClient.invalidateQueries({queryKey: [microservices.getSavingsAccount.name]});
+         queryClient.invalidateQueries({ queryKey: [microservices.getSavingsAccount.name] });
       },
    });
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
       if (!isFormValid) return;
+      if (!calculations) return;
 
-      const calculations = CalculateDist.generateSchema(
+      const todayTimestamp = DateHelper.toDDMMYYYY(new Date());
+      const todayMonth = todayTimestamp.split('/')[1];
+      const { analytics } = calculations;
+      for (const analyticsObj of analytics) {
+         const analyticsObjMonth = analyticsObj.timestamp.split('/')[1];
+         if (analyticsObjMonth === todayMonth) {
+            setIsModalOpen(true);
+            setModalHeader('Update Existing Month?');
+            setModalZIndex(999);
+            setModalContent(<ConfirmUpdateExistingMonth form = {form} />);
+            return;
+         }
+      }
+  
+      const generatedSchema = CalculateDist.generateSchema(
          savingsAccount || {},
          currentAccounts || {},
          incomes || {},
          expenses || {},
          form,
       );
-      await setCalcDistInFirestore.mutateAsync(calculations);
+      await setCalcDistInFirestore.mutateAsync(generatedSchema);
    }
 
    return (
