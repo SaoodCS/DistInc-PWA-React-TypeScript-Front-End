@@ -36,6 +36,7 @@ export default function DistributeForm(): JSX.Element {
    const setCalcDistInFirestore = DistributerClass.useMutation.setCalcDist({
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
+         queryClient.invalidateQueries({queryKey: [microservices.getSavingsAccount.name]});
       },
    });
 
@@ -50,7 +51,6 @@ export default function DistributeForm(): JSX.Element {
          expenses || {},
          form,
       );
-      console.log(calculations);
       await setCalcDistInFirestore.mutateAsync(calculations);
    }
 
