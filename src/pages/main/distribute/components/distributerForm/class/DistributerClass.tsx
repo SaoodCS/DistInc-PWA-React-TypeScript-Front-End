@@ -2,6 +2,7 @@ import {
    UseMutationOptions,
    UseMutationResult,
    UseQueryOptions,
+   UseQueryResult,
    useQuery,
 } from '@tanstack/react-query';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
@@ -12,7 +13,6 @@ import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutat
 import { IIncomeFormInputs } from '../../../../details/components/Income/class/Class';
 import type { ICurrentFormInputs } from '../../../../details/components/accounts/current/class/Class';
 import { ICalcSchema } from '../../calculation/CalculateDist';
-
 
 export default class DistributerClass {
    constructor(currentAccounts: ICurrentFormInputs[]) {
@@ -74,7 +74,9 @@ export default class DistributerClass {
       };
    }
 
-   private static useCalcDistQuery(options: UseQueryOptions<ICalcSchema>) {
+   private static useCalcDistQuery(
+      options: UseQueryOptions<ICalcSchema> = {},
+   ): UseQueryResult<ICalcSchema, unknown> {
       return useQuery({
          queryKey: [microservices.getCalculations.name],
          queryFn: () =>

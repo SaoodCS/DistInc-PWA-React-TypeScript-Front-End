@@ -3,17 +3,24 @@ import { Add } from '@styled-icons/fluentui-system-filled/Add';
 import { useContext, useEffect } from 'react';
 import { HeaderRightElWrapper } from '../../../global/components/app/layout/header/Header';
 import { TextBtn } from '../../../global/components/lib/button/textBtn/Style';
+import FetchError from '../../../global/components/lib/fetch/fetchError/FetchError';
+import OfflineFetch from '../../../global/components/lib/fetch/offlineFetch/offlineFetch';
+import { FlatListWrapper } from '../../../global/components/lib/flatList/Style';
+import DetailsPlaceholder from '../../../global/components/lib/flatList/placeholder/Placeholder';
+import Loader from '../../../global/components/lib/loader/Loader';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../global/context/widget/bottomPanel/BottomPanelContext';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
 import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 import { ModalContext } from '../../../global/context/widget/modal/ModalContext';
+import JSXHelper from '../../../global/helpers/dataTypes/jsx/jsxHelper';
 import ObjectOfObjects from '../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import IncomeClass from '../details/components/Income/class/Class';
 import CurrentClass from '../details/components/accounts/current/class/Class';
 import ExpensesClass from '../details/components/expense/class/ExpensesClass';
 import HelpRequirements from './components/HelpRequirements';
 import DistributeForm from './components/distributerForm/DistributerForm';
+import DistributerClass from './components/distributerForm/class/DistributerClass';
 
 export default function Distribute(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Distribute');
@@ -31,6 +38,12 @@ export default function Distribute(): JSX.Element {
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
    const { data: income } = IncomeClass.useQuery.getIncomes();
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
+   const {
+      data: calculations,
+      isLoading,
+      isPaused,
+      error,
+   } = DistributerClass.useQuery.getCalcDist();
 
    useEffect(() => {
       if (
@@ -73,5 +86,13 @@ export default function Distribute(): JSX.Element {
       }
    }, [currentAccounts, income, expenses]);
 
-   return <>History of Distributed Incomes Goes Here</>;
+   
+   if (isLoading && !isPaused) {
+      if (!isPortableDevice) return <Loader isDisplayed />;
+      return <FlatListWrapper>{JSXHelper.repeatJSX(<DetailsPlaceholder />, 7)}</FlatListWrapper>;
+   }
+   if (isPaused) return <OfflineFetch />;
+   if (error) return <FetchError />;
+
+   return <>{JSON.stringify(calculations || '')}</>;
 }
