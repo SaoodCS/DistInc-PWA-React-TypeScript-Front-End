@@ -236,11 +236,12 @@ function calcExpensesTransfers(
    savingsAccHistory: ICalcSchema['savingsAccHistory'],
 ) {
    let messages: string[] = [];
+   const activeExpenses = ArrayOfObjects.filterOut(expenseArr, 'paused', 'true');
 
-   const activeExpenses = expenseArr.filter((exp) => exp.paused === 'false');
    for (let i = 0; i < activeExpenses.length; i++) {
-      const isExpenseTypeSavingsTransfer =
-         activeExpenses[i].expenseType.includes('Savings Transfer');
+      const isExpenseTypeSavingsTransfer = activeExpenses[i].expenseType.includes('Savings');
+      const isPaymentTypeManual = activeExpenses[i].paymentType === 'Manual';
+
       if (isExpenseTypeSavingsTransfer) {
          const savingsAccId = Number(activeExpenses[i].expenseType.split(':')[1]);
          const savingsAcc = ArrayOfObjects.getObjWithKeyValuePair(
@@ -256,7 +257,7 @@ function calcExpensesTransfers(
                amountToTransfer,
             );
          }
-         if (activeExpenses[i].paymentType === 'Manual') {
+         if (isPaymentTypeManual) {
             messages.push(
                `Manual Expense: Amount to transfer from ${currentAcc.salaryExp.accountName} to ${
                   savingsAcc.accountName
@@ -264,7 +265,7 @@ function calcExpensesTransfers(
             );
          }
       }
-      if (!isExpenseTypeSavingsTransfer && activeExpenses[i].paymentType === 'Manual') {
+      if (!isExpenseTypeSavingsTransfer && isPaymentTypeManual) {
          messages.push(
             `Manual Expense: Make Payment from ${currentAcc.salaryExp.accountName} for expense: ${
                activeExpenses[i].expenseName

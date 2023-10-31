@@ -34,4 +34,12 @@ export default class ArrayOfObjects {
    static deleteDuplicates<T>(arr: T[], key: keyof T): T[] {
       return arr.filter((obj, index, self) => self.findIndex((o) => o[key] === obj[key]) === index);
    }
+
+   static filterOut<T>(arr: T[], key: keyof T, value: T[keyof T]): T[] {
+      return arr.filter((obj) => obj[key] !== value);
+   }
+
+   static filterIn<T>(arr: T[], key: keyof T, value: T[keyof T]): T[] {
+      return arr.filter((obj) => obj[key] === value);
+   }
 }
