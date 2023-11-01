@@ -14,6 +14,7 @@ import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutat
 import { IIncomeFormInputs } from '../../../../details/components/Income/class/Class';
 import type { ICurrentFormInputs } from '../../../../details/components/accounts/current/class/Class';
 import { ICalcSchema } from '../../calculation/CalculateDist';
+import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 
 export default class DistributerClass {
    constructor(currentAccounts: ICurrentFormInputs[]) {
@@ -125,6 +126,8 @@ export default class DistributerClass {
 
    static existingData = {
       hasCurrentMonth: (calcDistData: ICalcSchema): boolean => {
+         if(ObjectOfObjects.isEmpty(calcDistData)) return false;
+         if (Object.keys(calcDistData).length === 0) return false;
          const currentMonth = DateHelper.toDDMMYYYY(new Date()).split('/')[1];
          const { analytics } = calcDistData;
          for (const analyticsObj of analytics) {

@@ -46,8 +46,8 @@ export default class ObjectOfObjects {
       return newObj as T;
    }
 
-   // check if objectOfObjects is {} i.e. empty:
-   static isEmpty<T extends Record<string, T[keyof T]>>(obj: T): boolean {
+   // create an isEmpty function that doesn't lead to the error "Index signature for type 'string' is missing in type 'ICalcSchema'.":
+   static isEmpty<T extends Record<keyof T, T[keyof T]>>(obj: T): boolean {
       return Object.keys(obj).length === 0;
    }
 }

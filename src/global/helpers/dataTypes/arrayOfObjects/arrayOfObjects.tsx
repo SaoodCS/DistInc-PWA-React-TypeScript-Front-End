@@ -27,6 +27,10 @@ export default class ArrayOfObjects {
       return arr.find((obj) => obj[key] === value) as T;
    }
 
+   static getObjectsWithKeyValuePair<T>(arr: T[], key: keyof T, value: T[keyof T]): T[] {
+      return arr.filter((obj) => obj[key] === value) as T[];
+   }
+
    static sumKeyValues<T>(arr: T[], key: keyof T): number {
       return arr.reduce((acc, curr) => acc + Number(curr[key]), 0);
    }
