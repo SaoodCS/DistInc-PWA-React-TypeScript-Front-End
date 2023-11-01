@@ -8,12 +8,12 @@ import { useQuery } from '@tanstack/react-query';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
+import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import type { InputArray } from '../../../../../../global/helpers/react/form/FormHelper';
 import FormHelper from '../../../../../../global/helpers/react/form/FormHelper';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
 import type { ICurrentFormInputs } from '../../../../details/components/accounts/current/class/Class';
 import type { ICalcSchema } from '../../calculation/CalculateDist';
-import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 
 export default class DistributerClass {
    constructor(currentAccounts: ICurrentFormInputs[]) {
@@ -126,9 +126,9 @@ export default class DistributerClass {
    static existingData = {
       hasCurrentMonth: (calcDistData: ICalcSchema): boolean => {
          if (ObjectOfObjects.isEmpty(calcDistData)) return false;
-         if (Object.keys(calcDistData).length === 0) return false;
          const currentMonth = DateHelper.toDDMMYYYY(new Date()).split('/')[1];
          const { analytics } = calcDistData;
+         if (!analytics) return false;
          for (const analyticsObj of analytics) {
             const analyticsObjMonth = analyticsObj.timestamp.split('/')[1];
             if (analyticsObjMonth === currentMonth) return true;

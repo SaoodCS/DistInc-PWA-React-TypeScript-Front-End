@@ -2,7 +2,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { StaticButton } from '../../../../../../../global/components/lib/button/staticButton/Style';
 import { StyledForm } from '../../../../../../../global/components/lib/form/form/Style';
-import InputComponent from '../../../../../../../global/components/lib/form/input/Input';
+import InputCombination from '../../../../../../../global/components/lib/form/inputCombination/InputCombination';
 import ConditionalRender from '../../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
@@ -10,7 +10,6 @@ import microservices from '../../../../../../../global/firebase/apis/microservic
 import useForm from '../../../../../../../global/hooks/useForm';
 import type { ISavingsFormInputs } from '../class/Class';
 import SavingsClass from '../class/Class';
-import InputCombination from '../../../../../../../global/components/lib/form/inputCombination/InputCombination';
 
 interface ISavingsFormComponent {
    inputValues?: ISavingsFormInputs;
@@ -31,6 +30,7 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
    const setSavingAccountInFirestore = SavingsClass.useMutation.setSavingsAccount({
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: [microservices.getSavingsAccount.name] });
+         queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
       },
    });
 

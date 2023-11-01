@@ -65,6 +65,7 @@ export default function DistributeForm(): JSX.Element {
          expenses || {},
          form,
       );
+      console.log(newCalculatedDist);
       await setCalcDistInFirestore.mutateAsync(newCalculatedDist);
    }
 

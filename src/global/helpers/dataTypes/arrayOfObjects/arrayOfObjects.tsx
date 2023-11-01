@@ -50,4 +50,8 @@ export default class ArrayOfObjects {
    static combine<T>(arr1: T[], arr2: T[]): T[] {
       return arr1.concat(arr2);
    }
+
+   static isEmpty<T>(arr: T[]): boolean {
+      return arr.length === 0;
+   }
 }
