@@ -18,6 +18,7 @@ export interface ISavingsFormInputs {
    accountName: string;
    targetToReach: OptionalNumberInput;
    currentBalance: OptionalNumberInput;
+   isTracked: 'true' | 'false';
    id: number;
 }
 
@@ -39,6 +40,24 @@ export default class SavingsClass {
             if (value.length > 30) return 'Account name must be less than 30 characters long';
             if (!/^[a-zA-Z0-9 ]+$/.test(value))
                return 'Account name must only contain letters, numbers and spaces';
+            return true;
+         },
+      },
+      {
+         name: 'isTracked',
+         id: 'savings-is-tracked',
+         placeholder: 'Track Balance?',
+         type: 'string',
+         isRequired: true,
+         isDropDown: true,
+         dropDownOptions: [
+            { value: 'true', label: 'Yes' },
+            { value: 'false', label: 'No' },
+         ],
+         validator: (value: string): string | true => {
+            if (value !== 'true' && value !== 'false') {
+               return 'Please choose if you want to track this account';
+            }
             return true;
          },
       },

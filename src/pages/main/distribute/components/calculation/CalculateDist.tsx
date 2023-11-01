@@ -165,7 +165,7 @@ export default class CalculateDist {
          } to ${transferLeftoverToAccName}: ${NumberHelper.asCurrencyStr(amountToTransfer)}`;
          messages.push(leftoverToTransferToMsg);
 
-         if (savingsAccToTransferTo.targetToReach) {
+         if (savingsAccToTransferTo.isTracked === 'true') {
             const savingsAccHistoryObj = {
                id: savingsAccToTransferTo.id,
                amountToTransfer: amountToTransfer,
@@ -201,7 +201,7 @@ export default class CalculateDist {
                'id',
                savingsAccId,
             );
-            if (savingsAcc.targetToReach) {
+            if (savingsAcc.isTracked === 'true') {
                const amountToTransfer = expense.expenseValue;
                const savingsAccHistoryObj = {
                   id: savingsAcc.id,

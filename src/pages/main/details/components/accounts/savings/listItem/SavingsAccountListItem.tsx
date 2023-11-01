@@ -54,6 +54,7 @@ export default function SavingsAccountListItem(props: ISavingsAccountListItem): 
          account: isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt,
          type: isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent,
          target: isDarkTheme ? Color.darkThm.error : Color.lightThm.error,
+         tracked: isDarkTheme ? Color.darkThm.success : Color.lightThm.success,
       };
       return Color.setRgbOpacity(mapper[tag], 0.4);
    }
@@ -76,6 +77,9 @@ export default function SavingsAccountListItem(props: ISavingsAccountListItem): 
                   <Tag bgColor={tagColor('type')}>Savings</Tag>
                   <ConditionalRender condition={!!item.targetToReach}>
                      <Tag bgColor={tagColor('target')}>{`Target: £${item.targetToReach}`}</Tag>
+                  </ConditionalRender>
+                  <ConditionalRender condition={item.isTracked === 'true'}>
+                     <Tag bgColor={tagColor('tracked')}>Tracked</Tag>
                   </ConditionalRender>
                </SecondRowTagsWrapper>
             </FlatListItem>
