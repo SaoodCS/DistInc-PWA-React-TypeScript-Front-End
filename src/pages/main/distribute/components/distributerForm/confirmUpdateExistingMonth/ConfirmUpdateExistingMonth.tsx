@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { useQueryClient } from '@tanstack/react-query';
 import { TextBtn } from '../../../../../../global/components/lib/button/textBtn/Style';
 import { TextColourizer } from '../../../../../../global/components/lib/font/textColorizer/TextColourizer';
@@ -17,7 +18,9 @@ interface IConfirmUpdateExistingMonthProps {
    };
 }
 
-export default function ConfirmUpdateExistingMonth(props: IConfirmUpdateExistingMonthProps) {
+export default function ConfirmUpdateExistingMonth(
+   props: IConfirmUpdateExistingMonthProps,
+): JSX.Element {
    const { form } = props;
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
    const { data: savingsAccount } = SavingsClass.useQuery.getSavingsAccounts();
@@ -33,7 +36,7 @@ export default function ConfirmUpdateExistingMonth(props: IConfirmUpdateExisting
       },
    });
 
-   async function handleSubmit() {
+   async function handleSubmit(): Promise<void> {
       const newCalculatedDist = CalculateDist.calculate(
          savingsAccount || {},
          currentAccounts || {},

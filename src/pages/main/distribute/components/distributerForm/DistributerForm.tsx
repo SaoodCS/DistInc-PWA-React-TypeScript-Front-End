@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { useQueryClient } from '@tanstack/react-query';
 import { useContext } from 'react';
 import { StaticButton } from '../../../../../global/components/lib/button/staticButton/Style';

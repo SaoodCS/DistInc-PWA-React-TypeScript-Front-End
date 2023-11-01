@@ -2,16 +2,16 @@ import ArrayOfObjects from '../../../../../global/helpers/dataTypes/arrayOfObjec
 import DateHelper from '../../../../../global/helpers/dataTypes/date/DateHelper';
 import NumberHelper from '../../../../../global/helpers/dataTypes/number/NumberHelper';
 import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
-import { IIncomeFirebase } from '../../../details/components/Income/class/Class';
-import {
+import type { IIncomeFirebase } from '../../../details/components/Income/class/Class';
+import type {
    ICurrentAccountFirebase,
    ICurrentFormInputs,
 } from '../../../details/components/accounts/current/class/Class';
-import {
+import type {
    ISavingsAccountFirebase,
    ISavingsFormInputs,
 } from '../../../details/components/accounts/savings/class/Class';
-import {
+import type {
    IExpenseFormInputs,
    IExpensesFirebase,
 } from '../../../details/components/expense/class/ExpensesClass';
@@ -118,8 +118,8 @@ export default class CalculateDist {
    ): ICalcTransfers {
       let salaryExpToTransferLeftoversAcc: number = 0;
       let salaryExpToSpendingAcc: number = 0;
-      let messages: string[] = [];
-      let savingsAccountTransfers: ISavingsAccountTransfers = [];
+      const messages: string[] = [];
+      const savingsAccountTransfers: ISavingsAccountTransfers = [];
 
       const isLeftoverLessThanMinCushion =
          currentAcc.salaryExp.leftover < currentAcc.salaryExp.minCushion;
@@ -185,8 +185,8 @@ export default class CalculateDist {
       savingsAccArr: ISavingsFormInputs[],
       currentAcc: IFormattedCurrentAcc,
    ): ICalcTransfers {
-      let messages: string[] = [];
-      let savingsAccountTransfers: ISavingsAccountTransfers = [];
+      const messages: string[] = [];
+      const savingsAccountTransfers: ISavingsAccountTransfers = [];
 
       for (let i = 0; i < expenseArr.length; i++) {
          const expense = expenseArr[i];
@@ -238,7 +238,7 @@ export default class CalculateDist {
       savingsAccountTransfers: ISavingsAccountTransfers,
       savingsAccArr: ISavingsFormInputs[],
    ): ICalcSchema['savingsAccHistory'] {
-      let savingsAccHistory: ICalcSchema['savingsAccHistory'] = [];
+      const savingsAccHistory: ICalcSchema['savingsAccHistory'] = [];
       const savingsAccHistoryObjArr = savingsAccountTransfers.reduce(
          (acc, curr) => {
             const doesExistInArray = acc.find((item) => item.id === curr.id);

@@ -1,19 +1,18 @@
-import {
+import type {
    UseMutationOptions,
    UseMutationResult,
    UseQueryOptions,
    UseQueryResult,
-   useQuery,
 } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import type { InputArray } from '../../../../../../global/helpers/react/form/FormHelper';
 import FormHelper from '../../../../../../global/helpers/react/form/FormHelper';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
-import { IIncomeFormInputs } from '../../../../details/components/Income/class/Class';
 import type { ICurrentFormInputs } from '../../../../details/components/accounts/current/class/Class';
-import { ICalcSchema } from '../../calculation/CalculateDist';
+import type { ICalcSchema } from '../../calculation/CalculateDist';
 import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 
 export default class DistributerClass {
@@ -126,7 +125,7 @@ export default class DistributerClass {
 
    static existingData = {
       hasCurrentMonth: (calcDistData: ICalcSchema): boolean => {
-         if(ObjectOfObjects.isEmpty(calcDistData)) return false;
+         if (ObjectOfObjects.isEmpty(calcDistData)) return false;
          if (Object.keys(calcDistData).length === 0) return false;
          const currentMonth = DateHelper.toDDMMYYYY(new Date()).split('/')[1];
          const { analytics } = calcDistData;
