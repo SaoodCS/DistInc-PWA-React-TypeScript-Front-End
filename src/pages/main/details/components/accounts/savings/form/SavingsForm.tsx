@@ -10,6 +10,7 @@ import microservices from '../../../../../../../global/firebase/apis/microservic
 import useForm from '../../../../../../../global/hooks/useForm';
 import type { ISavingsFormInputs } from '../class/Class';
 import SavingsClass from '../class/Class';
+import InputCombination from '../../../../../../../global/components/lib/form/inputCombination/InputCombination';
 
 interface ISavingsFormComponent {
    inputValues?: ISavingsFormInputs;
@@ -55,7 +56,7 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
    return (
       <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
          {SavingsClass.form.inputs.map((input) => (
-            <InputComponent
+            <InputCombination
                placeholder={input.placeholder}
                type={input.type}
                name={input.name}
@@ -66,6 +67,7 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
                error={errors[input.name]}
                id={input.id}
                key={input.id}
+               dropDownOptions={input.dropDownOptions}
             />
          ))}
          <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>
