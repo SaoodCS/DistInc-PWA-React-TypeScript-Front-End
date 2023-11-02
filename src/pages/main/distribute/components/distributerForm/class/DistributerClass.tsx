@@ -27,7 +27,7 @@ export default class DistributerClass {
          return {
             name: currentAccount.id,
             id: `leftovers-${currentAccount.accountName}`,
-            placeholder: `${currentAccount.accountName} Leftover Amount`,
+            placeholder: `${currentAccount.accountName} Leftover (Before Monthly Wage)`,
             type: 'number',
             isRequired: true,
             validator: (value: number): string | true => {
