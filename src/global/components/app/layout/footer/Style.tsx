@@ -52,4 +52,5 @@ export const FooterContainer = styled.div<{ isDarkTheme: boolean }>`
    bottom: 0px;
    border-top-left-radius: 10px;
    border-top-right-radius: 10px;
+   background-color: ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.bg : Color.lightThm.bg)};
 `;

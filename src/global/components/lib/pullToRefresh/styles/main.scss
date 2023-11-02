@@ -2,9 +2,13 @@
 .ptr__children {
   height: 100%;
   width: 100%;
-  overflow: hidden;
+  //overflow: hidden;
   -webkit-overflow-scrolling: touch;
   position: relative;
+  overflow:scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .ptr {

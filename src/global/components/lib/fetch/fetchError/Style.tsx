@@ -11,15 +11,19 @@ export const ErrorMsg = styled.div<{ isDarkTheme: boolean }>`
 `;
 
 export const FetchErrorWrapper = styled.div`
-   height: 5em;
    display: flex;
    flex-direction: column;
    justify-content: center;
    align-items: center;
    width: 100%;
+   box-sizing: border-box;
+   & > * {
+      margin-top: 1em;
+   }
 `;
 
 export const ErrorIcon = styled(Error)<{ darktheme: string }>`
+   height: 5em;
    color: ${({ darktheme }) =>
       darktheme === 'true'
          ? Color.setRgbOpacity(Color.darkThm.error, 0.6)
