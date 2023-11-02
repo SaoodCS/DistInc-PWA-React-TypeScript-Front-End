@@ -2,11 +2,14 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useContext } from 'react';
 import { StaticButton } from '../../../../../global/components/lib/button/staticButton/Style';
+import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { StyledForm } from '../../../../../global/components/lib/form/form/Style';
 import InputCombination from '../../../../../global/components/lib/form/inputCombination/InputCombination';
+import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
 import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
+import Color from '../../../../../global/css/colors';
 import microservices from '../../../../../global/firebase/apis/microservices/microservices';
 import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import useForm from '../../../../../global/hooks/useForm';
@@ -16,7 +19,6 @@ import SavingsClass from '../../../details/components/accounts/savings/class/Cla
 import ExpensesClass from '../../../details/components/expense/class/ExpensesClass';
 import CalculateDist from '../calculation/CalculateDist';
 import DistributerClass from './class/DistributerClass';
-import ConfirmUpdateExistingMonth from './confirmUpdateExistingMonth/ConfirmUpdateExistingMonth';
 
 export default function DistributeForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
@@ -47,17 +49,15 @@ export default function DistributeForm(): JSX.Element {
       },
    });
 
+   function showOverwriteMsg() {
+      if (!calcDistData) return false;
+      if (DistributerClass.existingData.hasCurrentMonth(calcDistData)) return true;
+      return false;
+   }
+
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
       if (!isFormValid) return;
-      if (!calcDistData) return;
-      if (DistributerClass.existingData.hasCurrentMonth(calcDistData)) {
-         setIsModalOpen(true);
-         setModalHeader('Update Existing Month?');
-         setModalZIndex(999);
-         setModalContent(<ConfirmUpdateExistingMonth form={form} />);
-         return;
-      }
       const newCalculatedDist = CalculateDist.calculate(
          savingsAccount || {},
          currentAccounts || {},
@@ -70,25 +70,35 @@ export default function DistributeForm(): JSX.Element {
    }
 
    return (
-      <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
-         {currentAccounts &&
-            dist.form.inputs.map((input) => (
-               <InputCombination
-                  key={input.id}
-                  placeholder={input.placeholder}
-                  name={input.name}
-                  isRequired={input.isRequired}
-                  autoComplete={input.autoComplete}
-                  handleChange={handleChange}
-                  error={errors[input.name]}
-                  id={input.id}
-                  type={input.type}
-                  value={form[input.name]}
-               />
-            ))}
-         <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>
-            Distribute
-         </StaticButton>
-      </StyledForm>
+      <>
+         <ConditionalRender condition={showOverwriteMsg()}>
+            <TextColourizer
+               color={isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning}
+               fontSize="0.85em"
+            >
+               Continuing will overwrite the current month as it has already been distributed.
+            </TextColourizer>
+         </ConditionalRender>
+         <StyledForm onSubmit={handleSubmit} apiError={apiError}>
+            {currentAccounts &&
+               dist.form.inputs.map((input) => (
+                  <InputCombination
+                     key={input.id}
+                     placeholder={input.placeholder}
+                     name={input.name}
+                     isRequired={input.isRequired}
+                     autoComplete={input.autoComplete}
+                     handleChange={handleChange}
+                     error={errors[input.name]}
+                     id={input.id}
+                     type={input.type}
+                     value={form[input.name]}
+                  />
+               ))}
+            <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>
+               Distribute
+            </StaticButton>
+         </StyledForm>
+      </>
    );
 }

@@ -9,7 +9,6 @@ import { FlatListWrapper } from '../../../global/components/lib/flatList/Style';
 import DetailsPlaceholder from '../../../global/components/lib/flatList/placeholder/Placeholder';
 import Loader from '../../../global/components/lib/loader/Loader';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
-import { BottomPanelContext } from '../../../global/context/widget/bottomPanel/BottomPanelContext';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
 import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 import { ModalContext } from '../../../global/context/widget/modal/ModalContext';
@@ -27,12 +26,6 @@ export default function Distribute(): JSX.Element {
    HeaderHooks.useOnUnMount.resetHeaderRightEl();
    const { setHeaderRightElement } = useHeaderContext();
    const { isDarkTheme, isPortableDevice } = useThemeContext();
-   const {
-      setIsBottomPanelOpen,
-      setBottomPanelContent,
-      setBottomPanelHeading,
-      setBottomPanelZIndex,
-   } = useContext(BottomPanelContext);
    const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader } =
       useContext(ModalContext);
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
@@ -45,7 +38,6 @@ export default function Distribute(): JSX.Element {
       error,
    } = DistributerClass.useQuery.getCalcDist({
       onSuccess: () => {
-         setIsBottomPanelOpen(false);
          setIsModalOpen(false);
       },
    });
@@ -56,25 +48,20 @@ export default function Distribute(): JSX.Element {
          income || {},
          expenses || {},
       );
-      const allReqValid = ArrayOfObjects.doAllObjectsHaveKeyValuePair(reqCheck, 'isValid', true);
+      const isAllReqValid = ArrayOfObjects.doAllObjectsHaveKeyValuePair(reqCheck, 'isValid', true);
       const iconHeight = isPortableDevice ? '1.5em' : '1em';
-      function handleRightElClick() {
-         if (allReqValid) {
-            setBottomPanelHeading('Distribute');
-            setBottomPanelContent(<DistributeForm />);
-            setBottomPanelZIndex(100);
-            setIsBottomPanelOpen(true);
-         } else {
-            setModalHeader('Requirements');
-            setModalContent(<HelpRequirements />);
-            setModalZIndex(100);
-            setIsModalOpen(true);
-         }
-      }
       setHeaderRightElement(
          <HeaderRightElWrapper>
-            <TextBtn onClick={() => handleRightElClick()} isDarkTheme={isDarkTheme}>
-               {allReqValid ? <Add height={iconHeight} /> : <QMark height={iconHeight} />}
+            <TextBtn
+               onClick={() => {
+                  setModalHeader(isAllReqValid ? 'Distribute' : 'Requirements');
+                  setModalContent(isAllReqValid ? <DistributeForm /> : <HelpRequirements />);
+                  setModalZIndex(100);
+                  setIsModalOpen(true);
+               }}
+               isDarkTheme={isDarkTheme}
+            >
+               {isAllReqValid ? <Add height={iconHeight} /> : <QMark height={iconHeight} />}
             </TextBtn>
          </HeaderRightElWrapper>,
       );
