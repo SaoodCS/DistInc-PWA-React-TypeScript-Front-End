@@ -2,7 +2,7 @@ import { Fragment, useContext } from 'react';
 import FetchError from '../../../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import { FlatListWrapper } from '../../../../../global/components/lib/flatList/Style';
-import DetailsPlaceholder from '../../../../../global/components/lib/flatList/placeholder/Placeholder';
+import FlatListPlaceholder from '../../../../../global/components/lib/flatList/placeholder/FlatListPlaceholder';
 import Loader from '../../../../../global/components/lib/loader/Loader';
 import PullToRefresh from '../../../../../global/components/lib/pullToRefresh/PullToRefresh';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
@@ -56,7 +56,7 @@ export default function AccountsSlide(): JSX.Element {
 
    if ((isLoadingSavings && !isPausedSavings) || (isLoadingCurrent && !isPausedCurrent)) {
       if (!isPortableDevice) return <Loader isDisplayed />;
-      return <FlatListWrapper>{JSXHelper.repeatJSX(<DetailsPlaceholder />, 7)}</FlatListWrapper>;
+      return <FlatListWrapper>{JSXHelper.repeatJSX(<FlatListPlaceholder />, 7)}</FlatListWrapper>;
    }
    if (isPausedSavings || isPausedCurrent) return <OfflineFetch />;
    if (errorSavings || errorCurrent) return <FetchError />;

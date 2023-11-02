@@ -11,7 +11,7 @@ import {
    SecondRowTagsWrapper,
    Tag,
 } from '../../../../../../global/components/lib/flatList/Style';
-import DetailsPlaceholder from '../../../../../../global/components/lib/flatList/placeholder/Placeholder';
+import FlatListPlaceholder from '../../../../../../global/components/lib/flatList/placeholder/FlatListPlaceholder';
 import Loader from '../../../../../../global/components/lib/loader/Loader';
 import PullToRefresh from '../../../../../../global/components/lib/pullToRefresh/PullToRefresh';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
@@ -52,7 +52,7 @@ export default function IncomeSlide(): JSX.Element {
    });
    if (isLoading && !isPaused) {
       if (!isPortableDevice) return <Loader isDisplayed />;
-      return <FlatListWrapper>{JSXHelper.repeatJSX(<DetailsPlaceholder />, 7)}</FlatListWrapper>;
+      return <FlatListWrapper>{JSXHelper.repeatJSX(<FlatListPlaceholder />, 7)}</FlatListWrapper>;
    }
    if (isPaused) return <OfflineFetch />;
    if (error) return <FetchError />;

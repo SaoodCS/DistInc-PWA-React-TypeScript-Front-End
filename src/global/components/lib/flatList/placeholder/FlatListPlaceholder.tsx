@@ -9,7 +9,7 @@ import {
    SecondRowTagsWrapper,
 } from '../Style';
 
-export default function DetailsPlaceholder(): JSX.Element {
+export default function FlatListPlaceholder(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    return (
       <FlatListItem isDarkTheme={isDarkTheme}>
