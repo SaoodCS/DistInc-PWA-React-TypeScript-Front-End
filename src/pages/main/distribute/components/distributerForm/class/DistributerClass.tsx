@@ -12,7 +12,12 @@ import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOf
 import type { InputArray } from '../../../../../../global/helpers/react/form/FormHelper';
 import FormHelper from '../../../../../../global/helpers/react/form/FormHelper';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
-import type { ICurrentFormInputs } from '../../../../details/components/accounts/current/class/Class';
+import { IIncomeFirebase } from '../../../../details/components/Income/class/Class';
+import type {
+   ICurrentAccountFirebase,
+   ICurrentFormInputs,
+} from '../../../../details/components/accounts/current/class/Class';
+import { IExpensesFirebase } from '../../../../details/components/expense/class/ExpensesClass';
 import type { ICalcSchema } from '../../calculation/CalculateDist';
 
 export default class DistributerClass {
@@ -123,6 +128,15 @@ export default class DistributerClass {
       );
    }
 
+   static useQuery = {
+      getCalcDist: DistributerClass.useCalcDistQuery,
+   };
+
+   static useMutation = {
+      setCalcDist: DistributerClass.useSetCalcDistMutation,
+      delCalcDist: DistributerClass.useDelCalcDistMutation,
+   };
+
    static existingData = {
       hasCurrentMonth: (calcDistData: ICalcSchema): boolean => {
          if (ObjectOfObjects.isEmpty(calcDistData)) return false;
@@ -137,12 +151,41 @@ export default class DistributerClass {
       },
    };
 
-   static useQuery = {
-      getCalcDist: DistributerClass.useCalcDistQuery,
-   };
+   static checkCalcReq(
+      currentAccounts: ICurrentAccountFirebase,
+      income: IIncomeFirebase,
+      expenses: IExpensesFirebase,
+   ): IReqMet[] {
+      const salaryExp = ObjectOfObjects.findObjFromUniqueVal(currentAccounts, 'Salary & Expenses');
+      const spendings = ObjectOfObjects.findObjFromUniqueVal(currentAccounts, 'Spending');
+      const incomeExists = !ObjectOfObjects.isEmpty(income);
+      const expensesExists = !ObjectOfObjects.isEmpty(expenses);
+      return [
+         {
+            name: 'salaryExp',
+            isValid: salaryExp ? true : false,
+         },
+         {
+            name: 'spending',
+            isValid: spendings ? true : false,
+         },
+         {
+            name: 'income',
+            isValid: incomeExists,
+         },
+         {
+            name: 'expense',
+            isValid: expensesExists,
+         },
+      ];
+   }
+}
 
-   static useMutation = {
-      setCalcDist: DistributerClass.useSetCalcDistMutation,
-      delCalcDist: DistributerClass.useDelCalcDistMutation,
-   };
+// -- TYPES FOR CHECKCALCREQ -- //
+
+export type IReqNames = 'salaryExp' | 'spending' | 'income' | 'expense';
+
+interface IReqMet {
+   name: IReqNames;
+   isValid: boolean;
 }

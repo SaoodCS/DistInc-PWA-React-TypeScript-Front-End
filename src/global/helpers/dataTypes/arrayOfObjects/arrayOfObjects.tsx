@@ -54,4 +54,12 @@ export default class ArrayOfObjects {
    static isEmpty<T>(arr: T[]): boolean {
       return arr.length === 0;
    }
+
+   static isNotEmpty<T>(arr: T[]): boolean {
+      return arr.length > 0;
+   }
+
+   static doAllObjectsHaveKeyValuePair<T>(arr: T[], key: keyof T, value: T[keyof T]): boolean {
+      return arr.every((obj) => obj[key] === value);
+   }
 }

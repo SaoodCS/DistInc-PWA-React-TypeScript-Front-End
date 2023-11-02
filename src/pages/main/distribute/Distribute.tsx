@@ -1,4 +1,4 @@
-import { QuestionMark } from '@styled-icons/boxicons-regular/QuestionMark';
+import { QuestionMark as QMark } from '@styled-icons/boxicons-regular/QuestionMark';
 import { Add } from '@styled-icons/fluentui-system-filled/Add';
 import { useContext, useEffect } from 'react';
 import { HeaderRightElWrapper } from '../../../global/components/app/layout/header/Header';
@@ -13,8 +13,8 @@ import { BottomPanelContext } from '../../../global/context/widget/bottomPanel/B
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
 import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 import { ModalContext } from '../../../global/context/widget/modal/ModalContext';
+import ArrayOfObjects from '../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import JSXHelper from '../../../global/helpers/dataTypes/jsx/jsxHelper';
-import ObjectOfObjects from '../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import IncomeClass from '../details/components/Income/class/Class';
 import CurrentClass from '../details/components/accounts/current/class/Class';
 import ExpensesClass from '../details/components/expense/class/ExpensesClass';
@@ -51,44 +51,33 @@ export default function Distribute(): JSX.Element {
    });
 
    useEffect(() => {
-      if (
-         ObjectOfObjects.findObjFromUniqueVal(currentAccounts || {}, 'Salary & Expenses') &&
-         ObjectOfObjects.findObjFromUniqueVal(currentAccounts || {}, 'Spending') &&
-         !ObjectOfObjects.isEmpty(income || {}) &&
-         !ObjectOfObjects.isEmpty(expenses || {})
-      ) {
-         setHeaderRightElement(
-            <HeaderRightElWrapper>
-               <TextBtn
-                  onClick={() => {
-                     setBottomPanelHeading('Distribute');
-                     setBottomPanelContent(<DistributeForm />);
-                     setBottomPanelZIndex(100);
-                     setIsBottomPanelOpen(true);
-                  }}
-                  isDarkTheme={isDarkTheme}
-               >
-                  <Add height={isPortableDevice ? '1.5em' : '1em'} />
-               </TextBtn>
-            </HeaderRightElWrapper>,
-         );
-      } else {
-         setHeaderRightElement(
-            <HeaderRightElWrapper>
-               <TextBtn
-                  onClick={() => {
-                     setModalHeader('Requirements');
-                     setModalContent(<HelpRequirements />);
-                     setModalZIndex(100);
-                     setIsModalOpen(true);
-                  }}
-                  isDarkTheme={isDarkTheme}
-               >
-                  <QuestionMark height={isPortableDevice ? '1.5em' : '1em'} />
-               </TextBtn>
-            </HeaderRightElWrapper>,
-         );
+      const reqCheck = DistributerClass.checkCalcReq(
+         currentAccounts || {},
+         income || {},
+         expenses || {},
+      );
+      const allReqValid = ArrayOfObjects.doAllObjectsHaveKeyValuePair(reqCheck, 'isValid', true);
+      const iconHeight = isPortableDevice ? '1.5em' : '1em';
+      function handleRightElClick() {
+         if (allReqValid) {
+            setBottomPanelHeading('Distribute');
+            setBottomPanelContent(<DistributeForm />);
+            setBottomPanelZIndex(100);
+            setIsBottomPanelOpen(true);
+         } else {
+            setModalHeader('Requirements');
+            setModalContent(<HelpRequirements />);
+            setModalZIndex(100);
+            setIsModalOpen(true);
+         }
       }
+      setHeaderRightElement(
+         <HeaderRightElWrapper>
+            <TextBtn onClick={() => handleRightElClick()} isDarkTheme={isDarkTheme}>
+               {allReqValid ? <Add height={iconHeight} /> : <QMark height={iconHeight} />}
+            </TextBtn>
+         </HeaderRightElWrapper>,
+      );
    }, [currentAccounts, income, expenses]);
 
    if (isLoading && !isPaused) {

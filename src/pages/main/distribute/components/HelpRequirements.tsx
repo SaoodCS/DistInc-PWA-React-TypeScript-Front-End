@@ -2,10 +2,11 @@ import { TextColourizer } from '../../../../global/components/lib/font/textColor
 import { BulletList, ListItem } from '../../../../global/components/lib/list/Style';
 import useThemeContext from '../../../../global/context/theme/hooks/useThemeContext';
 import Color from '../../../../global/css/colors';
-import ObjectOfObjects from '../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
+import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import IncomeClass from '../../details/components/Income/class/Class';
 import CurrentClass from '../../details/components/accounts/current/class/Class';
 import ExpensesClass from '../../details/components/expense/class/ExpensesClass';
+import DistributerClass, { IReqNames } from './distributerForm/class/DistributerClass';
 
 export default function HelpRequirements(): JSX.Element {
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
@@ -13,18 +14,15 @@ export default function HelpRequirements(): JSX.Element {
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
    const { isDarkTheme } = useThemeContext();
 
-   function itemColor(requirement: 'salaryExp' | 'spending' | 'income' | 'expense'): string {
-      if (
-         (requirement === 'salaryExp' &&
-            ObjectOfObjects.findObjFromUniqueVal(currentAccounts || {}, 'Salary & Expenses')) ||
-         (requirement === 'spending' &&
-            ObjectOfObjects.findObjFromUniqueVal(currentAccounts || {}, 'Spending')) ||
-         (requirement === 'income' && !ObjectOfObjects.isEmpty(income || {})) ||
-         (requirement === 'expense' && !ObjectOfObjects.isEmpty(expenses || {}))
-      ) {
-         return isDarkTheme ? Color.darkThm.success : Color.lightThm.success;
-      }
-      return 'red';
+   function itemColor(requirement: IReqNames): string {
+      const reqCheck = DistributerClass.checkCalcReq(
+         currentAccounts || {},
+         income || {},
+         expenses || {},
+      );
+      const isValid = ArrayOfObjects.getObjWithKeyValuePair(reqCheck, 'name', requirement).isValid;
+      if (isValid) return isDarkTheme ? Color.darkThm.success : Color.lightThm.success;
+      return isDarkTheme ? Color.darkThm.error : Color.lightThm.error;
    }
 
    return (
