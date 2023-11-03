@@ -6,7 +6,8 @@ import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/
 import IncomeClass from '../../details/components/Income/class/Class';
 import CurrentClass from '../../details/components/accounts/current/class/Class';
 import ExpensesClass from '../../details/components/expense/class/ExpensesClass';
-import DistributerClass, { IReqNames } from './distributerForm/class/DistributerClass';
+import type { IReqNames } from './distributerForm/class/DistributerClass';
+import DistributerClass from './distributerForm/class/DistributerClass';
 
 export default function HelpRequirements(): JSX.Element {
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();

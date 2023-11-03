@@ -12,12 +12,12 @@ import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOf
 import type { InputArray } from '../../../../../../global/helpers/react/form/FormHelper';
 import FormHelper from '../../../../../../global/helpers/react/form/FormHelper';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
-import { IIncomeFirebase } from '../../../../details/components/Income/class/Class';
+import type { IIncomeFirebase } from '../../../../details/components/Income/class/Class';
 import type {
    ICurrentAccountFirebase,
    ICurrentFormInputs,
 } from '../../../../details/components/accounts/current/class/Class';
-import { IExpensesFirebase } from '../../../../details/components/expense/class/ExpensesClass';
+import type { IExpensesFirebase } from '../../../../details/components/expense/class/ExpensesClass';
 import type { ICalcSchema } from '../../calculation/CalculateDist';
 
 export default class DistributerClass {
@@ -179,6 +179,39 @@ export default class DistributerClass {
          },
       ];
    }
+
+   static groupByMonth(calcDistData: ICalcSchema): ICalcSchemaGroupByMonth[] {
+      const result: ICalcSchemaGroupByMonth[] = [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const months: { [key: string]: any } = {};
+      ['analytics', 'distributer', 'savingsAccHistory'].forEach((key) => {
+         calcDistData[key as keyof ICalcSchema].forEach((item: { timestamp: string }) => {
+            const monthYear = item.timestamp.slice(3);
+            if (!months[monthYear]) {
+               months[monthYear] = { monthYear };
+               result.push(months[monthYear]);
+            }
+            if (!months[monthYear][key]) {
+               months[monthYear][key] = [];
+            }
+            months[monthYear][key].push(item);
+         });
+      });
+      result.sort((a, b) => {
+         const dateA = new Date(a.monthYear.split('/').reverse().join('/'));
+         const dateB = new Date(b.monthYear.split('/').reverse().join('/'));
+         return dateA.getTime() - dateB.getTime();
+      });
+      return result;
+   }
+}
+
+// -- TYPES FOR GROUPBYMONTH -- //
+export interface ICalcSchemaGroupByMonth {
+   monthYear: string;
+   analytics?: ICalcSchema['analytics'];
+   distributer?: ICalcSchema['distributer'];
+   savingsAccHistory?: ICalcSchema['savingsAccHistory'];
 }
 
 // -- TYPES FOR CHECKCALCREQ -- //

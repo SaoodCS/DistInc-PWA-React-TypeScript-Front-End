@@ -1,6 +1,6 @@
 import useThemeContext from '../../../../context/theme/hooks/useThemeContext';
 import JSXHelper from '../../../../helpers/dataTypes/jsx/jsxHelper';
-import { PlaceholderLine, PlaceholderRect } from '../../fetch/placeholders/Style';
+import { PlaceholderLine } from '../../fetch/placeholders/Style';
 import {
    CardListItem,
    CardListTitle,
@@ -14,7 +14,7 @@ interface ICardListPlaceholder {
    repeatItemCount: number;
 }
 
-export function CardListItemPlaceholder() {
+export function CardListItemPlaceholder(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
 
    return (
@@ -39,7 +39,7 @@ export function CardListItemPlaceholder() {
    );
 }
 
-export default function CardListPlaceholder(props: ICardListPlaceholder) {
+export default function CardListPlaceholder(props: ICardListPlaceholder): JSX.Element {
    const { repeatItemCount } = props;
    const { isDarkTheme } = useThemeContext();
    return (

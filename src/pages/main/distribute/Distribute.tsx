@@ -14,6 +14,7 @@ import {
    ItemTitleAndIconWrapper,
    ItemTitleAndSubTitleWrapper,
 } from '../../../global/components/lib/cardList/Style';
+import CardListPlaceholder from '../../../global/components/lib/cardList/placeholder/CardListPlaceholder';
 import { CarouselAndNavBarWrapper } from '../../../global/components/lib/carousel/NavBar';
 import FetchError from '../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../global/components/lib/fetch/offlineFetch/offlineFetch';
@@ -26,13 +27,15 @@ import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks
 import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 import { ModalContext } from '../../../global/context/widget/modal/ModalContext';
 import ArrayOfObjects from '../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
+import DateHelper from '../../../global/helpers/dataTypes/date/DateHelper';
+import NumberHelper from '../../../global/helpers/dataTypes/number/NumberHelper';
 import IncomeClass from '../details/components/Income/class/Class';
 import CurrentClass from '../details/components/accounts/current/class/Class';
 import ExpensesClass from '../details/components/expense/class/ExpensesClass';
 import HelpRequirements from './components/HelpRequirements';
 import DistributeForm from './components/distributerForm/DistributerForm';
+import type { ICalcSchemaGroupByMonth } from './components/distributerForm/class/DistributerClass';
 import DistributerClass from './components/distributerForm/class/DistributerClass';
-import CardListPlaceholder from '../../../global/components/lib/cardList/placeholder/CardListPlaceholder';
 
 export default function Distribute(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Distribute');
@@ -49,6 +52,7 @@ export default function Distribute(): JSX.Element {
       isLoading,
       isPaused,
       error,
+      refetch,
    } = DistributerClass.useQuery.getCalcDist({
       onSuccess: () => {
          setIsModalOpen(false);
@@ -82,13 +86,20 @@ export default function Distribute(): JSX.Element {
 
    if (isLoading && !isPaused) {
       if (!isPortableDevice) return <Loader isDisplayed />;
-      return <CardListPlaceholder repeatItemCount={5} />;
+      return <CardListPlaceholder repeatItemCount={7} />;
    }
    if (isPaused) return <OfflineFetch />;
-   if (error) return <FetchError />;
+   if (error || !calcDistData) return <FetchError />;
 
-   async function handleOnRefresh() {
-      console.log('onFresh');
+   async function handleOnRefresh(): Promise<void> {
+      await refetch();
+   }
+
+   function sortData(): ICalcSchemaGroupByMonth[] | undefined {
+      if (!calcDistData) return;
+      const groupedByMonth = DistributerClass.groupByMonth(calcDistData);
+      groupedByMonth.reverse();
+      return groupedByMonth;
    }
 
    return (
@@ -98,84 +109,73 @@ export default function Distribute(): JSX.Element {
          </TextColourizer>
          <PullToRefresh isDarkTheme={isDarkTheme} onRefresh={() => handleOnRefresh()}>
             <>
-               <CardListWrapper>
-                  <CardListTitle>July 2021</CardListTitle>
-                  <CardListItem>
-                     <ItemTitleAndIconWrapper>
-                        <DocumentFlowchart height={'2em'} style={{ paddingRight: '0.5em' }} />
-                        <ItemTitleAndSubTitleWrapper>
-                           <TextColourizer>Distribution Instructions</TextColourizer>
-                        </ItemTitleAndSubTitleWrapper>
-                     </ItemTitleAndIconWrapper>
-                     <ItemRightColWrapper>
-                        <HorizontalMenuDots />
-                        <TextColourizer fontSize="0.8em">12 Jul 2021</TextColourizer>
-                     </ItemRightColWrapper>
-                  </CardListItem>
-
-                  <CardListItem>
-                     <ItemTitleAndIconWrapper>
-                        <Calculator height={'2em'} style={{ paddingRight: '0.5em' }} />
-                        <ItemTitleAndSubTitleWrapper>
-                           <TextColourizer>Analytics</TextColourizer>
-                        </ItemTitleAndSubTitleWrapper>
-                     </ItemTitleAndIconWrapper>
-                     <ItemRightColWrapper>
-                        <HorizontalMenuDots />
-                        <TextColourizer fontSize="0.8em">12 Jul 2021</TextColourizer>
-                     </ItemRightColWrapper>
-                  </CardListItem>
-
-                  <CardListItem>
-                     <ItemTitleAndIconWrapper style={{ position: 'relative' }}>
-                        <Savings height={'2em'} style={{ paddingRight: '0.5em' }} />
-                        <ItemTitleAndSubTitleWrapper>
-                           <TextColourizer>Main Savings</TextColourizer>
-                           <TextColourizer fontSize="0.8em">
-                              Balance History: £10,00.00
-                           </TextColourizer>
-                        </ItemTitleAndSubTitleWrapper>
-                     </ItemTitleAndIconWrapper>
-
-                     <ItemRightColWrapper>
-                        <HorizontalMenuDots />
-                        <TextColourizer fontSize="0.8em">12 Jul 2021</TextColourizer>
-                     </ItemRightColWrapper>
-                  </CardListItem>
-               </CardListWrapper>
-               <CardListWrapper>
-                  <CardListTitle>July 2021</CardListTitle>
-                  <CardListItem>
-                     <ItemTitleAndIconWrapper>
-                        <DocumentFlowchart height={'2em'} style={{ paddingRight: '0.5em' }} />
-                        <ItemTitleAndSubTitleWrapper>
-                           <TextColourizer>Distribution Instructions</TextColourizer>
-                        </ItemTitleAndSubTitleWrapper>
-                     </ItemTitleAndIconWrapper>
-                     <ItemRightColWrapper>
-                        <HorizontalMenuDots />
-                        <TextColourizer fontSize="0.8em">12 Jul 2021</TextColourizer>
-                     </ItemRightColWrapper>
-                  </CardListItem>
-               </CardListWrapper>
+               {sortData()?.map((monthObj) => (
+                  <CardListWrapper key={monthObj.monthYear}>
+                     <CardListTitle>
+                        {DateHelper.fromMMYYYYToWord(monthObj.monthYear)}
+                     </CardListTitle>
+                     <>
+                        {monthObj.distributer?.map((distMsgsObj) => (
+                           <CardListItem key={distMsgsObj.timestamp}>
+                              <ItemTitleAndIconWrapper>
+                                 <DocumentFlowchart
+                                    height={'2em'}
+                                    style={{ paddingRight: '0.5em' }}
+                                 />
+                                 <ItemTitleAndSubTitleWrapper>
+                                    <TextColourizer>Distribution Instructions</TextColourizer>
+                                 </ItemTitleAndSubTitleWrapper>
+                              </ItemTitleAndIconWrapper>
+                              <ItemRightColWrapper>
+                                 <HorizontalMenuDots />
+                                 <TextColourizer fontSize="0.8em">
+                                    {DateHelper.fromDDMMYYYYToWord(distMsgsObj.timestamp)}
+                                 </TextColourizer>
+                              </ItemRightColWrapper>
+                           </CardListItem>
+                        ))}
+                        {monthObj.analytics?.map((analyticsObj) => (
+                           <CardListItem key={analyticsObj.timestamp}>
+                              <ItemTitleAndIconWrapper>
+                                 <Calculator height={'2em'} style={{ paddingRight: '0.5em' }} />
+                                 <ItemTitleAndSubTitleWrapper>
+                                    <TextColourizer>Analytics</TextColourizer>
+                                 </ItemTitleAndSubTitleWrapper>
+                              </ItemTitleAndIconWrapper>
+                              <ItemRightColWrapper>
+                                 <HorizontalMenuDots />
+                                 <TextColourizer fontSize="0.8em">
+                                    {DateHelper.fromDDMMYYYYToWord(analyticsObj.timestamp)}
+                                 </TextColourizer>
+                              </ItemRightColWrapper>
+                           </CardListItem>
+                        ))}
+                        {monthObj.savingsAccHistory?.map((savingsHistObj) => (
+                           <CardListItem key={savingsHistObj.timestamp}>
+                              <ItemTitleAndIconWrapper style={{ position: 'relative' }}>
+                                 <Savings height={'2em'} style={{ paddingRight: '0.5em' }} />
+                                 <ItemTitleAndSubTitleWrapper>
+                                    <TextColourizer>Main Savings</TextColourizer>
+                                    <TextColourizer fontSize="0.8em">
+                                       {`Balance Was: ${NumberHelper.asCurrencyStr(
+                                          savingsHistObj.balance,
+                                       )}`}
+                                    </TextColourizer>
+                                 </ItemTitleAndSubTitleWrapper>
+                              </ItemTitleAndIconWrapper>
+                              <ItemRightColWrapper>
+                                 <HorizontalMenuDots />
+                                 <TextColourizer fontSize="0.8em">
+                                    {DateHelper.fromDDMMYYYYToWord(savingsHistObj.timestamp)}
+                                 </TextColourizer>
+                              </ItemRightColWrapper>
+                           </CardListItem>
+                        ))}
+                     </>
+                  </CardListWrapper>
+               ))}
             </>
          </PullToRefresh>
       </CarouselAndNavBarWrapper>
    );
 }
-
-// const { analytics, savingsAccHistory, distributer } = calcDistData || {};
-
-// return (
-//    <>
-//       <div>
-//          {distributer &&
-//             distributer.map((distributerObj, index) => (
-//                <div key={index}>
-//                   <p>{distributerObj.msgs}</p>
-//                   <p>{distributerObj.timestamp}</p>
-//                </div>
-//             ))}
-//       </div>
-//    </>
-// );

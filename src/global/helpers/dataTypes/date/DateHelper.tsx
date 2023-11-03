@@ -12,4 +12,19 @@ export default class DateHelper {
       const [day, month, year] = date.split('/');
       return new Date(Number(year), Number(month) - 1, Number(day));
    };
+
+   static fromMMYYYYToWord = (date: string): string => {
+      const [month, year] = date.split('/');
+      const monthNumber = parseInt(month, 10);
+      const dateConv = new Date(Number(year), monthNumber - 1, 1);
+      const monthWord = dateConv.toLocaleString('default', { month: 'short' });
+      const yearWord = dateConv.toLocaleString('default', { year: 'numeric' });
+      return `${monthWord} ${yearWord}`;
+   };
+
+   static fromDDMMYYYYToWord(date: string): string {
+      const [day, month, year] = date.split('/');
+      const monthAndYearConv = DateHelper.fromMMYYYYToWord(`${month}/${year}`);
+      return `${day} ${monthAndYearConv}`;
+   }
 }

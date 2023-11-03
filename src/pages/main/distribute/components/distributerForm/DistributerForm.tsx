@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { useQueryClient } from '@tanstack/react-query';
-import { useContext } from 'react';
 import { StaticButton } from '../../../../../global/components/lib/button/staticButton/Style';
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { StyledForm } from '../../../../../global/components/lib/form/form/Style';
@@ -8,7 +7,6 @@ import InputCombination from '../../../../../global/components/lib/form/inputCom
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
-import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
 import Color from '../../../../../global/css/colors';
 import microservices from '../../../../../global/firebase/apis/microservices/microservices';
 import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
@@ -23,8 +21,6 @@ import DistributerClass from './class/DistributerClass';
 export default function DistributeForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const { apiError } = useApiErrorContext();
-   const { setIsModalOpen, setModalContent, setModalHeader, setModalZIndex } =
-      useContext(ModalContext);
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
    const { data: savingsAccount } = SavingsClass.useQuery.getSavingsAccounts();
    const { data: incomes } = IncomeClass.useQuery.getIncomes();
@@ -49,7 +45,7 @@ export default function DistributeForm(): JSX.Element {
       },
    });
 
-   function showOverwriteMsg() {
+   function showOverwriteMsg(): boolean {
       if (!calcDistData) return false;
       if (DistributerClass.existingData.hasCurrentMonth(calcDistData)) return true;
       return false;
@@ -65,7 +61,6 @@ export default function DistributeForm(): JSX.Element {
          expenses || {},
          form,
       );
-      console.log(newCalculatedDist);
       await setCalcDistInFirestore.mutateAsync(newCalculatedDist);
    }
 
