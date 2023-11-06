@@ -5,6 +5,7 @@ import CarouselWithScrollSaverExample from './components/CarouselWithScrollSaver
 import ContextMenuExample from './components/ContextMenuExample';
 import LoaderExample from './components/LoaderExample';
 import ModalExample from './components/ModalExample';
+import PopupMenuExample from './components/PopupMenuExample';
 import PushNotifExample from './components/PushNotifExample';
 import ScrollSaverExample from './components/ScrollSaverExample';
 import ToastExample from './components/ToastExample';
@@ -20,4 +21,5 @@ export default class ExampleUIComp {
    static ScrollSaver = ScrollSaverExample;
    static PushNotif = PushNotifExample;
    static ContextMenu = ContextMenuExample;
+   static PopupMenu = PopupMenuExample;
 }

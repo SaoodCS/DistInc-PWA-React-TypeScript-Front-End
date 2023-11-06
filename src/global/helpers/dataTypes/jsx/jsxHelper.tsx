@@ -18,4 +18,14 @@ export default class JSXHelper {
          <Fragment key={index}>{element}</Fragment>
       ));
    }
+
+   static getClickPos(event: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>): {
+      x: number;
+      y: number;
+   } {
+      const clickX = event.pageX;
+      const clickY = event.pageY;
+
+      return { x: clickX, y: clickY };
+   }
 }
