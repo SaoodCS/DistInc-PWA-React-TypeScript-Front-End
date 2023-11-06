@@ -47,16 +47,25 @@ export const StyledBackArr = styled(ArrowIosBack)<{ darktheme: string }>`
    }
 `;
 
-export const HeaderRightElWrapper = styled.div`
-   display: flex;
-   position: fixed;
-   align-items: center;
+export const HeaderRightElWrapper = styled.div<{ isDarkTheme: boolean }>`
    right: 0px;
-   top: 0px;
-   height: 10%;
-   & > *:first-child {
-      margin: 0;
-      padding: 0;
+   position: fixed;
+   color: ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent)};
+   & > * {
+      height: 1.5em;
+      @media (min-width: ${MyCSS.PortableBp.asPx}) {
+         height: 1em;
+      }
    }
-   margin-right: 1em;
+   & > *:last-child {
+      margin-right: 1em;
+   }
+   & > *:not(:last-child) {
+      margin-right: 0.5em;
+   }
+   & > *:hover {
+      cursor: pointer;
+      color: ${({ isDarkTheme }) =>
+         Color.setRgbOpacity(isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent, 0.7)};
+   }
 `;

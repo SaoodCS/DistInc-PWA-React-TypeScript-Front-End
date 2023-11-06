@@ -1,5 +1,7 @@
+import { Filter } from '@styled-icons/fluentui-system-filled/Filter';
 import type { CSSProperties } from 'react';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
+import { Add } from 'styled-icons/fluentui-system-filled';
 import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Carousel';
 import {
    CarouselAndNavBarWrapper,
@@ -10,6 +12,7 @@ import useCarousel from '../../../global/components/lib/carousel/hooks/useCarous
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
 import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
+import { PopupMenuContext } from '../../../global/context/widget/popupMenu/PopupMenuContext';
 import Color from '../../../global/css/colors';
 import FiltererContextMenu from './components/contextMenu/FiltererContextMenu';
 import NewFormContextMenu from './components/contextMenu/NewFormContextMenu';
@@ -27,12 +30,22 @@ export default function Details(): JSX.Element {
    const carouselBorderRight: CSSProperties = {
       borderRight: `1px solid ${isDarkTheme ? Color.darkThm.border : Color.lightThm.border}`,
    };
+   const { setPMContent, setPMHeightPx, setPMIsOpen, setPMWidthPx, setClickEvent } =
+      useContext(PopupMenuContext);
 
    useEffect(() => {
       setHeaderRightElement(
          <>
+            <Add
+               onClick={(e) => {
+                  setPMIsOpen(true);
+                  setPMContent(<NewFormContextMenu />);
+                  setClickEvent(e);
+                  setPMHeightPx(100);
+                  setPMWidthPx(200);
+               }}
+            />
             <FiltererContextMenu currentSlide={currentSlide} />
-            <NewFormContextMenu />
          </>,
       );
    }, [currentSlide]);

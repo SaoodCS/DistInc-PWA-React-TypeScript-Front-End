@@ -19,13 +19,13 @@ export default function WidgetContextProviders(props: IWidgetContextProvidersPro
          <ApiErrorContextProvider>
             <BannerContextProvider>
                <ToastContextProvider>
-                  <PopupMenuContextProvider>
-                     <ModalContextProvider>
-                        <BottomPanelContextProvider>
+                  <ModalContextProvider>
+                     <BottomPanelContextProvider>
+                        <PopupMenuContextProvider>
                            <HeaderContextProvider>{children}</HeaderContextProvider>
-                        </BottomPanelContextProvider>
-                     </ModalContextProvider>
-                  </PopupMenuContextProvider>
+                        </PopupMenuContextProvider>
+                     </BottomPanelContextProvider>
+                  </ModalContextProvider>
                </ToastContextProvider>
             </BannerContextProvider>
          </ApiErrorContextProvider>

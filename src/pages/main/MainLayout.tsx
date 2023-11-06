@@ -1,7 +1,11 @@
 import { Outlet } from 'react-router-dom';
 import { Body } from '../../global/components/app/layout/body/Body';
 import Footer from '../../global/components/app/layout/footer/Footer';
-import { Header, StyledBackArr } from '../../global/components/app/layout/header/Header';
+import {
+   Header,
+   HeaderRightElWrapper,
+   StyledBackArr,
+} from '../../global/components/app/layout/header/Header';
 import Sidebar from '../../global/components/app/layout/sidebar/Sidebar';
 import ConditionalRender from '../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../global/context/theme/hooks/useThemeContext';
@@ -18,7 +22,9 @@ export default function MainLayout(): JSX.Element {
                <StyledBackArr onClick={handleBackBtnClick} darktheme={isDarkTheme.toString()} />
             </ConditionalRender>
             {headerTitle}
-            {headerRightElement}
+            <HeaderRightElWrapper isDarkTheme={isDarkTheme}>
+               {headerRightElement}
+            </HeaderRightElWrapper>
          </Header>
          <Body isDarkTheme={isDarkTheme}>
             <Outlet />

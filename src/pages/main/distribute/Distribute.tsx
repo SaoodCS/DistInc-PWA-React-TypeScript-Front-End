@@ -1,8 +1,6 @@
 import { QuestionMark as QMark } from '@styled-icons/boxicons-regular/QuestionMark';
 import { Add } from '@styled-icons/fluentui-system-filled/Add';
 import { useContext, useEffect } from 'react';
-import { HeaderRightElWrapper } from '../../../global/components/app/layout/header/Header';
-import { TextBtn } from '../../../global/components/lib/button/textBtn/Style';
 import { CardListTitle, CardListWrapper } from '../../../global/components/lib/cardList/Style';
 import CardListPlaceholder from '../../../global/components/lib/cardList/placeholder/CardListPlaceholder';
 import { CarouselAndNavBarWrapper } from '../../../global/components/lib/carousel/NavBar';
@@ -57,21 +55,14 @@ export default function Distribute(): JSX.Element {
          expenses || {},
       );
       const isAllReqValid = ArrayOfObjects.doAllObjectsHaveKeyValuePair(reqCheck, 'isValid', true);
-      const iconHeight = isPortableDevice ? '1.5em' : '1em';
+      function handleModal() {
+         setModalHeader(isAllReqValid ? 'Distribute' : 'Requirements');
+         setModalContent(isAllReqValid ? <DistributeForm /> : <HelpRequirements />);
+         setModalZIndex(100);
+         setIsModalOpen(true);
+      }
       setHeaderRightElement(
-         <HeaderRightElWrapper>
-            <TextBtn
-               onClick={() => {
-                  setModalHeader(isAllReqValid ? 'Distribute' : 'Requirements');
-                  setModalContent(isAllReqValid ? <DistributeForm /> : <HelpRequirements />);
-                  setModalZIndex(100);
-                  setIsModalOpen(true);
-               }}
-               isDarkTheme={isDarkTheme}
-            >
-               {isAllReqValid ? <Add height={iconHeight} /> : <QMark height={iconHeight} />}
-            </TextBtn>
-         </HeaderRightElWrapper>,
+         isAllReqValid ? <Add onClick={handleModal} /> : <QMark onClick={handleModal} />,
       );
    }, [currentAccounts, income, expenses]);
 

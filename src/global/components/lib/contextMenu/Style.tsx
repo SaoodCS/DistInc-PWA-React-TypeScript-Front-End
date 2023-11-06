@@ -86,11 +86,6 @@ export const CMListHeader = styled.div<{ isTopHeader?: boolean; isDarkTheme: boo
    border-top-right-radius: ${({ isTopHeader }) => (isTopHeader ? '10px' : '0px')};
    padding-top: 0.5em;
    padding-bottom: 0.5em;
-   @media (min-width: ${MyCSS.PortableBp.asPx}) {
-      font-size: 0.3em;
-      padding-top: 0.3em;
-      padding-bottom: 0.3em;
-   }
 `;
 
 export const CMItemContainer = styled.div<{
@@ -121,22 +116,10 @@ export const CMItemContainer = styled.div<{
       background-color: ${({ isDarkTheme }) =>
          Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.1)};
    }
-   @media (min-width: ${MyCSS.PortableBp.asPx}) {
-      padding: 0.3em;
-      &:hover {
-         background-color: ${({ isDarkTheme }) =>
-            Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.1)};
-      }
-      cursor: pointer;
-      & > *:nth-child(2) {
-         height: 0.3em;
-      }
-   }
+
 `;
 
 export const CMItemTitle = styled.div`
    font-size: 0.8em;
-   @media (min-width: ${MyCSS.PortableBp.asPx}) {
-      font-size: 0.3em;
-   }
+  
 `;
