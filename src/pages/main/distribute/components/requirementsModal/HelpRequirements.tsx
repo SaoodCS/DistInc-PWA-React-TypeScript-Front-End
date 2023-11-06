@@ -1,13 +1,13 @@
-import { TextColourizer } from '../../../../global/components/lib/font/textColorizer/TextColourizer';
-import { BulletList, ListItem } from '../../../../global/components/lib/list/Style';
-import useThemeContext from '../../../../global/context/theme/hooks/useThemeContext';
-import Color from '../../../../global/css/colors';
-import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
-import IncomeClass from '../../details/components/Income/class/Class';
-import CurrentClass from '../../details/components/accounts/current/class/Class';
-import ExpensesClass from '../../details/components/expense/class/ExpensesClass';
-import type { IReqNames } from './distributerForm/class/DistributerClass';
-import DistributerClass from './distributerForm/class/DistributerClass';
+import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
+import { BulletList, ListItem } from '../../../../../global/components/lib/list/Style';
+import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
+import Color from '../../../../../global/css/colors';
+import ArrayOfObjects from '../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
+import IncomeClass from '../../../details/components/Income/class/Class';
+import CurrentClass from '../../../details/components/accounts/current/class/Class';
+import ExpensesClass from '../../../details/components/expense/class/ExpensesClass';
+import type { IReqNames } from '../distributerForm/class/DistributerClass';
+import DistributerClass from '../distributerForm/class/DistributerClass';
 
 export default function HelpRequirements(): JSX.Element {
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();

@@ -93,11 +93,27 @@ export const CMListHeader = styled.div<{ isTopHeader?: boolean; isDarkTheme: boo
    }
 `;
 
-export const CMItemContainer = styled.div<{ isDarkTheme: boolean }>`
+export const CMItemContainer = styled.div<{
+   isDarkTheme: boolean;
+   warningItem?: boolean;
+   dangerItem?: boolean;
+}>`
    padding: 0.5em;
    display: flex;
    justify-content: space-between;
    align-items: center;
+   color: ${({ isDarkTheme, warningItem, dangerItem }) =>
+      isDarkTheme
+         ? warningItem
+            ? Color.darkThm.warning
+            : dangerItem
+            ? Color.darkThm.error
+            : Color.darkThm.txt
+         : warningItem
+         ? Color.lightThm.warning
+         : dangerItem
+         ? Color.lightThm.error
+         : Color.lightThm.txt};
    & > *:nth-child(2) {
       height: 1em;
    }

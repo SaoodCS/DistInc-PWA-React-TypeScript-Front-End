@@ -1,25 +1,14 @@
 import { QuestionMark as QMark } from '@styled-icons/boxicons-regular/QuestionMark';
 import { Add } from '@styled-icons/fluentui-system-filled/Add';
-import { Calculator } from '@styled-icons/fluentui-system-filled/Calculator';
-import { DocumentFlowchart } from '@styled-icons/fluentui-system-filled/DocumentFlowchart';
-import { Savings } from '@styled-icons/fluentui-system-filled/Savings';
 import { useContext, useEffect } from 'react';
 import { HeaderRightElWrapper } from '../../../global/components/app/layout/header/Header';
 import { TextBtn } from '../../../global/components/lib/button/textBtn/Style';
-import {
-   CardListItem,
-   CardListTitle,
-   CardListWrapper,
-   ItemRightColWrapper,
-   ItemTitleAndIconWrapper,
-   ItemTitleAndSubTitleWrapper,
-} from '../../../global/components/lib/cardList/Style';
+import { CardListTitle, CardListWrapper } from '../../../global/components/lib/cardList/Style';
 import CardListPlaceholder from '../../../global/components/lib/cardList/placeholder/CardListPlaceholder';
 import { CarouselAndNavBarWrapper } from '../../../global/components/lib/carousel/NavBar';
 import FetchError from '../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import { TextColourizer } from '../../../global/components/lib/font/textColorizer/TextColourizer';
-import { HorizontalMenuDots } from '../../../global/components/lib/icons/menu/HorizontalMenuDots';
 import Loader from '../../../global/components/lib/loader/Loader';
 import PullToRefresh from '../../../global/components/lib/pullToRefresh/PullToRefresh';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
@@ -28,14 +17,16 @@ import useHeaderContext from '../../../global/context/widget/header/hooks/useHea
 import { ModalContext } from '../../../global/context/widget/modal/ModalContext';
 import ArrayOfObjects from '../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import DateHelper from '../../../global/helpers/dataTypes/date/DateHelper';
-import NumberHelper from '../../../global/helpers/dataTypes/number/NumberHelper';
 import IncomeClass from '../details/components/Income/class/Class';
 import CurrentClass from '../details/components/accounts/current/class/Class';
 import ExpensesClass from '../details/components/expense/class/ExpensesClass';
-import HelpRequirements from './components/HelpRequirements';
 import DistributeForm from './components/distributerForm/DistributerForm';
 import type { ICalcSchemaGroupByMonth } from './components/distributerForm/class/DistributerClass';
 import DistributerClass from './components/distributerForm/class/DistributerClass';
+import AnalyticsItems from './components/historyList/analyticsItem/AnalyticsItem';
+import DistMsgsItems from './components/historyList/distMsgsItems/DistMsgsItems';
+import SavingsAccHistoryItems from './components/historyList/savingsAccHistoryItem/SavingsAccHistoryItem';
+import HelpRequirements from './components/requirementsModal/HelpRequirements';
 
 export default function Distribute(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Distribute');
@@ -114,64 +105,11 @@ export default function Distribute(): JSX.Element {
                      <CardListTitle>
                         {DateHelper.fromMMYYYYToWord(monthObj.monthYear)}
                      </CardListTitle>
-                     <>
-                        {monthObj.distributer?.map((distMsgsObj) => (
-                           <CardListItem key={distMsgsObj.timestamp}>
-                              <ItemTitleAndIconWrapper>
-                                 <DocumentFlowchart
-                                    height={'2em'}
-                                    style={{ paddingRight: '0.5em' }}
-                                 />
-                                 <ItemTitleAndSubTitleWrapper>
-                                    <TextColourizer>Distribution Instructions</TextColourizer>
-                                 </ItemTitleAndSubTitleWrapper>
-                              </ItemTitleAndIconWrapper>
-                              <ItemRightColWrapper>
-                                 <HorizontalMenuDots />
-                                 <TextColourizer fontSize="0.8em">
-                                    {DateHelper.fromDDMMYYYYToWord(distMsgsObj.timestamp)}
-                                 </TextColourizer>
-                              </ItemRightColWrapper>
-                           </CardListItem>
-                        ))}
-                        {monthObj.analytics?.map((analyticsObj) => (
-                           <CardListItem key={analyticsObj.timestamp}>
-                              <ItemTitleAndIconWrapper>
-                                 <Calculator height={'2em'} style={{ paddingRight: '0.5em' }} />
-                                 <ItemTitleAndSubTitleWrapper>
-                                    <TextColourizer>Analytics</TextColourizer>
-                                 </ItemTitleAndSubTitleWrapper>
-                              </ItemTitleAndIconWrapper>
-                              <ItemRightColWrapper>
-                                 <HorizontalMenuDots />
-                                 <TextColourizer fontSize="0.8em">
-                                    {DateHelper.fromDDMMYYYYToWord(analyticsObj.timestamp)}
-                                 </TextColourizer>
-                              </ItemRightColWrapper>
-                           </CardListItem>
-                        ))}
-                        {monthObj.savingsAccHistory?.map((savingsHistObj) => (
-                           <CardListItem key={savingsHistObj.timestamp}>
-                              <ItemTitleAndIconWrapper style={{ position: 'relative' }}>
-                                 <Savings height={'2em'} style={{ paddingRight: '0.5em' }} />
-                                 <ItemTitleAndSubTitleWrapper>
-                                    <TextColourizer>Main Savings</TextColourizer>
-                                    <TextColourizer fontSize="0.8em">
-                                       {`Balance Was: ${NumberHelper.asCurrencyStr(
-                                          savingsHistObj.balance,
-                                       )}`}
-                                    </TextColourizer>
-                                 </ItemTitleAndSubTitleWrapper>
-                              </ItemTitleAndIconWrapper>
-                              <ItemRightColWrapper>
-                                 <HorizontalMenuDots />
-                                 <TextColourizer fontSize="0.8em">
-                                    {DateHelper.fromDDMMYYYYToWord(savingsHistObj.timestamp)}
-                                 </TextColourizer>
-                              </ItemRightColWrapper>
-                           </CardListItem>
-                        ))}
-                     </>
+                     {monthObj.distributer && <DistMsgsItems distributer={monthObj.distributer} />}
+                     {monthObj.analytics && <AnalyticsItems analytics={monthObj.analytics} />}
+                     {monthObj.savingsAccHistory && (
+                        <SavingsAccHistoryItems savingsAccHistory={monthObj.savingsAccHistory} />
+                     )}
                   </CardListWrapper>
                ))}
             </>

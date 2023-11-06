@@ -27,4 +27,12 @@ export default class DateHelper {
       const monthAndYearConv = DateHelper.fromMMYYYYToWord(`${month}/${year}`);
       return `${day} ${monthAndYearConv}`;
    }
+
+   static getMonthName(ddmmyyyy: string): string {
+      const [day, month, year] = ddmmyyyy.split('/');
+      const monthNumber = parseInt(month, 10);
+      const dateConv = new Date(Number(year), monthNumber - 1, Number(day));
+      const monthWord = dateConv.toLocaleString('default', { month: 'short' });
+      return monthWord;
+   }
 }

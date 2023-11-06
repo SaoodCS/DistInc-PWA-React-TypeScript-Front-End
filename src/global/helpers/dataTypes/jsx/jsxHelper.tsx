@@ -19,13 +19,14 @@ export default class JSXHelper {
       ));
    }
 
-   static getClickPos(event: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>): {
+   static getClickPos(
+      event: React.MouseEvent<HTMLButtonElement | HTMLDivElement | SVGSVGElement, MouseEvent>,
+   ): {
       x: number;
       y: number;
    } {
       const clickX = event.pageX;
       const clickY = event.pageY;
-
       return { x: clickX, y: clickY };
    }
 }

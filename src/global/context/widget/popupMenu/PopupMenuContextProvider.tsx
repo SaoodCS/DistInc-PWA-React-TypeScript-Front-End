@@ -15,7 +15,7 @@ export default function PopupMenuContextProvider(props: IPopupMenuContextProvide
    const [pmHeightPx, setPMHeightPx] = useState(0);
    const [pmContent, setPMContent] = useState(<></>);
    const [clickEvent, setClickEvent] = useState(
-      {} as React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>,
+      {} as React.MouseEvent<HTMLButtonElement | HTMLDivElement | SVGSVGElement, MouseEvent>,
    );
 
    useEffect(() => {

@@ -6,7 +6,7 @@ interface IPopupMenuContext {
    setPMHeightPx: React.Dispatch<React.SetStateAction<number>>;
    setPMContent: React.Dispatch<React.SetStateAction<JSX.Element>>;
    setClickEvent: React.Dispatch<
-      React.SetStateAction<React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>>
+      React.SetStateAction<React.MouseEvent<HTMLButtonElement | HTMLDivElement | SVGSVGElement, MouseEvent>>
    >;
 }
 
