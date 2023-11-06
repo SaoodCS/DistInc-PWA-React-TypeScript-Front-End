@@ -1,14 +1,13 @@
 import { useContext } from 'react';
 import { PopupMenuContext } from '../../../context/widget/popupMenu/PopupMenuContext';
-import JSXHelper from '../../../helpers/dataTypes/jsx/jsxHelper';
 
 export default function PopupMenuExample(): JSX.Element {
-   const { setPMContent, setPMHeightPx, setPMIsOpen, setPMOpenerPos, setPMWidthPx } =
+   const { setPMContent, setPMHeightPx, setPMIsOpen, setPMWidthPx, setClickEvent } =
       useContext(PopupMenuContext);
 
    function handleOpen(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
       setPMIsOpen(true);
-      setPMOpenerPos(JSXHelper.getClickPos(e));
+      setClickEvent(e);
       setPMWidthPx(100);
       setPMHeightPx(100);
       setPMContent(

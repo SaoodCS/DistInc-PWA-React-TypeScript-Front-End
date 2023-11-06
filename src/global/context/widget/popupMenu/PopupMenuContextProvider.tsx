@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PopupMenu from '../../../components/lib/popupMenu/PopupMenu';
+import JSXHelper from '../../../helpers/dataTypes/jsx/jsxHelper';
 import { PopupMenuContext } from './PopupMenuContext';
 
 interface IPopupMenuContextProvider {
@@ -13,6 +14,15 @@ export default function PopupMenuContextProvider(props: IPopupMenuContextProvide
    const [pmWidthPx, setPMWidthPx] = useState(0);
    const [pmHeightPx, setPMHeightPx] = useState(0);
    const [pmContent, setPMContent] = useState(<></>);
+   const [clickEvent, setClickEvent] = useState(
+      {} as React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>,
+   );
+
+   useEffect(() => {
+      if (pmIsOpen) {
+         setPMOpenerPos(JSXHelper.getClickPos(clickEvent));
+      }
+   }, [clickEvent]);
 
    function onClose(): void {
       setPMIsOpen(false);
@@ -21,6 +31,7 @@ export default function PopupMenuContextProvider(props: IPopupMenuContextProvide
          setPMOpenerPos({ x: 0, y: 0 });
          setPMWidthPx(0);
          setPMHeightPx(0);
+         setClickEvent({} as React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>);
       }, 250);
    }
 
@@ -28,11 +39,11 @@ export default function PopupMenuContextProvider(props: IPopupMenuContextProvide
       <>
          <PopupMenuContext.Provider
             value={{
-               setPMOpenerPos,
                setPMIsOpen,
                setPMWidthPx,
                setPMHeightPx,
                setPMContent,
+               setClickEvent,
             }}
          >
             {children}
