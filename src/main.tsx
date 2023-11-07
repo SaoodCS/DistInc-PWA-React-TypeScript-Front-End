@@ -6,7 +6,6 @@ import App from './App';
 import InstallAppModal from './global/components/app/modals/installAppModal/InstallAppModal';
 import AuthContextProvider from './global/context/auth/AuthContextProvider';
 import ThemeContextProvider from './global/context/theme/ThemeContextProvider';
-import WidgetContextProviders from './global/context/widget/WidgetContextProviders';
 import NumberHelper from './global/helpers/dataTypes/number/NumberHelper';
 
 const queryClient = new QueryClient({
@@ -30,12 +29,10 @@ function Root(): JSX.Element {
          <QueryClientProvider client={queryClient}>
             <ThemeContextProvider>
                <AuthContextProvider>
-                  <WidgetContextProviders>
-                     <InstallAppModal />
-                     {/* <EnablePushNotifModal /> */}
-                     <App />
-                     <ReactQueryDevtools initialIsOpen={false} />
-                  </WidgetContextProviders>
+                  <InstallAppModal />
+                  {/* <EnablePushNotifModal /> */}
+                  <App />
+                  <ReactQueryDevtools initialIsOpen={false} />
                </AuthContextProvider>
             </ThemeContextProvider>
          </QueryClientProvider>
