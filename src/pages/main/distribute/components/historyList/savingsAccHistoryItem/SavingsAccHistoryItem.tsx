@@ -100,7 +100,10 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
                   </ItemTitleAndSubTitleWrapper>
                </ItemTitleAndIconWrapper>
                <ItemRightColWrapper>
-                  <HorizontalMenuDots onClick={(e) => handleMenuDotsClick(e, savingsHistObj)} />
+                  <HorizontalMenuDots
+                     onClick={(e) => handleMenuDotsClick(e, savingsHistObj)}
+                     darktheme={isDarkTheme.toString()}
+                  />
                   <TextColourizer fontSize="0.8em">
                      {DateHelper.fromDDMMYYYYToWord(savingsHistObj.timestamp)}
                   </TextColourizer>

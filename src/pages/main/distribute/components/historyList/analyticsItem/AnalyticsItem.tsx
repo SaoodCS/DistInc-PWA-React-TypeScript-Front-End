@@ -26,8 +26,14 @@ interface IAnalyticsItems {
 
 export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
    const { analytics } = props;
-   const { setPMContent, setPMHeightPx, setPMIsOpen, setPMWidthPx, setClickEvent, setCloseOnInnerClick } =
-      useContext(PopupMenuContext);
+   const {
+      setPMContent,
+      setPMHeightPx,
+      setPMIsOpen,
+      setPMWidthPx,
+      setClickEvent,
+      setCloseOnInnerClick,
+   } = useContext(PopupMenuContext);
    const { isDarkTheme } = useContext(ThemeContext);
 
    function handleItemClick() {}
@@ -68,7 +74,10 @@ export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
                   </ItemTitleAndSubTitleWrapper>
                </ItemTitleAndIconWrapper>
                <ItemRightColWrapper>
-                  <HorizontalMenuDots onClick={(e) => handleMenuDotsClick(e, analyticsObj)} />
+                  <HorizontalMenuDots
+                     onClick={(e) => handleMenuDotsClick(e, analyticsObj)}
+                     darktheme={isDarkTheme.toString()}
+                  />
                   <TextColourizer fontSize="0.8em">
                      {DateHelper.fromDDMMYYYYToWord(analyticsObj.timestamp)}
                   </TextColourizer>

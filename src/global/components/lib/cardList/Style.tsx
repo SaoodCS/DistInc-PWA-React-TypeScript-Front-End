@@ -5,6 +5,8 @@ import { FlatListWrapper } from '../flatList/Style';
 
 export const CardListTitle = styled.div`
    margin-bottom: 1em;
+   display: flex;
+   align-items: center;
 `;
 
 export const CardListWrapper = styled(FlatListWrapper)`

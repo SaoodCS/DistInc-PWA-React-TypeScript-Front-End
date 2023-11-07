@@ -7,6 +7,7 @@ import { CarouselAndNavBarWrapper } from '../../../global/components/lib/carouse
 import FetchError from '../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import { TextColourizer } from '../../../global/components/lib/font/textColorizer/TextColourizer';
+import { HorizontalMenuDots } from '../../../global/components/lib/icons/menu/HorizontalMenuDots';
 import Loader from '../../../global/components/lib/loader/Loader';
 import PullToRefresh from '../../../global/components/lib/pullToRefresh/PullToRefresh';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
@@ -94,7 +95,10 @@ export default function Distribute(): JSX.Element {
                {sortData()?.map((monthObj) => (
                   <CardListWrapper key={monthObj.monthYear}>
                      <CardListTitle>
-                        {DateHelper.fromMMYYYYToWord(monthObj.monthYear)}
+                        <TextColourizer padding={'0 0.5em 0 0'}>
+                           {DateHelper.fromMMYYYYToWord(monthObj.monthYear)}
+                        </TextColourizer>
+                        <HorizontalMenuDots darktheme={isDarkTheme.toString()} />
                      </CardListTitle>
                      {monthObj.distributer && <DistMsgsItems distributer={monthObj.distributer} />}
                      {monthObj.analytics && <AnalyticsItems analytics={monthObj.analytics} />}

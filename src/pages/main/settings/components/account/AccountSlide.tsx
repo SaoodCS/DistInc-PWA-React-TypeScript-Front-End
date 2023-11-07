@@ -91,7 +91,7 @@ export default function AccountSlide(): JSX.Element {
                   </ItemContentWrapper>
                   <ConditionalRender condition={!!item.withMenuDots && isPortableDevice}>
                      <ItemSubElement>
-                        <HorizontalMenuDots />
+                        <HorizontalMenuDots darktheme={isDarkTheme.toString()} />
                      </ItemSubElement>
                   </ConditionalRender>
                </ItemContainer>

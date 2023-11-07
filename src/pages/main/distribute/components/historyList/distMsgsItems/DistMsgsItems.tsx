@@ -74,7 +74,10 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
                   </ItemTitleAndSubTitleWrapper>
                </ItemTitleAndIconWrapper>
                <ItemRightColWrapper>
-                  <HorizontalMenuDots onClick={(e) => handleMenuDotsClick(e, distMsgsObj)} />
+                  <HorizontalMenuDots
+                     onClick={(e) => handleMenuDotsClick(e, distMsgsObj)}
+                     darktheme={isDarkTheme.toString()}
+                  />
                   <TextColourizer fontSize="0.8em">
                      {DateHelper.fromDDMMYYYYToWord(distMsgsObj.timestamp)}
                   </TextColourizer>
