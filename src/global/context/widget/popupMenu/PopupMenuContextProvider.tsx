@@ -17,6 +17,7 @@ export default function PopupMenuContextProvider(props: IPopupMenuContextProvide
    const [clickEvent, setClickEvent] = useState(
       {} as React.MouseEvent<HTMLButtonElement | HTMLDivElement | SVGSVGElement, MouseEvent>,
    );
+   const [closeOnInnerClick, setCloseOnInnerClick] = useState(false);
 
    useEffect(() => {
       if (pmIsOpen) {
@@ -31,6 +32,7 @@ export default function PopupMenuContextProvider(props: IPopupMenuContextProvide
          setPMOpenerPos({ x: 0, y: 0 });
          setPMWidthPx(0);
          setPMHeightPx(0);
+         setCloseOnInnerClick(false);
          setClickEvent({} as React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>);
       }, 250);
    }
@@ -44,6 +46,7 @@ export default function PopupMenuContextProvider(props: IPopupMenuContextProvide
                setPMHeightPx,
                setPMContent,
                setClickEvent,
+               setCloseOnInnerClick,
             }}
          >
             {children}
@@ -56,6 +59,7 @@ export default function PopupMenuContextProvider(props: IPopupMenuContextProvide
             heightPx={pmHeightPx}
             widthPx={pmWidthPx}
             onClose={onClose}
+            closeOnInnerClick={closeOnInnerClick}
          />
       </>
    );

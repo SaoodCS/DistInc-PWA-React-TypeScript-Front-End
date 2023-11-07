@@ -8,6 +8,7 @@ interface IPopupMenuContext {
    setClickEvent: React.Dispatch<
       React.SetStateAction<React.MouseEvent<HTMLButtonElement | HTMLDivElement | SVGSVGElement, MouseEvent>>
    >;
+   setCloseOnInnerClick: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const PopupMenuContext = createContext<IPopupMenuContext>({
@@ -16,4 +17,5 @@ export const PopupMenuContext = createContext<IPopupMenuContext>({
    setPMHeightPx: () => {},
    setPMContent: () => {},
    setClickEvent: () => {},
+   setCloseOnInnerClick: () => {},
 });

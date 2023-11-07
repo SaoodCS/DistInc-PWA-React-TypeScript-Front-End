@@ -2,8 +2,14 @@ import { useContext } from 'react';
 import { PopupMenuContext } from '../../../context/widget/popupMenu/PopupMenuContext';
 
 export default function PopupMenuExample(): JSX.Element {
-   const { setPMContent, setPMHeightPx, setPMIsOpen, setPMWidthPx, setClickEvent } =
-      useContext(PopupMenuContext);
+   const {
+      setPMContent,
+      setPMHeightPx,
+      setPMIsOpen,
+      setPMWidthPx,
+      setClickEvent,
+      setCloseOnInnerClick,
+   } = useContext(PopupMenuContext);
 
    function handleOpen(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
       setPMIsOpen(true);
@@ -18,6 +24,7 @@ export default function PopupMenuExample(): JSX.Element {
             <div>hello</div>
          </div>,
       );
+      setCloseOnInnerClick(true);
    }
    return (
       <>

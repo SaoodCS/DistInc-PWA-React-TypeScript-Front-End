@@ -26,8 +26,14 @@ interface IDistributeMsgsItems {
 
 export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element {
    const { distributer } = props;
-   const { setPMContent, setPMHeightPx, setPMIsOpen, setPMWidthPx, setClickEvent } =
-      useContext(PopupMenuContext);
+   const {
+      setPMContent,
+      setPMHeightPx,
+      setPMIsOpen,
+      setPMWidthPx,
+      setClickEvent,
+      setCloseOnInnerClick,
+   } = useContext(PopupMenuContext);
    const { isDarkTheme } = useContext(ThemeContext);
 
    function handleItemClick() {}
@@ -54,6 +60,7 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
       setClickEvent(e);
       setPMHeightPx(65);
       setPMWidthPx(200);
+      setCloseOnInnerClick(true);
    }
 
    return (

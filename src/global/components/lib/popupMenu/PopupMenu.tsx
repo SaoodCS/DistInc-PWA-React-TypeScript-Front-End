@@ -11,10 +11,11 @@ interface IPopupMenu {
    heightPx: number;
    content: JSX.Element;
    onClose: () => void;
+   closeOnInnerClick?: boolean;
 }
 
 export default function PopupMenu(props: IPopupMenu): JSX.Element {
-   const { openerPosition, content, isOpen, widthPx, heightPx, onClose } = props;
+   const { openerPosition, content, isOpen, widthPx, heightPx, onClose, closeOnInnerClick } = props;
    const [renderMenu, setRenderMenu] = useState(false);
    const popupMenuWrapperRef = useRef<HTMLDivElement>(null);
    const { isDarkTheme } = useThemeContext();
@@ -34,17 +35,18 @@ export default function PopupMenu(props: IPopupMenu): JSX.Element {
    }, [isOpen]);
 
    useEffect(() => {
-      function handleClickOutside(event: MouseEvent): void {
-         if (
-            popupMenuWrapperRef.current &&
-            !popupMenuWrapperRef.current.contains(event.target as Node)
-         ) {
-            onClose();
+      function handleClick(event: MouseEvent): void {
+         if (popupMenuWrapperRef.current) {
+            const isOutsideClick = !popupMenuWrapperRef.current.contains(event.target as Node);
+            const isInnerClick = !isOutsideClick;
+            if (isOutsideClick || (isInnerClick && closeOnInnerClick)) {
+               onClose();
+            }
          }
       }
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('mousedown', handleClick);
       return () => {
-         document.removeEventListener('mousedown', handleClickOutside);
+         document.removeEventListener('mousedown', handleClick);
       };
    }, [renderMenu]);
 

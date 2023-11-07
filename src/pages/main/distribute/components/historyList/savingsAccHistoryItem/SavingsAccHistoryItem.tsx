@@ -33,8 +33,14 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
    const { savingsAccHistory } = props;
    const { isDarkTheme } = useContext(ThemeContext);
    const { data } = SavingsClass.useQuery.getSavingsAccounts();
-   const { setPMContent, setPMHeightPx, setPMIsOpen, setPMWidthPx, setClickEvent } =
-      useContext(PopupMenuContext);
+   const {
+      setPMContent,
+      setPMHeightPx,
+      setPMIsOpen,
+      setPMWidthPx,
+      setClickEvent,
+      setCloseOnInnerClick,
+   } = useContext(PopupMenuContext);
 
    function getSavingsAccName(savingsAccId: number): string {
       if (!data) return '';
@@ -75,6 +81,7 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
       setClickEvent(e);
       setPMHeightPx(145);
       setPMWidthPx(200);
+      setCloseOnInnerClick(true);
    }
 
    function handleItemClick() {}

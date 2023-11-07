@@ -31,8 +31,14 @@ export default function Details(): JSX.Element {
    const carouselBorderRight: CSSProperties = {
       borderRight: `1px solid ${isDarkTheme ? Color.darkThm.border : Color.lightThm.border}`,
    };
-   const { setPMContent, setPMHeightPx, setPMIsOpen, setPMWidthPx, setClickEvent } =
-      useContext(PopupMenuContext);
+   const {
+      setPMContent,
+      setPMHeightPx,
+      setPMIsOpen,
+      setPMWidthPx,
+      setClickEvent,
+      setCloseOnInnerClick,
+   } = useContext(PopupMenuContext);
 
    useEffect(() => {
       setHeaderRightElement(
@@ -44,6 +50,7 @@ export default function Details(): JSX.Element {
                   setClickEvent(e);
                   setPMHeightPx(100);
                   setPMWidthPx(200);
+                  setCloseOnInnerClick(true);
                }}
             />
             <Filter
