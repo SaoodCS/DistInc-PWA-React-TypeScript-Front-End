@@ -14,6 +14,7 @@ import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks
 import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 import { PopupMenuContext } from '../../../global/context/widget/popupMenu/PopupMenuContext';
 import Color from '../../../global/css/colors';
+import ArrayOfObjects from '../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import FiltererContextMenu from './components/contextMenu/FiltererContextMenu';
 import NewFormContextMenu from './components/contextMenu/NewFormContextMenu';
 import NDetails from './namespace/NDetails';
@@ -45,7 +46,18 @@ export default function Details(): JSX.Element {
                   setPMWidthPx(200);
                }}
             />
-            <FiltererContextMenu currentSlide={currentSlide} />
+            <Filter
+               onClick={(e) => {
+                  setPMIsOpen(true);
+                  setPMContent(<FiltererContextMenu currentSlide={currentSlide} />);
+                  setClickEvent(e);
+                  setPMWidthPx(200);
+                  setPMHeightPx(
+                     ArrayOfObjects.getObjWithKeyValuePair(NDetails.slides, 'slideNo', currentSlide)
+                        .sortDataOptions[0].menuHeight,
+                  );
+               }}
+            />
          </>,
       );
    }, [currentSlide]);

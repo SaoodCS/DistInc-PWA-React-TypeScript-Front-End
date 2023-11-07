@@ -16,6 +16,7 @@ export namespace NDetails {
             orderUrlKey: 'orderIncome',
             name: input.name,
             placeholder: input.placeholder,
+            menuHeight: 180,
          })),
       },
       {
@@ -27,6 +28,7 @@ export namespace NDetails {
             orderUrlKey: 'orderExpense',
             name: input.name,
             placeholder: input.placeholder,
+            menuHeight: 275,
          })),
       },
       {
@@ -41,12 +43,14 @@ export namespace NDetails {
                   orderUrlKey: 'orderAccounts',
                   name: input.name,
                   placeholder: input.placeholder,
+                  menuHeight: 212,
                })),
             {
                sortUrlKey: 'sortAccountsBy',
                orderUrlKey: 'orderAccounts',
                name: 'category',
                placeholder: 'Category',
+               menuHeight: 212,
             },
          ],
       },
