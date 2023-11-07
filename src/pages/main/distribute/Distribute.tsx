@@ -97,8 +97,6 @@ export default function Distribute(): JSX.Element {
    }
 
    function handleMenuDotsClick(e: React.MouseEvent<SVGSVGElement, MouseEvent>, monthYear: string) {
-      console.log(monthYear);
-      const month = DateHelper.getMonthName(`01/${monthYear}`);
       setPMIsOpen(true);
       setPMContent(
          <PMItemsListWrapper isDarkTheme={isDarkTheme}>
@@ -109,7 +107,7 @@ export default function Distribute(): JSX.Element {
                isDarkTheme={isDarkTheme}
                dangerItem
             >
-               <PMItemTitle>{`Delete All History for ${month}`}</PMItemTitle>
+               <PMItemTitle>{`Delete All History for Month`}</PMItemTitle>
                <AutoDelete />
             </PMItemContainer>
          </PMItemsListWrapper>,
