@@ -53,26 +53,24 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
       savingsHistItem: ICalcSchema['savingsAccHistory'][0],
    ) {
       const savingsAccName = getSavingsAccName(savingsHistItem.id);
-      const month = DateHelper.getMonthName(savingsHistItem.timestamp);
       setPMIsOpen(true);
       setPMContent(
          <CMItemsListWrapper isDarkTheme={isDarkTheme}>
-            <CMItemContainer onClick={() => {}} isDarkTheme={isDarkTheme} dangerItem>
+            <CMItemContainer onClick={() => {
+               // TODO: API POST Mutation to delete history savingsAccHistory associated with savingsHistItem's date called here
+            }} isDarkTheme={isDarkTheme} dangerItem>
                <CMItemTitle>Delete This</CMItemTitle>
                <DocumentDelete />
             </CMItemContainer>
-
-            <CMItemContainer onClick={() => {}} isDarkTheme={isDarkTheme} dangerItem>
-               <CMItemTitle>{`Delete All History for ${month}`}</CMItemTitle>
-               <AutoDelete />
-            </CMItemContainer>
-
-            <CMItemContainer onClick={() => {}} isDarkTheme={isDarkTheme} dangerItem>
+            <CMItemContainer onClick={() => {
+               //TODO: API POST Mutation to delete all history savingsAccHistory associated with savingsHistItem's savingsAccId called here
+            }} isDarkTheme={isDarkTheme} dangerItem>
                <CMItemTitle>{`Delete All History For ${savingsAccName} `}</CMItemTitle>
                <RepoDeleted />
             </CMItemContainer>
-
-            <CMItemContainer onClick={() => {}} isDarkTheme={isDarkTheme} warningItem>
+            <CMItemContainer onClick={() => {
+               //TODO: API POST Mutation which calls the setSavingsAcc and updates (only) the isTracked field to false
+            }} isDarkTheme={isDarkTheme} warningItem>
                <CMItemTitle>Stop Tracking</CMItemTitle>
                <StopCircle />
             </CMItemContainer>

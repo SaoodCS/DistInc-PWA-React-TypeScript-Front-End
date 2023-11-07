@@ -42,18 +42,14 @@ export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
       analyticsItem: ICalcSchema['analytics'][0],
    ) {
-      const month = DateHelper.getMonthName(analyticsItem.timestamp);
       setPMIsOpen(true);
       setPMContent(
          <CMItemsListWrapper isDarkTheme={isDarkTheme}>
-            <CMItemContainer onClick={() => {}} isDarkTheme={isDarkTheme} dangerItem>
+            <CMItemContainer onClick={() => {
+               // TODO: API POST Mutation to delete analytics history associated with the analyticsItem date called here
+            }} isDarkTheme={isDarkTheme} dangerItem>
                <CMItemTitle>Delete This</CMItemTitle>
                <DocumentDelete />
-            </CMItemContainer>
-
-            <CMItemContainer onClick={() => {}} isDarkTheme={isDarkTheme} dangerItem>
-               <CMItemTitle>{`Delete All History for ${month}`}</CMItemTitle>
-               <AutoDelete />
             </CMItemContainer>
          </CMItemsListWrapper>,
       );

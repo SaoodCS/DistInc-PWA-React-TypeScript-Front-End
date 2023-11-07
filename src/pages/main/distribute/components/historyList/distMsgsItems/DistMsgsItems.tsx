@@ -42,18 +42,18 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
       distMsgsItem: ICalcSchema['distributer'][0],
    ) {
-      const month = DateHelper.getMonthName(distMsgsItem.timestamp);
       setPMIsOpen(true);
       setPMContent(
          <CMItemsListWrapper isDarkTheme={isDarkTheme}>
-            <CMItemContainer onClick={() => {}} isDarkTheme={isDarkTheme} dangerItem>
+            <CMItemContainer
+               onClick={() => {
+                  // TODO: API POST Mutation to delete distMsgs history associated with distMsgsItem date called here
+               }}
+               isDarkTheme={isDarkTheme}
+               dangerItem
+            >
                <CMItemTitle>Delete This</CMItemTitle>
                <DocumentDelete />
-            </CMItemContainer>
-
-            <CMItemContainer onClick={() => {}} isDarkTheme={isDarkTheme} dangerItem>
-               <CMItemTitle>{`Delete All History for ${month}`}</CMItemTitle>
-               <AutoDelete />
             </CMItemContainer>
          </CMItemsListWrapper>,
       );

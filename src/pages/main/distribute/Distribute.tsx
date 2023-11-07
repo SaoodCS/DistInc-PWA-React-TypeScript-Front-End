@@ -1,9 +1,15 @@
 import { QuestionMark as QMark } from '@styled-icons/boxicons-regular/QuestionMark';
 import { Add } from '@styled-icons/fluentui-system-filled/Add';
 import { useContext, useEffect } from 'react';
+import { AutoDelete } from 'styled-icons/material';
 import { CardListTitle, CardListWrapper } from '../../../global/components/lib/cardList/Style';
 import CardListPlaceholder from '../../../global/components/lib/cardList/placeholder/CardListPlaceholder';
 import { CarouselAndNavBarWrapper } from '../../../global/components/lib/carousel/NavBar';
+import {
+   CMItemContainer,
+   CMItemTitle,
+   CMItemsListWrapper,
+} from '../../../global/components/lib/contextMenu/Style';
 import FetchError from '../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import { TextColourizer } from '../../../global/components/lib/font/textColorizer/TextColourizer';
@@ -14,6 +20,7 @@ import useThemeContext from '../../../global/context/theme/hooks/useThemeContext
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
 import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 import { ModalContext } from '../../../global/context/widget/modal/ModalContext';
+import { PopupMenuContext } from '../../../global/context/widget/popupMenu/PopupMenuContext';
 import ArrayOfObjects from '../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import DateHelper from '../../../global/helpers/dataTypes/date/DateHelper';
 import IncomeClass from '../details/components/Income/class/Class';
@@ -37,6 +44,14 @@ export default function Distribute(): JSX.Element {
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
    const { data: income } = IncomeClass.useQuery.getIncomes();
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
+   const {
+      setPMContent,
+      setPMHeightPx,
+      setPMIsOpen,
+      setPMWidthPx,
+      setClickEvent,
+      setCloseOnInnerClick,
+   } = useContext(PopupMenuContext);
    const {
       data: calcDistData,
       isLoading,
@@ -85,6 +100,30 @@ export default function Distribute(): JSX.Element {
       return groupedByMonth;
    }
 
+   function handleMenuDotsClick(e: React.MouseEvent<SVGSVGElement, MouseEvent>, monthYear: string) {
+      console.log(monthYear);
+      const month = DateHelper.getMonthName(`01/${monthYear}`);
+      setPMIsOpen(true);
+      setPMContent(
+         <CMItemsListWrapper isDarkTheme={isDarkTheme}>
+            <CMItemContainer
+               onClick={() => {
+                  // TODO: API POST Mutation to delete this month's history called here
+               }}
+               isDarkTheme={isDarkTheme}
+               dangerItem
+            >
+               <CMItemTitle>{`Delete All History for ${month}`}</CMItemTitle>
+               <AutoDelete />
+            </CMItemContainer>
+         </CMItemsListWrapper>,
+      );
+      setClickEvent(e);
+      setPMHeightPx(30);
+      setPMWidthPx(200);
+      setCloseOnInnerClick(true);
+   }
+
    return (
       <CarouselAndNavBarWrapper>
          <TextColourizer fontSize="2em" bold padding="0.5em">
@@ -98,7 +137,10 @@ export default function Distribute(): JSX.Element {
                         <TextColourizer padding={'0 0.5em 0 0'}>
                            {DateHelper.fromMMYYYYToWord(monthObj.monthYear)}
                         </TextColourizer>
-                        <HorizontalMenuDots darktheme={isDarkTheme.toString()} />
+                        <HorizontalMenuDots
+                           darktheme={isDarkTheme.toString()}
+                           onClick={(e) => handleMenuDotsClick(e, monthObj.monthYear)}
+                        />
                      </CardListTitle>
                      {monthObj.distributer && <DistMsgsItems distributer={monthObj.distributer} />}
                      {monthObj.analytics && <AnalyticsItems analytics={monthObj.analytics} />}
