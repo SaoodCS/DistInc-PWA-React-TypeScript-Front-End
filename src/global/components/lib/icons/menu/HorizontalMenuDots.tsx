@@ -4,8 +4,13 @@ import MyCSS from '../../../../css/MyCSS';
 import Color from '../../../../css/colors';
 
 export const HorizontalMenuDots = styled(DotsHorizontalRounded)<{ darktheme: string }>`
-   height: 1em;
-   font-size: 1.25em;
+   background: none;
+   border: none;
+   user-select: none;
+   text-decoration: none;
+   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+   -webkit-touch-callout: none;
+   height: 1.25em;
    color: ${({ darktheme }) =>
       darktheme === 'true' ? Color.darkThm.accent : Color.lightThm.accent};
    border-radius: 50%;
@@ -26,4 +31,5 @@ export const HorizontalMenuDots = styled(DotsHorizontalRounded)<{ darktheme: str
                0.5,
             )};
    }
+   transition: all 0.3s ease-in-out;
 `;

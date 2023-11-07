@@ -88,7 +88,7 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
          </PMItemsListWrapper>,
       );
       setClickEvent(e);
-      setPMHeightPx(110);
+      setPMHeightPx(113);
       setPMWidthPx(200);
       setCloseOnInnerClick(true);
    }
