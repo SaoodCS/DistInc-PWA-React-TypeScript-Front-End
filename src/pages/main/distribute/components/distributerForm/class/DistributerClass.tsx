@@ -222,6 +222,8 @@ interface IReqMet {
    isValid: boolean;
 }
 
+// -- TYPES FOR DELCALCDIST MUTATION: -- //
+
 interface IDelCalcDistItem {
    type: 'analyticsItem' | 'distributerItem' | 'savingsAccHistoryItem';
    data:
