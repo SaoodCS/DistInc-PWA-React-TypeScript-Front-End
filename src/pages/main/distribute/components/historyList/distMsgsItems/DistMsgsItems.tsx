@@ -8,17 +8,13 @@ import {
    ItemTitleAndIconWrapper,
    ItemTitleAndSubTitleWrapper,
 } from '../../../../../../global/components/lib/cardList/Style';
-import {
-   CMItemContainer,
-   CMItemTitle,
-   CMItemsListWrapper,
-} from '../../../../../../global/components/lib/contextMenu/Style';
 import { TextColourizer } from '../../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { HorizontalMenuDots } from '../../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
 import { ThemeContext } from '../../../../../../global/context/theme/ThemeContext';
 import { PopupMenuContext } from '../../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import { ICalcSchema } from '../../calculation/CalculateDist';
+import { PMItemContainer, PMItemTitle, PMItemsListWrapper } from '../../../../../../global/components/lib/popupMenu/Style';
 
 interface IDistributeMsgsItems {
    distributer: ICalcSchema['distributer'];
@@ -44,22 +40,22 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
    ) {
       setPMIsOpen(true);
       setPMContent(
-         <CMItemsListWrapper isDarkTheme={isDarkTheme}>
-            <CMItemContainer
+         <PMItemsListWrapper isDarkTheme={isDarkTheme}>
+            <PMItemContainer
                onClick={() => {
                   // TODO: API POST Mutation to delete distMsgs history associated with distMsgsItem date called here
                }}
                isDarkTheme={isDarkTheme}
                dangerItem
             >
-               <CMItemTitle>Delete This</CMItemTitle>
+               <PMItemTitle>Delete This</PMItemTitle>
                <DocumentDelete />
-            </CMItemContainer>
-         </CMItemsListWrapper>,
+            </PMItemContainer>
+         </PMItemsListWrapper>,
       );
       setClickEvent(e);
-      setPMHeightPx(65);
-      setPMWidthPx(200);
+      setPMHeightPx(30);
+      setPMWidthPx(120);
       setCloseOnInnerClick(true);
    }
 

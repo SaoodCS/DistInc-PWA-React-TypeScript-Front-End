@@ -5,16 +5,12 @@ import { AutoDelete } from 'styled-icons/material';
 import { CardListTitle, CardListWrapper } from '../../../global/components/lib/cardList/Style';
 import CardListPlaceholder from '../../../global/components/lib/cardList/placeholder/CardListPlaceholder';
 import { CarouselAndNavBarWrapper } from '../../../global/components/lib/carousel/NavBar';
-import {
-   CMItemContainer,
-   CMItemTitle,
-   CMItemsListWrapper,
-} from '../../../global/components/lib/contextMenu/Style';
 import FetchError from '../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import { TextColourizer } from '../../../global/components/lib/font/textColorizer/TextColourizer';
 import { HorizontalMenuDots } from '../../../global/components/lib/icons/menu/HorizontalMenuDots';
 import Loader from '../../../global/components/lib/loader/Loader';
+import { PMItemContainer, PMItemTitle, PMItemsListWrapper } from '../../../global/components/lib/popupMenu/Style';
 import PullToRefresh from '../../../global/components/lib/pullToRefresh/PullToRefresh';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
@@ -105,18 +101,18 @@ export default function Distribute(): JSX.Element {
       const month = DateHelper.getMonthName(`01/${monthYear}`);
       setPMIsOpen(true);
       setPMContent(
-         <CMItemsListWrapper isDarkTheme={isDarkTheme}>
-            <CMItemContainer
+         <PMItemsListWrapper isDarkTheme={isDarkTheme}>
+            <PMItemContainer
                onClick={() => {
                   // TODO: API POST Mutation to delete this month's history called here
                }}
                isDarkTheme={isDarkTheme}
                dangerItem
             >
-               <CMItemTitle>{`Delete All History for ${month}`}</CMItemTitle>
+               <PMItemTitle>{`Delete All History for ${month}`}</PMItemTitle>
                <AutoDelete />
-            </CMItemContainer>
-         </CMItemsListWrapper>,
+            </PMItemContainer>
+         </PMItemsListWrapper>,
       );
       setClickEvent(e);
       setPMHeightPx(30);

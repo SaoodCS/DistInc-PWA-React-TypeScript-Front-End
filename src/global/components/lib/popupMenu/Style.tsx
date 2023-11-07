@@ -1,6 +1,7 @@
 import styled, { Keyframes, keyframes } from 'styled-components';
 import Color from '../../../css/colors';
-import { TButtonPos } from '../contextMenu/ContextMenu';
+
+export type TButtonPos = 'top left' | 'top right' | 'bottom left' | 'bottom right';
 
 const relativeExpander = (clickPos: TButtonPos): Keyframes => keyframes`
    0% {
@@ -58,4 +59,52 @@ export const PopupMenuWrapper = styled.div<{
          isOpen ? relativeExpander(clickPos) : relativeContractor(clickPos)}
       0.25s ease-in-out;
    animation-fill-mode: forwards;
+`;
+
+
+export const PMItemsListWrapper = styled.div<{ isDarkTheme: boolean }>`
+   & > *:not(:last-child) {
+      border-bottom: 1px solid
+         ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.border : Color.lightThm.border)};
+   }
+`;
+
+export const PMItemContainer = styled.div<{
+   isDarkTheme: boolean;
+   warningItem?: boolean;
+   dangerItem?: boolean;
+   isHeadingItem?: boolean;
+}>`
+   padding: 8px;
+   display: flex;
+   justify-content: ${({ isHeadingItem }) => (isHeadingItem ? 'center' : 'space-between')};
+   align-items: center;
+   background-color: ${({ isDarkTheme, isHeadingItem }) =>
+      isHeadingItem &&
+      Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.09)};
+   color: ${({ isDarkTheme, warningItem, dangerItem }) =>
+      isDarkTheme
+         ? warningItem
+            ? Color.darkThm.warning
+            : dangerItem
+            ? Color.darkThm.error
+            : Color.darkThm.txt
+         : warningItem
+         ? Color.lightThm.warning
+         : dangerItem
+         ? Color.lightThm.error
+         : Color.lightThm.txt};
+
+   & > *:nth-child(2) {
+      height: 15px;
+   }
+   &:hover:active {
+      background-color: ${({ isDarkTheme, isHeadingItem }) =>
+         !isHeadingItem &&
+         Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.1)};
+   }
+`;
+
+export const PMItemTitle = styled.div`
+   font-size: 13px;
 `;

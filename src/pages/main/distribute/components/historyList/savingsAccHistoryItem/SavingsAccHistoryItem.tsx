@@ -1,5 +1,4 @@
 import { StopCircle } from '@styled-icons/ionicons-outline/StopCircle';
-import { AutoDelete } from '@styled-icons/material-outlined/AutoDelete';
 import { RepoDeleted } from '@styled-icons/octicons/RepoDeleted';
 import { DocumentDelete } from '@styled-icons/typicons/DocumentDelete';
 import { useContext } from 'react';
@@ -10,13 +9,13 @@ import {
    ItemTitleAndIconWrapper,
    ItemTitleAndSubTitleWrapper,
 } from '../../../../../../global/components/lib/cardList/Style';
-import {
-   CMItemContainer,
-   CMItemTitle,
-   CMItemsListWrapper,
-} from '../../../../../../global/components/lib/contextMenu/Style';
 import { TextColourizer } from '../../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { HorizontalMenuDots } from '../../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
+import {
+   PMItemContainer,
+   PMItemTitle,
+   PMItemsListWrapper,
+} from '../../../../../../global/components/lib/popupMenu/Style';
 import { ThemeContext } from '../../../../../../global/context/theme/ThemeContext';
 import { PopupMenuContext } from '../../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
@@ -55,29 +54,41 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
       const savingsAccName = getSavingsAccName(savingsHistItem.id);
       setPMIsOpen(true);
       setPMContent(
-         <CMItemsListWrapper isDarkTheme={isDarkTheme}>
-            <CMItemContainer onClick={() => {
-               // TODO: API POST Mutation to delete history savingsAccHistory associated with savingsHistItem's date called here
-            }} isDarkTheme={isDarkTheme} dangerItem>
-               <CMItemTitle>Delete This</CMItemTitle>
+         <PMItemsListWrapper isDarkTheme={isDarkTheme}>
+            <PMItemContainer
+               onClick={() => {
+                  // TODO: API POST Mutation to delete history savingsAccHistory associated with savingsHistItem's date called here
+               }}
+               isDarkTheme={isDarkTheme}
+               dangerItem
+            >
+               <PMItemTitle>Delete This</PMItemTitle>
                <DocumentDelete />
-            </CMItemContainer>
-            <CMItemContainer onClick={() => {
-               //TODO: API POST Mutation to delete all history savingsAccHistory associated with savingsHistItem's savingsAccId called here
-            }} isDarkTheme={isDarkTheme} dangerItem>
-               <CMItemTitle>{`Delete All History For ${savingsAccName} `}</CMItemTitle>
+            </PMItemContainer>
+            <PMItemContainer
+               onClick={() => {
+                  //TODO: API POST Mutation to delete all history savingsAccHistory associated with savingsHistItem's savingsAccId called here
+               }}
+               isDarkTheme={isDarkTheme}
+               dangerItem
+            >
+               <PMItemTitle>{`Delete All History For ${savingsAccName} `}</PMItemTitle>
                <RepoDeleted />
-            </CMItemContainer>
-            <CMItemContainer onClick={() => {
-               //TODO: API POST Mutation which calls the setSavingsAcc and updates (only) the isTracked field to false
-            }} isDarkTheme={isDarkTheme} warningItem>
-               <CMItemTitle>Stop Tracking</CMItemTitle>
+            </PMItemContainer>
+            <PMItemContainer
+               onClick={() => {
+                  //TODO: API POST Mutation which calls the setSavingsAcc and updates (only) the isTracked field to false
+               }}
+               isDarkTheme={isDarkTheme}
+               warningItem
+            >
+               <PMItemTitle>Stop Tracking</PMItemTitle>
                <StopCircle />
-            </CMItemContainer>
-         </CMItemsListWrapper>,
+            </PMItemContainer>
+         </PMItemsListWrapper>,
       );
       setClickEvent(e);
-      setPMHeightPx(145);
+      setPMHeightPx(110);
       setPMWidthPx(200);
       setCloseOnInnerClick(true);
    }
