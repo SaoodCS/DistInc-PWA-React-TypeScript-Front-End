@@ -10,7 +10,11 @@ import OfflineFetch from '../../../global/components/lib/fetch/offlineFetch/offl
 import { TextColourizer } from '../../../global/components/lib/font/textColorizer/TextColourizer';
 import { HorizontalMenuDots } from '../../../global/components/lib/icons/menu/HorizontalMenuDots';
 import Loader from '../../../global/components/lib/loader/Loader';
-import { PMItemContainer, PMItemTitle, PMItemsListWrapper } from '../../../global/components/lib/popupMenu/Style';
+import {
+   PMItemContainer,
+   PMItemTitle,
+   PMItemsListWrapper,
+} from '../../../global/components/lib/popupMenu/Style';
 import PullToRefresh from '../../../global/components/lib/pullToRefresh/PullToRefresh';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
@@ -28,6 +32,7 @@ import DistributerClass from './components/distributerForm/class/DistributerClas
 import AnalyticsItems from './components/historyList/analyticsItem/AnalyticsItem';
 import DistMsgsItems from './components/historyList/distMsgsItems/DistMsgsItems';
 import SavingsAccHistoryItems from './components/historyList/savingsAccHistoryItem/SavingsAccHistoryItem';
+import MonthPopupMenu from './components/popupMenu/MonthPopupMenu';
 import HelpRequirements from './components/requirementsModal/HelpRequirements';
 
 export default function Distribute(): JSX.Element {
@@ -98,20 +103,7 @@ export default function Distribute(): JSX.Element {
 
    function handleMenuDotsClick(e: React.MouseEvent<SVGSVGElement, MouseEvent>, monthYear: string) {
       setPMIsOpen(true);
-      setPMContent(
-         <PMItemsListWrapper isDarkTheme={isDarkTheme}>
-            <PMItemContainer
-               onClick={() => {
-                  // TODO: API POST Mutation to delete this month's history called here
-               }}
-               isDarkTheme={isDarkTheme}
-               dangerItem
-            >
-               <PMItemTitle>{`Delete All History for Month`}</PMItemTitle>
-               <AutoDelete />
-            </PMItemContainer>
-         </PMItemsListWrapper>,
-      );
+      setPMContent(<MonthPopupMenu monthYear={monthYear} />);
       setClickEvent(e);
       setPMHeightPx(30);
       setPMWidthPx(200);

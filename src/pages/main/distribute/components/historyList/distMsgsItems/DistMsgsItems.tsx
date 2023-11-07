@@ -1,7 +1,5 @@
 import { useContext } from 'react';
 import { DocumentFlowchart } from 'styled-icons/fluentui-system-filled';
-import { AutoDelete } from 'styled-icons/material';
-import { DocumentDelete } from 'styled-icons/typicons';
 import {
    CardListItem,
    ItemRightColWrapper,
@@ -10,11 +8,11 @@ import {
 } from '../../../../../../global/components/lib/cardList/Style';
 import { TextColourizer } from '../../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { HorizontalMenuDots } from '../../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
-import { ThemeContext } from '../../../../../../global/context/theme/ThemeContext';
+import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { PopupMenuContext } from '../../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import { ICalcSchema } from '../../calculation/CalculateDist';
-import { PMItemContainer, PMItemTitle, PMItemsListWrapper } from '../../../../../../global/components/lib/popupMenu/Style';
+import DistMsgsPopupMenu from '../../popupMenu/DistMsgsPopupMenu';
 
 interface IDistributeMsgsItems {
    distributer: ICalcSchema['distributer'];
@@ -30,33 +28,22 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
       setClickEvent,
       setCloseOnInnerClick,
    } = useContext(PopupMenuContext);
-   const { isDarkTheme } = useContext(ThemeContext);
-
-   function handleItemClick() {}
+   const { isDarkTheme } = useThemeContext();
 
    function handleMenuDotsClick(
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
       distMsgsItem: ICalcSchema['distributer'][0],
    ) {
       setPMIsOpen(true);
-      setPMContent(
-         <PMItemsListWrapper isDarkTheme={isDarkTheme}>
-            <PMItemContainer
-               onClick={() => {
-                  // TODO: API POST Mutation to delete distMsgs history associated with distMsgsItem date called here
-               }}
-               isDarkTheme={isDarkTheme}
-               dangerItem
-            >
-               <PMItemTitle>Delete This</PMItemTitle>
-               <DocumentDelete />
-            </PMItemContainer>
-         </PMItemsListWrapper>,
-      );
+      setPMContent(<DistMsgsPopupMenu distributerItem={distMsgsItem} />);
       setClickEvent(e);
       setPMHeightPx(30);
       setPMWidthPx(120);
       setCloseOnInnerClick(true);
+   }
+
+   function handleItemClick() {
+      //TODO: display savings account history item details in a modal here
    }
 
    return (

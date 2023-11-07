@@ -1,6 +1,3 @@
-import { StopCircle } from '@styled-icons/ionicons-outline/StopCircle';
-import { RepoDeleted } from '@styled-icons/octicons/RepoDeleted';
-import { DocumentDelete } from '@styled-icons/typicons/DocumentDelete';
 import { useContext } from 'react';
 import { Savings } from 'styled-icons/fluentui-system-filled';
 import {
@@ -11,18 +8,14 @@ import {
 } from '../../../../../../global/components/lib/cardList/Style';
 import { TextColourizer } from '../../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { HorizontalMenuDots } from '../../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
-import {
-   PMItemContainer,
-   PMItemTitle,
-   PMItemsListWrapper,
-} from '../../../../../../global/components/lib/popupMenu/Style';
-import { ThemeContext } from '../../../../../../global/context/theme/ThemeContext';
 import { PopupMenuContext } from '../../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
 import { ICalcSchema } from '../../calculation/CalculateDist';
+import SavingsAccPopupMenu from '../../popupMenu/SavingsAccPopupMenu';
+import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 
 interface ISavingsAccHistoryItems {
    savingsAccHistory: ICalcSchema['savingsAccHistory'];
@@ -30,7 +23,7 @@ interface ISavingsAccHistoryItems {
 
 export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): JSX.Element {
    const { savingsAccHistory } = props;
-   const { isDarkTheme } = useContext(ThemeContext);
+   const { isDarkTheme } = useThemeContext();
    const { data } = SavingsClass.useQuery.getSavingsAccounts();
    const {
       setPMContent,
@@ -49,51 +42,19 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
 
    function handleMenuDotsClick(
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
-      savingsHistItem: ICalcSchema['savingsAccHistory'][0],
+      savingsAccHistItem: ICalcSchema['savingsAccHistory'][0],
    ) {
-      const savingsAccName = getSavingsAccName(savingsHistItem.id);
       setPMIsOpen(true);
-      setPMContent(
-         <PMItemsListWrapper isDarkTheme={isDarkTheme}>
-            <PMItemContainer
-               onClick={() => {
-                  // TODO: API POST Mutation to delete history savingsAccHistory associated with savingsHistItem's date called here
-               }}
-               isDarkTheme={isDarkTheme}
-               dangerItem
-            >
-               <PMItemTitle>Delete This</PMItemTitle>
-               <DocumentDelete />
-            </PMItemContainer>
-            <PMItemContainer
-               onClick={() => {
-                  //TODO: API POST Mutation to delete all history savingsAccHistory associated with savingsHistItem's savingsAccId called here
-               }}
-               isDarkTheme={isDarkTheme}
-               dangerItem
-            >
-               <PMItemTitle>{`Delete All History For ${savingsAccName} `}</PMItemTitle>
-               <RepoDeleted />
-            </PMItemContainer>
-            <PMItemContainer
-               onClick={() => {
-                  //TODO: API POST Mutation which calls the setSavingsAcc and updates (only) the isTracked field to false
-               }}
-               isDarkTheme={isDarkTheme}
-               warningItem
-            >
-               <PMItemTitle>Stop Tracking</PMItemTitle>
-               <StopCircle />
-            </PMItemContainer>
-         </PMItemsListWrapper>,
-      );
+      setPMContent(<SavingsAccPopupMenu savingsAccHistItem={savingsAccHistItem} />);
       setClickEvent(e);
       setPMHeightPx(113);
       setPMWidthPx(200);
       setCloseOnInnerClick(true);
    }
 
-   function handleItemClick() {}
+   function handleItemClick() {
+      //TODO: display savings account history item details in a modal here
+   }
 
    return (
       <>

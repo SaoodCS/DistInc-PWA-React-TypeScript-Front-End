@@ -112,12 +112,11 @@ export default class DistributerClass {
    }
 
    private static useDelCalcDistMutation(
-      options: UseMutationOptions<void, unknown, ICalcSchema>,
-   ): UseMutationResult<void, unknown, ICalcSchema> {
+      options: UseMutationOptions<void, unknown, IDelCalcDist>,
+   ): UseMutationResult<void, unknown, IDelCalcDist> {
       return useCustomMutation(
-         async (calculatedData: ICalcSchema) => {
-            const timestamp = calculatedData.analytics[0].timestamp;
-            const body = APIHelper.createBody({ timestamp });
+         async (delCalcDistBody: IDelCalcDist) => {
+            const body = APIHelper.createBody(delCalcDistBody);
             const method = 'POST';
             const microserviceName = microservices.deleteCalculations.name;
             await APIHelper.gatewayCall(body, method, microserviceName);
@@ -222,3 +221,23 @@ interface IReqMet {
    name: IReqNames;
    isValid: boolean;
 }
+
+interface IDelCalcDistItem {
+   type: 'analyticsItem' | 'distributerItem' | 'savingsAccHistoryItem';
+   data:
+      | ICalcSchema['analytics'][0]
+      | ICalcSchema['distributer'][0]
+      | ICalcSchema['savingsAccHistory'][0];
+}
+
+interface IDelCalcDistMonth {
+   type: 'month';
+   monthYear: string;
+}
+
+interface IDelCalcDistAllSavingsAccIdHistory {
+   type: 'allSavingsAccIdHistory';
+   savingsAccId: number;
+}
+
+type IDelCalcDist = IDelCalcDistItem | IDelCalcDistMonth | IDelCalcDistAllSavingsAccIdHistory;
