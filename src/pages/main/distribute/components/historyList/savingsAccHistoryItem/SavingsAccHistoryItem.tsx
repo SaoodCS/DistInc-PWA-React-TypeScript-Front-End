@@ -52,17 +52,10 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
       setCloseOnInnerClick(true);
    }
 
-   function handleItemClick(): void {
-      //TODO: display savings account history item details in a modal here
-   }
-
    return (
       <>
          {savingsAccHistory.map((savingsHistObj) => (
-            <CardListItem
-               key={`${savingsHistObj.timestamp}.${savingsHistObj.id}`}
-               onClick={() => handleItemClick()}
-            >
+            <CardListItem key={`${savingsHistObj.timestamp}.${savingsHistObj.id}`}>
                <ItemTitleAndIconWrapper style={{ position: 'relative' }}>
                   <Savings height={'2em'} style={{ paddingRight: '0.5em' }} />
                   <ItemTitleAndSubTitleWrapper>

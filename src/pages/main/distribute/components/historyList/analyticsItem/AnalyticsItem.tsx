@@ -8,11 +8,11 @@ import {
 } from '../../../../../../global/components/lib/cardList/Style';
 import { TextColourizer } from '../../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { HorizontalMenuDots } from '../../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
+import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { PopupMenuContext } from '../../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import type { ICalcSchema } from '../../calculation/CalculateDist';
 import AnalyticsPopupMenu from '../../popupMenu/AnalyticsPopupMenu';
-import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 
 interface IAnalyticsItems {
    analytics: ICalcSchema['analytics'];
@@ -37,19 +37,15 @@ export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
       setPMIsOpen(true);
       setPMContent(<AnalyticsPopupMenu analyticsItem={analyticsItem} type={'analyticsItem'} />);
       setClickEvent(e);
-      setPMHeightPx(30);
+      setPMHeightPx(62);
       setPMWidthPx(120);
       setCloseOnInnerClick(true);
-   }
-
-   function handleItemClick(): void {
-      //TODO: display savings account history item details in a modal here
    }
 
    return (
       <>
          {analytics.map((analyticsObj) => (
-            <CardListItem key={analyticsObj.timestamp} onClick={() => handleItemClick()}>
+            <CardListItem key={analyticsObj.timestamp}>
                <ItemTitleAndIconWrapper>
                   <Calculator height={'2em'} style={{ paddingRight: '0.5em' }} />
                   <ItemTitleAndSubTitleWrapper>

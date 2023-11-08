@@ -37,19 +37,15 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
       setPMIsOpen(true);
       setPMContent(<DistMsgsPopupMenu distributerItem={distMsgsItem} />);
       setClickEvent(e);
-      setPMHeightPx(30);
+      setPMHeightPx(62);
       setPMWidthPx(120);
       setCloseOnInnerClick(true);
-   }
-
-   function handleItemClick(): void {
-      //TODO: display savings account history item details in a modal here
    }
 
    return (
       <>
          {distributer.map((distMsgsObj) => (
-            <CardListItem key={distMsgsObj.timestamp} onClick={() => handleItemClick()}>
+            <CardListItem key={distMsgsObj.timestamp}>
                <ItemTitleAndIconWrapper>
                   <DocumentFlowchart height={'2em'} style={{ paddingRight: '0.5em' }} />
                   <ItemTitleAndSubTitleWrapper>
