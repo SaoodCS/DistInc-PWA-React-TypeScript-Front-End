@@ -8,6 +8,7 @@ import {
 } from '../../../../../../global/components/lib/cardList/Style';
 import { TextColourizer } from '../../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { HorizontalMenuDots } from '../../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
+import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { PopupMenuContext } from '../../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
@@ -15,7 +16,6 @@ import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOf
 import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
 import { ICalcSchema } from '../../calculation/CalculateDist';
 import SavingsAccPopupMenu from '../../popupMenu/SavingsAccPopupMenu';
-import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 
 interface ISavingsAccHistoryItems {
    savingsAccHistory: ICalcSchema['savingsAccHistory'];
@@ -59,7 +59,10 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
    return (
       <>
          {savingsAccHistory.map((savingsHistObj) => (
-            <CardListItem key={savingsHistObj.timestamp} onClick={() => handleItemClick()}>
+            <CardListItem
+               key={`${savingsHistObj.timestamp}.${savingsHistObj.id}`}
+               onClick={() => handleItemClick()}
+            >
                <ItemTitleAndIconWrapper style={{ position: 'relative' }}>
                   <Savings height={'2em'} style={{ paddingRight: '0.5em' }} />
                   <ItemTitleAndSubTitleWrapper>
