@@ -33,7 +33,7 @@ export default function DistMsgsPopupMenu(props: IDistMsgsPopupMenu): JSX.Elemen
    }
 
    function handleView() {
-      //TODO: handleView modal here
+      //TODO: handleView slide navigation here
    }
 
    return (

@@ -34,6 +34,7 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
       distMsgsItem: ICalcSchema['distributer'][0],
    ): void {
+      e.stopPropagation();
       setPMIsOpen(true);
       setPMContent(<DistMsgsPopupMenu distributerItem={distMsgsItem} />);
       setClickEvent(e);

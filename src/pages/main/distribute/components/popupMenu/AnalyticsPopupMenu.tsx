@@ -33,7 +33,7 @@ export default function AnalyticsPopupMenu(props: IAnalyticsPopupMenu): JSX.Elem
       });
    }
    function handleView() {
-      // TODO: handleView modal here
+      // TODO: handleView slide navigation here
    }
 
    return (

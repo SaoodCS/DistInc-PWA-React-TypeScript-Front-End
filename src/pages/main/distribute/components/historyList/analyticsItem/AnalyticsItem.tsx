@@ -34,6 +34,7 @@ export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
       analyticsItem: ICalcSchema['analytics'][0],
    ): void {
+      e.stopPropagation();
       setPMIsOpen(true);
       setPMContent(<AnalyticsPopupMenu analyticsItem={analyticsItem} type={'analyticsItem'} />);
       setClickEvent(e);
