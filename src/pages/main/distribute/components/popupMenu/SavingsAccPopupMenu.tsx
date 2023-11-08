@@ -89,7 +89,7 @@ export default function SavingsAccPopupMenu(props: ISavingsAccPopupMenu): JSX.El
             dangerItem
          >
             <PMItemTitle>
-               {`Delete All History For ${ObjectOfObjects.findObjFromUniqueVal(
+               {`Reset History For ${ObjectOfObjects.findObjFromUniqueVal(
                   savingsAccData || {},
                   savingsAccHistItem.id,
                )?.accountName} `}
