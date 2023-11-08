@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { useQueryClient } from '@tanstack/react-query';
-import { useContext } from 'react';
 import { DocumentDelete } from 'styled-icons/typicons';
 import {
    PMItemContainer,
@@ -7,7 +7,7 @@ import {
    PMItemsListWrapper,
 } from '../../../../../global/components/lib/popupMenu/Style';
 import microservices from '../../../../../global/firebase/apis/microservices/microservices';
-import { ICalcSchema } from '../calculation/CalculateDist';
+import type { ICalcSchema } from '../calculation/CalculateDist';
 import DistributerClass from '../distributerForm/class/DistributerClass';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 
@@ -16,7 +16,7 @@ interface IAnalyticsPopupMenu {
    analyticsItem: ICalcSchema['analytics'][0];
 }
 
-export default function AnalyticsPopupMenu(props: IAnalyticsPopupMenu) {
+export default function AnalyticsPopupMenu(props: IAnalyticsPopupMenu): JSX.Element {
    const { analyticsItem } = props;
    const { isDarkTheme } = useThemeContext();
 
@@ -26,7 +26,7 @@ export default function AnalyticsPopupMenu(props: IAnalyticsPopupMenu) {
          queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
       },
    });
-   async function handleDelete() {
+   async function handleDelete(): Promise<void> {
       await delCalcDistItemInFirestore.mutateAsync({
          type: 'analyticsItem',
          data: analyticsItem,

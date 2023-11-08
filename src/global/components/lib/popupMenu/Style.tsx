@@ -1,4 +1,5 @@
-import styled, { Keyframes, keyframes } from 'styled-components';
+import type { Keyframes } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import Color from '../../../css/colors';
 
 export type TButtonPos = 'top left' | 'top right' | 'bottom left' | 'bottom right';
@@ -60,7 +61,6 @@ export const PopupMenuWrapper = styled.div<{
       0.25s ease-in-out;
    animation-fill-mode: forwards;
 `;
-
 
 export const PMItemsListWrapper = styled.div<{ isDarkTheme: boolean }>`
    & > *:not(:last-child) {

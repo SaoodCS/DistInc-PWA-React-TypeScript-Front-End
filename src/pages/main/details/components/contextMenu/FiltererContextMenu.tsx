@@ -4,7 +4,11 @@ import useThemeContext from '../../../../../global/context/theme/hooks/useThemeC
 import ArrayOfObjects from '../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import useURLState from '../../../../../global/hooks/useURLState';
 import NDetails from '../../namespace/NDetails';
-import { PMItemContainer, PMItemTitle, PMItemsListWrapper } from '../../../../../global/components/lib/popupMenu/Style';
+import {
+   PMItemContainer,
+   PMItemTitle,
+   PMItemsListWrapper,
+} from '../../../../../global/components/lib/popupMenu/Style';
 
 interface IFilterer {
    currentSlide: number;
@@ -43,7 +47,7 @@ export default function FiltererContextMenu(props: IFilterer): JSX.Element {
                >
                   <PMItemTitle> {option.placeholder}</PMItemTitle>
                   <ConditionalRender condition={sortState === option.name}>
-                     <Check/>
+                     <Check />
                   </ConditionalRender>
                </PMItemContainer>
             ))}

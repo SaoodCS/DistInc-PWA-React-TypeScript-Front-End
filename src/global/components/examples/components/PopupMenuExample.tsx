@@ -11,7 +11,7 @@ export default function PopupMenuExample(): JSX.Element {
       setCloseOnInnerClick,
    } = useContext(PopupMenuContext);
 
-   function handleOpen(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+   function handleOpen(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
       setPMIsOpen(true);
       setClickEvent(e);
       setPMWidthPx(100);

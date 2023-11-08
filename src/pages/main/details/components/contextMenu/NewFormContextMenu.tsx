@@ -2,7 +2,11 @@ import { CashStack as Dollar } from '@styled-icons/bootstrap/CashStack';
 import { Receipt } from '@styled-icons/bootstrap/Receipt';
 import { Savings } from '@styled-icons/fluentui-system-regular/Savings';
 import { useContext } from 'react';
-import { PMItemContainer, PMItemTitle, PMItemsListWrapper } from '../../../../../global/components/lib/popupMenu/Style';
+import {
+   PMItemContainer,
+   PMItemTitle,
+   PMItemsListWrapper,
+} from '../../../../../global/components/lib/popupMenu/Style';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';

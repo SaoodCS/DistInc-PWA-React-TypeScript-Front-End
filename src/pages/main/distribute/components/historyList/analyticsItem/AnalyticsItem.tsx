@@ -10,7 +10,7 @@ import { TextColourizer } from '../../../../../../global/components/lib/font/tex
 import { HorizontalMenuDots } from '../../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
 import { PopupMenuContext } from '../../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
-import { ICalcSchema } from '../../calculation/CalculateDist';
+import type { ICalcSchema } from '../../calculation/CalculateDist';
 import AnalyticsPopupMenu from '../../popupMenu/AnalyticsPopupMenu';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 
@@ -33,7 +33,7 @@ export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
    function handleMenuDotsClick(
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
       analyticsItem: ICalcSchema['analytics'][0],
-   ) {
+   ): void {
       setPMIsOpen(true);
       setPMContent(<AnalyticsPopupMenu analyticsItem={analyticsItem} type={'analyticsItem'} />);
       setClickEvent(e);
@@ -42,7 +42,7 @@ export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
       setCloseOnInnerClick(true);
    }
 
-   function handleItemClick() {
+   function handleItemClick(): void {
       //TODO: display savings account history item details in a modal here
    }
 

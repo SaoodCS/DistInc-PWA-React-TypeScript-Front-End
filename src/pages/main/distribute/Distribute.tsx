@@ -1,7 +1,6 @@
 import { QuestionMark as QMark } from '@styled-icons/boxicons-regular/QuestionMark';
 import { Add } from '@styled-icons/fluentui-system-filled/Add';
 import { useContext, useEffect } from 'react';
-import { AutoDelete } from 'styled-icons/material';
 import { CardListTitle, CardListWrapper } from '../../../global/components/lib/cardList/Style';
 import CardListPlaceholder from '../../../global/components/lib/cardList/placeholder/CardListPlaceholder';
 import { CarouselAndNavBarWrapper } from '../../../global/components/lib/carousel/NavBar';
@@ -10,11 +9,7 @@ import OfflineFetch from '../../../global/components/lib/fetch/offlineFetch/offl
 import { TextColourizer } from '../../../global/components/lib/font/textColorizer/TextColourizer';
 import { HorizontalMenuDots } from '../../../global/components/lib/icons/menu/HorizontalMenuDots';
 import Loader from '../../../global/components/lib/loader/Loader';
-import {
-   PMItemContainer,
-   PMItemTitle,
-   PMItemsListWrapper,
-} from '../../../global/components/lib/popupMenu/Style';
+
 import PullToRefresh from '../../../global/components/lib/pullToRefresh/PullToRefresh';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
@@ -72,7 +67,7 @@ export default function Distribute(): JSX.Element {
          expenses || {},
       );
       const isAllReqValid = ArrayOfObjects.doAllObjectsHaveKeyValuePair(reqCheck, 'isValid', true);
-      function handleModal() {
+      function handleModal(): void {
          setModalHeader(isAllReqValid ? 'Distribute' : 'Requirements');
          setModalContent(isAllReqValid ? <DistributeForm /> : <HelpRequirements />);
          setModalZIndex(100);
@@ -101,7 +96,10 @@ export default function Distribute(): JSX.Element {
       return groupedByMonth;
    }
 
-   function handleMenuDotsClick(e: React.MouseEvent<SVGSVGElement, MouseEvent>, monthYear: string) {
+   function handleMenuDotsClick(
+      e: React.MouseEvent<SVGSVGElement, MouseEvent>,
+      monthYear: string,
+   ): void {
       setPMIsOpen(true);
       setPMContent(<MonthPopupMenu monthYear={monthYear} />);
       setClickEvent(e);

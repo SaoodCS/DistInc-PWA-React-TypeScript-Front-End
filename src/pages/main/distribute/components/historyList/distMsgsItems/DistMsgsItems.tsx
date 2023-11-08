@@ -11,7 +11,7 @@ import { HorizontalMenuDots } from '../../../../../../global/components/lib/icon
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { PopupMenuContext } from '../../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
-import { ICalcSchema } from '../../calculation/CalculateDist';
+import type { ICalcSchema } from '../../calculation/CalculateDist';
 import DistMsgsPopupMenu from '../../popupMenu/DistMsgsPopupMenu';
 
 interface IDistributeMsgsItems {
@@ -33,7 +33,7 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
    function handleMenuDotsClick(
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
       distMsgsItem: ICalcSchema['distributer'][0],
-   ) {
+   ): void {
       setPMIsOpen(true);
       setPMContent(<DistMsgsPopupMenu distributerItem={distMsgsItem} />);
       setClickEvent(e);
@@ -42,7 +42,7 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
       setCloseOnInnerClick(true);
    }
 
-   function handleItemClick() {
+   function handleItemClick(): void {
       //TODO: display savings account history item details in a modal here
    }
 

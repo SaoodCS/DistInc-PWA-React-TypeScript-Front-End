@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { useQueryClient } from '@tanstack/react-query';
 import { DocumentDelete } from 'styled-icons/typicons';
 import {
@@ -6,7 +7,7 @@ import {
    PMItemsListWrapper,
 } from '../../../../../global/components/lib/popupMenu/Style';
 import microservices from '../../../../../global/firebase/apis/microservices/microservices';
-import { ICalcSchema } from '../calculation/CalculateDist';
+import type { ICalcSchema } from '../calculation/CalculateDist';
 import DistributerClass from '../distributerForm/class/DistributerClass';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 
@@ -14,7 +15,7 @@ interface IDistMsgsPopupMenu {
    distributerItem: ICalcSchema['distributer'][0];
 }
 
-export default function DistMsgsPopupMenu(props: IDistMsgsPopupMenu) {
+export default function DistMsgsPopupMenu(props: IDistMsgsPopupMenu): JSX.Element {
    const { distributerItem } = props;
    const { isDarkTheme } = useThemeContext();
 
@@ -24,7 +25,7 @@ export default function DistMsgsPopupMenu(props: IDistMsgsPopupMenu) {
          queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
       },
    });
-   async function handleDelete() {
+   async function handleDelete(): Promise<void> {
       await delCalcDistItemInFirestore.mutateAsync({
          type: 'distributerItem',
          data: distributerItem,

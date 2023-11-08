@@ -14,7 +14,7 @@ import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelp
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
-import { ICalcSchema } from '../../calculation/CalculateDist';
+import type { ICalcSchema } from '../../calculation/CalculateDist';
 import SavingsAccPopupMenu from '../../popupMenu/SavingsAccPopupMenu';
 
 interface ISavingsAccHistoryItems {
@@ -43,7 +43,7 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
    function handleMenuDotsClick(
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
       savingsAccHistItem: ICalcSchema['savingsAccHistory'][0],
-   ) {
+   ): void {
       setPMIsOpen(true);
       setPMContent(<SavingsAccPopupMenu savingsAccHistItem={savingsAccHistItem} />);
       setClickEvent(e);
@@ -52,7 +52,7 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
       setCloseOnInnerClick(true);
    }
 
-   function handleItemClick() {
+   function handleItemClick(): void {
       //TODO: display savings account history item details in a modal here
    }
 

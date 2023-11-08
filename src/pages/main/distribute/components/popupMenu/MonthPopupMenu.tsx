@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { useQueryClient } from '@tanstack/react-query';
 import { AutoDelete } from 'styled-icons/material';
 import {
@@ -23,7 +24,7 @@ export default function MonthPopupMenu(props: IMonthPopupMenu): JSX.Element {
       },
    });
 
-   async function handleDelete() {
+   async function handleDelete(): Promise<void> {
       await delCalcDistMonthInFirestore.mutateAsync({
          type: 'month',
          monthYear, // i.e. mm/yyyy

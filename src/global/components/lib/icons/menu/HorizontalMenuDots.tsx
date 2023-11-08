@@ -1,6 +1,5 @@
 import { DotsHorizontalRounded } from '@styled-icons/boxicons-regular/DotsHorizontalRounded';
 import styled from 'styled-components';
-import MyCSS from '../../../../css/MyCSS';
 import Color from '../../../../css/colors';
 
 export const HorizontalMenuDots = styled(DotsHorizontalRounded)<{ darktheme: string }>`

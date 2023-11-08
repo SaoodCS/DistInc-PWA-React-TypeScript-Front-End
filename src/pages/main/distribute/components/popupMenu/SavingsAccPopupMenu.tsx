@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { useQueryClient } from '@tanstack/react-query';
-import { useContext } from 'react';
 import { StopCircle } from 'styled-icons/material';
 import { RepoDeleted } from 'styled-icons/octicons';
 import { DocumentDelete } from 'styled-icons/typicons';
@@ -12,7 +12,7 @@ import useThemeContext from '../../../../../global/context/theme/hooks/useThemeC
 import microservices from '../../../../../global/firebase/apis/microservices/microservices';
 import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import SavingsClass from '../../../details/components/accounts/savings/class/Class';
-import { ICalcSchema } from '../calculation/CalculateDist';
+import type { ICalcSchema } from '../calculation/CalculateDist';
 import DistributerClass from '../distributerForm/class/DistributerClass';
 
 interface ISavingsAccPopupMenu {
@@ -39,7 +39,9 @@ export default function SavingsAccPopupMenu(props: ISavingsAccPopupMenu): JSX.El
       },
    });
 
-   async function handleDelete(delType: 'savingsAccHistoryItem' | 'allSavingsAccIdHistory') {
+   async function handleDelete(
+      delType: 'savingsAccHistoryItem' | 'allSavingsAccIdHistory',
+   ): Promise<void> {
       if (delType === 'savingsAccHistoryItem') {
          await delCalcDistSavingsInFirestore.mutateAsync({
             type: delType,
@@ -53,7 +55,7 @@ export default function SavingsAccPopupMenu(props: ISavingsAccPopupMenu): JSX.El
       }
    }
 
-   async function handleStopTracking() {
+   async function handleStopTracking(): Promise<void> {
       const savingsAccObj = ObjectOfObjects.findObjFromUniqueVal(
          savingsAccData || {},
          savingsAccHistItem.id,
