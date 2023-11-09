@@ -4,7 +4,7 @@ import type { IIncomeFirebase } from '../../details/components/Income/class/Clas
 import type { ICurrentAccountFirebase } from '../../details/components/accounts/current/class/Class';
 import type { IExpensesFirebase } from '../../details/components/expense/class/ExpensesClass';
 import CalculateDist from '../calculation/CalculateDist';
-import DistFormAndAPI from '../components/distributerForm/class/DistFormAPI';
+import DistFormAndAPI from '../components/form/class/DistFormAPI';
 
 export namespace NDist {
    export interface IDistMsgs {

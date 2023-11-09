@@ -24,16 +24,16 @@ import useSessionStorage from '../../../global/hooks/useSessionStorage';
 import IncomeClass from '../details/components/Income/class/Class';
 import CurrentClass from '../details/components/accounts/current/class/Class';
 import ExpensesClass from '../details/components/expense/class/ExpensesClass';
-import AnalyticsItems from './components/analytics/cardListItem/AnalyticsItem';
-import AnalyticsDetails from './components/analytics/detailsSlide/AnalyticsDetails';
-import DistMsgsItems from './components/distMsgs/cardListItem/DistMsgsItems';
-import DistMsgsDetails from './components/distMsgs/detailsSlide/DistMsgsDetails';
-import DistributeForm from './components/distributerForm/DistributerForm';
 import MonthPopupMenu from './components/monthPopupMenu/MonthPopupMenu';
 import HelpRequirements from './components/calcPreReqList/HelpRequirements';
-import SavingsAccHistoryItems from './components/savingsHist/cardListItems/SavingsAccHistoryItem';
-import SavingsAccHistDetails from './components/savingsHist/detailsSlide/SavingsAccHistDetails';
 import NDist from './namespace/NDist';
+import DistributeForm from './components/form/DistributerForm';
+import DistMsgsItems from './components/d-distMsgs/cardListItem/DistMsgsItems';
+import AnalyticsItems from './components/d-analytics/cardListItem/AnalyticsItem';
+import AnalyticsDetails from './components/d-analytics/detailsSlide/AnalyticsDetails';
+import DistMsgsDetails from './components/d-distMsgs/detailsSlide/DistMsgsDetails';
+import SavingsAccHistoryItems from './components/d-savingsHist/cardListItems/SavingsAccHistoryItem';
+import SavingsAccHistDetails from './components/d-savingsHist/detailsSlide/SavingsAccHistDetails';
 
 export default function Distribute(): JSX.Element {
    // -- CONTEXTS -- //
