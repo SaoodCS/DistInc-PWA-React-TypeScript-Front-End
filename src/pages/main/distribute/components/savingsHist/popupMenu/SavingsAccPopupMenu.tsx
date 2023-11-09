@@ -13,7 +13,6 @@ import microservices from '../../../../../../global/firebase/apis/microservices/
 import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
 import NDist from '../../../namespace/NDist';
-import DistributerClass from '../../distributerForm/class/DistFormAPI';
 
 interface ISavingsAccPopupMenu {
    savingsAccHistItem: NDist.ISavingsAccHist;

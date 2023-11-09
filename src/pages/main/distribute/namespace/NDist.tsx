@@ -1,8 +1,8 @@
 import DateHelper from '../../../../global/helpers/dataTypes/date/DateHelper';
 import ObjectOfObjects from '../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
-import { IIncomeFirebase } from '../../details/components/Income/class/Class';
-import { ICurrentAccountFirebase } from '../../details/components/accounts/current/class/Class';
-import { IExpensesFirebase } from '../../details/components/expense/class/ExpensesClass';
+import type { IIncomeFirebase } from '../../details/components/Income/class/Class';
+import type { ICurrentAccountFirebase } from '../../details/components/accounts/current/class/Class';
+import type { IExpensesFirebase } from '../../details/components/expense/class/ExpensesClass';
 import CalculateDist from '../calculation/CalculateDist';
 import DistFormAndAPI from '../components/distributerForm/class/DistFormAPI';
 

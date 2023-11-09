@@ -9,7 +9,6 @@ import {
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import NDist from '../../../namespace/NDist';
-import DistributerClass from '../../distributerForm/class/DistFormAPI';
 
 interface IDistMsgsPopupMenu {
    distributerItem: NDist.IDistMsgs;
@@ -32,7 +31,7 @@ export default function DistMsgsPopupMenu(props: IDistMsgsPopupMenu): JSX.Elemen
       });
    }
 
-   function handleView() {
+   function handleView(): void {
       //TODO: handleView slide navigation here
    }
 

@@ -15,7 +15,7 @@ import type {
    IExpenseFormInputs,
    IExpensesFirebase,
 } from '../../details/components/expense/class/ExpensesClass';
-import NDist from '../namespace/NDist';
+import type NDist from '../namespace/NDist';
 
 export default class CalculateDist {
    // -- MAIN FUNCTION -- //

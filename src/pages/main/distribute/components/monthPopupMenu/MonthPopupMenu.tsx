@@ -9,7 +9,6 @@ import {
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import microservices from '../../../../../global/firebase/apis/microservices/microservices';
 import NDist from '../../namespace/NDist';
-import DistributerClass from '../distributerForm/class/DistFormAPI';
 
 interface IMonthPopupMenu {
    monthYear: string;

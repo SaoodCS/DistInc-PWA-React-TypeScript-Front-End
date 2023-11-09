@@ -8,7 +8,6 @@ import CurrentClass from '../../../details/components/accounts/current/class/Cla
 import ExpensesClass from '../../../details/components/expense/class/ExpensesClass';
 import NDist from '../../namespace/NDist';
 
-
 export default function HelpRequirements(): JSX.Element {
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
    const { data: income } = IncomeClass.useQuery.getIncomes();

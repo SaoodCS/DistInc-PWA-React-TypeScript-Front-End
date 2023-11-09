@@ -9,7 +9,6 @@ import {
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import NDist from '../../../namespace/NDist';
-import DistributerClass from '../../distributerForm/class/DistFormAPI';
 
 interface IAnalyticsPopupMenu {
    type: 'analyticsItem';
@@ -32,7 +31,7 @@ export default function AnalyticsPopupMenu(props: IAnalyticsPopupMenu): JSX.Elem
          data: analyticsItem,
       });
    }
-   function handleView() {
+   function handleView(): void {
       // TODO: handleView slide navigation here
    }
 

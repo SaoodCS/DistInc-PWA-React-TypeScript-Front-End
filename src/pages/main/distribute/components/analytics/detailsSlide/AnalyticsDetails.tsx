@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import useLocalStorage from '../../../../../../global/hooks/useLocalStorage';
-import NDist from '../../../namespace/NDist';
+import type NDist from '../../../namespace/NDist';
 
 interface IAnalyticsDetails {
    analyticsItem: NDist.IAnalytics;

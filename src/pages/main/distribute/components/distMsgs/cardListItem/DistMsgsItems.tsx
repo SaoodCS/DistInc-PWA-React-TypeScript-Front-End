@@ -11,7 +11,7 @@ import { HorizontalMenuDots } from '../../../../../../global/components/lib/icon
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { PopupMenuContext } from '../../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
-import NDist from '../../../namespace/NDist';
+import type NDist from '../../../namespace/NDist';
 import DistMsgsPopupMenu from '../popupMenu/DistMsgsPopupMenu';
 
 interface IDistributeMsgsItems {

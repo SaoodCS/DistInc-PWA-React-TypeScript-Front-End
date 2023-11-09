@@ -11,7 +11,7 @@ import type { InputArray } from '../../../../../../global/helpers/react/form/For
 import FormHelper from '../../../../../../global/helpers/react/form/FormHelper';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
 import type { ICurrentFormInputs } from '../../../../details/components/accounts/current/class/Class';
-import NDist from '../../../namespace/NDist';
+import type NDist from '../../../namespace/NDist';
 
 // TODO: Change all instances of "DistributerClass" in project to DistFormAPI
 export default class DistFormAndAPI {
