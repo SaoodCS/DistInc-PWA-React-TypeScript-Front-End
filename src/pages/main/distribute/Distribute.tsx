@@ -24,16 +24,16 @@ import useSessionStorage from '../../../global/hooks/useSessionStorage';
 import IncomeClass from '../details/components/Income/class/Class';
 import CurrentClass from '../details/components/accounts/current/class/Class';
 import ExpensesClass from '../details/components/expense/class/ExpensesClass';
-import MonthPopupMenu from './components/monthPopupMenu/MonthPopupMenu';
 import HelpRequirements from './components/calcPreReqList/HelpRequirements';
-import NDist from './namespace/NDist';
-import DistributeForm from './components/form/DistributerForm';
-import DistMsgsItems from './components/d-distMsgs/cardListItem/DistMsgsItems';
 import AnalyticsItems from './components/d-analytics/cardListItem/AnalyticsItem';
 import AnalyticsDetails from './components/d-analytics/detailsSlide/AnalyticsDetails';
+import DistMsgsItems from './components/d-distMsgs/cardListItem/DistMsgsItems';
 import DistMsgsDetails from './components/d-distMsgs/detailsSlide/DistMsgsDetails';
 import SavingsAccHistoryItems from './components/d-savingsHist/cardListItems/SavingsAccHistoryItem';
 import SavingsAccHistDetails from './components/d-savingsHist/detailsSlide/SavingsAccHistDetails';
+import DistributeForm from './components/form/DistributerForm';
+import MonthPopupMenu from './components/monthPopupMenu/MonthPopupMenu';
+import NDist from './namespace/NDist';
 
 export default function Distribute(): JSX.Element {
    // -- CONTEXTS -- //
@@ -68,12 +68,6 @@ export default function Distribute(): JSX.Element {
          setIsModalOpen(false);
       },
    });
-   if (isLoading && !isPaused) {
-      if (!isPortableDevice) return <Loader isDisplayed />;
-      return <CardListPlaceholder repeatItemCount={7} />;
-   }
-   if (isPaused) return <OfflineFetch />;
-   if (error || !calcDistData) return <FetchError />;
 
    // -- STATE -- //
    const { containerRef, scrollToSlide, currentSlide } = useCarousel(
@@ -160,6 +154,13 @@ export default function Distribute(): JSX.Element {
       scrollToSlide(2);
       setDetailsSlideData(item);
    }
+
+   if (isLoading && !isPaused) {
+      if (!isPortableDevice) return <Loader isDisplayed />;
+      return <CardListPlaceholder repeatItemCount={7} />;
+   }
+   if (isPaused) return <OfflineFetch />;
+   if (error || !calcDistData) return <FetchError />;
 
    return (
       <CarouselContainer ref={containerRef} onScroll={handleScroll} style={{ height: '100%' }}>
