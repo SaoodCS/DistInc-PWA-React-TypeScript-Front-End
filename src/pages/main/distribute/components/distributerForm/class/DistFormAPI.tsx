@@ -14,7 +14,7 @@ import type { ICurrentFormInputs } from '../../../../details/components/accounts
 import NDist from '../../../namespace/NDist';
 
 // TODO: Change all instances of "DistributerClass" in project to DistFormAPI
-export default class DistFormAPI {
+export default class DistFormAndAPI {
    // -- FORM -- //
    constructor(currentAccounts: ICurrentFormInputs[]) {
       this.currentAccounts = currentAccounts;
@@ -137,7 +137,7 @@ export default class DistFormAPI {
    };
 }
 
-// -- TYPES PRIVATE CLASS FOR DELCALCDIST MUTATION: -- //
+// -- PRIVATE TYPES FOR DELCALCDIST MUTATION: -- //
 
 interface IDelCalcDistItem {
    type: 'analyticsItem' | 'distributerItem' | 'savingsAccHistoryItem';

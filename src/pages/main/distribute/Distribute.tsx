@@ -24,16 +24,15 @@ import useSessionStorage from '../../../global/hooks/useSessionStorage';
 import IncomeClass from '../details/components/Income/class/Class';
 import CurrentClass from '../details/components/accounts/current/class/Class';
 import ExpensesClass from '../details/components/expense/class/ExpensesClass';
+import AnalyticsItems from './components/analytics/cardListItem/AnalyticsItem';
+import AnalyticsDetails from './components/analytics/detailsSlide/AnalyticsDetails';
+import DistMsgsItems from './components/distMsgs/cardListItem/DistMsgsItems';
+import DistMsgsDetails from './components/distMsgs/detailsSlide/DistMsgsDetails';
 import DistributeForm from './components/distributerForm/DistributerForm';
-import DistributerClass from './components/distributerForm/class/DistFormAPI';
-import AnalyticsItems from './components/historyList/analyticsItem/AnalyticsItem';
-import DistMsgsItems from './components/historyList/distMsgsItems/DistMsgsItems';
-import SavingsAccHistoryItems from './components/historyList/savingsAccHistoryItem/SavingsAccHistoryItem';
-import MonthPopupMenu from './components/popupMenu/MonthPopupMenu';
-import HelpRequirements from './components/requirementsModal/HelpRequirements';
-import AnalyticsDetails from './components/slideTwo/AnalyticsDetails';
-import DistMsgsDetails from './components/slideTwo/DistMsgsDetails';
-import SavingsAccHistDetails from './components/slideTwo/SavingsAccHistDetails';
+import MonthPopupMenu from './components/monthPopupMenu/MonthPopupMenu';
+import HelpRequirements from './components/calcPreReqList/HelpRequirements';
+import SavingsAccHistoryItems from './components/savingsHist/cardListItems/SavingsAccHistoryItem';
+import SavingsAccHistDetails from './components/savingsHist/detailsSlide/SavingsAccHistDetails';
 import NDist from './namespace/NDist';
 
 export default function Distribute(): JSX.Element {
@@ -64,7 +63,7 @@ export default function Distribute(): JSX.Element {
       isPaused,
       error,
       refetch,
-   } = DistributerClass.useQuery.getCalcDist({
+   } = NDist.API.useQuery.getCalcDist({
       onSuccess: () => {
          setIsModalOpen(false);
       },

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import useLocalStorage from '../../../../../global/hooks/useLocalStorage';
-import NDist from '../../namespace/NDist';
+import useLocalStorage from '../../../../../../global/hooks/useLocalStorage';
+import NDist from '../../../namespace/NDist';
 
 interface ISavingsAccHistDetails {
    savingsAccHistItem: NDist.ISavingsAccHist;

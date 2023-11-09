@@ -14,8 +14,8 @@ import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelp
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
-import SavingsAccPopupMenu from '../../popupMenu/SavingsAccPopupMenu';
 import NDist from '../../../namespace/NDist';
+import SavingsAccPopupMenu from '../popupMenu/SavingsAccPopupMenu';
 
 interface ISavingsAccHistoryItems {
    savingsAccHistory: NDist.ISavingsAccHist[];

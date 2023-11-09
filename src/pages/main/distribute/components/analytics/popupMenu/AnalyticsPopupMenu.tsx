@@ -5,35 +5,35 @@ import {
    PMItemContainer,
    PMItemTitle,
    PMItemsListWrapper,
-} from '../../../../../global/components/lib/popupMenu/Style';
-import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
-import microservices from '../../../../../global/firebase/apis/microservices/microservices';
-import DistributerClass from '../distributerForm/class/DistFormAPI';
-import NDist from '../../namespace/NDist';
+} from '../../../../../../global/components/lib/popupMenu/Style';
+import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
+import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
+import NDist from '../../../namespace/NDist';
+import DistributerClass from '../../distributerForm/class/DistFormAPI';
 
-interface IDistMsgsPopupMenu {
-   distributerItem: NDist.IDistMsgs;
+interface IAnalyticsPopupMenu {
+   type: 'analyticsItem';
+   analyticsItem: NDist.IAnalytics;
 }
 
-export default function DistMsgsPopupMenu(props: IDistMsgsPopupMenu): JSX.Element {
-   const { distributerItem } = props;
+export default function AnalyticsPopupMenu(props: IAnalyticsPopupMenu): JSX.Element {
+   const { analyticsItem } = props;
    const { isDarkTheme } = useThemeContext();
 
    const queryClient = useQueryClient();
-   const delCalcDistItemInFirestore = DistributerClass.useMutation.delCalcDist({
+   const delCalcDistItemInFirestore = NDist.API.useMutation.delCalcDist({
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
       },
    });
    async function handleDelete(): Promise<void> {
       await delCalcDistItemInFirestore.mutateAsync({
-         type: 'distributerItem',
-         data: distributerItem,
+         type: 'analyticsItem',
+         data: analyticsItem,
       });
    }
-
    function handleView() {
-      //TODO: handleView slide navigation here
+      // TODO: handleView slide navigation here
    }
 
    return (

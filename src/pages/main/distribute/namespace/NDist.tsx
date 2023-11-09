@@ -3,7 +3,8 @@ import ObjectOfObjects from '../../../../global/helpers/dataTypes/objectOfObject
 import { IIncomeFirebase } from '../../details/components/Income/class/Class';
 import { ICurrentAccountFirebase } from '../../details/components/accounts/current/class/Class';
 import { IExpensesFirebase } from '../../details/components/expense/class/ExpensesClass';
-import CalculateDist from '../components/calculation/CalculateDist';
+import CalculateDist from '../calculation/CalculateDist';
+import DistFormAndAPI from '../components/distributerForm/class/DistFormAPI';
 
 export namespace NDist {
    export interface IDistMsgs {
@@ -128,6 +129,12 @@ export namespace NDist {
       };
    }
 
+   export const API = {
+      useQuery: DistFormAndAPI.useQuery,
+      useMutation: DistFormAndAPI.useMutation,
+   };
+
+   export const FormBuilder = DistFormAndAPI;
 }
 
 export default NDist;

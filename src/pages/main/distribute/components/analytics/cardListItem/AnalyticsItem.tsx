@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { DocumentFlowchart } from 'styled-icons/fluentui-system-filled';
+import { Calculator } from 'styled-icons/fluentui-system-filled';
 import {
    CardListItem,
    ItemRightColWrapper,
@@ -11,19 +11,19 @@ import { HorizontalMenuDots } from '../../../../../../global/components/lib/icon
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { PopupMenuContext } from '../../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
-import DistMsgsPopupMenu from '../../popupMenu/DistMsgsPopupMenu';
 import NDist from '../../../namespace/NDist';
+import AnalyticsPopupMenu from '../popupMenu/AnalyticsPopupMenu';
 
-interface IDistributeMsgsItems {
-   distributer: NDist.IDistMsgs[];
+interface IAnalyticsItems {
+   analytics: NDist.IAnalytics[];
    handleItemClick: (
       item: NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist,
       itemType: NDist.Carousel.ISlideName,
    ) => void;
 }
 
-export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element {
-   const { distributer, handleItemClick } = props;
+export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
+   const { analytics, handleItemClick } = props;
    const {
       setPMContent,
       setPMHeightPx,
@@ -36,11 +36,11 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
 
    function handleMenuDotsClick(
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
-      distMsgsItem: NDist.IDistMsgs,
+      analyticsItem: NDist.IAnalytics,
    ): void {
       e.stopPropagation();
       setPMIsOpen(true);
-      setPMContent(<DistMsgsPopupMenu distributerItem={distMsgsItem} />);
+      setPMContent(<AnalyticsPopupMenu analyticsItem={analyticsItem} type={'analyticsItem'} />);
       setClickEvent(e);
       setPMHeightPx(62);
       setPMWidthPx(120);
@@ -49,24 +49,24 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
 
    return (
       <>
-         {distributer.map((distMsgsObj) => (
+         {analytics.map((analyticsObj) => (
             <CardListItem
-               key={distMsgsObj.timestamp}
-               onClick={() => handleItemClick(distMsgsObj, 'distributer')}
+               key={analyticsObj.timestamp}
+               onClick={() => handleItemClick(analyticsObj, 'analytics')}
             >
                <ItemTitleAndIconWrapper>
-                  <DocumentFlowchart height={'2em'} style={{ paddingRight: '0.5em' }} />
+                  <Calculator height={'2em'} style={{ paddingRight: '0.5em' }} />
                   <ItemTitleAndSubTitleWrapper>
-                     <TextColourizer>Distribution Instructions</TextColourizer>
+                     <TextColourizer>Analytics</TextColourizer>
                   </ItemTitleAndSubTitleWrapper>
                </ItemTitleAndIconWrapper>
                <ItemRightColWrapper>
                   <HorizontalMenuDots
-                     onClick={(e) => handleMenuDotsClick(e, distMsgsObj)}
+                     onClick={(e) => handleMenuDotsClick(e, analyticsObj)}
                      darktheme={isDarkTheme.toString()}
                   />
                   <TextColourizer fontSize="0.8em">
-                     {DateHelper.fromDDMMYYYYToWord(distMsgsObj.timestamp)}
+                     {DateHelper.fromDDMMYYYYToWord(analyticsObj.timestamp)}
                   </TextColourizer>
                </ItemRightColWrapper>
             </CardListItem>

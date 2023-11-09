@@ -8,6 +8,7 @@ import {
 } from '../../../../../global/components/lib/popupMenu/Style';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import microservices from '../../../../../global/firebase/apis/microservices/microservices';
+import NDist from '../../namespace/NDist';
 import DistributerClass from '../distributerForm/class/DistFormAPI';
 
 interface IMonthPopupMenu {
@@ -18,7 +19,7 @@ export default function MonthPopupMenu(props: IMonthPopupMenu): JSX.Element {
    const { monthYear } = props;
    const { isDarkTheme } = useThemeContext();
    const queryClient = useQueryClient();
-   const delCalcDistMonthInFirestore = DistributerClass.useMutation.delCalcDist({
+   const delCalcDistMonthInFirestore = NDist.API.useMutation.delCalcDist({
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
       },

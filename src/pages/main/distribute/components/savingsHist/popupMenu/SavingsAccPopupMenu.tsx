@@ -7,13 +7,13 @@ import {
    PMItemContainer,
    PMItemTitle,
    PMItemsListWrapper,
-} from '../../../../../global/components/lib/popupMenu/Style';
-import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
-import microservices from '../../../../../global/firebase/apis/microservices/microservices';
-import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
-import SavingsClass from '../../../details/components/accounts/savings/class/Class';
-import DistributerClass from '../distributerForm/class/DistFormAPI';
-import NDist from '../../namespace/NDist';
+} from '../../../../../../global/components/lib/popupMenu/Style';
+import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
+import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
+import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
+import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
+import NDist from '../../../namespace/NDist';
+import DistributerClass from '../../distributerForm/class/DistFormAPI';
 
 interface ISavingsAccPopupMenu {
    savingsAccHistItem: NDist.ISavingsAccHist;
@@ -27,7 +27,7 @@ export default function SavingsAccPopupMenu(props: ISavingsAccPopupMenu): JSX.El
 
    const queryClient = useQueryClient();
 
-   const delCalcDistSavingsInFirestore = DistributerClass.useMutation.delCalcDist({
+   const delCalcDistSavingsInFirestore = NDist.API.useMutation.delCalcDist({
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
       },

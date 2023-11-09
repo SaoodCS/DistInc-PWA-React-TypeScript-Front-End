@@ -1,22 +1,21 @@
-import ArrayOfObjects from '../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
-import DateHelper from '../../../../../global/helpers/dataTypes/date/DateHelper';
-import NumberHelper from '../../../../../global/helpers/dataTypes/number/NumberHelper';
-import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
-import type { IIncomeFirebase } from '../../../details/components/Income/class/Class';
+import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
+import DateHelper from '../../../../global/helpers/dataTypes/date/DateHelper';
+import NumberHelper from '../../../../global/helpers/dataTypes/number/NumberHelper';
+import ObjectOfObjects from '../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
+import type { IIncomeFirebase } from '../../details/components/Income/class/Class';
 import type {
    ICurrentAccountFirebase,
    ICurrentFormInputs,
-} from '../../../details/components/accounts/current/class/Class';
+} from '../../details/components/accounts/current/class/Class';
 import type {
    ISavingsAccountFirebase,
    ISavingsFormInputs,
-} from '../../../details/components/accounts/savings/class/Class';
+} from '../../details/components/accounts/savings/class/Class';
 import type {
    IExpenseFormInputs,
    IExpensesFirebase,
-} from '../../../details/components/expense/class/ExpensesClass';
-import NDist from '../../namespace/NDist';
-
+} from '../../details/components/expense/class/ExpensesClass';
+import NDist from '../namespace/NDist';
 
 export default class CalculateDist {
    // -- MAIN FUNCTION -- //
