@@ -16,7 +16,8 @@ import CurrentClass from '../../../details/components/accounts/current/class/Cla
 import SavingsClass from '../../../details/components/accounts/savings/class/Class';
 import ExpensesClass from '../../../details/components/expense/class/ExpensesClass';
 import CalculateDist from '../calculation/CalculateDist';
-import DistributerClass from './class/DistributerClass';
+import DistributerClass from './class/DistFormAPI';
+import NDist from '../../namespace/NDist';
 
 export default function DistributeForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
@@ -47,14 +48,14 @@ export default function DistributeForm(): JSX.Element {
 
    function showOverwriteMsg(): boolean {
       if (!calcDistData) return false;
-      if (DistributerClass.existingData.hasCurrentMonth(calcDistData)) return true;
+      if (NDist.Data.hasCurrentMonth(calcDistData)) return true;
       return false;
    }
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
       if (!isFormValid) return;
-      const newCalculatedDist = CalculateDist.calculate(
+      const newCalculatedDist = NDist.Calc.run(
          savingsAccount || {},
          currentAccounts || {},
          incomes || {},

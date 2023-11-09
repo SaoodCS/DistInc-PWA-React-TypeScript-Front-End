@@ -14,18 +14,14 @@ import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelp
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
-import type { ICalcSchema } from '../../calculation/CalculateDist';
-import { ICarouselSlides } from '../../distributerForm/class/DistributerClass';
 import SavingsAccPopupMenu from '../../popupMenu/SavingsAccPopupMenu';
+import NDist from '../../../namespace/NDist';
 
 interface ISavingsAccHistoryItems {
-   savingsAccHistory: ICalcSchema['savingsAccHistory'];
+   savingsAccHistory: NDist.ISavingsAccHist[];
    handleItemClick: (
-      item:
-         | ICalcSchema['analytics'][0]
-         | ICalcSchema['distributer'][0]
-         | ICalcSchema['savingsAccHistory'][0],
-      itemType: ICarouselSlides,
+      item: NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist,
+      itemType: NDist.Carousel.ISlideName,
    ) => void;
 }
 
@@ -50,7 +46,7 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
 
    function handleMenuDotsClick(
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
-      savingsAccHistItem: ICalcSchema['savingsAccHistory'][0],
+      savingsAccHistItem: NDist.ISavingsAccHist,
    ): void {
       setPMIsOpen(true);
       setPMContent(<SavingsAccPopupMenu savingsAccHistItem={savingsAccHistItem} />);

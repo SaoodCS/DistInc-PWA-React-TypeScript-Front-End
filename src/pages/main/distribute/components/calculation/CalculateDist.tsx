@@ -15,28 +15,8 @@ import type {
    IExpenseFormInputs,
    IExpensesFirebase,
 } from '../../../details/components/expense/class/ExpensesClass';
+import NDist from '../../namespace/NDist';
 
-export interface ICalcSchema {
-   distributer: {
-      timestamp: string;
-      msgs: string[];
-   }[];
-   savingsAccHistory: {
-      id: number;
-      balance: number;
-      timestamp: string;
-   }[];
-   analytics: {
-      totalIncomes: number;
-      totalExpenses: number;
-      prevMonth: {
-         totalSpendings: number;
-         totalDisposableSpending: number;
-         totalSavings: number;
-      };
-      timestamp: string;
-   }[];
-}
 
 export default class CalculateDist {
    // -- MAIN FUNCTION -- //
@@ -46,7 +26,7 @@ export default class CalculateDist {
       incomes: IIncomeFirebase,
       expenses: IExpensesFirebase,
       leftovers: { [id: number]: number },
-   ): ICalcSchema {
+   ): NDist.ISchema {
       // Initial Setup:
       const savingsAccArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
       const incomeArr = ObjectOfObjects.convertToArrayOfObj(incomes);
@@ -237,8 +217,8 @@ export default class CalculateDist {
    private static updateSavingsAccHistory(
       savingsAccountTransfers: ISavingsAccountTransfers,
       savingsAccArr: ISavingsFormInputs[],
-   ): ICalcSchema['savingsAccHistory'] {
-      const savingsAccHistory: ICalcSchema['savingsAccHistory'] = [];
+   ): NDist.ISavingsAccHist[] {
+      const savingsAccHistory: NDist.ISavingsAccHist[] = [];
       const savingsAccHistoryObjArr = savingsAccountTransfers.reduce(
          (acc, curr) => {
             const doesExistInArray = acc.find((item) => item.id === curr.id);

@@ -6,8 +6,8 @@ import ArrayOfObjects from '../../../../../global/helpers/dataTypes/arrayOfObjec
 import IncomeClass from '../../../details/components/Income/class/Class';
 import CurrentClass from '../../../details/components/accounts/current/class/Class';
 import ExpensesClass from '../../../details/components/expense/class/ExpensesClass';
-import type { IReqNames } from '../distributerForm/class/DistributerClass';
-import DistributerClass from '../distributerForm/class/DistributerClass';
+import NDist from '../../namespace/NDist';
+
 
 export default function HelpRequirements(): JSX.Element {
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
@@ -15,8 +15,8 @@ export default function HelpRequirements(): JSX.Element {
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
    const { isDarkTheme } = useThemeContext();
 
-   function itemColor(requirement: IReqNames): string {
-      const reqCheck = DistributerClass.checkCalcReq(
+   function itemColor(requirement: NDist.Calc.IPreReqs): string {
+      const reqCheck = NDist.Calc.checkPreReqsMet(
          currentAccounts || {},
          income || {},
          expenses || {},

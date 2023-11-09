@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import useLocalStorage from '../../../../../global/hooks/useLocalStorage';
-import { ICalcSchema } from '../calculation/CalculateDist';
+import NDist from '../../namespace/NDist';
+
 
 interface IAnalyticsDetails {
-   analyticsItem: ICalcSchema['analytics'][0];
+   analyticsItem: NDist.IAnalytics;
 }
 
 export default function AnalyticsDetails(props: IAnalyticsDetails): JSX.Element {
@@ -19,7 +20,7 @@ export default function AnalyticsDetails(props: IAnalyticsDetails): JSX.Element 
       }
    }, []);
 
-   function analyticsToRender(): ICalcSchema['analytics'][0] {
+   function analyticsToRender(): NDist.IAnalytics {
       if (!analyticsItem) return prevAnalyticsItem;
       return analyticsItem;
    }

@@ -24,16 +24,8 @@ import useSessionStorage from '../../../global/hooks/useSessionStorage';
 import IncomeClass from '../details/components/Income/class/Class';
 import CurrentClass from '../details/components/accounts/current/class/Class';
 import ExpensesClass from '../details/components/expense/class/ExpensesClass';
-import { ICalcSchema } from './components/calculation/CalculateDist';
 import DistributeForm from './components/distributerForm/DistributerForm';
-import type {
-   IAnalyticsObj,
-   ICalcSchemaGroupByMonth,
-   ICarouselSlides,
-   IDistMsgsObj,
-   ISavingsAccHistoryObj,
-} from './components/distributerForm/class/DistributerClass';
-import DistributerClass from './components/distributerForm/class/DistributerClass';
+import DistributerClass from './components/distributerForm/class/DistFormAPI';
 import AnalyticsItems from './components/historyList/analyticsItem/AnalyticsItem';
 import DistMsgsItems from './components/historyList/distMsgsItems/DistMsgsItems';
 import SavingsAccHistoryItems from './components/historyList/savingsAccHistoryItem/SavingsAccHistoryItem';
@@ -42,6 +34,7 @@ import HelpRequirements from './components/requirementsModal/HelpRequirements';
 import AnalyticsDetails from './components/slideTwo/AnalyticsDetails';
 import DistMsgsDetails from './components/slideTwo/DistMsgsDetails';
 import SavingsAccHistDetails from './components/slideTwo/SavingsAccHistDetails';
+import NDist from './namespace/NDist';
 
 export default function Distribute(): JSX.Element {
    // -- CONTEXTS -- //
@@ -86,15 +79,15 @@ export default function Distribute(): JSX.Element {
    // -- STATE -- //
    const { containerRef, scrollToSlide, currentSlide } = useCarousel(
       1,
-      DistributerClass.key.currentSlide,
+      NDist.Carousel.key.currentSlide,
    );
-   const [slide2, setSlide2] = useSessionStorage<ICarouselSlides | ''>(
-      DistributerClass.key.slide2,
+   const [slide2, setSlide2] = useSessionStorage<NDist.Carousel.ISlideName | ''>(
+      NDist.Carousel.key.slide2,
       '',
    );
    const [prevScrollPos, setPrevScrollPos] = useState<number>(0);
    const [detailsSlideData, setDetailsSlideData] = useState<
-      IAnalyticsObj | IDistMsgsObj | ISavingsAccHistoryObj | undefined
+      NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist | undefined
    >(undefined);
 
    // -- USEEFFECTS -- //
@@ -109,7 +102,7 @@ export default function Distribute(): JSX.Element {
    }, [currentSlide]);
 
    useEffect(() => {
-      const reqCheck = DistributerClass.checkCalcReq(
+      const reqCheck = NDist.Calc.checkPreReqsMet(
          currentAccounts || {},
          income || {},
          expenses || {},
@@ -127,9 +120,9 @@ export default function Distribute(): JSX.Element {
    }, [currentAccounts, income, expenses]);
 
    // -- FUNCTIONS -- //
-   function sortData(): ICalcSchemaGroupByMonth[] | undefined {
+   function sortData(): NDist.ISchemaByMonth[] | undefined {
       if (!calcDistData) return;
-      const groupedByMonth = DistributerClass.groupByMonth(calcDistData);
+      const groupedByMonth = NDist.Data.groupByMonth(calcDistData);
       groupedByMonth.reverse();
       return groupedByMonth;
    }
@@ -156,13 +149,13 @@ export default function Distribute(): JSX.Element {
       setPrevScrollPos(currentLeftScroll!);
    }
 
-   function isSlide2(slideName: ICarouselSlides): boolean {
+   function isSlide2(slideName: NDist.Carousel.ISlideName): boolean {
       return slide2 === slideName;
    }
 
    function handleItemClick(
-      item: IAnalyticsObj | IDistMsgsObj | ISavingsAccHistoryObj,
-      itemType: ICarouselSlides,
+      item: NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist,
+      itemType: NDist.Carousel.ISlideName,
    ): void {
       setSlide2(itemType);
       scrollToSlide(2);
@@ -215,14 +208,14 @@ export default function Distribute(): JSX.Element {
          </CarouselSlide>
          <CarouselSlide height={'100%'}>
             <ConditionalRender condition={isSlide2('analytics')}>
-               <AnalyticsDetails analyticsItem={detailsSlideData as ICalcSchema['analytics'][0]} />
+               <AnalyticsDetails analyticsItem={detailsSlideData as NDist.IAnalytics} />
             </ConditionalRender>
-            <ConditionalRender condition={isSlide2('distribute')}>
-               <DistMsgsDetails distMsgsItem={detailsSlideData as ICalcSchema['distributer'][0]} />
+            <ConditionalRender condition={isSlide2('distributer')}>
+               <DistMsgsDetails distMsgsItem={detailsSlideData as NDist.IDistMsgs} />
             </ConditionalRender>
             <ConditionalRender condition={isSlide2('savingsAccHistory')}>
                <SavingsAccHistDetails
-                  savingsAccHistItem={detailsSlideData as ICalcSchema['savingsAccHistory'][0]}
+                  savingsAccHistItem={detailsSlideData as NDist.ISavingsAccHist}
                />
             </ConditionalRender>
          </CarouselSlide>

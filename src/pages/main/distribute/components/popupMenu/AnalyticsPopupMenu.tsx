@@ -8,12 +8,13 @@ import {
 } from '../../../../../global/components/lib/popupMenu/Style';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import microservices from '../../../../../global/firebase/apis/microservices/microservices';
-import type { ICalcSchema } from '../calculation/CalculateDist';
-import DistributerClass from '../distributerForm/class/DistributerClass';
+import DistributerClass from '../distributerForm/class/DistFormAPI';
+import NDist from '../../namespace/NDist';
+
 
 interface IAnalyticsPopupMenu {
    type: 'analyticsItem';
-   analyticsItem: ICalcSchema['analytics'][0];
+   analyticsItem: NDist.IAnalytics;
 }
 
 export default function AnalyticsPopupMenu(props: IAnalyticsPopupMenu): JSX.Element {

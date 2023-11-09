@@ -11,18 +11,14 @@ import { HorizontalMenuDots } from '../../../../../../global/components/lib/icon
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { PopupMenuContext } from '../../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
-import type { ICalcSchema } from '../../calculation/CalculateDist';
-import { ICarouselSlides } from '../../distributerForm/class/DistributerClass';
 import DistMsgsPopupMenu from '../../popupMenu/DistMsgsPopupMenu';
+import NDist from '../../../namespace/NDist';
 
 interface IDistributeMsgsItems {
-   distributer: ICalcSchema['distributer'];
+   distributer: NDist.IDistMsgs[];
    handleItemClick: (
-      item:
-         | ICalcSchema['analytics'][0]
-         | ICalcSchema['distributer'][0]
-         | ICalcSchema['savingsAccHistory'][0],
-      itemType: ICarouselSlides,
+      item: NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist,
+      itemType: NDist.Carousel.ISlideName,
    ) => void;
 }
 
@@ -40,7 +36,7 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
 
    function handleMenuDotsClick(
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
-      distMsgsItem: ICalcSchema['distributer'][0],
+      distMsgsItem: NDist.IDistMsgs,
    ): void {
       e.stopPropagation();
       setPMIsOpen(true);
@@ -56,7 +52,7 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
          {distributer.map((distMsgsObj) => (
             <CardListItem
                key={distMsgsObj.timestamp}
-               onClick={() => handleItemClick(distMsgsObj, 'distribute')}
+               onClick={() => handleItemClick(distMsgsObj, 'distributer')}
             >
                <ItemTitleAndIconWrapper>
                   <DocumentFlowchart height={'2em'} style={{ paddingRight: '0.5em' }} />

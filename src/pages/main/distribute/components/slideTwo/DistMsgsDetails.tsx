@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import useLocalStorage from '../../../../../global/hooks/useLocalStorage';
-import { ICalcSchema } from '../calculation/CalculateDist';
+import NDist from '../../namespace/NDist';
+
 
 interface IDistMsgsDetails {
-   distMsgsItem: ICalcSchema['distributer'][0];
+   distMsgsItem: NDist.IDistMsgs;
 }
 
 export default function DistMsgsDetails(props: IDistMsgsDetails): JSX.Element {
@@ -16,7 +17,7 @@ export default function DistMsgsDetails(props: IDistMsgsDetails): JSX.Element {
       }
    }, []);
 
-   function distMsgsToRender(): ICalcSchema['distributer'][0] {
+   function distMsgsToRender(): NDist.IDistMsgs {
       if (!distMsgsItem) return prevDistMsgs;
       return distMsgsItem;
    }

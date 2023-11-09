@@ -12,11 +12,11 @@ import useThemeContext from '../../../../../global/context/theme/hooks/useThemeC
 import microservices from '../../../../../global/firebase/apis/microservices/microservices';
 import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import SavingsClass from '../../../details/components/accounts/savings/class/Class';
-import type { ICalcSchema } from '../calculation/CalculateDist';
-import DistributerClass from '../distributerForm/class/DistributerClass';
+import DistributerClass from '../distributerForm/class/DistFormAPI';
+import NDist from '../../namespace/NDist';
 
 interface ISavingsAccPopupMenu {
-   savingsAccHistItem: ICalcSchema['savingsAccHistory'][0];
+   savingsAccHistItem: NDist.ISavingsAccHist;
 }
 
 export default function SavingsAccPopupMenu(props: ISavingsAccPopupMenu): JSX.Element {

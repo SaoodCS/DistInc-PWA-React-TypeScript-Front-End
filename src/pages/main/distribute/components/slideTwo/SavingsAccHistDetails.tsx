@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import useLocalStorage from '../../../../../global/hooks/useLocalStorage';
-import { ICalcSchema } from '../calculation/CalculateDist';
+import NDist from '../../namespace/NDist';
 
 interface ISavingsAccHistDetails {
-   savingsAccHistItem: ICalcSchema['savingsAccHistory'][0];
+   savingsAccHistItem: NDist.ISavingsAccHist;
 }
 
 export default function SavingsAccHistDetails(props: ISavingsAccHistDetails): JSX.Element {
@@ -19,7 +19,7 @@ export default function SavingsAccHistDetails(props: ISavingsAccHistDetails): JS
       }
    }, []);
 
-   function savingsAccHistToRender(): ICalcSchema['savingsAccHistory'][0] {
+   function savingsAccHistToRender(): NDist.ISavingsAccHist {
       if (!savingsAccHistItem) return prevSavingsAccHistItem;
       return savingsAccHistItem;
    }

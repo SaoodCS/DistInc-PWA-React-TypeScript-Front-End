@@ -8,11 +8,11 @@ import {
 } from '../../../../../global/components/lib/popupMenu/Style';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import microservices from '../../../../../global/firebase/apis/microservices/microservices';
-import type { ICalcSchema } from '../calculation/CalculateDist';
-import DistributerClass from '../distributerForm/class/DistributerClass';
+import DistributerClass from '../distributerForm/class/DistFormAPI';
+import NDist from '../../namespace/NDist';
 
 interface IDistMsgsPopupMenu {
-   distributerItem: ICalcSchema['distributer'][0];
+   distributerItem: NDist.IDistMsgs;
 }
 
 export default function DistMsgsPopupMenu(props: IDistMsgsPopupMenu): JSX.Element {
