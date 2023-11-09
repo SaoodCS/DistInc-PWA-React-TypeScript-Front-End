@@ -20,7 +20,9 @@ import type {
 import type { IExpensesFirebase } from '../../../../details/components/expense/class/ExpensesClass';
 import type { ICalcSchema } from '../../calculation/CalculateDist';
 
-export default class DistributerClass {
+// TODO: Change all instances of "DistributerClass" in project to DistFormAPI
+export default class DistFormAPI {
+   // -- FORM -- //
    constructor(currentAccounts: ICurrentFormInputs[]) {
       this.currentAccounts = currentAccounts;
    }
@@ -70,8 +72,12 @@ export default class DistributerClass {
       return formValidation;
    }
 
-   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-   get form() {
+   get form(): {
+      inputs: InputArray<{ [x: number]: number }>;
+      initialState: { [x: number]: number };
+      initialErrors: Record<number, string>;
+      validate: (formValues: { [x: number]: number }) => Record<number, string>;
+   } {
       return {
          inputs: this.inputs(),
          initialState: this.initialState(),
@@ -80,6 +86,7 @@ export default class DistributerClass {
       };
    }
 
+   // -- API QUERIES / MUTATIONS -- //
    private static useCalcDistQuery(
       options: UseQueryOptions<ICalcSchema> = {},
    ): UseQueryResult<ICalcSchema, unknown> {
@@ -128,12 +135,12 @@ export default class DistributerClass {
    }
 
    static useQuery = {
-      getCalcDist: DistributerClass.useCalcDistQuery,
+      getCalcDist: this.useCalcDistQuery,
    };
 
    static useMutation = {
-      setCalcDist: DistributerClass.useSetCalcDistMutation,
-      delCalcDist: DistributerClass.useDelCalcDistMutation,
+      setCalcDist: this.useSetCalcDistMutation,
+      delCalcDist: this.useDelCalcDistMutation,
    };
 
    static existingData = {
@@ -203,6 +210,13 @@ export default class DistributerClass {
       });
       return result;
    }
+
+   private static storageKeyPrefix = 'distributerCarousel';
+   static key = {
+      currentSlide: `${this.storageKeyPrefix}.currentSlide`,
+      slide2: `${this.storageKeyPrefix}.slide2`,
+      detailsSlide: `${this.storageKeyPrefix}.detailsSlide`,
+   };
 }
 
 // -- TYPES FOR GROUPBYMONTH -- //
@@ -243,3 +257,52 @@ interface IDelCalcDistAllSavingsAccIdHistory {
 }
 
 type IDelCalcDist = IDelCalcDistItem | IDelCalcDistMonth | IDelCalcDistAllSavingsAccIdHistory;
+
+// -- TYPES FOR CAROUSEL -- //
+export type ICarouselSlides = 'analytics' | 'distribute' | 'savingsAccHistory';
+
+// -- EXTRA TYPES -- //
+export type IAnalyticsObj = ICalcSchema['analytics'][0];
+export type IDistMsgsObj = ICalcSchema['distributer'][0];
+export type ISavingsAccHistoryObj = ICalcSchema['savingsAccHistory'][0];
+
+// -------------------------------------------------------------------------------------------- //
+
+export namespace NDist {
+
+   //TODO: replace all instances of IAnalyticsObj in the proj with NDist.IAnalytics
+   //TODO: replace all instances of IDistMsgsObj in the proj with NDist.IDistMsgs
+   //TODO: replace all instances of ISavingsAccHistoryObj in the proj with NDist.ISavingsAccHist
+   //TODO: replace all instances of ICalcSchema['analytics'][0] with NDist.IAnalytics
+   //TODO: replace all instances of ICalcSchema['distributer'][0] with NDist.IDistMsgs
+   //TODO: replace all instances of ICalcSchema['savingsAccHistory'][0] with NDist.ISavingsAccHist
+
+   export interface IDistMsgs {
+      timestamp: string;
+      msgs: string[];
+   }
+
+   export interface ISavingsAccHist {
+      id: number;
+      balance: number;
+      timestamp: string;
+   }
+
+   export interface IAnalytics {
+      totalIncomes: number;
+      totalExpenses: number;
+      prevMonth: {
+         totalSpendings: number;
+         totalDisposableSpending: number;
+         totalSavings: number;
+      };
+      timestamp: string;
+   }
+
+   //TODO: replace all instances of ICalcShema in the project with NDist.ICalcSchema
+   export interface ICalcSchema {
+      distributer: IDistMsgs[];
+      savingsAccHistory: ISavingsAccHist[];
+      analytics: IAnalytics[];
+   }
+}

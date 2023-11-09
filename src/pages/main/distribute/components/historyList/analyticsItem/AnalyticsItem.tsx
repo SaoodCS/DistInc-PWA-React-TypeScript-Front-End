@@ -12,14 +12,22 @@ import useThemeContext from '../../../../../../global/context/theme/hooks/useThe
 import { PopupMenuContext } from '../../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import type { ICalcSchema } from '../../calculation/CalculateDist';
+import { ICarouselSlides } from '../../distributerForm/class/DistributerClass';
 import AnalyticsPopupMenu from '../../popupMenu/AnalyticsPopupMenu';
 
 interface IAnalyticsItems {
    analytics: ICalcSchema['analytics'];
+   handleItemClick: (
+      item:
+         | ICalcSchema['analytics'][0]
+         | ICalcSchema['distributer'][0]
+         | ICalcSchema['savingsAccHistory'][0],
+      itemType: ICarouselSlides,
+   ) => void;
 }
 
 export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
-   const { analytics } = props;
+   const { analytics, handleItemClick } = props;
    const {
       setPMContent,
       setPMHeightPx,
@@ -46,7 +54,10 @@ export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
    return (
       <>
          {analytics.map((analyticsObj) => (
-            <CardListItem key={analyticsObj.timestamp}>
+            <CardListItem
+               key={analyticsObj.timestamp}
+               onClick={() => handleItemClick(analyticsObj, 'analytics')}
+            >
                <ItemTitleAndIconWrapper>
                   <Calculator height={'2em'} style={{ paddingRight: '0.5em' }} />
                   <ItemTitleAndSubTitleWrapper>

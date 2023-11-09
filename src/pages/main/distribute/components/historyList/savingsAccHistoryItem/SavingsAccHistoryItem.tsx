@@ -15,14 +15,22 @@ import NumberHelper from '../../../../../../global/helpers/dataTypes/number/Numb
 import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
 import type { ICalcSchema } from '../../calculation/CalculateDist';
+import { ICarouselSlides } from '../../distributerForm/class/DistributerClass';
 import SavingsAccPopupMenu from '../../popupMenu/SavingsAccPopupMenu';
 
 interface ISavingsAccHistoryItems {
    savingsAccHistory: ICalcSchema['savingsAccHistory'];
+   handleItemClick: (
+      item:
+         | ICalcSchema['analytics'][0]
+         | ICalcSchema['distributer'][0]
+         | ICalcSchema['savingsAccHistory'][0],
+      itemType: ICarouselSlides,
+   ) => void;
 }
 
 export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): JSX.Element {
-   const { savingsAccHistory } = props;
+   const { savingsAccHistory, handleItemClick } = props;
    const { isDarkTheme } = useThemeContext();
    const { data } = SavingsClass.useQuery.getSavingsAccounts();
    const {
@@ -55,7 +63,10 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
    return (
       <>
          {savingsAccHistory.map((savingsHistObj) => (
-            <CardListItem key={`${savingsHistObj.timestamp}.${savingsHistObj.id}`}>
+            <CardListItem
+               key={`${savingsHistObj.timestamp}.${savingsHistObj.id}`}
+               onClick={() => handleItemClick(savingsHistObj, 'savingsAccHistory')}
+            >
                <ItemTitleAndIconWrapper style={{ position: 'relative' }}>
                   <Savings height={'2em'} style={{ paddingRight: '0.5em' }} />
                   <ItemTitleAndSubTitleWrapper>
