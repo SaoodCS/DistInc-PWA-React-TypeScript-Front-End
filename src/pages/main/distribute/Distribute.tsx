@@ -12,15 +12,16 @@ import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks
 import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 import { ModalContext } from '../../../global/context/widget/modal/ModalContext';
 import ArrayOfObjects from '../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
+import StringHelper from '../../../global/helpers/dataTypes/string/StringHelper';
 import IncomeClass from '../details/components/Income/class/Class';
 import CurrentClass from '../details/components/accounts/current/class/Class';
 import ExpensesClass from '../details/components/expense/class/ExpensesClass';
-import HistorySlide from './components/HistorySlide';
 import HelpRequirements from './components/calcPreReqList/HelpRequirements';
 import AnalyticsDetails from './components/d-analytics/detailsSlide/AnalyticsDetails';
 import DistMsgsDetails from './components/d-distMsgs/detailsSlide/DistMsgsDetails';
 import SavingsAccHistDetails from './components/d-savingsHist/detailsSlide/SavingsAccHistDetails';
 import DistributeForm from './components/form/DistributerForm';
+import HistorySlide from './components/historySlide/HistorySlide';
 import { DistributeContext } from './context/DistributeContext';
 import NDist from './namespace/NDist';
 
@@ -53,14 +54,18 @@ export default function Distribute(): JSX.Element {
    });
 
    useEffect(() => {
+      const slideTitle = ArrayOfObjects.getObjWithKeyValuePair(
+         NDist.Carousel.slides,
+         'name',
+         slideName,
+      ).title;
+      setHeaderTitle(slideTitle);
       if (currentSlide === 1) {
          hideAndResetBackBtn();
-         setHeaderTitle('Distribution History');
       } else {
          setHandleBackBtnClick(() => scrollToSlide(1));
-         setHeaderTitle('Details');
       }
-   }, [currentSlide]);
+   }, [currentSlide, slideName]);
 
    useEffect(() => {
       const reqCheck = NDist.Calc.checkPreReqsMet(

@@ -15,13 +15,13 @@ export interface IDistributeContext {
       React.SetStateAction<NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist | undefined>
    >;
    slideName: NDist.Carousel.ISlide2NameOptions | NDist.Carousel.ISlide1Name;
-   setSlideName: SetValue<keyof NDist.ISchema | 'history'>;
+   setSlideName: SetValue<NDist.Carousel.ISlide2NameOptions | NDist.Carousel.ISlide1Name>;
 }
 
 export const DistributeContext = createContext<IDistributeContext>({
    carouselContainerRef: {} as React.RefObject<HTMLDivElement>,
    scrollToSlide: () => {},
-   currentSlide: 0,
+   currentSlide: 1,
    handleItemClick: () => {},
    slide2Data: undefined,
    setSlide2Data: () => {},

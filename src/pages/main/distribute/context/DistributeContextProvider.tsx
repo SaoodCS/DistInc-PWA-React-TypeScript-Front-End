@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import useCarousel from '../../../../global/components/lib/carousel/hooks/useCarousel';
+import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import useSessionStorage from '../../../../global/hooks/useSessionStorage';
 import NDist from '../namespace/NDist';
 import { DistributeContext } from './DistributeContext';
@@ -21,7 +22,10 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
    >(undefined);
    const [slideName, setSlideName] = useSessionStorage<
       NDist.Carousel.ISlide2NameOptions | NDist.Carousel.ISlide1Name
-   >(NDist.Carousel.key.currentSlideName, 'history');
+   >(
+      NDist.Carousel.key.currentSlideName,
+      ArrayOfObjects.getObjWithKeyValuePair(NDist.Carousel.slides, 'slideNo', 1).name,
+   );
 
    function handleItemClick(
       item: NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist,

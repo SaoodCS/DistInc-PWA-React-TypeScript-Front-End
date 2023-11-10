@@ -128,6 +128,35 @@ export namespace NDist {
          historySlideScrollSaver: `${storageKeyPrefix}.historySlide`,
          currentSlideName: `${storageKeyPrefix}.slide2Name`,
       };
+
+      interface ISlides {
+         name: ISlide1Name | ISlide2NameOptions;
+         title: string;
+         slideNo: number;
+      }
+
+      export const slides: ISlides[] = [
+         {
+            name: 'history',
+            title: 'Distribution History',
+            slideNo: 1,
+         },
+         {
+            name: 'analytics',
+            title: 'Analytics History',
+            slideNo: 2,
+         },
+         {
+            name: 'distributer',
+            title: 'Distribution Steps History',
+            slideNo: 2,
+         },
+         {
+            name: 'savingsAccHistory',
+            title: 'Savings Account History',
+            slideNo: 2,
+         },
+      ];
    }
 
    export const API = {

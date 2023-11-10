@@ -1,20 +1,23 @@
 import { useContext } from 'react';
-import { CardListTitle, CardListWrapper } from '../../../../global/components/lib/cardList/Style';
-import { CarouselAndNavBarWrapper } from '../../../../global/components/lib/carousel/NavBar';
-import { FlatListWrapper } from '../../../../global/components/lib/flatList/Style';
-import { TextColourizer } from '../../../../global/components/lib/font/textColorizer/TextColourizer';
-import { HorizontalMenuDots } from '../../../../global/components/lib/icons/menu/HorizontalMenuDots';
-import PullToRefresh from '../../../../global/components/lib/pullToRefresh/PullToRefresh';
-import useThemeContext from '../../../../global/context/theme/hooks/useThemeContext';
-import { ModalContext } from '../../../../global/context/widget/modal/ModalContext';
-import { PopupMenuContext } from '../../../../global/context/widget/popupMenu/PopupMenuContext';
-import DateHelper from '../../../../global/helpers/dataTypes/date/DateHelper';
-import useScrollSaver from '../../../../global/hooks/useScrollSaver';
-import NDist from '../namespace/NDist';
-import AnalyticsItems from './d-analytics/cardListItem/AnalyticsItem';
-import DistMsgsItems from './d-distMsgs/cardListItem/DistMsgsItems';
-import SavingsAccHistoryItems from './d-savingsHist/cardListItems/SavingsAccHistoryItem';
-import MonthPopupMenu from './monthPopupMenu/MonthPopupMenu';
+import {
+   CardListTitle,
+   CardListWrapper,
+} from '../../../../../global/components/lib/cardList/Style';
+import { CarouselAndNavBarWrapper } from '../../../../../global/components/lib/carousel/NavBar';
+import { FlatListWrapper } from '../../../../../global/components/lib/flatList/Style';
+import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
+import { HorizontalMenuDots } from '../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
+import PullToRefresh from '../../../../../global/components/lib/pullToRefresh/PullToRefresh';
+import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
+import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
+import { PopupMenuContext } from '../../../../../global/context/widget/popupMenu/PopupMenuContext';
+import DateHelper from '../../../../../global/helpers/dataTypes/date/DateHelper';
+import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
+import NDist from '../../namespace/NDist';
+import AnalyticsItems from '../d-analytics/cardListItem/AnalyticsItem';
+import DistMsgsItems from '../d-distMsgs/cardListItem/DistMsgsItems';
+import SavingsAccHistoryItems from '../d-savingsHist/cardListItems/SavingsAccHistoryItem';
+import MonthPopupMenu from '../monthPopupMenu/MonthPopupMenu';
 
 export default function HistorySlide() {
    const { isDarkTheme } = useThemeContext();
