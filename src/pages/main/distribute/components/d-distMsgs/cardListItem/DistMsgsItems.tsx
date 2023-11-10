@@ -11,9 +11,9 @@ import { HorizontalMenuDots } from '../../../../../../global/components/lib/icon
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { PopupMenuContext } from '../../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
+import { DistributeContext } from '../../../context/DistributeContext';
 import type NDist from '../../../namespace/NDist';
 import DistMsgsPopupMenu from '../popupMenu/DistMsgsPopupMenu';
-import { DistributeContext } from '../../../context/DistributeContext';
 
 interface IDistributeMsgsItems {
    distributer: NDist.IDistMsgs[];
@@ -38,7 +38,9 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
    ): void {
       e.stopPropagation();
       setPMIsOpen(true);
-      setPMContent(<DistMsgsPopupMenu distributerItem={distMsgsItem} />);
+      setPMContent(
+         <DistMsgsPopupMenu distributerItem={distMsgsItem} handleItemClick={handleItemClick} />,
+      );
       setClickEvent(e);
       setPMHeightPx(62);
       setPMWidthPx(120);

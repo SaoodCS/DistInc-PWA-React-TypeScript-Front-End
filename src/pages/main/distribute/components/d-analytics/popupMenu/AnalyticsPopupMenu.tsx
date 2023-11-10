@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
+import { ViewShow } from '@styled-icons/zondicons/ViewShow';
 import { useQueryClient } from '@tanstack/react-query';
 import { DocumentDelete } from 'styled-icons/typicons';
 import {
@@ -11,12 +12,12 @@ import microservices from '../../../../../../global/firebase/apis/microservices/
 import NDist from '../../../namespace/NDist';
 
 interface IAnalyticsPopupMenu {
-   type: 'analyticsItem';
    analyticsItem: NDist.IAnalytics;
+   handleItemClick: (item: NDist.IAnalytics, itemType: NDist.Carousel.ISlide2NameOptions) => void;
 }
 
 export default function AnalyticsPopupMenu(props: IAnalyticsPopupMenu): JSX.Element {
-   const { analyticsItem } = props;
+   const { analyticsItem, handleItemClick } = props;
    const { isDarkTheme } = useThemeContext();
 
    const queryClient = useQueryClient();
@@ -31,15 +32,16 @@ export default function AnalyticsPopupMenu(props: IAnalyticsPopupMenu): JSX.Elem
          data: analyticsItem,
       });
    }
-   function handleView(): void {
-      // TODO: handleView slide navigation here
+
+   function handlePress() {
+      handleItemClick(analyticsItem, 'analytics');
    }
 
    return (
       <PMItemsListWrapper isDarkTheme={isDarkTheme}>
-         <PMItemContainer onClick={() => handleView()} isDarkTheme={isDarkTheme}>
+         <PMItemContainer onClick={() => handlePress()} isDarkTheme={isDarkTheme}>
             <PMItemTitle>View Details</PMItemTitle>
-            <DocumentDelete />
+            <ViewShow />
          </PMItemContainer>
          <PMItemContainer onClick={() => handleDelete()} isDarkTheme={isDarkTheme} dangerItem>
             <PMItemTitle>Delete This</PMItemTitle>

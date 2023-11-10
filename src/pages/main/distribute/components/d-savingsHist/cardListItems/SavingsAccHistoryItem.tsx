@@ -14,9 +14,9 @@ import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelp
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
+import { DistributeContext } from '../../../context/DistributeContext';
 import type NDist from '../../../namespace/NDist';
 import SavingsAccPopupMenu from '../popupMenu/SavingsAccPopupMenu';
-import { DistributeContext } from '../../../context/DistributeContext';
 
 interface ISavingsAccHistoryItems {
    savingsAccHistory: NDist.ISavingsAccHist[];
@@ -24,7 +24,7 @@ interface ISavingsAccHistoryItems {
 
 export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): JSX.Element {
    const { savingsAccHistory } = props;
-   const {handleItemClick} = useContext(DistributeContext);
+   const { handleItemClick } = useContext(DistributeContext);
    const { isDarkTheme } = useThemeContext();
    const { data } = SavingsClass.useQuery.getSavingsAccounts();
    const {
@@ -46,10 +46,16 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
       savingsAccHistItem: NDist.ISavingsAccHist,
    ): void {
+      e.stopPropagation();
       setPMIsOpen(true);
-      setPMContent(<SavingsAccPopupMenu savingsAccHistItem={savingsAccHistItem} />);
+      setPMContent(
+         <SavingsAccPopupMenu
+            savingsAccHistItem={savingsAccHistItem}
+            handleItemClick={handleItemClick}
+         />,
+      );
       setClickEvent(e);
-      setPMHeightPx(113);
+      setPMHeightPx(146);
       setPMWidthPx(200);
       setCloseOnInnerClick(true);
    }

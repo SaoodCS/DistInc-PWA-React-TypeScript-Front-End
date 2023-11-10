@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
+import { ViewShow } from '@styled-icons/zondicons/ViewShow';
 import { useQueryClient } from '@tanstack/react-query';
+import { useContext } from 'react';
 import { StopCircle } from 'styled-icons/material';
 import { RepoDeleted } from 'styled-icons/octicons';
 import { DocumentDelete } from 'styled-icons/typicons';
@@ -16,10 +18,14 @@ import NDist from '../../../namespace/NDist';
 
 interface ISavingsAccPopupMenu {
    savingsAccHistItem: NDist.ISavingsAccHist;
+   handleItemClick: (
+      item: NDist.ISavingsAccHist,
+      itemType: NDist.Carousel.ISlide2NameOptions,
+   ) => void;
 }
 
 export default function SavingsAccPopupMenu(props: ISavingsAccPopupMenu): JSX.Element {
-   const { savingsAccHistItem } = props;
+   const { savingsAccHistItem, handleItemClick } = props;
    const { isDarkTheme } = useThemeContext();
 
    const { data: savingsAccData } = SavingsClass.useQuery.getSavingsAccounts();
@@ -69,10 +75,14 @@ export default function SavingsAccPopupMenu(props: ISavingsAccPopupMenu): JSX.El
    return (
       <PMItemsListWrapper isDarkTheme={isDarkTheme}>
          <PMItemContainer
-            onClick={() => {
-               // TODO: API POST Mutation to delete history savingsAccHistory associated with savingsHistItem's date called here
-               handleDelete('savingsAccHistoryItem');
-            }}
+            onClick={() => handleItemClick(savingsAccHistItem, 'savingsAccHistory')}
+            isDarkTheme={isDarkTheme}
+         >
+            <PMItemTitle>View Details</PMItemTitle>
+            <ViewShow />
+         </PMItemContainer>
+         <PMItemContainer
+            onClick={() => handleDelete('savingsAccHistoryItem')}
             isDarkTheme={isDarkTheme}
             dangerItem
          >
@@ -80,10 +90,7 @@ export default function SavingsAccPopupMenu(props: ISavingsAccPopupMenu): JSX.El
             <DocumentDelete />
          </PMItemContainer>
          <PMItemContainer
-            onClick={() => {
-               //TODO: API POST Mutation to delete all history savingsAccHistory associated with savingsHistItem's savingsAccId called here
-               handleDelete('allSavingsAccIdHistory');
-            }}
+            onClick={() => handleDelete('allSavingsAccIdHistory')}
             isDarkTheme={isDarkTheme}
             dangerItem
          >
@@ -96,10 +103,7 @@ export default function SavingsAccPopupMenu(props: ISavingsAccPopupMenu): JSX.El
             <RepoDeleted />
          </PMItemContainer>
          <PMItemContainer
-            onClick={() => {
-               //TODO: API POST Mutation which calls the setSavingsAcc and updates (only) the isTracked field to false
-               handleStopTracking();
-            }}
+            onClick={() => handleStopTracking()}
             isDarkTheme={isDarkTheme}
             warningItem
          >

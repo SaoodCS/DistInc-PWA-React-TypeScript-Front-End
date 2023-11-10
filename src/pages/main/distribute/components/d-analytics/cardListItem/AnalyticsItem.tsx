@@ -38,7 +38,9 @@ export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
    ): void {
       e.stopPropagation();
       setPMIsOpen(true);
-      setPMContent(<AnalyticsPopupMenu analyticsItem={analyticsItem} type={'analyticsItem'} />);
+      setPMContent(
+         <AnalyticsPopupMenu analyticsItem={analyticsItem} handleItemClick={handleItemClick} />,
+      );
       setClickEvent(e);
       setPMHeightPx(62);
       setPMWidthPx(120);

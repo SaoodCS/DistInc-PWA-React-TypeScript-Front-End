@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
+import { ViewShow } from '@styled-icons/zondicons/ViewShow';
 import { useQueryClient } from '@tanstack/react-query';
 import { DocumentDelete } from 'styled-icons/typicons';
 import {
@@ -12,10 +13,11 @@ import NDist from '../../../namespace/NDist';
 
 interface IDistMsgsPopupMenu {
    distributerItem: NDist.IDistMsgs;
+   handleItemClick: (item: NDist.IDistMsgs, itemType: NDist.Carousel.ISlide2NameOptions) => void;
 }
 
 export default function DistMsgsPopupMenu(props: IDistMsgsPopupMenu): JSX.Element {
-   const { distributerItem } = props;
+   const { distributerItem, handleItemClick } = props;
    const { isDarkTheme } = useThemeContext();
 
    const queryClient = useQueryClient();
@@ -31,15 +33,14 @@ export default function DistMsgsPopupMenu(props: IDistMsgsPopupMenu): JSX.Elemen
       });
    }
 
-   function handleView(): void {
-      //TODO: handleView slide navigation here
-   }
-
    return (
       <PMItemsListWrapper isDarkTheme={isDarkTheme}>
-         <PMItemContainer onClick={() => handleView()} isDarkTheme={isDarkTheme}>
+         <PMItemContainer
+            onClick={() => handleItemClick(distributerItem, 'distributer')}
+            isDarkTheme={isDarkTheme}
+         >
             <PMItemTitle>View Details</PMItemTitle>
-            <DocumentDelete />
+            <ViewShow />
          </PMItemContainer>
          <PMItemContainer onClick={() => handleDelete()} isDarkTheme={isDarkTheme} dangerItem>
             <PMItemTitle>Delete This</PMItemTitle>
