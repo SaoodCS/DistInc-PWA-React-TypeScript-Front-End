@@ -1,6 +1,5 @@
 import { Filter } from '@styled-icons/fluentui-system-filled/Filter';
 import { useContext } from 'react';
-import styled from 'styled-components';
 import {
    CardListTitle,
    CardListWrapper,
@@ -11,19 +10,23 @@ import { TextColourizer } from '../../../../../global/components/lib/font/textCo
 import { HorizontalMenuDots } from '../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
 import { FlexRowWrapper } from '../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
 import PullToRefresh from '../../../../../global/components/lib/pullToRefresh/PullToRefresh';
+import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
 import { PopupMenuContext } from '../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import Color from '../../../../../global/css/colors';
 import DateHelper from '../../../../../global/helpers/dataTypes/date/DateHelper';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
+import useURLState from '../../../../../global/hooks/useURLState';
 import NDist from '../../namespace/NDist';
 import AnalyticsItems from '../d-analytics/cardListItem/AnalyticsItem';
 import DistMsgsItems from '../d-distMsgs/cardListItem/DistMsgsItems';
 import SavingsAccHistoryItems from '../d-savingsHist/cardListItems/SavingsAccHistoryItem';
+import FilterHistoryPopupMenu from '../filterHistoryPopupMenu/FilterHistoryPopupMenu';
 import MonthPopupMenu from '../monthPopupMenu/MonthPopupMenu';
 
 export default function HistorySlide() {
+   const [filterOutState] = useURLState({ key: NDist.Filterer.key });
    const { isDarkTheme } = useThemeContext();
    const {
       containerRef: scrollSaverRef,
@@ -70,6 +73,15 @@ export default function HistorySlide() {
       setCloseOnInnerClick(true);
    }
 
+   function handleFilterClick(e: React.MouseEvent<SVGSVGElement, MouseEvent>): void {
+      setPMIsOpen(true);
+      setPMContent(<FilterHistoryPopupMenu />);
+      setClickEvent(e);
+      setPMHeightPx(100);
+      setPMWidthPx(200);
+      setCloseOnInnerClick(false);
+   }
+
    return (
       <CarouselAndNavBarWrapper style={{ width: '100%' }}>
          <FlexRowWrapper>
@@ -79,6 +91,8 @@ export default function HistorySlide() {
             <Filter
                height="2em"
                color={isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent}
+               cursor={'pointer'}
+               onClick={(e) => handleFilterClick(e)}
             />
          </FlexRowWrapper>
 
@@ -99,11 +113,19 @@ export default function HistorySlide() {
                            onClick={(e) => handleMenuDotsClick(e, monthObj.monthYear)}
                         />
                      </CardListTitle>
-                     {monthObj.distributer && <DistMsgsItems distributer={monthObj.distributer} />}
-                     {monthObj.analytics && <AnalyticsItems analytics={monthObj.analytics} />}
-                     {monthObj.savingsAccHistory && (
-                        <SavingsAccHistoryItems savingsAccHistory={monthObj.savingsAccHistory} />
-                     )}
+                     <ConditionalRender condition={!filterOutState.includes('distributer')}>
+                        {monthObj.distributer && (
+                           <DistMsgsItems distributer={monthObj.distributer} />
+                        )}
+                     </ConditionalRender>
+                     <ConditionalRender condition={!filterOutState.includes('analytics')}>
+                        {monthObj.analytics && <AnalyticsItems analytics={monthObj.analytics} />}
+                     </ConditionalRender>
+                     <ConditionalRender condition={!filterOutState.includes('savingsAccHistory')}>
+                        {monthObj.savingsAccHistory && (
+                           <SavingsAccHistoryItems savingsAccHistory={monthObj.savingsAccHistory} />
+                        )}
+                     </ConditionalRender>
                   </CardListWrapper>
                ))}
             </FlatListWrapper>
