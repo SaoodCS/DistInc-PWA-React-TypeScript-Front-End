@@ -6,6 +6,7 @@ import MainLayout from '../../pages/main/MainLayout';
 import Dashboard from '../../pages/main/dashboard/Dashboard';
 import Details from '../../pages/main/details/Details';
 import History from '../../pages/main/distribute/Distribute';
+import DistributeContextProvider from '../../pages/main/distribute/context/DistributeContextProvider';
 import Settings from '../../pages/main/settings/Settings';
 
 export default function MainRoutes(): JSX.Element {
