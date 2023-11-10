@@ -20,6 +20,7 @@ import { ModalContext } from '../../../global/context/widget/modal/ModalContext'
 import { PopupMenuContext } from '../../../global/context/widget/popupMenu/PopupMenuContext';
 import ArrayOfObjects from '../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import DateHelper from '../../../global/helpers/dataTypes/date/DateHelper';
+import useScrollSaver from '../../../global/hooks/useScrollSaver';
 import useSessionStorage from '../../../global/hooks/useSessionStorage';
 import IncomeClass from '../details/components/Income/class/Class';
 import CurrentClass from '../details/components/accounts/current/class/Class';
@@ -72,16 +73,21 @@ export default function Distribute(): JSX.Element {
    // -- STATE -- //
    const { containerRef, scrollToSlide, currentSlide } = useCarousel(
       1,
-      NDist.Carousel.key.currentSlide,
+      NDist.Carousel.key.currentSlideNo,
    );
-   const [slide2, setSlide2] = useSessionStorage<NDist.Carousel.ISlideName | ''>(
-      NDist.Carousel.key.slide2,
-      '',
-   );
+   const [slideName, setSlideName] = useSessionStorage<
+      NDist.Carousel.ISlide2NameOptions | NDist.Carousel.ISlide1Name
+   >(NDist.Carousel.key.currentSlideName, 'history');
    const [prevScrollPos, setPrevScrollPos] = useState<number>(0);
    const [detailsSlideData, setDetailsSlideData] = useState<
       NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist | undefined
    >(undefined);
+
+   const {
+      containerRef: scrollSaverRef,
+      handleOnScroll,
+      scrollSaverStyle,
+   } = useScrollSaver(NDist.Carousel.key.historySlideScrollSaver);
 
    // -- USEEFFECTS -- //
    useEffect(() => {
@@ -138,19 +144,15 @@ export default function Distribute(): JSX.Element {
 
    function handleScroll(): void {
       const currentLeftScroll = containerRef.current?.scrollLeft;
-      if (currentLeftScroll! < prevScrollPos && currentLeftScroll === 0) setSlide2('');
+      if (currentLeftScroll! < prevScrollPos && currentLeftScroll === 0) setSlideName('history');
       setPrevScrollPos(currentLeftScroll!);
-   }
-
-   function isSlide2(slideName: NDist.Carousel.ISlideName): boolean {
-      return slide2 === slideName;
    }
 
    function handleItemClick(
       item: NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist,
-      itemType: NDist.Carousel.ISlideName,
+      itemType: NDist.Carousel.ISlide2NameOptions,
    ): void {
-      setSlide2(itemType);
+      setSlideName(itemType);
       scrollToSlide(2);
       setDetailsSlideData(item);
    }
@@ -172,7 +174,12 @@ export default function Distribute(): JSX.Element {
                <PullToRefresh isDarkTheme={isDarkTheme} onRefresh={() => handleOnRefresh()}>
                   <>
                      {sortData()?.map((monthObj) => (
-                        <CardListWrapper key={monthObj.monthYear}>
+                        <CardListWrapper
+                           key={monthObj.monthYear}
+                           ref={scrollSaverRef}
+                           style={{ ...scrollSaverStyle, height: '100%' }}
+                           onScroll={handleOnScroll}
+                        >
                            <CardListTitle>
                               <TextColourizer padding={'0 0.5em 0 0'}>
                                  {DateHelper.fromMMYYYYToWord(monthObj.monthYear)}
@@ -207,13 +214,13 @@ export default function Distribute(): JSX.Element {
             </CarouselAndNavBarWrapper>
          </CarouselSlide>
          <CarouselSlide height={'100%'}>
-            <ConditionalRender condition={isSlide2('analytics')}>
+            <ConditionalRender condition={'analytics' === slideName}>
                <AnalyticsDetails analyticsItem={detailsSlideData as NDist.IAnalytics} />
             </ConditionalRender>
-            <ConditionalRender condition={isSlide2('distributer')}>
+            <ConditionalRender condition={'distributer' === slideName}>
                <DistMsgsDetails distMsgsItem={detailsSlideData as NDist.IDistMsgs} />
             </ConditionalRender>
-            <ConditionalRender condition={isSlide2('savingsAccHistory')}>
+            <ConditionalRender condition={'savingsAccHistory' === slideName}>
                <SavingsAccHistDetails
                   savingsAccHistItem={detailsSlideData as NDist.ISavingsAccHist}
                />

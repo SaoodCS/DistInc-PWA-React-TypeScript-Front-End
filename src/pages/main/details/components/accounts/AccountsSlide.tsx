@@ -88,7 +88,11 @@ export default function AccountsSlide(): JSX.Element {
 
    return (
       <PullToRefresh onRefresh={handleOnRefresh} isDarkTheme={isDarkTheme}>
-         <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
+         <FlatListWrapper
+            ref={containerRef}
+            onScroll={handleOnScroll}
+            style={{ ...scrollSaverStyle, height: '100%' }}
+         >
             {sortData().map((item) => (
                <Fragment key={item.id}>
                   {CurrentClass.isType.currentItem(item) && <CurrentAccountListItem item={item} />}

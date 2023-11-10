@@ -111,7 +111,11 @@ export default function ExpenseSlide(): JSX.Element {
 
    return (
       <PullToRefresh onRefresh={refetch} isDarkTheme={isDarkTheme}>
-         <FlatListWrapper ref={containerRef} onScroll={handleOnScroll} style={scrollSaverStyle}>
+         <FlatListWrapper
+            ref={containerRef}
+            onScroll={handleOnScroll}
+            style={{ ...scrollSaverStyle, height: '100%' }}
+         >
             {!!data &&
                sortData(data).map((item) => (
                   <FlatListItem

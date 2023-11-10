@@ -119,13 +119,14 @@ export namespace NDist {
    }
 
    export namespace Carousel {
-      export type ISlideName = keyof ISchema;
+      export type ISlide1Name = 'history';
+      export type ISlide2NameOptions = keyof ISchema;
 
       const storageKeyPrefix = 'distributerCarousel';
       export const key = {
-         currentSlide: `${storageKeyPrefix}.currentSlide`,
-         slide2: `${storageKeyPrefix}.slide2`,
-         detailsSlide: `${storageKeyPrefix}.detailsSlide`,
+         currentSlideNo: `${storageKeyPrefix}.currentSlideNo`,
+         historySlideScrollSaver: `${storageKeyPrefix}.historySlide`,
+         currentSlideName: `${storageKeyPrefix}.slide2Name`,
       };
    }
 
