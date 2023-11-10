@@ -1,4 +1,6 @@
+import { Filter } from '@styled-icons/fluentui-system-filled/Filter';
 import { useContext } from 'react';
+import styled from 'styled-components';
 import {
    CardListTitle,
    CardListWrapper,
@@ -7,10 +9,12 @@ import { CarouselAndNavBarWrapper } from '../../../../../global/components/lib/c
 import { FlatListWrapper } from '../../../../../global/components/lib/flatList/Style';
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { HorizontalMenuDots } from '../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
+import { FlexRowWrapper } from '../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
 import PullToRefresh from '../../../../../global/components/lib/pullToRefresh/PullToRefresh';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
 import { PopupMenuContext } from '../../../../../global/context/widget/popupMenu/PopupMenuContext';
+import Color from '../../../../../global/css/colors';
 import DateHelper from '../../../../../global/helpers/dataTypes/date/DateHelper';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import NDist from '../../namespace/NDist';
@@ -68,9 +72,16 @@ export default function HistorySlide() {
 
    return (
       <CarouselAndNavBarWrapper style={{ width: '100%' }}>
-         <TextColourizer fontSize="2em" bold padding="0.5em">
-            History
-         </TextColourizer>
+         <FlexRowWrapper>
+            <TextColourizer fontSize="2em" bold padding="0.5em">
+               History
+            </TextColourizer>
+            <Filter
+               height="2em"
+               color={isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent}
+            />
+         </FlexRowWrapper>
+
          <PullToRefresh isDarkTheme={isDarkTheme} onRefresh={() => handleOnRefresh()}>
             <FlatListWrapper
                ref={scrollSaverRef}
