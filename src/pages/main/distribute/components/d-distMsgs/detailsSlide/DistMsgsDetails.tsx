@@ -1,8 +1,13 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { Stepper } from '@zendeskgarden/react-accordions';
 import { useContext, useEffect } from 'react';
 import { CarouselAndNavBarWrapper } from '../../../../../../global/components/lib/carousel/NavBar';
 import { TextColourizer } from '../../../../../../global/components/lib/font/textColorizer/TextColourizer';
-import { HorizontalMenuDots } from '../../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
+import { ArrowCircleLeftIcon } from '../../../../../../global/components/lib/icons/arrows/ArrowCircleLeft';
+import { ArrowCircleRightIcon } from '../../../../../../global/components/lib/icons/arrows/ArrowCircleRight';
+import { CloseCircleIcon } from '../../../../../../global/components/lib/icons/close/CloseCircle';
+import { RefreshCircleIcon } from '../../../../../../global/components/lib/icons/refresh/RefreshCircle';
+import { FlexRowWrapper } from '../../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
 import {
    StyledStepper,
    StyledStepperLabel,
@@ -10,13 +15,14 @@ import {
 } from '../../../../../../global/components/lib/stepper/Style';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import Color from '../../../../../../global/css/colors';
+import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import useSessionStorage from '../../../../../../global/hooks/useSessionStorage';
 import { DistributeContext } from '../../../context/DistributeContext';
-import type NDist from '../../../namespace/NDist';
+import NDist from '../../../namespace/NDist';
 
 export default function DistMsgsDetails(): JSX.Element {
-   const { slide2Data, currentSlide } = useContext(DistributeContext);
+   const { slide2Data, currentSlide, scrollToSlide } = useContext(DistributeContext);
    const { isDarkTheme } = useThemeContext();
    const distMsgsItem = slide2Data as NDist.IDistMsgs;
    const [prevDistMsgs, setPrevDistMsgs] = useSessionStorage('prevDistMsgItem', distMsgsItem);
@@ -24,6 +30,12 @@ export default function DistMsgsDetails(): JSX.Element {
       `distMsgItem.${distMsgsItem?.timestamp}.completedStepNo`,
       0,
    );
+   const queryClient = useQueryClient();
+   const delCalcDistItemInFirestore = NDist.API.useMutation.delCalcDist({
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
+      },
+   });
 
    useEffect(() => {
       if (distMsgsItem) {
@@ -43,6 +55,7 @@ export default function DistMsgsDetails(): JSX.Element {
    }
 
    function changeCompletedStep(stepNo: number): void {
+      if (stepNo < 0 || stepNo > distMsgsToRender().msgs.length) return;
       setCompletedStepNo(stepNo);
    }
 
@@ -64,11 +77,42 @@ export default function DistMsgsDetails(): JSX.Element {
       return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.5);
    }
 
+   async function handleDelete(): Promise<void> {
+      await delCalcDistItemInFirestore.mutateAsync({
+         type: 'distributerItem',
+         data: distMsgsToRender(),
+      });
+      scrollToSlide(1);
+   }
+
    return (
       <CarouselAndNavBarWrapper style={{ width: '100%' }}>
-         <TextColourizer fontSize="2em" bold padding="0.5em">
-            {distMsgsToRender().timestamp}
-         </TextColourizer>
+         <FlexRowWrapper justifyContent="space-evenly" style={{ padding: '0.5em' }}>
+            <TextColourizer fontSize="2em" bold>
+               {distMsgsToRender().timestamp}
+            </TextColourizer>
+            <ArrowCircleLeftIcon
+               height={'2.5em'}
+               darktheme={BoolHelper.toString(isDarkTheme)}
+               onClick={() => changeCompletedStep(completedStepNo - 1)}
+            />
+            <ArrowCircleRightIcon
+               height={'2.5em'}
+               darktheme={BoolHelper.toString(isDarkTheme)}
+               onClick={() => changeCompletedStep(completedStepNo + 1)}
+            />
+            <RefreshCircleIcon
+               height={'2.5em'}
+               darktheme={BoolHelper.toString(isDarkTheme)}
+               onClick={() => changeCompletedStep(0)}
+            />
+            <CloseCircleIcon
+               height={'2.5em'}
+               darktheme={BoolHelper.toString(isDarkTheme)}
+               onClick={() => handleDelete()}
+            />
+         </FlexRowWrapper>
+
          <StyledStepper activeIndex={completedStepNo}>
             {distMsgsToRender().msgs.map((msg, index) => (
                <Stepper.Step key={msg} onClick={() => changeCompletedStep(index + 1)}>
