@@ -6,4 +6,8 @@ export default class StringHelper {
    static isNumber(str: string): boolean {
       return !isNaN(Number(str));
    }
+
+   static removeSequence(str: string, sequence: string): string {
+      return str.replace(sequence, '');
+   }
 }

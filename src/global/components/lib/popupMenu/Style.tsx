@@ -103,6 +103,7 @@ export const PMItemContainer = styled.div<{
          !isHeadingItem &&
          Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.1)};
    }
+   cursor: pointer;
 `;
 
 export const PMItemTitle = styled.div`

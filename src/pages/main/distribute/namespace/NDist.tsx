@@ -1,3 +1,4 @@
+import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import DateHelper from '../../../../global/helpers/dataTypes/date/DateHelper';
 import ObjectOfObjects from '../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import type { IIncomeFirebase } from '../../details/components/Income/class/Class';
@@ -157,6 +158,11 @@ export namespace NDist {
             slideNo: 2,
          },
       ];
+   }
+
+   export class Filterer {
+      static key = 'filterOutHistory';
+      static filterOptions = ArrayOfObjects.filterOut(Carousel.slides, 'name', 'history');
    }
 
    export const API = {
