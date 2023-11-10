@@ -4,9 +4,9 @@ import Color from '../../../css/colors';
 import BoolHelper from '../../../helpers/dataTypes/bool/BoolHelper';
 
 interface IStepperLabel {
-   completed: BoolHelper.asString;
-   darktheme: BoolHelper.asString;
-   isnext: BoolHelper.asString;
+   completed: BoolHelper.IAsString;
+   darktheme: BoolHelper.IAsString;
+   isnext: BoolHelper.IAsString;
 }
 
 export const StyledStepperLine = styled(Stepper.Content)``;
@@ -22,6 +22,6 @@ export const StyledStepperLabel = styled(Stepper.Label)<IStepperLabel>`
       const isDarkTheme = BoolHelper.convert(darktheme);
       if (isCompleted) return isDarkTheme ? Color.darkThm.success : Color.lightThm.success;
       if (isNext) return isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent;
-      else return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.5);
+      return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.5);
    }};
 `;

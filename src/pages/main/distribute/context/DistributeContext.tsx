@@ -1,6 +1,6 @@
 import { createContext } from 'react';
-import { SetValue } from '../../../../global/hooks/useSessionStorage';
-import NDist from '../namespace/NDist';
+import type { SetValue } from '../../../../global/hooks/useSessionStorage';
+import type NDist from '../namespace/NDist';
 
 export interface IDistributeContext {
    carouselContainerRef: React.RefObject<HTMLDivElement>;

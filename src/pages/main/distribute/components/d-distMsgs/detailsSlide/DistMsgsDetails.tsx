@@ -33,6 +33,7 @@ export default function DistMsgsDetails(): JSX.Element {
    const queryClient = useQueryClient();
    const delCalcDistItemInFirestore = NDist.API.useMutation.delCalcDist({
       onSuccess: () => {
+         // eslint-disable-next-line @typescript-eslint/no-floating-promises
          queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
       },
    });

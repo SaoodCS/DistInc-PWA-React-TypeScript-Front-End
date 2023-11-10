@@ -12,7 +12,6 @@ import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks
 import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 import { ModalContext } from '../../../global/context/widget/modal/ModalContext';
 import ArrayOfObjects from '../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
-import StringHelper from '../../../global/helpers/dataTypes/string/StringHelper';
 import IncomeClass from '../details/components/Income/class/Class';
 import CurrentClass from '../details/components/accounts/current/class/Class';
 import ExpensesClass from '../details/components/expense/class/ExpensesClass';

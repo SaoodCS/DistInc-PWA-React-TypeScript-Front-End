@@ -1,12 +1,12 @@
 export namespace BoolHelper {
-   export type asString = 'true' | 'false';
+   export type IAsString = 'true' | 'false';
 
    export function convert(value: 'true' | 'false'): boolean {
       return value === 'true';
    }
 
-   export function toString(value: boolean): asString {
-      return value.toString() as asString;
+   export function toString(value: boolean): IAsString {
+      return value.toString() as IAsString;
    }
 }
 

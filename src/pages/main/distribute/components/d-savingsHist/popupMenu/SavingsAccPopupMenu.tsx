@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { ViewShow } from '@styled-icons/zondicons/ViewShow';
 import { useQueryClient } from '@tanstack/react-query';
-import { useContext } from 'react';
 import { StopCircle } from 'styled-icons/material';
 import { RepoDeleted } from 'styled-icons/octicons';
 import { DocumentDelete } from 'styled-icons/typicons';

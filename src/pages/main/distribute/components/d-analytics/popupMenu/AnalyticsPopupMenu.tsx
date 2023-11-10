@@ -33,7 +33,7 @@ export default function AnalyticsPopupMenu(props: IAnalyticsPopupMenu): JSX.Elem
       });
    }
 
-   function handlePress() {
+   function handlePress(): void {
       handleItemClick(analyticsItem, 'analytics');
    }
 

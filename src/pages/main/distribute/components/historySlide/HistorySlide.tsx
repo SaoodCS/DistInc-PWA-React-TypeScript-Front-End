@@ -25,7 +25,7 @@ import SavingsAccHistoryItems from '../d-savingsHist/cardListItems/SavingsAccHis
 import FilterHistoryPopupMenu from '../filterHistoryPopupMenu/FilterHistoryPopupMenu';
 import MonthPopupMenu from '../monthPopupMenu/MonthPopupMenu';
 
-export default function HistorySlide() {
+export default function HistorySlide(): JSX.Element {
    const [filterOutState] = useURLState({ key: NDist.Filterer.key });
    const { isDarkTheme } = useThemeContext();
    const {
