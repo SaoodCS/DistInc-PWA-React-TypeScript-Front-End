@@ -13,17 +13,15 @@ import { PopupMenuContext } from '../../../../../../global/context/widget/popupM
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import type NDist from '../../../namespace/NDist';
 import DistMsgsPopupMenu from '../popupMenu/DistMsgsPopupMenu';
+import { DistributeContext } from '../../../context/DistributeContext';
 
 interface IDistributeMsgsItems {
    distributer: NDist.IDistMsgs[];
-   handleItemClick: (
-      item: NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist,
-      itemType: NDist.Carousel.ISlide2NameOptions,
-   ) => void;
 }
 
 export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element {
-   const { distributer, handleItemClick } = props;
+   const { distributer } = props;
+   const { handleItemClick } = useContext(DistributeContext);
    const {
       setPMContent,
       setPMHeightPx,

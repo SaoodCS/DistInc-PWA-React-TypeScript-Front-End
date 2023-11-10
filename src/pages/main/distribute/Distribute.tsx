@@ -25,7 +25,7 @@ import { DistributeContext } from './context/DistributeContext';
 import NDist from './namespace/NDist';
 
 export default function Distribute(): JSX.Element {
-   // -- CONTEXTS -- //
+   // -- CONTEXTS + STATES -- //
    HeaderHooks.useOnUnMount.resetHeaderRightEl();
    HeaderHooks.useOnUnMount.hideAndResetBackBtn();
    const { isPortableDevice } = useThemeContext();
@@ -33,15 +33,9 @@ export default function Distribute(): JSX.Element {
       useHeaderContext();
    const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader } =
       useContext(ModalContext);
-
-   const {
-      carouselContainerRef,
-      scrollToSlide,
-      currentSlide,
-      slide2Data,
-      slideName,
-      setSlideName,
-   } = useContext(DistributeContext);
+   const { carouselContainerRef, scrollToSlide, currentSlide, slideName, setSlideName } =
+      useContext(DistributeContext);
+   const [prevScrollPos, setPrevScrollPos] = useState<number>(0);
 
    // -- REACT-QUERY DATA -- //
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
@@ -57,6 +51,7 @@ export default function Distribute(): JSX.Element {
          setIsModalOpen(false);
       },
    });
+
    useEffect(() => {
       if (currentSlide === 1) {
          hideAndResetBackBtn();
@@ -66,10 +61,6 @@ export default function Distribute(): JSX.Element {
          setHeaderTitle('Details');
       }
    }, [currentSlide]);
-   // -- STATE -- //
-   const [prevScrollPos, setPrevScrollPos] = useState<number>(0);
-
-   // -- USEEFFECTS -- //
 
    useEffect(() => {
       const reqCheck = NDist.Calc.checkPreReqsMet(
@@ -90,13 +81,13 @@ export default function Distribute(): JSX.Element {
    }, [currentAccounts, income, expenses]);
 
    // -- FUNCTIONS -- //
-
    function handleScroll(): void {
       const currentLeftScroll = carouselContainerRef.current?.scrollLeft;
       if (currentLeftScroll! < prevScrollPos && currentLeftScroll === 0) setSlideName('history');
       setPrevScrollPos(currentLeftScroll!);
    }
 
+   // -- RENDER -- //
    if (isLoading && !isPaused) {
       if (!isPortableDevice) return <Loader isDisplayed />;
       return <CardListPlaceholder repeatItemCount={7} />;
@@ -115,13 +106,13 @@ export default function Distribute(): JSX.Element {
          </CarouselSlide>
          <CarouselSlide height={'100%'}>
             <ConditionalRender condition={'analytics' === slideName}>
-               <AnalyticsDetails analyticsItem={slide2Data as NDist.IAnalytics} />
+               <AnalyticsDetails />
             </ConditionalRender>
             <ConditionalRender condition={'distributer' === slideName}>
-               <DistMsgsDetails distMsgsItem={slide2Data as NDist.IDistMsgs} />
+               <DistMsgsDetails />
             </ConditionalRender>
             <ConditionalRender condition={'savingsAccHistory' === slideName}>
-               <SavingsAccHistDetails savingsAccHistItem={slide2Data as NDist.ISavingsAccHist} />
+               <SavingsAccHistDetails />
             </ConditionalRender>
          </CarouselSlide>
       </CarouselContainer>

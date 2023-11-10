@@ -11,19 +11,17 @@ import { HorizontalMenuDots } from '../../../../../../global/components/lib/icon
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { PopupMenuContext } from '../../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
+import { DistributeContext } from '../../../context/DistributeContext';
 import type NDist from '../../../namespace/NDist';
 import AnalyticsPopupMenu from '../popupMenu/AnalyticsPopupMenu';
 
 interface IAnalyticsItems {
    analytics: NDist.IAnalytics[];
-   handleItemClick: (
-      item: NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist,
-      itemType: NDist.Carousel.ISlide2NameOptions,
-   ) => void;
 }
 
 export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
-   const { analytics, handleItemClick } = props;
+   const { analytics } = props;
+   const { handleItemClick } = useContext(DistributeContext);
    const {
       setPMContent,
       setPMHeightPx,

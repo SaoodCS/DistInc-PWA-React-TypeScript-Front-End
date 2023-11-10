@@ -1,13 +1,11 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import useLocalStorage from '../../../../../../global/hooks/useLocalStorage';
+import { DistributeContext } from '../../../context/DistributeContext';
 import type NDist from '../../../namespace/NDist';
 
-interface ISavingsAccHistDetails {
-   savingsAccHistItem: NDist.ISavingsAccHist;
-}
-
-export default function SavingsAccHistDetails(props: ISavingsAccHistDetails): JSX.Element {
-   const { savingsAccHistItem } = props;
+export default function SavingsAccHistDetails(): JSX.Element {
+   const { slide2Data } = useContext(DistributeContext);
+   const savingsAccHistItem = slide2Data as NDist.ISavingsAccHist;
    const [prevSavingsAccHistItem, setPrevSavingsAccHistItem] = useLocalStorage(
       'prevSavingsAccHisItem',
       savingsAccHistItem,

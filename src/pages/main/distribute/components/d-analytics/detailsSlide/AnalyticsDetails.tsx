@@ -1,14 +1,11 @@
 import { useContext, useEffect } from 'react';
 import useLocalStorage from '../../../../../../global/hooks/useLocalStorage';
-import type NDist from '../../../namespace/NDist';
 import { DistributeContext } from '../../../context/DistributeContext';
+import type NDist from '../../../namespace/NDist';
 
-interface IAnalyticsDetails {
-   analyticsItem: NDist.IAnalytics;
-}
-
-export default function AnalyticsDetails(props: IAnalyticsDetails): JSX.Element {
-   const { analyticsItem } = props;
+export default function AnalyticsDetails(): JSX.Element {
+   const { slide2Data } = useContext(DistributeContext);
+   const analyticsItem = slide2Data as NDist.IAnalytics;
    const [prevAnalyticsItem, setPrevAnalyticsItem] = useLocalStorage(
       'prevAnalyticsItem',
       analyticsItem,

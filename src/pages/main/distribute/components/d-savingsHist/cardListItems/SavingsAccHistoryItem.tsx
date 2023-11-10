@@ -16,17 +16,15 @@ import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOf
 import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
 import type NDist from '../../../namespace/NDist';
 import SavingsAccPopupMenu from '../popupMenu/SavingsAccPopupMenu';
+import { DistributeContext } from '../../../context/DistributeContext';
 
 interface ISavingsAccHistoryItems {
    savingsAccHistory: NDist.ISavingsAccHist[];
-   handleItemClick: (
-      item: NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist,
-      itemType: NDist.Carousel.ISlide2NameOptions,
-   ) => void;
 }
 
 export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): JSX.Element {
-   const { savingsAccHistory, handleItemClick } = props;
+   const { savingsAccHistory } = props;
+   const {handleItemClick} = useContext(DistributeContext);
    const { isDarkTheme } = useThemeContext();
    const { data } = SavingsClass.useQuery.getSavingsAccounts();
    const {

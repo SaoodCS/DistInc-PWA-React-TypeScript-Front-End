@@ -10,7 +10,6 @@ import { ModalContext } from '../../../../global/context/widget/modal/ModalConte
 import { PopupMenuContext } from '../../../../global/context/widget/popupMenu/PopupMenuContext';
 import DateHelper from '../../../../global/helpers/dataTypes/date/DateHelper';
 import useScrollSaver from '../../../../global/hooks/useScrollSaver';
-import { DistributeContext } from '../context/DistributeContext';
 import NDist from '../namespace/NDist';
 import AnalyticsItems from './d-analytics/cardListItem/AnalyticsItem';
 import DistMsgsItems from './d-distMsgs/cardListItem/DistMsgsItems';
@@ -26,7 +25,6 @@ export default function HistorySlide() {
    } = useScrollSaver(NDist.Carousel.key.historySlideScrollSaver);
 
    const { setIsModalOpen } = useContext(ModalContext);
-   const { handleItemClick } = useContext(DistributeContext);
    const {
       setPMContent,
       setPMHeightPx,
@@ -87,23 +85,10 @@ export default function HistorySlide() {
                            onClick={(e) => handleMenuDotsClick(e, monthObj.monthYear)}
                         />
                      </CardListTitle>
-                     {monthObj.distributer && (
-                        <DistMsgsItems
-                           distributer={monthObj.distributer}
-                           handleItemClick={handleItemClick}
-                        />
-                     )}
-                     {monthObj.analytics && (
-                        <AnalyticsItems
-                           analytics={monthObj.analytics}
-                           handleItemClick={handleItemClick}
-                        />
-                     )}
+                     {monthObj.distributer && <DistMsgsItems distributer={monthObj.distributer} />}
+                     {monthObj.analytics && <AnalyticsItems analytics={monthObj.analytics} />}
                      {monthObj.savingsAccHistory && (
-                        <SavingsAccHistoryItems
-                           savingsAccHistory={monthObj.savingsAccHistory}
-                           handleItemClick={handleItemClick}
-                        />
+                        <SavingsAccHistoryItems savingsAccHistory={monthObj.savingsAccHistory} />
                      )}
                   </CardListWrapper>
                ))}

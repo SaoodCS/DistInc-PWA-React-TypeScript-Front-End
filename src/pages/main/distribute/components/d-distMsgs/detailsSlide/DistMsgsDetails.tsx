@@ -1,13 +1,13 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import useLocalStorage from '../../../../../../global/hooks/useLocalStorage';
 import type NDist from '../../../namespace/NDist';
+import { DistributeContext } from '../../../context/DistributeContext';
 
-interface IDistMsgsDetails {
-   distMsgsItem: NDist.IDistMsgs;
-}
 
-export default function DistMsgsDetails(props: IDistMsgsDetails): JSX.Element {
-   const { distMsgsItem } = props;
+
+export default function DistMsgsDetails(): JSX.Element {
+   const { slide2Data } = useContext(DistributeContext);
+   const distMsgsItem = slide2Data as NDist.IDistMsgs;
    const [prevDistMsgs, setPrevDistMsgs] = useLocalStorage('prevDistMsgs', distMsgsItem);
 
    useEffect(() => {
