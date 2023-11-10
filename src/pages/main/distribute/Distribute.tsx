@@ -8,6 +8,7 @@ import { CarouselAndNavBarWrapper } from '../../../global/components/lib/carouse
 import useCarousel from '../../../global/components/lib/carousel/hooks/useCarousel';
 import FetchError from '../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../global/components/lib/fetch/offlineFetch/offlineFetch';
+import { FlatListWrapper } from '../../../global/components/lib/flatList/Style';
 import { TextColourizer } from '../../../global/components/lib/font/textColorizer/TextColourizer';
 import { HorizontalMenuDots } from '../../../global/components/lib/icons/menu/HorizontalMenuDots';
 import Loader from '../../../global/components/lib/loader/Loader';
@@ -172,14 +173,13 @@ export default function Distribute(): JSX.Element {
                   History
                </TextColourizer>
                <PullToRefresh isDarkTheme={isDarkTheme} onRefresh={() => handleOnRefresh()}>
-                  <>
+                  <FlatListWrapper
+                     ref={scrollSaverRef}
+                     style={{ ...scrollSaverStyle, height: '100%' }}
+                     onScroll={handleOnScroll}
+                  >
                      {sortData()?.map((monthObj) => (
-                        <CardListWrapper
-                           key={monthObj.monthYear}
-                           ref={scrollSaverRef}
-                           style={{ ...scrollSaverStyle, height: '100%' }}
-                           onScroll={handleOnScroll}
-                        >
+                        <CardListWrapper key={monthObj.monthYear}>
                            <CardListTitle>
                               <TextColourizer padding={'0 0.5em 0 0'}>
                                  {DateHelper.fromMMYYYYToWord(monthObj.monthYear)}
@@ -209,7 +209,7 @@ export default function Distribute(): JSX.Element {
                            )}
                         </CardListWrapper>
                      ))}
-                  </>
+                  </FlatListWrapper>
                </PullToRefresh>
             </CarouselAndNavBarWrapper>
          </CarouselSlide>

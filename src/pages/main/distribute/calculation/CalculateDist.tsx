@@ -30,7 +30,7 @@ export default class CalculateDist {
       const savingsAccArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
       const incomeArr = ObjectOfObjects.convertToArrayOfObj(incomes);
       const expenseArr = ObjectOfObjects.convertToArrayOfObj(expenses);
-      const currentAcc = this.formatCurrentAccounts(currentAccounts, leftovers);
+      const currentAcc = CalculateDist.formatCurrentAccounts(currentAccounts, leftovers);
 
       // Calculate Total Incomes & Expenses:
       const totalIncome = ArrayOfObjects.sumKeyValues(incomeArr, 'incomeValue');
@@ -44,7 +44,7 @@ export default class CalculateDist {
       };
 
       // Calculate Current Account Transfers:
-      const currentAccTransfers = this.calcCurrentAccTransfers(
+      const currentAccTransfers = CalculateDist.calcCurrentAccTransfers(
          currentAcc,
          totalIncome,
          totalExpenses,
@@ -52,14 +52,18 @@ export default class CalculateDist {
       );
 
       // Calculate Expenses Transfers:
-      const expensesTransfers = this.calcExpensesTransfers(expenseArr, savingsAccArr, currentAcc);
+      const expensesTransfers = CalculateDist.calcExpensesTransfers(
+         expenseArr,
+         savingsAccArr,
+         currentAcc,
+      );
 
       // Create Savings Account History Array:
       const savingsAccountTransfers = [
          ...currentAccTransfers.savingsAccountTransfers,
          ...expensesTransfers.savingsAccountTransfers,
       ];
-      const savingsAccHistory = this.updateSavingsAccHistory(
+      const savingsAccHistory = CalculateDist.updateSavingsAccHistory(
          savingsAccountTransfers,
          savingsAccArr,
       );
