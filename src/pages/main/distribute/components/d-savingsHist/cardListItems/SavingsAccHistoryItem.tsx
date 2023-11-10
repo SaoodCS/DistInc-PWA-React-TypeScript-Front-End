@@ -21,7 +21,7 @@ interface ISavingsAccHistoryItems {
    savingsAccHistory: NDist.ISavingsAccHist[];
    handleItemClick: (
       item: NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist,
-      itemType: NDist.Carousel.ISlideName,
+      itemType: NDist.Carousel.ISlide2NameOptions,
    ) => void;
 }
 
