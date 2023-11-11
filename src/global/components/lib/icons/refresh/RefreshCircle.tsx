@@ -1,7 +1,8 @@
+import { RefreshCircle } from '@styled-icons/ionicons-outline/RefreshCircle';
 import styled from 'styled-components';
+import MyCSS from '../../../../css/MyCSS';
 import Color from '../../../../css/colors';
 import BoolHelper from '../../../../helpers/dataTypes/bool/BoolHelper';
-import { RefreshCircle } from '@styled-icons/ionicons-outline/RefreshCircle';
 
 export const RefreshCircleIcon = styled(RefreshCircle)<{ darktheme: 'true' | 'false' }>`
    color: ${({ darktheme }): string =>
@@ -10,10 +11,12 @@ export const RefreshCircleIcon = styled(RefreshCircle)<{ darktheme: 'true' | 'fa
          0.5,
       )};
 
-   &:hover {
-      color: ${({ darktheme }): string =>
-         BoolHelper.convert(darktheme) ? Color.darkThm.warning : Color.lightThm.warning};
-      transition: color 0.3s ease-in-out;
-      cursor: pointer;
-   }
+   ${({ darktheme }) =>
+      MyCSS.Clickables.addResponsiveHover(
+         BoolHelper.convert(darktheme),
+         Color.lightThm.warning,
+         Color.darkThm.warning,
+         1,
+         'color',
+      )};
 `;

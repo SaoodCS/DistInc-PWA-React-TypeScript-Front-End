@@ -1,5 +1,6 @@
 import { CloseCircleOutline } from '@styled-icons/evaicons-outline/CloseCircleOutline';
 import styled from 'styled-components';
+import MyCSS from '../../../../css/MyCSS';
 import Color from '../../../../css/colors';
 import BoolHelper from '../../../../helpers/dataTypes/bool/BoolHelper';
 
@@ -10,10 +11,12 @@ export const CloseCircleIcon = styled(CloseCircleOutline)<{ darktheme: 'true' | 
          0.5,
       )};
 
-   &:hover {
-      color: ${({ darktheme }): string =>
-         BoolHelper.convert(darktheme) ? Color.darkThm.error : Color.lightThm.error};
-      transition: color 0.3s ease-in-out;
-      cursor: pointer;
-   }
+   ${({ darktheme }) =>
+      MyCSS.Clickables.addResponsiveHover(
+         BoolHelper.convert(darktheme),
+         Color.lightThm.error,
+         Color.darkThm.error,
+         1,
+         'color',
+      )};
 `;

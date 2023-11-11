@@ -88,30 +88,32 @@ export default function DistMsgsDetails(): JSX.Element {
 
    return (
       <CarouselAndNavBarWrapper style={{ width: '100%' }}>
-         <FlexRowWrapper justifyContent="space-evenly" style={{ padding: '0.5em' }}>
+         <FlexRowWrapper justifyContent="space-evenly" padding="1em 0em 0em 0em">
             <TextColourizer fontSize="2em" bold>
                {distMsgsToRender().timestamp}
             </TextColourizer>
-            <ArrowCircleLeftIcon
-               height={'2.5em'}
-               darktheme={BoolHelper.toString(isDarkTheme)}
-               onClick={() => changeCompletedStep(completedStepNo - 1)}
-            />
-            <ArrowCircleRightIcon
-               height={'2.5em'}
-               darktheme={BoolHelper.toString(isDarkTheme)}
-               onClick={() => changeCompletedStep(completedStepNo + 1)}
-            />
-            <RefreshCircleIcon
-               height={'2.5em'}
-               darktheme={BoolHelper.toString(isDarkTheme)}
-               onClick={() => changeCompletedStep(0)}
-            />
-            <CloseCircleIcon
-               height={'2.5em'}
-               darktheme={BoolHelper.toString(isDarkTheme)}
-               onClick={() => handleDelete()}
-            />
+            <FlexRowWrapper justifyContent="center" padding="1em 0em 1em 1em">
+               <ArrowCircleLeftIcon
+                  height={'2em'}
+                  darktheme={BoolHelper.toString(isDarkTheme)}
+                  onClick={() => changeCompletedStep(completedStepNo - 1)}
+               />
+               <ArrowCircleRightIcon
+                  height={'2em'}
+                  darktheme={BoolHelper.toString(isDarkTheme)}
+                  onClick={() => changeCompletedStep(completedStepNo + 1)}
+               />
+               <RefreshCircleIcon
+                  height={'2em'}
+                  darktheme={BoolHelper.toString(isDarkTheme)}
+                  onClick={() => changeCompletedStep(0)}
+               />
+               <CloseCircleIcon
+                  height={'2em'}
+                  darktheme={BoolHelper.toString(isDarkTheme)}
+                  onClick={() => handleDelete()}
+               />
+            </FlexRowWrapper>
          </FlexRowWrapper>
 
          <StyledStepper activeIndex={completedStepNo}>

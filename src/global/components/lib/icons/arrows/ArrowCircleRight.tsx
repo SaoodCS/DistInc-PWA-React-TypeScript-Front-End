@@ -1,5 +1,6 @@
 import { ArrowCircleRightOutline } from '@styled-icons/evaicons-outline/ArrowCircleRightOutline';
 import styled from 'styled-components';
+import MyCSS from '../../../../css/MyCSS';
 import Color from '../../../../css/colors';
 import BoolHelper from '../../../../helpers/dataTypes/bool/BoolHelper';
 
@@ -12,10 +13,12 @@ export const ArrowCircleRightIcon = styled(ArrowCircleRightOutline)<{
          0.5,
       )};
 
-   &:hover {
-      color: ${({ darktheme }): string =>
-         BoolHelper.convert(darktheme) ? Color.darkThm.accent : Color.lightThm.accent};
-      transition: color 0.3s ease-in-out;
-      cursor: pointer;
-   }
+   ${({ darktheme }) =>
+      MyCSS.Clickables.addResponsiveHover(
+         BoolHelper.convert(darktheme),
+         Color.lightThm.accent,
+         Color.darkThm.accent,
+         1,
+         'color',
+      )};
 `;

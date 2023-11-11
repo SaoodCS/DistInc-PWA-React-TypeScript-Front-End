@@ -1,5 +1,6 @@
 import type { FlattenSimpleInterpolation } from 'styled-components';
 import { css } from 'styled-components';
+import Color from './colors';
 
 export namespace MyCSS {
    export class PortableBp {
@@ -16,6 +17,44 @@ export namespace MyCSS {
          text-decoration: none;
          -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
          -webkit-touch-callout: none;
+      `;
+
+      static addResponsiveHover = (
+         isDarkTheme: boolean,
+         colorLight: string,
+         colorDark: string,
+         hoverOpacity: number,
+         property: 'background-color' | 'color',
+         transitionDuration: string = '0.2s',
+      ): FlattenSimpleInterpolation => css`
+         @media (max-width: ${PortableBp.asPx}) {
+            &:active {
+               ${property === 'background-color'
+                  ? `background-color: ${Color.setRgbOpacity(
+                       isDarkTheme ? colorDark : colorLight,
+                       hoverOpacity,
+                    )};`
+                  : `color: ${Color.setRgbOpacity(
+                       isDarkTheme ? colorDark : colorLight,
+                       hoverOpacity,
+                    )};`}
+            }
+         }
+
+         @media (min-width: ${MyCSS.PortableBp.asPx}) {
+            &:hover {
+               ${property === 'background-color'
+                  ? `background-color: ${Color.setRgbOpacity(
+                       isDarkTheme ? colorDark : colorLight,
+                       hoverOpacity,
+                    )};`
+                  : `color: ${Color.setRgbOpacity(
+                       isDarkTheme ? colorDark : colorLight,
+                       hoverOpacity,
+                    )};`}
+            }
+         }
+         transition: ${property} ${transitionDuration};
       `;
    }
 
