@@ -7,3 +7,14 @@ export const Card = styled.div<{ isDarkTheme: boolean }>`
    margin: 1em;
    border-radius: 10px;
 `;
+
+export const CardWidgetWrapper = styled.div<{ bgColor: string; height?: string }>`
+   height: ${({ height }) => height || '6em'};
+   margin-bottom: 1em;
+   width: 100%;
+   border-radius: 10px;
+   background-color: ${({ bgColor }) => bgColor};
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+`;
