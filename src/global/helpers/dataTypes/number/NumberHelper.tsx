@@ -16,4 +16,8 @@ export default class NumberHelper {
       const firstWithCommas = first.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       return `£${firstWithCommas}.${second}`;
    }
+
+   static roundTo(value: number, decimalPlaces: number): number {
+      return Number(value.toFixed(decimalPlaces));
+   }
 }

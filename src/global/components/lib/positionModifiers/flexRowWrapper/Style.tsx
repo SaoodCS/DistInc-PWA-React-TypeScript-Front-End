@@ -4,6 +4,7 @@ export const FlexRowWrapper = styled.div<{
    justifyContent?: string;
    padding?: string;
    width?: string;
+   height?: string;
 }>`
    display: flex;
    flex-direction: row;
@@ -12,4 +13,5 @@ export const FlexRowWrapper = styled.div<{
       justifyContent ? justifyContent : 'flex-start'};
    padding: ${({ padding }): string => (padding ? padding : '0')};
    width: ${({ width }): string => (width ? width : 'auto')};
+   height: ${({ height }): string => (height ? height : 'auto')};
 `;

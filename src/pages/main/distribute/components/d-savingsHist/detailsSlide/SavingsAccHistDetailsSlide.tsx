@@ -2,6 +2,8 @@ import { BuildingBank } from '@styled-icons/fluentui-system-regular/BuildingBank
 import { TargetArrow } from '@styled-icons/fluentui-system-regular/TargetArrow';
 import { useQueryClient } from '@tanstack/react-query';
 import { useContext, useEffect } from 'react';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 import { CardWidgetWrapper } from '../../../../../../global/components/lib/card/Card';
 import { CarouselAndNavBarWrapper } from '../../../../../../global/components/lib/carousel/NavBar';
 import { TextColourizer } from '../../../../../../global/components/lib/font/textColorizer/TextColourizer';
@@ -67,6 +69,14 @@ export default function SavingsAccHistDetailsSlide(): JSX.Element {
       });
    }
 
+   function calculatePercentage(): number {
+      const savingsAccHistBalance = savingsAccHistToRender().balance;
+      const savingsAccTarget = savingsAccTargetToReach();
+      if (savingsAccTarget === 0) return 0;
+      const percentage = (savingsAccHistBalance / savingsAccTarget) * 100;
+      return NumberHelper.roundTo(percentage, 2);
+   }
+
    return (
       <CarouselAndNavBarWrapper style={{ width: '100%' }}>
          <FlexRowWrapper padding="2em">
@@ -115,6 +125,23 @@ export default function SavingsAccHistDetailsSlide(): JSX.Element {
                      <TargetArrow height={'90%'} color={Color.lightThm.border} />
                   </FlexColumnWrapper>
                </CardWidgetWrapper>
+
+               <FlexColumnWrapper>
+                  <TextColourizer fontSize="1.5em" bold padding="0.5em 0em 0em 0em">
+                     Progress
+                  </TextColourizer>
+                  <FlexRowWrapper justifyContent="center" padding={'1em 5em 5em 5em'}>
+                     <CircularProgressbar
+                        value={calculatePercentage()}
+                        text={`${calculatePercentage()}%`}
+                        styles={buildStyles({
+                           textColor: Color.lightThm.accent,
+                           pathColor: Color.lightThm.accent,
+                           trailColor: Color.darkThm.inactive,
+                        })}
+                     />
+                  </FlexRowWrapper>
+               </FlexColumnWrapper>
             </ConditionalRender>
          </FlexColumnWrapper>
       </CarouselAndNavBarWrapper>
