@@ -1,6 +1,3 @@
-import { CashStack as Dollar } from '@styled-icons/bootstrap/CashStack';
-import { Receipt } from '@styled-icons/bootstrap/Receipt';
-import { DocumentTextClock } from '@styled-icons/fluentui-system-filled/DocumentTextClock';
 import { useQueryClient } from '@tanstack/react-query';
 import { Fragment, useContext, useEffect } from 'react';
 import { CardWidgetWrapper } from '../../../../../../global/components/lib/card/Card';
@@ -10,10 +7,9 @@ import { TrashIcon } from '../../../../../../global/components/lib/icons/delete/
 import { FlexColumnWrapper } from '../../../../../../global/components/lib/positionModifiers/flexColumnWrapper/FlexColumnWrapper';
 import { FlexRowWrapper } from '../../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
-import Color from '../../../../../../global/css/colors';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
+import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
-import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import useSessionStorage from '../../../../../../global/hooks/useSessionStorage';
 import { DistributeContext } from '../../../context/DistributeContext';
@@ -56,6 +52,19 @@ export default function AnalyticsDetailsSlide(): JSX.Element {
       });
    }
 
+   function analyticsMapArray(): NDist.Carousel.IAnalyticsDetails[] {
+      const analyticsObj = ArrayOfObjects.getObjWithKeyValuePair(
+         NDist.Carousel.slides,
+         'name',
+         'analytics',
+      );
+      const mapArray = analyticsObj?.mapArr as (
+         analyticsItem: NDist.IAnalytics,
+      ) => NDist.Carousel.IAnalyticsDetails[];
+
+      return mapArray(analyticsToRender());
+   }
+
    return (
       <CarouselAndNavBarWrapper style={{ width: '100%' }}>
          <FlexRowWrapper padding="2em">
@@ -70,8 +79,8 @@ export default function AnalyticsDetailsSlide(): JSX.Element {
          </FlexRowWrapper>
 
          <FlexColumnWrapper padding="0em 2em 1em 2em">
-            {analyticsDetailsMapper(analyticsToRender()).map((item) => (
-               <CardWidgetWrapper bgColor={item.color} height={item.cardHeight}>
+            {analyticsMapArray().map((item) => (
+               <CardWidgetWrapper bgColor={item.color} height={item.cardHeight} key={item.key}>
                   <FlexColumnWrapper height={'100%'} justifyContent="center" padding="0em 1em">
                      <TextColourizer fontSize="1.25em" bold padding={'0.25em 0em'}>
                         {item.title}
@@ -83,8 +92,8 @@ export default function AnalyticsDetailsSlide(): JSX.Element {
                      )}
                      {item.key === 'prevMonth' && (
                         <Fragment>
-                           {(item.data as IPrevMonthData[]).map((data) => (
-                              <TextColourizer fontSize="0.85em" padding="0.1em 0em">
+                           {(item.data as NDist.Carousel.IPrevMonthData[]).map((data) => (
+                              <TextColourizer fontSize="0.85em" padding="0.1em 0em" key={item.key}>
                                  <TextColourizer bold>{data.title}</TextColourizer>
                                  {NumberHelper.asCurrencyStr(data.data)}
                               </TextColourizer>
@@ -105,54 +114,3 @@ export default function AnalyticsDetailsSlide(): JSX.Element {
       </CarouselAndNavBarWrapper>
    );
 }
-
-// ------------------------------ UTILITIES ------------------------------ //
-
-const analyticsDetailsMapper = (analyticsItem: NDist.IAnalytics) => [
-   {
-      key: 'totalIncomes',
-      title: 'Total Income',
-      icon: <Dollar height="90%" color={Color.lightThm.border} />,
-      color: Color.lightThm.accent,
-      data: analyticsItem.totalIncomes,
-      cardHeight: '6em',
-   },
-   {
-      key: 'totalExpenses',
-      title: 'Total Expense',
-      icon: <Receipt height="90%" color={Color.lightThm.border} />,
-      color: Color.lightThm.warning,
-      data: analyticsItem.totalExpenses,
-      cardHeight: '6em',
-   },
-   {
-      key: 'prevMonth',
-      title: `Prev Month: ${DateHelper.getPrevMonthName(analyticsItem.timestamp)}`,
-      icon: <DocumentTextClock height="70%" color={Color.lightThm.border} />,
-      color: Color.lightThm.error,
-      cardHeight: '9em',
-      data: [
-         {
-            key: 'totalSpendings',
-            data: analyticsItem.prevMonth.totalSpendings,
-            title: 'Total Spent: ',
-         },
-         {
-            key: 'totalDisposableSpending',
-            data: analyticsItem.prevMonth.totalDisposableSpending,
-            title: 'Disposable Spent: ',
-         },
-         {
-            key: 'totalSavings',
-            data: analyticsItem.prevMonth.totalSavings,
-            title: 'Total Saved: ',
-         },
-      ],
-   },
-];
-
-type IPrevMonthData = {
-   key: string;
-   data: number;
-   title: string;
-};

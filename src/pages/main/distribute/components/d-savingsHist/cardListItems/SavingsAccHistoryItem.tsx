@@ -12,7 +12,6 @@ import useThemeContext from '../../../../../../global/context/theme/hooks/useThe
 import { PopupMenuContext } from '../../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
-import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
 import { DistributeContext } from '../../../context/DistributeContext';
 import type NDist from '../../../namespace/NDist';

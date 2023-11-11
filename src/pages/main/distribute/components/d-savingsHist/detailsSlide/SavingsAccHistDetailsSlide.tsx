@@ -16,11 +16,8 @@ import Color from '../../../../../../global/css/colors';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
-import useLocalStorage from '../../../../../../global/hooks/useLocalStorage';
 import useSessionStorage from '../../../../../../global/hooks/useSessionStorage';
-import SavingsClass, {
-   ISavingsFormInputs,
-} from '../../../../details/components/accounts/savings/class/Class';
+import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
 import { DistributeContext } from '../../../context/DistributeContext';
 import NDist from '../../../namespace/NDist';
 

@@ -1,3 +1,7 @@
+import { CashStack as Dollar } from '@styled-icons/bootstrap/CashStack';
+import { Receipt } from '@styled-icons/bootstrap/Receipt';
+import { DocumentTextClock } from '@styled-icons/fluentui-system-filled/DocumentTextClock';
+import Color from '../../../../global/css/colors';
 import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import DateHelper from '../../../../global/helpers/dataTypes/date/DateHelper';
 import ObjectOfObjects from '../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
@@ -122,18 +126,25 @@ export namespace NDist {
    export namespace Carousel {
       export type ISlide1Name = 'history';
       export type ISlide2NameOptions = keyof ISchema;
-
-      const storageKeyPrefix = 'distributerCarousel';
-      export const key = {
-         currentSlideNo: `${storageKeyPrefix}.currentSlideNo`,
-         historySlideScrollSaver: `${storageKeyPrefix}.historySlide`,
-         currentSlideName: `${storageKeyPrefix}.slide2Name`,
+      export type IPrevMonthData = {
+         key: string;
+         data: number;
+         title: string;
+      };
+      export type IAnalyticsDetails = {
+         key: string;
+         title: string;
+         icon: JSX.Element;
+         color: string;
+         cardHeight: string;
+         data: number | IPrevMonthData[];
       };
 
-      interface ISlides {
+      export interface ISlides {
          name: ISlide1Name | ISlide2NameOptions;
          title: string;
          slideNo: number;
+         mapArr?: IAnalyticsDetails[] | ((analyticsItem: NDist.IAnalytics) => IAnalyticsDetails[]);
       }
 
       export const slides: ISlides[] = [
@@ -146,6 +157,48 @@ export namespace NDist {
             name: 'analytics',
             title: 'Analytics History',
             slideNo: 2,
+            mapArr: (analyticsItem: NDist.IAnalytics): IAnalyticsDetails[] => [
+               {
+                  key: 'totalIncomes',
+                  title: 'Total Income',
+                  icon: <Dollar height="90%" color={Color.lightThm.border} />,
+                  color: Color.lightThm.accent,
+                  data: analyticsItem.totalIncomes,
+                  cardHeight: '6em',
+               },
+               {
+                  key: 'totalExpenses',
+                  title: 'Total Expense',
+                  icon: <Receipt height="90%" color={Color.lightThm.border} />,
+                  color: Color.lightThm.warning,
+                  data: analyticsItem.totalExpenses,
+                  cardHeight: '6em',
+               },
+               {
+                  key: 'prevMonth',
+                  title: `Prev Month: ${DateHelper.getPrevMonthName(analyticsItem.timestamp)}`,
+                  icon: <DocumentTextClock height="70%" color={Color.lightThm.border} />,
+                  color: Color.lightThm.error,
+                  cardHeight: '9em',
+                  data: [
+                     {
+                        key: 'totalSpendings',
+                        data: analyticsItem.prevMonth.totalSpendings,
+                        title: 'Total Spent: ',
+                     },
+                     {
+                        key: 'totalDisposableSpending',
+                        data: analyticsItem.prevMonth.totalDisposableSpending,
+                        title: 'Disposable Spent: ',
+                     },
+                     {
+                        key: 'totalSavings',
+                        data: analyticsItem.prevMonth.totalSavings,
+                        title: 'Total Saved: ',
+                     },
+                  ],
+               },
+            ],
          },
          {
             name: 'distributer',
@@ -158,6 +211,12 @@ export namespace NDist {
             slideNo: 2,
          },
       ];
+      const storageKeyPrefix = 'distributerCarousel';
+      export const key = {
+         currentSlideNo: `${storageKeyPrefix}.currentSlideNo`,
+         historySlideScrollSaver: `${storageKeyPrefix}.historySlide`,
+         currentSlideName: `${storageKeyPrefix}.slide2Name`,
+      };
    }
 
    export class Filterer {
