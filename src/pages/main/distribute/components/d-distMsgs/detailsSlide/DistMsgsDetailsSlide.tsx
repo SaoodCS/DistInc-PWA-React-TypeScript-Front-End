@@ -21,7 +21,7 @@ import useSessionStorage from '../../../../../../global/hooks/useSessionStorage'
 import { DistributeContext } from '../../../context/DistributeContext';
 import NDist from '../../../namespace/NDist';
 
-export default function DistMsgsDetails(): JSX.Element {
+export default function DistMsgsDetailsSlide(): JSX.Element {
    const { slide2Data, currentSlide, scrollToSlide } = useContext(DistributeContext);
    const { isDarkTheme } = useThemeContext();
    const distMsgsItem = slide2Data as NDist.IDistMsgs;

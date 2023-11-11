@@ -19,7 +19,7 @@ import useSessionStorage from '../../../../../../global/hooks/useSessionStorage'
 import { DistributeContext } from '../../../context/DistributeContext';
 import NDist from '../../../namespace/NDist';
 
-export default function AnalyticsDetails(): JSX.Element {
+export default function AnalyticsDetailsSlide(): JSX.Element {
    const { slide2Data } = useContext(DistributeContext);
    const analyticsItem = slide2Data as NDist.IAnalytics;
    const [prevAnalyticsItem, setPrevAnalyticsItem] = useSessionStorage(

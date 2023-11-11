@@ -16,9 +16,9 @@ import IncomeClass from '../details/components/Income/class/Class';
 import CurrentClass from '../details/components/accounts/current/class/Class';
 import ExpensesClass from '../details/components/expense/class/ExpensesClass';
 import HelpRequirements from './components/calcPreReqList/HelpRequirements';
-import AnalyticsDetails from './components/d-analytics/detailsSlide/AnalyticsDetails';
-import DistMsgsDetails from './components/d-distMsgs/detailsSlide/DistMsgsDetails';
-import SavingsAccHistDetails from './components/d-savingsHist/detailsSlide/SavingsAccHistDetails';
+import AnalyticsDetailsSlide from './components/d-analytics/detailsSlide/AnalyticsDetailsSlide';
+import DistMsgsDetailsSlide from './components/d-distMsgs/detailsSlide/DistMsgsDetailsSlide';
+import SavingsAccHistDetailsSlide from './components/d-savingsHist/detailsSlide/SavingsAccHistDetailsSlide';
 import DistributeForm from './components/form/DistributerForm';
 import HistorySlide from './components/historySlide/HistorySlide';
 import { DistributeContext } from './context/DistributeContext';
@@ -121,13 +121,13 @@ export default function Distribute(): JSX.Element {
          </CarouselSlide>
          <CarouselSlide height={'100%'}>
             <ConditionalRender condition={'analytics' === slideName}>
-               <AnalyticsDetails />
+               <AnalyticsDetailsSlide />
             </ConditionalRender>
             <ConditionalRender condition={'distributer' === slideName}>
-               <DistMsgsDetails />
+               <DistMsgsDetailsSlide />
             </ConditionalRender>
             <ConditionalRender condition={'savingsAccHistory' === slideName}>
-               <SavingsAccHistDetails />
+               <SavingsAccHistDetailsSlide />
             </ConditionalRender>
          </CarouselSlide>
       </CarouselContainer>
