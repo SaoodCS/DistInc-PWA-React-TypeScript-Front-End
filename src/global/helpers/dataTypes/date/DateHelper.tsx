@@ -35,4 +35,12 @@ export default class DateHelper {
       const monthWord = dateConv.toLocaleString('default', { month: 'short' });
       return monthWord;
    }
+
+   static getPrevMonthName(ddmmyyyy: string): string {
+      const [day, month, year] = ddmmyyyy.split('/');
+      const monthNumber = parseInt(month, 10);
+      const dateConv = new Date(Number(year), monthNumber - 2, Number(day));
+      const monthWord = dateConv.toLocaleString('default', { month: 'short' });
+      return monthWord;
+   }
 }

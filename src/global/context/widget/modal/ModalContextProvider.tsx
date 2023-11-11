@@ -30,8 +30,17 @@ export default function ModalContextProvider(props: IModalContextProvider): JSX.
          modalContent,
          modalZIndex,
          handleCloseModal,
+         isModalOpen,
       }),
-      [setIsModalOpen, setModalContent, setModalHeader, modalContent, setModalZIndex, modalZIndex],
+      [
+         setIsModalOpen,
+         setModalContent,
+         setModalHeader,
+         modalContent,
+         setModalZIndex,
+         modalZIndex,
+         isModalOpen,
+      ],
    );
 
    return (

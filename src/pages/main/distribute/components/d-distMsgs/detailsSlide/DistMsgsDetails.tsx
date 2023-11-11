@@ -35,6 +35,7 @@ export default function DistMsgsDetails(): JSX.Element {
       onSuccess: () => {
          // eslint-disable-next-line @typescript-eslint/no-floating-promises
          queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
+         scrollToSlide(1);
       },
    });
 
@@ -83,7 +84,6 @@ export default function DistMsgsDetails(): JSX.Element {
          type: 'distributerItem',
          data: distMsgsToRender(),
       });
-      scrollToSlide(1);
    }
 
    return (

@@ -31,7 +31,7 @@ export default function Distribute(): JSX.Element {
    const { isPortableDevice } = useThemeContext();
    const { setHeaderRightElement, setHandleBackBtnClick, hideAndResetBackBtn, setHeaderTitle } =
       useHeaderContext();
-   const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader } =
+   const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader, isModalOpen } =
       useContext(ModalContext);
    const {
       carouselContainerRef,
@@ -54,10 +54,12 @@ export default function Distribute(): JSX.Element {
       error,
    } = NDist.API.useQuery.getCalcDist({
       onSuccess: () => {
-         setIsModalOpen(false);
-         const firstDistObj = calcDistData?.distributer[0];
-         if (firstDistObj) handleItemClick(firstDistObj, 'distributer');
-         scrollToSlide(2);
+         if (isModalOpen) {
+            setIsModalOpen(false);
+            const firstDistObj = calcDistData?.distributer[0];
+            if (firstDistObj) handleItemClick(firstDistObj, 'distributer');
+            scrollToSlide(2);
+         }
       },
    });
 
