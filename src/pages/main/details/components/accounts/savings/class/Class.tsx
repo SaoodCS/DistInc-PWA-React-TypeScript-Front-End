@@ -7,6 +7,7 @@ import type {
 import { useQuery } from '@tanstack/react-query';
 import APIHelper from '../../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../../global/firebase/apis/microservices/microservices';
+import ObjectOfObjects from '../../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import type {
    InputArray,
    OptionalNumberInput,
@@ -172,4 +173,20 @@ export default class SavingsClass {
    static isType = {
       savingsItem: SavingsClass.isItemSavings,
    };
+
+   static getNameFromId(
+      savingsAccountId: number,
+      savingsAccounts: ISavingsAccountFirebase,
+   ): string {
+      return (
+         ObjectOfObjects.findObjFromUniqueVal(savingsAccounts, savingsAccountId)?.accountName || ''
+      );
+   }
+
+   static getObjFromId(
+      savingsAccountId: number,
+      savingsAccounts: ISavingsAccountFirebase,
+   ): ISavingsFormInputs | undefined {
+      return ObjectOfObjects.findObjFromUniqueVal(savingsAccounts, savingsAccountId) || undefined;
+   }
 }

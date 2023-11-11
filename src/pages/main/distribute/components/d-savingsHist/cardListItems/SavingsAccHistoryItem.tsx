@@ -26,7 +26,7 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
    const { savingsAccHistory } = props;
    const { handleItemClick } = useContext(DistributeContext);
    const { isDarkTheme } = useThemeContext();
-   const { data } = SavingsClass.useQuery.getSavingsAccounts();
+   const { data: savingsAccounts } = SavingsClass.useQuery.getSavingsAccounts();
    const {
       setPMContent,
       setPMHeightPx,
@@ -35,12 +35,6 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
       setClickEvent,
       setCloseOnInnerClick,
    } = useContext(PopupMenuContext);
-
-   function getSavingsAccName(savingsAccId: number): string {
-      if (!data) return '';
-      const savingsAccObj = ObjectOfObjects.findObjFromUniqueVal(data, savingsAccId);
-      return savingsAccObj?.accountName || '';
-   }
 
    function handleMenuDotsClick(
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
@@ -70,7 +64,9 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
                <ItemTitleAndIconWrapper style={{ position: 'relative' }}>
                   <Savings height={'2em'} style={{ paddingRight: '0.5em' }} />
                   <ItemTitleAndSubTitleWrapper>
-                     <TextColourizer>{getSavingsAccName(savingsHistObj.id)}</TextColourizer>
+                     <TextColourizer>
+                        {SavingsClass.getNameFromId(savingsHistObj.id, savingsAccounts || {})}
+                     </TextColourizer>
                      <TextColourizer fontSize="0.8em">
                         {`Balance Was: ${NumberHelper.asCurrencyStr(savingsHistObj.balance)}`}
                      </TextColourizer>
