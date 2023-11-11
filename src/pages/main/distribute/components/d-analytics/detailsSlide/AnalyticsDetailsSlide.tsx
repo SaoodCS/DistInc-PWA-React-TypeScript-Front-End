@@ -73,18 +73,18 @@ export default function AnalyticsDetailsSlide(): JSX.Element {
             {analyticsDetailsMapper(analyticsToRender()).map((item) => (
                <CardWidgetWrapper bgColor={item.color} height={item.cardHeight}>
                   <FlexColumnWrapper height={'100%'} justifyContent="center" padding="0em 1em">
-                     <TextColourizer fontSize="1.5em" bold padding={'0.25em 0em'}>
+                     <TextColourizer fontSize="1.25em" bold padding={'0.25em 0em'}>
                         {item.title}
                      </TextColourizer>
                      {item.key !== 'prevMonth' && (
-                        <TextColourizer fontSize="1em">
+                        <TextColourizer fontSize="0.9em">
                            {NumberHelper.asCurrencyStr(item.data as number)}
                         </TextColourizer>
                      )}
                      {item.key === 'prevMonth' && (
                         <Fragment>
                            {(item.data as IPrevMonthData[]).map((data) => (
-                              <TextColourizer fontSize="0.9em" padding="0.1em 0em">
+                              <TextColourizer fontSize="0.85em" padding="0.1em 0em">
                                  <TextColourizer bold>{data.title}</TextColourizer>
                                  {NumberHelper.asCurrencyStr(data.data)}
                               </TextColourizer>
@@ -127,10 +127,10 @@ const analyticsDetailsMapper = (analyticsItem: NDist.IAnalytics) => [
    },
    {
       key: 'prevMonth',
-      title: `Prev Month - ${DateHelper.getPrevMonthName(analyticsItem.timestamp)}`,
-      icon: <DocumentTextClock height="80%" color={Color.lightThm.border} />,
+      title: `Prev Month: ${DateHelper.getPrevMonthName(analyticsItem.timestamp)}`,
+      icon: <DocumentTextClock height="70%" color={Color.lightThm.border} />,
       color: Color.lightThm.error,
-      cardHeight: '8em',
+      cardHeight: '9em',
       data: [
          {
             key: 'totalSpendings',
