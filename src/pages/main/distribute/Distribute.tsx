@@ -33,8 +33,14 @@ export default function Distribute(): JSX.Element {
       useHeaderContext();
    const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader } =
       useContext(ModalContext);
-   const { carouselContainerRef, scrollToSlide, currentSlide, slideName, setSlideName } =
-      useContext(DistributeContext);
+   const {
+      carouselContainerRef,
+      scrollToSlide,
+      currentSlide,
+      slideName,
+      setSlideName,
+      handleItemClick,
+   } = useContext(DistributeContext);
    const [prevScrollPos, setPrevScrollPos] = useState<number>(0);
 
    // -- REACT-QUERY DATA -- //
@@ -49,6 +55,9 @@ export default function Distribute(): JSX.Element {
    } = NDist.API.useQuery.getCalcDist({
       onSuccess: () => {
          setIsModalOpen(false);
+         const firstDistObj = calcDistData?.distributer[0];
+         if (firstDistObj) handleItemClick(firstDistObj, 'distributer');
+         scrollToSlide(2);
       },
    });
 
