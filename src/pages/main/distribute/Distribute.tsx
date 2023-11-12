@@ -102,7 +102,6 @@ export default function Distribute(): JSX.Element {
          }
          setBottomPanelHeading(isAllReqValid ? 'Distribute' : 'Requirements');
          setBottomPanelContent(isAllReqValid ? <DistributeForm /> : <HelpRequirements />);
-         //setBottomPanelHeightDvh(isAllReqValid ? 50 : 100);
          setBottomPanelZIndex(100);
          setIsBottomPanelOpen(true);
       }
