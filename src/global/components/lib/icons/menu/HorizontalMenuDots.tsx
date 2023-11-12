@@ -13,7 +13,6 @@ export const HorizontalMenuDots = styled(DotsHorizontalRounded)<{ darktheme: str
    color: ${({ darktheme }) =>
       darktheme === 'true' ? Color.darkThm.accent : Color.lightThm.accent};
    border-radius: 50%;
-   //box-sizing: border-box;
    border: 1px solid
       ${({ darktheme }) => (darktheme === 'true' ? Color.darkThm.accent : Color.lightThm.accent)};
    cursor: pointer;
