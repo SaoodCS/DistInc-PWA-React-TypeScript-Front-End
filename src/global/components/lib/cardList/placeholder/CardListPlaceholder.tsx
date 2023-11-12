@@ -18,7 +18,7 @@ export function CardListItemPlaceholder(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
 
    return (
-      <CardListItem>
+      <CardListItem isDarkTheme={isDarkTheme}>
          <ItemTitleAndIconWrapper>
             <PlaceholderLine isDarkTheme={isDarkTheme} height="2em" width="2em" />
             <ItemTitleAndSubTitleWrapper>

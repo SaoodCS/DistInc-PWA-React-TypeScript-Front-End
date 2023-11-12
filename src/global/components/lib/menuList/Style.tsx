@@ -13,7 +13,7 @@ class MenuWrapperStyles {
    static smallScrn = (isDarkTheme: boolean): FlattenSimpleInterpolation => css`
       margin: 1em;
       background-color: ${isDarkTheme
-         ? Color.setRgbOpacity(Color.darkThm.txt, 0.1)
+         ? Color.setRgbOpacity(Color.darkThm.txt, 0.07)
          : `rgba(0, 0, 0, 0.1)`};
       border-radius: 1em;
       width: 100%;

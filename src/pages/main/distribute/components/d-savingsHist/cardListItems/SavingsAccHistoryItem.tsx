@@ -59,6 +59,7 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
             <CardListItem
                key={`${savingsHistObj.timestamp}.${savingsHistObj.id}`}
                onClick={() => handleItemClick(savingsHistObj, 'savingsAccHistory')}
+               isDarkTheme={isDarkTheme}
             >
                <ItemTitleAndIconWrapper style={{ position: 'relative' }}>
                   <Savings height={'2em'} style={{ paddingRight: '0.5em' }} />

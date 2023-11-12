@@ -53,6 +53,7 @@ export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
             <CardListItem
                key={analyticsObj.timestamp}
                onClick={() => handleItemClick(analyticsObj, 'analytics')}
+               isDarkTheme={isDarkTheme}
             >
                <ItemTitleAndIconWrapper>
                   <Calculator height={'2em'} style={{ paddingRight: '0.5em' }} />

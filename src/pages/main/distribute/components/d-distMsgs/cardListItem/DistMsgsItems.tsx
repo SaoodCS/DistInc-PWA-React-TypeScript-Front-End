@@ -53,6 +53,7 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
             <CardListItem
                key={distMsgsObj.timestamp}
                onClick={() => handleItemClick(distMsgsObj, 'distributer')}
+               isDarkTheme = {isDarkTheme}
             >
                <ItemTitleAndIconWrapper>
                   <DocumentFlowchart height={'2em'} style={{ paddingRight: '0.5em' }} />
