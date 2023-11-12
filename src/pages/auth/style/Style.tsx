@@ -24,6 +24,7 @@ export const ScrollNavigatorBtn = styled.div<{
    isActive: boolean;
    navTo: number;
 }>`
+   all: unset;
    ${MyCSS.Clickables.removeDefaultEffects};
    height: 100%;
    display: flex;

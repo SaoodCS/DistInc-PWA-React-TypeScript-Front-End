@@ -4,6 +4,7 @@ import MyCSS from '../../../../css/MyCSS';
 import Color from '../../../../css/colors';
 
 export const StyledLink = styled(Link)`
+   all: unset;
    ${MyCSS.Clickables.removeDefaultEffects};
 `;
 

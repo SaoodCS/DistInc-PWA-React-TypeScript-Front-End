@@ -8,9 +8,8 @@ export namespace MyCSS {
       static asPx = `${PortableBp.asNum}px`;
    }
 
-   export class Clickables {
-      static removeDefaultEffects = css`
-         all: unset;
+   export namespace Clickables {
+      export const removeDefaultEffects = css`
          background: none;
          border: none;
          user-select: none;
@@ -18,44 +17,89 @@ export namespace MyCSS {
          -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
          -webkit-touch-callout: none;
       `;
+      export const portable = {
+         changeColorOnClick: (
+            changeToColor: string,
+            propertyToChange: 'background-color' | 'color' | 'border',
+            postClick: 'revert' | 'persist',
+         ) => {
+            return css`
+               @media (max-width: ${MyCSS.PortableBp.asPx}) {
+                  transition: ${propertyToChange} 0.2s;
+                  ${postClick === 'persist'
+                     ? `&:hover {
+                        ${
+                           propertyToChange === 'background-color'
+                              ? `background-color: ${changeToColor};`
+                              : propertyToChange === 'color'
+                              ? `color: ${changeToColor};`
+                              : `border: 1px solid ${changeToColor};`
+                        }
+                     }`
+                     : `&:active {
+                        ${
+                           propertyToChange === 'background-color'
+                              ? `background-color: ${changeToColor};`
+                              : propertyToChange === 'color'
+                              ? `color: ${changeToColor};`
+                              : `border: 1px solid ${changeToColor};`
+                        }
+                     }`}
+               }
+            `;
+         },
+      };
 
-      static addResponsiveHover = (
-         isDarkTheme: boolean,
-         colorLight: string,
-         colorDark: string,
-         hoverOpacity: number,
-         property: 'background-color' | 'color',
-         transitionDuration: string = '0.2s',
-      ): FlattenSimpleInterpolation => css`
-         @media (max-width: ${PortableBp.asPx}) {
-            &:active {
-               ${property === 'background-color'
-                  ? `background-color: ${Color.setRgbOpacity(
-                       isDarkTheme ? colorDark : colorLight,
-                       hoverOpacity,
-                    )};`
-                  : `color: ${Color.setRgbOpacity(
-                       isDarkTheme ? colorDark : colorLight,
-                       hoverOpacity,
-                    )};`}
-            }
-         }
-
-         @media (min-width: ${MyCSS.PortableBp.asPx}) {
-            &:hover {
-               ${property === 'background-color'
-                  ? `background-color: ${Color.setRgbOpacity(
-                       isDarkTheme ? colorDark : colorLight,
-                       hoverOpacity,
-                    )};`
-                  : `color: ${Color.setRgbOpacity(
-                       isDarkTheme ? colorDark : colorLight,
-                       hoverOpacity,
-                    )};`}
-            }
-         }
-         transition: ${property} ${transitionDuration};
-      `;
+      export const desktop = {
+         changeColorOnClick: (
+            changeToColor: string,
+            propertyToChange: 'background-color' | 'color' | 'border',
+            postClick: 'revert' | 'persist',
+         ) => {
+            return css`
+               @media (min-width: ${MyCSS.PortableBp.asPx}) {
+                  transition: ${propertyToChange} 0.2s;
+                  ${postClick === 'revert'
+                     ? `&:active {
+                        ${
+                           propertyToChange === 'background-color'
+                              ? `background-color: ${changeToColor};`
+                              : propertyToChange === 'color'
+                              ? `color: ${changeToColor};`
+                              : `border: 1px solid ${changeToColor};`
+                        }
+                     }`
+                     : // this else part doesn't work
+                       `&:active, &:focus {
+                        ${
+                           propertyToChange === 'background-color'
+                              ? `background-color: ${changeToColor};`
+                              : propertyToChange === 'color'
+                              ? `color: ${changeToColor};`
+                              : `border: 1px solid ${changeToColor};`
+                        }
+                     }`}
+               }
+            `;
+         },
+         changeColorOnHover: (
+            changeToColor: string,
+            propertyToChange: 'background-color' | 'color' | 'border',
+         ) => {
+            return css`
+               transition: ${propertyToChange} 0.2s;
+               @media (min-width: ${MyCSS.PortableBp.asPx}) {
+                  &:hover {
+                     ${propertyToChange === 'background-color'
+                        ? `background-color: ${changeToColor};`
+                        : propertyToChange === 'color'
+                        ? `color: ${changeToColor};`
+                        : `border: 1px solid ${changeToColor};`}
+                  }
+               }
+            `;
+         },
+      };
    }
 
    export class LayoutStyle {
@@ -95,6 +139,19 @@ export namespace MyCSS {
          ::-webkit-scrollbar-thumb:hover {
             background-color: #ffffff;
          }
+      `;
+   }
+
+   export class Helper {
+      static concatStyles = (
+         ...styles: FlattenSimpleInterpolation[]
+      ): FlattenSimpleInterpolation => css`
+         ${styles.reduce(
+            (acc, cur) => css`
+               ${acc}
+               ${cur}
+            `,
+         )}
       `;
    }
 }

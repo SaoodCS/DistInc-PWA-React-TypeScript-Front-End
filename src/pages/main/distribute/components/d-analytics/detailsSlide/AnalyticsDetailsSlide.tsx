@@ -70,7 +70,7 @@ export default function AnalyticsDetailsSlide(): JSX.Element {
                {DateHelper.fromDDMMYYYYToWord(analyticsToRender().timestamp)}
             </TextColourizer>
             <TrashIcon
-               darktheme={BoolHelper.toString(isDarkTheme)}
+               darktheme={BoolHelper.boolToStr(isDarkTheme)}
                height={'1.5em'}
                onClick={() => handleDelete()}
             />

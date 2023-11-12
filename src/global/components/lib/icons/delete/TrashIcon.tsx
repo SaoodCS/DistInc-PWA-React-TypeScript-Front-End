@@ -5,17 +5,19 @@ import Color from '../../../../css/colors';
 import BoolHelper from '../../../../helpers/dataTypes/bool/BoolHelper';
 
 export const TrashIcon = styled(Trash)<{ darktheme: 'true' | 'false' }>`
+   ${MyCSS.Clickables.removeDefaultEffects};
    color: ${({ darktheme }): string =>
       Color.setRgbOpacity(
-         BoolHelper.convert(darktheme) ? Color.darkThm.error : Color.lightThm.error,
+         BoolHelper.strToBool(darktheme) ? Color.darkThm.error : Color.lightThm.error,
          0.5,
       )};
-   ${({ darktheme }) =>
-      MyCSS.Clickables.addResponsiveHover(
-         BoolHelper.convert(darktheme),
-         Color.lightThm.error,
-         Color.darkThm.error,
+   ${({ darktheme }) => {
+      const color = Color.setRgbOpacity(
+         BoolHelper.strToBool(darktheme) ? Color.darkThm.error : Color.lightThm.error,
          1,
-         'color',
-      )};
+      );
+      const mobileCol = MyCSS.Clickables.portable.changeColorOnClick(color, 'color', 'revert');
+      const desktopCol = MyCSS.Clickables.desktop.changeColorOnHover(color, 'color');
+      return MyCSS.Helper.concatStyles(mobileCol, desktopCol);
+   }};
 `;

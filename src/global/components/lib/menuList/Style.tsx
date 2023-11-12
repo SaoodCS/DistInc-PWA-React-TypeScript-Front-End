@@ -81,6 +81,7 @@ export const ItemContainer = styled.div<{
    warningItem?: boolean;
    isDarkTheme: boolean;
 }>`
+   all: unset;
    ${MyCSS.Clickables.removeDefaultEffects};
    cursor: pointer;
    color: ${({ dangerItem, warningItem, isDarkTheme }) =>

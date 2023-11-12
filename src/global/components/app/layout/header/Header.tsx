@@ -66,6 +66,7 @@ export const HeaderRightElWrapper = styled.div<{ isDarkTheme: boolean }>`
       cursor: pointer;
       color: ${({ isDarkTheme }) =>
          Color.setRgbOpacity(isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent, 0.7)};
+      transition: color 0.2s;
    }
 
    @media (min-width: ${MyCSS.PortableBp.asPx}) {

@@ -18,6 +18,8 @@ import ArrayOfObjects from '../../../global/helpers/dataTypes/arrayOfObjects/arr
 import FiltererContextMenu from './components/contextMenu/FiltererContextMenu';
 import NewFormContextMenu from './components/contextMenu/NewFormContextMenu';
 import NDetails from './namespace/NDetails';
+import { FilterIcon } from '../../../global/components/lib/icons/filter/FilterIcon';
+import BoolHelper from '../../../global/helpers/dataTypes/bool/BoolHelper';
 
 export default function Details(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Details');
@@ -53,7 +55,8 @@ export default function Details(): JSX.Element {
                   setCloseOnInnerClick(true);
                }}
             />
-            <Filter
+            <FilterIcon
+               darktheme={BoolHelper.boolToStr(isDarkTheme)}
                onClick={(e) => {
                   setPMIsOpen(true);
                   setPMContent(<FiltererContextMenu currentSlide={currentSlide} />);

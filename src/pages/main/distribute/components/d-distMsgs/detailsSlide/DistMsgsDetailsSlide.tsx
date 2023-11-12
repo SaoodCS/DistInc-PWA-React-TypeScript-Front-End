@@ -96,22 +96,22 @@ export default function DistMsgsDetailsSlide(): JSX.Element {
             <FlexRowWrapper justifyContent="center" padding="1em 0em 1em 1em">
                <ArrowCircleLeftIcon
                   height={'2em'}
-                  darktheme={BoolHelper.toString(isDarkTheme)}
+                  darktheme={BoolHelper.boolToStr(isDarkTheme)}
                   onClick={() => changeCompletedStep(completedStepNo - 1)}
                />
                <ArrowCircleRightIcon
                   height={'2em'}
-                  darktheme={BoolHelper.toString(isDarkTheme)}
+                  darktheme={BoolHelper.boolToStr(isDarkTheme)}
                   onClick={() => changeCompletedStep(completedStepNo + 1)}
                />
                <RefreshCircleIcon
                   height={'2em'}
-                  darktheme={BoolHelper.toString(isDarkTheme)}
+                  darktheme={BoolHelper.boolToStr(isDarkTheme)}
                   onClick={() => changeCompletedStep(0)}
                />
                <CloseCircleIcon
                   height={'2em'}
-                  darktheme={BoolHelper.toString(isDarkTheme)}
+                  darktheme={BoolHelper.boolToStr(isDarkTheme)}
                   onClick={() => handleDelete()}
                />
             </FlexRowWrapper>
@@ -121,9 +121,9 @@ export default function DistMsgsDetailsSlide(): JSX.Element {
             {distMsgsToRender().msgs.map((msg, index) => (
                <Stepper.Step key={msg} onClick={() => changeCompletedStep(index + 1)}>
                   <StyledStepperLabel
-                     completed={BoolHelper.toString(isCompleted(index + 1))}
-                     darktheme={BoolHelper.toString(isDarkTheme)}
-                     isnext={BoolHelper.toString(isNextToComplete(index + 1))}
+                     completed={BoolHelper.boolToStr(isCompleted(index + 1))}
+                     darktheme={BoolHelper.boolToStr(isDarkTheme)}
+                     isnext={BoolHelper.boolToStr(isNextToComplete(index + 1))}
                   >
                      {msg}
                   </StyledStepperLabel>

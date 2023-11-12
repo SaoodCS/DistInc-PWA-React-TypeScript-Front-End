@@ -5,18 +5,20 @@ import Color from '../../../../css/colors';
 import BoolHelper from '../../../../helpers/dataTypes/bool/BoolHelper';
 
 export const RefreshCircleIcon = styled(RefreshCircle)<{ darktheme: 'true' | 'false' }>`
+   ${MyCSS.Clickables.removeDefaultEffects};
    color: ${({ darktheme }): string =>
       Color.setRgbOpacity(
-         BoolHelper.convert(darktheme) ? Color.darkThm.warning : Color.lightThm.warning,
+         BoolHelper.strToBool(darktheme) ? Color.darkThm.warning : Color.lightThm.warning,
          0.5,
       )};
 
-   ${({ darktheme }) =>
-      MyCSS.Clickables.addResponsiveHover(
-         BoolHelper.convert(darktheme),
-         Color.lightThm.warning,
-         Color.darkThm.warning,
+   ${({ darktheme }) => {
+      const color = Color.setRgbOpacity(
+         BoolHelper.strToBool(darktheme) ? Color.darkThm.warning : Color.lightThm.warning,
          1,
-         'color',
-      )};
+      );
+      const mobileCol = MyCSS.Clickables.portable.changeColorOnClick(color, 'color', 'revert');
+      const desktopCol = MyCSS.Clickables.desktop.changeColorOnHover(color, 'color');
+      return MyCSS.Helper.concatStyles(mobileCol, desktopCol);
+   }};
 `;

@@ -8,6 +8,7 @@ export const FlatListWrapper = styled.div`
 `;
 
 export const FlatListItem = styled.div<{ isDarkTheme: boolean }>`
+   ${MyCSS.Clickables.removeDefaultEffects};
    height: 6em;
    width: 100%;
    box-sizing: border-box;
@@ -17,13 +18,20 @@ export const FlatListItem = styled.div<{ isDarkTheme: boolean }>`
    justify-content: center;
    border-bottom: 1px solid
       ${({ isDarkTheme }) => (isDarkTheme ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)')};
-   @media (min-width: ${MyCSS.PortableBp.asPx}) {
-      &:hover {
-         background-color: ${({ isDarkTheme }) =>
-            Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.1)};
-         cursor: pointer;
-      }
-   }
+   cursor: pointer;
+   ${({ isDarkTheme }) => {
+      const bgColor = Color.setRgbOpacity(
+         isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt,
+         0.1,
+      );
+      const mobile = MyCSS.Clickables.portable.changeColorOnClick(
+         bgColor,
+         'background-color',
+         'revert',
+      );
+      const desktop = MyCSS.Clickables.desktop.changeColorOnHover(bgColor, 'background-color');
+      return MyCSS.Helper.concatStyles(mobile, desktop);
+   }}
 `;
 
 export const FirstRowWrapper = styled.div`

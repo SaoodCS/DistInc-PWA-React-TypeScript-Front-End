@@ -49,4 +49,5 @@ export const CardListItem = styled.div<{ isDarkTheme: boolean; width?: string }>
       Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.05)};
    margin-bottom: 1em;
    width: ${({ width }) => width || '100%'};
+   cursor: pointer;
 `;

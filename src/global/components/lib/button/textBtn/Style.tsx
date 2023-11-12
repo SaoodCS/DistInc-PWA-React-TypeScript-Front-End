@@ -16,6 +16,7 @@ interface ITextBtn extends ITextBtnAttrs {
 export const TextBtn = styled.button.attrs<ITextBtnAttrs>(({ isDisabled }) => ({
    disabled: isDisabled,
 }))<ITextBtn>`
+   all: unset;
    ${MyCSS.Clickables.removeDefaultEffects};
    font-size: 0.95em;
    padding: 0.5em;

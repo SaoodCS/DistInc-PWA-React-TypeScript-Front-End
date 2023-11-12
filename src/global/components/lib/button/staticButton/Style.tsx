@@ -16,6 +16,7 @@ interface IStaticButton extends IStaticButtonAttrs {
 export const StaticButton = styled.button.attrs<IStaticButtonAttrs>(({ isDisabled }) => ({
    disabled: isDisabled,
 }))<IStaticButton>`
+   all: unset;
    ${MyCSS.Clickables.removeDefaultEffects};
    padding: 0.65em;
    text-align: center;

@@ -26,6 +26,7 @@ export const NavBarContainer = styled.div<{ isDarkTheme: boolean }>`
 `;
 
 export const NavBarHeading = styled.button<{ isActive: boolean; isDarkTheme: boolean }>`
+   all: unset;
    ${MyCSS.Clickables.removeDefaultEffects};
    border-bottom: ${({ isActive, isDarkTheme }) =>
       isActive

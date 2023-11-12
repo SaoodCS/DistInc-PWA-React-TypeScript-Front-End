@@ -8,6 +8,7 @@ export const InlineTxtBtn = styled.span<{
    isDangerBtn?: boolean;
    isWarningBtn?: boolean;
 }>`
+   all: unset;
    ${MyCSS.Clickables.removeDefaultEffects};
    cursor: pointer;
    color: ${({ isDarkTheme, isDisabled, isDangerBtn, isWarningBtn }) =>

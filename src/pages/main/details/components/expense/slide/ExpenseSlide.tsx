@@ -141,7 +141,7 @@ export default function ExpenseSlide(): JSX.Element {
                         </ConditionalRender>
                         <Tag bgColor={tagColor('type')}>{expenseTypeLabel(item.expenseType)}</Tag>
                         <Tag bgColor={tagColor('paymentType')}>{item.paymentType}</Tag>
-                        <ConditionalRender condition={BoolHelper.convert(item.paused)}>
+                        <ConditionalRender condition={BoolHelper.strToBool(item.paused)}>
                            <Tag bgColor={tagColor('paused')}>Paused</Tag>
                         </ConditionalRender>
                      </SecondRowTagsWrapper>

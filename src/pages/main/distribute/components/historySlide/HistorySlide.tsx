@@ -8,6 +8,7 @@ import {
 import { CarouselAndNavBarWrapper } from '../../../../../global/components/lib/carousel/NavBar';
 import { FlatListWrapper } from '../../../../../global/components/lib/flatList/Style';
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
+import { FilterIcon } from '../../../../../global/components/lib/icons/filter/FilterIcon';
 import { HorizontalMenuDots } from '../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
 import { FlexRowWrapper } from '../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
 import { LargeScrnResponsiveFlexWrap } from '../../../../../global/components/lib/positionModifiers/responsiveFlexWrap/LargeScrnResponsiveFlexWrap';
@@ -17,6 +18,7 @@ import useThemeContext from '../../../../../global/context/theme/hooks/useThemeC
 import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
 import { PopupMenuContext } from '../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import Color from '../../../../../global/css/colors';
+import BoolHelper from '../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import DateHelper from '../../../../../global/helpers/dataTypes/date/DateHelper';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useURLState from '../../../../../global/hooks/useURLState';
@@ -90,10 +92,9 @@ export default function HistorySlide(): JSX.Element {
             <TextColourizer fontSize="2em" bold padding="0.5em">
                History
             </TextColourizer>
-            <Filter
+            <FilterIcon
                height="2em"
-               color={isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent}
-               cursor={'pointer'}
+               darktheme={BoolHelper.boolToStr(isDarkTheme)}
                onClick={(e) => handleFilterClick(e)}
             />
          </FlexRowWrapper>
@@ -111,7 +112,7 @@ export default function HistorySlide(): JSX.Element {
                            {DateHelper.fromMMYYYYToWord(monthObj.monthYear)}
                         </TextColourizer>
                         <HorizontalMenuDots
-                           darktheme={isDarkTheme.toString()}
+                           darktheme={BoolHelper.boolToStr(isDarkTheme)}
                            onClick={(e) => handleMenuDotsClick(e, monthObj.monthYear)}
                         />
                      </CardListTitle>
