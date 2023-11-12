@@ -1,5 +1,6 @@
 import { Filter } from '@styled-icons/fluentui-system-filled/Filter';
 import { useContext } from 'react';
+import styled from 'styled-components';
 import {
    CardListTitle,
    CardListWrapper,
@@ -9,6 +10,7 @@ import { FlatListWrapper } from '../../../../../global/components/lib/flatList/S
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { HorizontalMenuDots } from '../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
 import { FlexRowWrapper } from '../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
+import { LargeScrnResponsiveFlexWrap } from '../../../../../global/components/lib/positionModifiers/responsiveFlexWrap/LargeScrnResponsiveFlexWrap';
 import PullToRefresh from '../../../../../global/components/lib/pullToRefresh/PullToRefresh';
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
@@ -113,19 +115,25 @@ export default function HistorySlide(): JSX.Element {
                            onClick={(e) => handleMenuDotsClick(e, monthObj.monthYear)}
                         />
                      </CardListTitle>
-                     <ConditionalRender condition={!filterOutState.includes('distributer')}>
-                        {monthObj.distributer && (
-                           <DistMsgsItems distributer={monthObj.distributer} />
-                        )}
-                     </ConditionalRender>
-                     <ConditionalRender condition={!filterOutState.includes('analytics')}>
-                        {monthObj.analytics && <AnalyticsItems analytics={monthObj.analytics} />}
-                     </ConditionalRender>
-                     <ConditionalRender condition={!filterOutState.includes('savingsAccHistory')}>
-                        {monthObj.savingsAccHistory && (
-                           <SavingsAccHistoryItems savingsAccHistory={monthObj.savingsAccHistory} />
-                        )}
-                     </ConditionalRender>
+                     <LargeScrnResponsiveFlexWrap childrenMargin="1em">
+                        <ConditionalRender condition={!filterOutState.includes('distributer')}>
+                           {monthObj.distributer && (
+                              <DistMsgsItems distributer={monthObj.distributer} />
+                           )}
+                        </ConditionalRender>
+                        <ConditionalRender condition={!filterOutState.includes('analytics')}>
+                           {monthObj.analytics && <AnalyticsItems analytics={monthObj.analytics} />}
+                        </ConditionalRender>
+                        <ConditionalRender
+                           condition={!filterOutState.includes('savingsAccHistory')}
+                        >
+                           {monthObj.savingsAccHistory && (
+                              <SavingsAccHistoryItems
+                                 savingsAccHistory={monthObj.savingsAccHistory}
+                              />
+                           )}
+                        </ConditionalRender>
+                     </LargeScrnResponsiveFlexWrap>
                   </CardListWrapper>
                ))}
             </FlatListWrapper>

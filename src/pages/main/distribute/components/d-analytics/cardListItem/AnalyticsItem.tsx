@@ -30,7 +30,7 @@ export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
       setClickEvent,
       setCloseOnInnerClick,
    } = useContext(PopupMenuContext);
-   const { isDarkTheme } = useThemeContext();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
 
    function handleMenuDotsClick(
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
@@ -54,6 +54,7 @@ export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
                key={analyticsObj.timestamp}
                onClick={() => handleItemClick(analyticsObj, 'analytics')}
                isDarkTheme={isDarkTheme}
+               width={!isPortableDevice ? '20em' : undefined}
             >
                <ItemTitleAndIconWrapper>
                   <Calculator height={'2em'} style={{ paddingRight: '0.5em' }} />

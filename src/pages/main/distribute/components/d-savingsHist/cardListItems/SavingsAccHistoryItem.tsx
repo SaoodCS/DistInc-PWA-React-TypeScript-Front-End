@@ -24,7 +24,7 @@ interface ISavingsAccHistoryItems {
 export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): JSX.Element {
    const { savingsAccHistory } = props;
    const { handleItemClick } = useContext(DistributeContext);
-   const { isDarkTheme } = useThemeContext();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
    const { data: savingsAccounts } = SavingsClass.useQuery.getSavingsAccounts();
    const {
       setPMContent,
@@ -60,6 +60,7 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
                key={`${savingsHistObj.timestamp}.${savingsHistObj.id}`}
                onClick={() => handleItemClick(savingsHistObj, 'savingsAccHistory')}
                isDarkTheme={isDarkTheme}
+               width={!isPortableDevice ? '20em' : undefined}
             >
                <ItemTitleAndIconWrapper style={{ position: 'relative' }}>
                   <Savings height={'2em'} style={{ paddingRight: '0.5em' }} />

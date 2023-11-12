@@ -34,7 +34,7 @@ export const ItemTitleAndIconWrapper = styled.div`
    align-items: center;
 `;
 
-export const CardListItem = styled.div<{ isDarkTheme: boolean }>`
+export const CardListItem = styled.div<{ isDarkTheme: boolean; width?: string }>`
    ${MyCSS.Clickables.removeDefaultEffects};
    display: flex;
    border: 1px solid ${Color.darkThm.border};
@@ -48,4 +48,5 @@ export const CardListItem = styled.div<{ isDarkTheme: boolean }>`
    background-color: ${({ isDarkTheme }) =>
       Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.05)};
    margin-bottom: 1em;
+   width: ${({ width }) => width || '100%'};
 `;

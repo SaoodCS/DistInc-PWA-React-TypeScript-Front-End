@@ -30,7 +30,7 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
       setClickEvent,
       setCloseOnInnerClick,
    } = useContext(PopupMenuContext);
-   const { isDarkTheme } = useThemeContext();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
 
    function handleMenuDotsClick(
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
@@ -53,7 +53,8 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
             <CardListItem
                key={distMsgsObj.timestamp}
                onClick={() => handleItemClick(distMsgsObj, 'distributer')}
-               isDarkTheme = {isDarkTheme}
+               isDarkTheme={isDarkTheme}
+               width={!isPortableDevice ? '20em' : undefined}
             >
                <ItemTitleAndIconWrapper>
                   <DocumentFlowchart height={'2em'} style={{ paddingRight: '0.5em' }} />
