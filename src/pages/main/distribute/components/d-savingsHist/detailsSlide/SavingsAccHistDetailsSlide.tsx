@@ -10,6 +10,7 @@ import { TextColourizer } from '../../../../../../global/components/lib/font/tex
 import { TrashIcon } from '../../../../../../global/components/lib/icons/delete/TrashIcon';
 import { FlexColumnWrapper } from '../../../../../../global/components/lib/positionModifiers/flexColumnWrapper/FlexColumnWrapper';
 import { FlexRowWrapper } from '../../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
+import { LargeScrnResponsiveFlexWrap } from '../../../../../../global/components/lib/positionModifiers/responsiveFlexWrap/LargeScrnResponsiveFlexWrap';
 import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import Color from '../../../../../../global/css/colors';
@@ -88,54 +89,64 @@ export default function SavingsAccHistDetailsSlide(): JSX.Element {
             />
          </FlexRowWrapper>
 
-         <FlexColumnWrapper padding="0em 2em 1em 2em">
-            <CardWidgetWrapper
-               bgColor={isDarkTheme ? Color.lightThm.accent : Color.darkThm.accent}
-               height="7em"
-            >
-               <FlexColumnWrapper height={'100%'} justifyContent="center" padding="0em 1em">
-                  <TextColourizer fontSize="1.25em" bold padding={'0.25em 0em'}>
-                     {SavingsClass.getNameFromId(
-                        savingsAccHistToRender().id,
-                        savingsAccounts || {},
-                     )}
-                  </TextColourizer>
-                  <TextColourizer fontSize="0.9em">
-                     <TextColourizer fontSize="0.9em" bold>
-                        Balance:&nbsp;
-                     </TextColourizer>
-                     {NumberHelper.asCurrencyStr(savingsAccHistToRender().balance)}
-                  </TextColourizer>
-               </FlexColumnWrapper>
-               <FlexColumnWrapper height={'100%'} justifyContent="center" padding={'0em 0.5em'}>
-                  <BuildingBank height={'90%'} color={Color.lightThm.border} />
-               </FlexColumnWrapper>
-            </CardWidgetWrapper>
-
-            <ConditionalRender condition={savingsAccTargetToReach() > 0}>
+         <LargeScrnResponsiveFlexWrap childrenMargin="1em">
+            <FlexColumnWrapper padding="0em 2em 1em 2em">
                <CardWidgetWrapper
-                  bgColor={isDarkTheme ? Color.lightThm.warning : Color.darkThm.warning}
+                  bgColor={isDarkTheme ? Color.lightThm.accent : Color.darkThm.accent}
                   height="7em"
                >
                   <FlexColumnWrapper height={'100%'} justifyContent="center" padding="0em 1em">
                      <TextColourizer fontSize="1.25em" bold padding={'0.25em 0em'}>
-                        Target
+                        {SavingsClass.getNameFromId(
+                           savingsAccHistToRender().id,
+                           savingsAccounts || {},
+                        )}
                      </TextColourizer>
                      <TextColourizer fontSize="0.9em">
-                        {NumberHelper.asCurrencyStr(savingsAccTargetToReach())}
+                        <TextColourizer fontSize="0.9em" bold>
+                           Balance:&nbsp;
+                        </TextColourizer>
+                        {NumberHelper.asCurrencyStr(savingsAccHistToRender().balance)}
                      </TextColourizer>
                   </FlexColumnWrapper>
                   <FlexColumnWrapper height={'100%'} justifyContent="center" padding={'0em 0.5em'}>
-                     <TargetArrow height={'90%'} color={Color.lightThm.border} />
+                     <BuildingBank height={'90%'} color={Color.lightThm.border} />
                   </FlexColumnWrapper>
                </CardWidgetWrapper>
 
-               <FlexColumnWrapper justifyContent="center">
-                  <TextColourizer fontSize="1.5em" bold padding="0.5em 0em 1em 0em">
-                     Progress
-                  </TextColourizer>
+               <ConditionalRender condition={savingsAccTargetToReach() > 0}>
+                  <CardWidgetWrapper
+                     bgColor={isDarkTheme ? Color.lightThm.warning : Color.darkThm.warning}
+                     height="7em"
+                  >
+                     <FlexColumnWrapper height={'100%'} justifyContent="center" padding="0em 1em">
+                        <TextColourizer fontSize="1.25em" bold padding={'0.25em 0em'}>
+                           Target
+                        </TextColourizer>
+                        <TextColourizer fontSize="0.9em">
+                           {NumberHelper.asCurrencyStr(savingsAccTargetToReach())}
+                        </TextColourizer>
+                     </FlexColumnWrapper>
+                     <FlexColumnWrapper
+                        height={'100%'}
+                        justifyContent="center"
+                        padding={'0em 0.5em'}
+                     >
+                        <TargetArrow height={'90%'} color={Color.lightThm.border} />
+                     </FlexColumnWrapper>
+                  </CardWidgetWrapper>
+               </ConditionalRender>
+            </FlexColumnWrapper>
+
+            <ConditionalRender condition={savingsAccTargetToReach() > 0}>
+               <FlexColumnWrapper justifyContent={isPortableDevice ? 'center' : ''}>
+                  <ConditionalRender condition={isPortableDevice}>
+                     <TextColourizer fontSize="1.5em" bold padding="0.5em 0em 1em 1em">
+                        Progress
+                     </TextColourizer>
+                  </ConditionalRender>
                   <FlexColumnWrapper width="100%" alignItems={isPortableDevice ? 'center' : 'left'}>
-                     <FlexRowWrapper width="15em">
+                     <FlexRowWrapper width={isPortableDevice ? '12.5em' : '14.5em'}>
                         <CircularProgressbar
                            value={calculatePercentage()}
                            text={`${calculatePercentage()}%`}
@@ -151,7 +162,7 @@ export default function SavingsAccHistDetailsSlide(): JSX.Element {
                   </FlexColumnWrapper>
                </FlexColumnWrapper>
             </ConditionalRender>
-         </FlexColumnWrapper>
+         </LargeScrnResponsiveFlexWrap>
       </CarouselAndNavBarWrapper>
    );
 }

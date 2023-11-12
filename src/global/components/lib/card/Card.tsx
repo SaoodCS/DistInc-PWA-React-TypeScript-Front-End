@@ -19,6 +19,6 @@ export const CardWidgetWrapper = styled.div<{ bgColor: string; height?: string }
    flex-direction: row;
    justify-content: space-between;
    @media (min-width: ${MyCSS.PortableBp.asPx}) {
-      width: fit-content;   
+      width: 20em;   
    }
 `;
