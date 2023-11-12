@@ -89,7 +89,10 @@ export default function SavingsAccHistDetailsSlide(): JSX.Element {
          </FlexRowWrapper>
 
          <FlexColumnWrapper padding="0em 2em 1em 2em">
-            <CardWidgetWrapper bgColor={Color.lightThm.accent} height="7em">
+            <CardWidgetWrapper
+               bgColor={isDarkTheme ? Color.lightThm.accent : Color.darkThm.accent}
+               height="7em"
+            >
                <FlexColumnWrapper height={'100%'} justifyContent="center" padding="0em 1em">
                   <TextColourizer fontSize="1.25em" bold padding={'0.25em 0em'}>
                      {SavingsClass.getNameFromId(
@@ -110,7 +113,10 @@ export default function SavingsAccHistDetailsSlide(): JSX.Element {
             </CardWidgetWrapper>
 
             <ConditionalRender condition={savingsAccTargetToReach() > 0}>
-               <CardWidgetWrapper bgColor={Color.lightThm.warning} height="7em">
+               <CardWidgetWrapper
+                  bgColor={isDarkTheme ? Color.lightThm.warning : Color.darkThm.warning}
+                  height="7em"
+               >
                   <FlexColumnWrapper height={'100%'} justifyContent="center" padding="0em 1em">
                      <TextColourizer fontSize="1.25em" bold padding={'0.25em 0em'}>
                         Target
@@ -133,9 +139,11 @@ export default function SavingsAccHistDetailsSlide(): JSX.Element {
                         value={calculatePercentage()}
                         text={`${calculatePercentage()}%`}
                         styles={buildStyles({
-                           textColor: Color.lightThm.accent,
-                           pathColor: Color.lightThm.accent,
-                           trailColor: Color.darkThm.inactive,
+                           textColor: isDarkTheme ? Color.lightThm.accent : Color.darkThm.accent,
+                           pathColor: isDarkTheme ? Color.lightThm.accent : Color.darkThm.accent,
+                           trailColor: isDarkTheme
+                              ? Color.darkThm.inactive
+                              : Color.lightThm.inactive,
                         })}
                      />
                   </FlexRowWrapper>

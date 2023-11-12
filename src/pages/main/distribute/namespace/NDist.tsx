@@ -140,11 +140,16 @@ export namespace NDist {
          data: number | IPrevMonthData[];
       };
 
+      export type IMapArrFunc = (
+         analyticsItem: NDist.IAnalytics,
+         isDarkTheme: boolean,
+      ) => IAnalyticsDetails[];
+
       export interface ISlides {
          name: ISlide1Name | ISlide2NameOptions;
          title: string;
          slideNo: number;
-         mapArr?: IAnalyticsDetails[] | ((analyticsItem: NDist.IAnalytics) => IAnalyticsDetails[]);
+         mapArr?: IAnalyticsDetails[] | IMapArrFunc;
       }
 
       export const slides: ISlides[] = [
@@ -157,12 +162,15 @@ export namespace NDist {
             name: 'analytics',
             title: 'Analytics History',
             slideNo: 2,
-            mapArr: (analyticsItem: NDist.IAnalytics): IAnalyticsDetails[] => [
+            mapArr: (
+               analyticsItem: NDist.IAnalytics,
+               isDarkTheme: boolean,
+            ): IAnalyticsDetails[] => [
                {
                   key: 'totalIncomes',
                   title: 'Total Income',
                   icon: <Dollar height="90%" color={Color.lightThm.border} />,
-                  color: Color.lightThm.accent,
+                  color: isDarkTheme ? Color.lightThm.accent : Color.darkThm.accent,
                   data: analyticsItem.totalIncomes,
                   cardHeight: '6em',
                },
@@ -170,7 +178,7 @@ export namespace NDist {
                   key: 'totalExpenses',
                   title: 'Total Expense',
                   icon: <Receipt height="90%" color={Color.lightThm.border} />,
-                  color: Color.lightThm.warning,
+                  color: isDarkTheme ? Color.lightThm.warning : Color.darkThm.warning,
                   data: analyticsItem.totalExpenses,
                   cardHeight: '6em',
                },

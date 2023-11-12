@@ -59,11 +59,8 @@ export default function AnalyticsDetailsSlide(): JSX.Element {
          'name',
          'analytics',
       );
-      const mapArray = analyticsObj?.mapArr as (
-         analyticsItem: NDist.IAnalytics,
-      ) => NDist.Carousel.IAnalyticsDetails[];
-
-      return mapArray(analyticsToRender());
+      const mapArray = analyticsObj?.mapArr as NDist.Carousel.IMapArrFunc;
+      return mapArray(analyticsToRender(), isDarkTheme);
    }
 
    return (

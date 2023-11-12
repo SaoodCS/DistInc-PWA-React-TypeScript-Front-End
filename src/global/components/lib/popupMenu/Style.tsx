@@ -46,16 +46,15 @@ export const PopupMenuWrapper = styled.div<{
    width: ${({ widthPx }) => widthPx}px;
    z-index: 100;
    border-radius: 10px;
-   backdrop-filter: blur(5px);
+   backdrop-filter: blur(100px);
    color: ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt)};
    background-color: ${({ isDarkTheme }) =>
       isDarkTheme
          ? Color.setRgbOpacity(Color.darkThm.dialog, 1)
-         : Color.setRgbOpacity(Color.lightThm.dialog, 1)};
+         : Color.setRgbOpacity(Color.darkThm.dialog, 0.08)};
    box-shadow: ${({ isDarkTheme }) =>
-      isDarkTheme ? Color.darkThm.boxShadow : Color.lightThm.boxShadow};
-   border: 1px solid
-      ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.border : Color.lightThm.border)};
+      !isDarkTheme && `0px 0px 10px ${Color.setRgbOpacity(Color.darkThm.txt, 0.1)}`};
+
    animation: ${({ isOpen, clickPos }) =>
          isOpen ? relativeExpander(clickPos) : relativeContractor(clickPos)}
       0.25s ease-in-out;
@@ -66,6 +65,10 @@ export const PMItemsListWrapper = styled.div<{ isDarkTheme: boolean }>`
    & > *:not(:last-child) {
       border-bottom: 1px solid
          ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.border : Color.lightThm.border)};
+   }
+   & > *:first-child {
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
    }
 `;
 
