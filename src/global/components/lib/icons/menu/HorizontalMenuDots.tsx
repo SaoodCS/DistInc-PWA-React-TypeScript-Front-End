@@ -9,11 +9,11 @@ export const HorizontalMenuDots = styled(DotsHorizontalRounded)<{ darktheme: str
    text-decoration: none;
    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
    -webkit-touch-callout: none;
-   height: 1.25em;
+   height: 1em;
    color: ${({ darktheme }) =>
       darktheme === 'true' ? Color.darkThm.accent : Color.lightThm.accent};
    border-radius: 50%;
-   box-sizing: border-box;
+   //box-sizing: border-box;
    border: 1px solid
       ${({ darktheme }) => (darktheme === 'true' ? Color.darkThm.accent : Color.lightThm.accent)};
    cursor: pointer;
