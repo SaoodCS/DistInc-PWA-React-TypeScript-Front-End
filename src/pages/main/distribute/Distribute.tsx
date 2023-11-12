@@ -1,4 +1,4 @@
-import { QuestionMark as QMark } from '@styled-icons/boxicons-regular/QuestionMark';
+import { QuestionOctagonFill as QMark } from '@styled-icons/bootstrap/QuestionOctagonFill';
 import { Add } from '@styled-icons/fluentui-system-filled/Add';
 import { useContext, useEffect, useState } from 'react';
 import CardListPlaceholder from '../../../global/components/lib/cardList/placeholder/CardListPlaceholder';

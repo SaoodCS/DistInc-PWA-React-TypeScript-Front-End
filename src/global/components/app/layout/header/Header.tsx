@@ -51,12 +51,11 @@ export const HeaderRightElWrapper = styled.div<{ isDarkTheme: boolean }>`
    right: 0px;
    position: fixed;
    color: ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent)};
+
    & > * {
       height: 1.5em;
-      @media (min-width: ${MyCSS.PortableBp.asPx}) {
-         height: 1em;
-      }
    }
+
    & > *:last-child {
       margin-right: 1em;
    }
@@ -67,5 +66,22 @@ export const HeaderRightElWrapper = styled.div<{ isDarkTheme: boolean }>`
       cursor: pointer;
       color: ${({ isDarkTheme }) =>
          Color.setRgbOpacity(isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent, 0.7)};
+   }
+
+   @media (min-width: ${MyCSS.PortableBp.asPx}) {
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding-left: 0.25em;
+      & > * {
+         height: 0.7em;
+      }
+
+      & > *:last-child {
+         margin-right: 0.5em;
+      }
+      & > *:not(:last-child) {
+         margin-right: 0.1em;
+      }
    }
 `;
