@@ -14,6 +14,7 @@ import NumberHelper from '../../../../../../global/helpers/dataTypes/number/Numb
 import useSessionStorage from '../../../../../../global/hooks/useSessionStorage';
 import { DistributeContext } from '../../../context/DistributeContext';
 import NDist from '../../../namespace/NDist';
+import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 
 export default function AnalyticsDetailsSlide(): JSX.Element {
    const { slide2Data } = useContext(DistributeContext);
@@ -69,7 +70,7 @@ export default function AnalyticsDetailsSlide(): JSX.Element {
       <CarouselAndNavBarWrapper style={{ width: '100%' }}>
          <FlexRowWrapper padding="2em">
             <TextColourizer fontSize="2em" bold padding="0em 0.25em 0em 0em">
-               {analyticsToRender().timestamp}
+               {DateHelper.fromDDMMYYYYToWord(analyticsToRender().timestamp)}
             </TextColourizer>
             <TrashIcon
                darktheme={BoolHelper.toString(isDarkTheme)}

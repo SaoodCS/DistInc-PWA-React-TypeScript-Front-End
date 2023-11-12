@@ -15,6 +15,7 @@ import useThemeContext from '../../../../../../global/context/theme/hooks/useThe
 import Color from '../../../../../../global/css/colors';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
+import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import useSessionStorage from '../../../../../../global/hooks/useSessionStorage';
 import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
@@ -78,7 +79,7 @@ export default function SavingsAccHistDetailsSlide(): JSX.Element {
       <CarouselAndNavBarWrapper style={{ width: '100%' }}>
          <FlexRowWrapper padding="2em">
             <TextColourizer fontSize="2em" bold padding="0em 0.25em 0em 0em">
-               {savingsAccHistToRender().timestamp}
+               {DateHelper.fromDDMMYYYYToWord(savingsAccHistToRender().timestamp)}
             </TextColourizer>
             <TrashIcon
                darktheme={BoolHelper.toString(isDarkTheme)}

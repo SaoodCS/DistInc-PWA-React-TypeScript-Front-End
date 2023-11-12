@@ -20,6 +20,7 @@ import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelp
 import useSessionStorage from '../../../../../../global/hooks/useSessionStorage';
 import { DistributeContext } from '../../../context/DistributeContext';
 import NDist from '../../../namespace/NDist';
+import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 
 export default function DistMsgsDetailsSlide(): JSX.Element {
    const { slide2Data, currentSlide, scrollToSlide } = useContext(DistributeContext);
@@ -90,7 +91,7 @@ export default function DistMsgsDetailsSlide(): JSX.Element {
       <CarouselAndNavBarWrapper style={{ width: '100%' }}>
          <FlexRowWrapper justifyContent="space-evenly" padding="1em 0em 0em 0em">
             <TextColourizer fontSize="2em" bold>
-               {distMsgsToRender().timestamp}
+               {DateHelper.fromDDMMYYYYToWord(distMsgsToRender().timestamp)}
             </TextColourizer>
             <FlexRowWrapper justifyContent="center" padding="1em 0em 1em 1em">
                <ArrowCircleLeftIcon
