@@ -37,7 +37,6 @@ export default function Distribute(): JSX.Element {
    const {
       setBottomPanelContent,
       setBottomPanelHeading,
-      setBottomPanelHeightDvh,
       setBottomPanelZIndex,
       setIsBottomPanelOpen,
    } = useContext(BottomPanelContext);
