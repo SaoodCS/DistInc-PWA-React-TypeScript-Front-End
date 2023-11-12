@@ -39,7 +39,7 @@ export default function useCarousel(
       return () => {
          containerRef.current?.removeEventListener('scroll', handleScroll);
       };
-   }, [containerRef.current]);
+   }, [containerRef]);
 
    const scrollToSlide = (slideNumber: number): void => {
       if (containerRef.current) {
