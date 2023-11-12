@@ -1,6 +1,8 @@
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { createContext } from 'react';
 
+export type IBannerType = 'success' | 'error' | 'warning' | 'default';
+
 interface IBannerContext {
    showBanner: boolean;
    setShowBanner: Dispatch<SetStateAction<boolean>>;
@@ -11,6 +13,7 @@ interface IBannerContext {
    setBannerHeightEm: Dispatch<SetStateAction<number>>;
    bannerZIndex: number | undefined;
    setBannerZIndex: Dispatch<SetStateAction<number | undefined>>;
+   setBannerType: Dispatch<SetStateAction<IBannerType>>;
 }
 
 export const BannerContext = createContext<IBannerContext>({
@@ -23,4 +26,5 @@ export const BannerContext = createContext<IBannerContext>({
    setBannerHeightEm: () => {},
    bannerZIndex: undefined,
    setBannerZIndex: () => {},
+   setBannerType: () => {},
 });

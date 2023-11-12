@@ -1,6 +1,10 @@
+import { ExclamationOctagon } from '@styled-icons/bootstrap/ExclamationOctagon';
+import { MessageAltCheck } from '@styled-icons/boxicons-solid/MessageAltCheck';
+import { Warning } from '@styled-icons/entypo/Warning';
 import type { ReactNode } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../../../context/theme/ThemeContext';
+import { IBannerType } from '../../../context/widget/banner/BannerContext';
 import { VerticalSeperator } from '../positionModifiers/verticalSeperator/VerticalSeperator';
 import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalRender';
 import { BannerBackground, BannerContainer, BannerContent } from './Style';
@@ -13,12 +17,22 @@ interface IBanner {
    onClose: () => void;
    heightEm?: number;
    zIndex?: number;
+   bannerType?: IBannerType;
 }
 
 function Banner(props: IBanner): JSX.Element {
    const backgroundId = 'bannerBackground';
    const containerId = 'bannerContainer';
-   const { message, handleClick, isVisible, Icon, onClose, heightEm, zIndex } = props;
+   const {
+      message,
+      handleClick,
+      isVisible,
+      Icon,
+      onClose,
+      heightEm,
+      zIndex,
+      bannerType = 'default',
+   } = props;
    const { isDarkTheme } = useContext(ThemeContext);
    const [renderBanner, setRenderBanner] = useState(isVisible);
    const [mouseDown, setMouseDown] = useState(false);
@@ -76,9 +90,21 @@ function Banner(props: IBanner): JSX.Element {
                onMouseUp={handleMouseUp}
                onTouchStart={handleMouseDown}
                onTouchEnd={handleMouseUp}
+               bannerType={bannerType || 'default'}
             >
-               <BannerContent hasIcon={Icon !== undefined}>
+               <BannerContent hasIcon={Icon !== undefined || bannerType !== 'default'}>
                   <ConditionalRender condition={Icon !== undefined}>{Icon}</ConditionalRender>
+                  <ConditionalRender condition={Icon === undefined}>
+                     <ConditionalRender condition={bannerType === 'success'}>
+                        <MessageAltCheck height={'50px'} />
+                     </ConditionalRender>
+                     <ConditionalRender condition={bannerType === 'warning'}>
+                        <Warning height={'50px'} />
+                     </ConditionalRender>
+                     <ConditionalRender condition={bannerType === 'error'}>
+                        <ExclamationOctagon height={'50px'} />
+                     </ConditionalRender>
+                  </ConditionalRender>
                   {message}
                </BannerContent>
             </BannerContainer>

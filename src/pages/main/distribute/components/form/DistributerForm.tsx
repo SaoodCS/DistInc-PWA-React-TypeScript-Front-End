@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { useQueryClient } from '@tanstack/react-query';
+import { useContext, useEffect } from 'react';
 import { StaticButton } from '../../../../../global/components/lib/button/staticButton/Style';
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { StyledForm } from '../../../../../global/components/lib/form/form/Style';
@@ -7,6 +8,7 @@ import InputCombination from '../../../../../global/components/lib/form/inputCom
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
+import { BannerContext } from '../../../../../global/context/widget/banner/BannerContext';
 import Color from '../../../../../global/css/colors';
 import microservices from '../../../../../global/firebase/apis/microservices/microservices';
 import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
@@ -18,8 +20,16 @@ import ExpensesClass from '../../../details/components/expense/class/ExpensesCla
 import NDist from '../../namespace/NDist';
 
 export default function DistributeForm(): JSX.Element {
-   const { isDarkTheme } = useThemeContext();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
    const { apiError } = useApiErrorContext();
+   const {
+      setShowBanner,
+      setBannerIcon,
+      setBannerMessage,
+      setBannerZIndex,
+      setHandleBannerClick,
+      setBannerType,
+   } = useContext(BannerContext);
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
    const { data: savingsAccount } = SavingsClass.useQuery.getSavingsAccounts();
    const { data: incomes } = IncomeClass.useQuery.getIncomes();
@@ -35,6 +45,17 @@ export default function DistributeForm(): JSX.Element {
       dist.form.initialErrors,
       dist.form.validate,
    );
+   const isCurrentMonthDistributed = calcDistData && NDist.Data.hasCurrentMonth(calcDistData);
+
+   useEffect(() => {
+      if (isCurrentMonthDistributed && isPortableDevice) {
+         setShowBanner(true);
+         setBannerMessage(`Continuing overwrites current month as it's already distributed.`);
+         setBannerType('warning');
+         setHandleBannerClick(() => null);
+         setBannerZIndex(99999);
+      }
+   }, []);
 
    const queryClient = useQueryClient();
    const setCalcDistInFirestore = NDist.API.useMutation.setCalcDist({
@@ -43,12 +64,6 @@ export default function DistributeForm(): JSX.Element {
          queryClient.invalidateQueries({ queryKey: [microservices.getSavingsAccount.name] });
       },
    });
-
-   function showOverwriteMsg(): boolean {
-      if (!calcDistData) return false;
-      if (NDist.Data.hasCurrentMonth(calcDistData)) return true;
-      return false;
-   }
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
@@ -65,15 +80,15 @@ export default function DistributeForm(): JSX.Element {
 
    return (
       <>
-         <ConditionalRender condition={showOverwriteMsg()}>
+         <ConditionalRender condition={!!isCurrentMonthDistributed && !isPortableDevice}>
             <TextColourizer
                color={isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning}
                fontSize="0.85em"
             >
-               Continuing will overwrite the current month as it has already been distributed.
+               Continuing overwrites current month because it has already been distributed.
             </TextColourizer>
          </ConditionalRender>
-         <StyledForm onSubmit={handleSubmit} apiError={apiError}>
+         <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
             {currentAccounts &&
                dist.form.inputs.map((input) => (
                   <InputCombination

@@ -5,9 +5,11 @@ export const TextColourizer = styled.span<{
    fontSize?: string;
    bold?: boolean;
    padding?: string;
+   textAlign?: string;
 }>`
    font-size: ${({ fontSize }) => (fontSize ? fontSize : '1em')};
    color: ${({ color }) => color};
    font-weight: ${({ bold }) => (bold ? '600' : '400')};
    padding: ${({ padding }) => padding};
+   text-align: ${({ textAlign }) => textAlign};
 `;

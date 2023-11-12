@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { IBannerType } from '../../../context/widget/banner/BannerContext';
 import MyCSS from '../../../css/MyCSS';
 import Color from '../../../css/colors';
 
@@ -26,6 +27,7 @@ export const BannerContainer = styled.div<{
    renderBanner: boolean;
    heightEm: number;
    isDarkTheme: boolean;
+   bannerType: IBannerType;
 }>`
    transition: top 0.3s ease-out;
    border: ${({ isDarkTheme }) =>
@@ -40,18 +42,37 @@ export const BannerContainer = styled.div<{
    display: flex;
    justify-content: center;
    align-items: center;
+   backdrop-filter: blur(100px);
    :hover {
       cursor: pointer;
    }
    :not(:active) {
-      background-color: ${({ isDarkTheme }) =>
-         isDarkTheme
-            ? Color.setRgbOpacity(Color.darkThm.bg, 0.8)
-            : Color.setRgbOpacity(Color.lightThm.bg, 0.8)};
+      background-color: ${({ isDarkTheme, bannerType }) => {
+         if (isDarkTheme) {
+            if (bannerType === 'success') return Color.setRgbOpacity(Color.darkThm.success, 0.8);
+            if (bannerType === 'error') return Color.setRgbOpacity(Color.darkThm.error, 0.8);
+            if (bannerType === 'warning') return Color.setRgbOpacity(Color.darkThm.warning, 0.8);
+            return Color.setRgbOpacity(Color.darkThm.bg, 0.8);
+         }
+         if (bannerType === 'success') return Color.setRgbOpacity(Color.lightThm.success, 0.8);
+         if (bannerType === 'error') return Color.setRgbOpacity(Color.lightThm.error, 0.8);
+         if (bannerType === 'warning') return Color.setRgbOpacity(Color.lightThm.warning, 0.8);
+         return Color.setRgbOpacity(Color.lightThm.bg, 0.8);
+      }};
    }
    :active {
-      background-color: ${({ isDarkTheme }) =>
-         isDarkTheme ? Color.darkThm.bg : Color.lightThm.bg};
+      background-color: ${({ isDarkTheme, bannerType }) => {
+         if (isDarkTheme) {
+            if (bannerType === 'success') return Color.setRgbOpacity(Color.darkThm.success, 0.7);
+            if (bannerType === 'error') return Color.setRgbOpacity(Color.darkThm.error, 0.7);
+            if (bannerType === 'warning') return Color.setRgbOpacity(Color.darkThm.warning, 0.7);
+            return Color.setRgbOpacity(Color.darkThm.bg, 0.8);
+         }
+         if (bannerType === 'success') return Color.setRgbOpacity(Color.lightThm.success, 0.7);
+         if (bannerType === 'error') return Color.setRgbOpacity(Color.lightThm.error, 0.7);
+         if (bannerType === 'warning') return Color.setRgbOpacity(Color.lightThm.warning, 0.7);
+         return Color.setRgbOpacity(Color.lightThm.bg, 0.8);
+      }};
    }
    user-select: none;
 `;

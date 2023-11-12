@@ -8,6 +8,7 @@ import OfflineFetch from '../../../global/components/lib/fetch/offlineFetch/offl
 import Loader from '../../../global/components/lib/loader/Loader';
 import ConditionalRender from '../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
+import { BottomPanelContext } from '../../../global/context/widget/bottomPanel/BottomPanelContext';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
 import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 import { ModalContext } from '../../../global/context/widget/modal/ModalContext';
@@ -33,6 +34,13 @@ export default function Distribute(): JSX.Element {
       useHeaderContext();
    const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader, isModalOpen } =
       useContext(ModalContext);
+   const {
+      setBottomPanelContent,
+      setBottomPanelHeading,
+      setBottomPanelHeightDvh,
+      setBottomPanelZIndex,
+      setIsBottomPanelOpen,
+   } = useContext(BottomPanelContext);
    const {
       carouselContainerRef,
       scrollToSlide,
@@ -85,24 +93,30 @@ export default function Distribute(): JSX.Element {
       );
       const isAllReqValid = ArrayOfObjects.doAllObjectsHaveKeyValuePair(reqCheck, 'isValid', true);
       function handleModal(): void {
-         setModalHeader(isAllReqValid ? 'Distribute' : 'Requirements');
-         setModalContent(isAllReqValid ? <DistributeForm /> : <HelpRequirements />);
-         setModalZIndex(100);
-         setIsModalOpen(true);
+         if (!isPortableDevice) {
+            setModalHeader(isAllReqValid ? 'Distribute' : 'Requirements');
+            setModalContent(isAllReqValid ? <DistributeForm /> : <HelpRequirements />);
+            setModalZIndex(100);
+            setIsModalOpen(true);
+            return;
+         }
+         setBottomPanelHeading(isAllReqValid ? 'Distribute' : 'Requirements');
+         setBottomPanelContent(isAllReqValid ? <DistributeForm /> : <HelpRequirements />);
+         //setBottomPanelHeightDvh(isAllReqValid ? 50 : 100);
+         setBottomPanelZIndex(100);
+         setIsBottomPanelOpen(true);
       }
       setHeaderRightElement(
          isAllReqValid ? <Add onClick={handleModal} /> : <QMark onClick={handleModal} />,
       );
    }, [currentAccounts, income, expenses]);
 
-   // -- FUNCTIONS -- //
    function handleScroll(): void {
       const currentLeftScroll = carouselContainerRef.current?.scrollLeft;
       if (currentLeftScroll! < prevScrollPos && currentLeftScroll === 0) setSlideName('history');
       setPrevScrollPos(currentLeftScroll!);
    }
 
-   // -- RENDER -- //
    if (isLoading && !isPaused) {
       if (!isPortableDevice) return <Loader isDisplayed />;
       return <CardListPlaceholder repeatItemCount={7} />;
