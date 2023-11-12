@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import ApiErrorContextProvider from './apiError/apiErrorContextProvider';
 import { BannerContextProvider } from './banner/BannerContextProvider';
 import BottomPanelContextProvider from './bottomPanel/BottomPanelContextProvider';
+import FooterContextProvider from './footer/FooterContextProvider';
 import HeaderContextProvider from './header/HeaderContextProvider';
 import { LoaderContextProvider } from './loader/LoaderContextProvider';
 import ModalContextProvider from './modal/ModalContextProvider';
@@ -22,7 +23,9 @@ export default function WidgetContextProviders(props: IWidgetContextProvidersPro
                   <ModalContextProvider>
                      <BottomPanelContextProvider>
                         <PopupMenuContextProvider>
-                           <HeaderContextProvider>{children}</HeaderContextProvider>
+                           <FooterContextProvider>
+                              <HeaderContextProvider>{children}</HeaderContextProvider>
+                           </FooterContextProvider>
                         </PopupMenuContextProvider>
                      </BottomPanelContextProvider>
                   </ModalContextProvider>

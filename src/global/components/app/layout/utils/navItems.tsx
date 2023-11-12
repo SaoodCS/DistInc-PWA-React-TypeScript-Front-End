@@ -1,11 +1,17 @@
+import { DataFunnel } from '@styled-icons/fluentui-system-filled/DataFunnel';
 import { Settings } from '@styled-icons/fluentui-system-filled/Settings';
 import { SignOut } from '@styled-icons/fluentui-system-filled/SignOut';
-import { DataFunnel } from '@styled-icons/fluentui-system-filled/DataFunnel';
 import { Dashboard } from '@styled-icons/material-rounded/Dashboard';
 import { ChatHistory } from '@styled-icons/remix-fill/ChatHistory';
 
-export default class NavItems {
-   static footer = [
+export namespace NavItems {
+   export type IFooterNames = 'dashboard' | 'details' | 'distribute' | 'settings';
+   interface IFooter {
+      name: IFooterNames;
+      icon: JSX.Element;
+   }
+
+   export const footer: IFooter[] = [
       {
          name: 'dashboard',
          icon: <Dashboard />,
@@ -24,7 +30,7 @@ export default class NavItems {
       },
    ];
 
-   static sidebar = [
+   export const sidebar = [
       ...NavItems.footer,
       {
          name: 'signout',
@@ -32,3 +38,5 @@ export default class NavItems {
       },
    ];
 }
+
+export default NavItems;

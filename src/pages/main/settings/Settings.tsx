@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { Switcher } from '../../../global/components/lib/button/switch/Style';
 import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Carousel';
@@ -11,6 +12,8 @@ import {
 } from '../../../global/components/lib/menuList/Style';
 import ConditionalRender from '../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
+import FooterHooks from '../../../global/context/widget/footer/hooks/FooterHooks';
+import useFooterContext from '../../../global/context/widget/footer/hooks/useFooterContext';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
 import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 import { auth } from '../../../global/firebase/config/config';
@@ -18,7 +21,6 @@ import StringHelper from '../../../global/helpers/dataTypes/string/StringHelper'
 import useSessionStorage from '../../../global/hooks/useSessionStorage';
 import AccountSlide from './components/account/AccountSlide';
 import NSettings from './namespace/NSettings';
-import { useQueryClient } from '@tanstack/react-query';
 
 export default function Settings(): JSX.Element {
    const { toggleTheme, isDarkTheme } = useThemeContext();
@@ -26,16 +28,20 @@ export default function Settings(): JSX.Element {
    const [slide2, setSlide2] = useSessionStorage<NSettings.TSlides | ''>(NSettings.key.slide2, '');
    const [prevScrollPos, setPrevScrollPos] = useState<number>(0);
    const { setHeaderTitle, setHandleBackBtnClick, hideAndResetBackBtn } = useHeaderContext();
+   const { setHandleFooterItemSecondClick, resetFooterItemSecondClick } = useFooterContext();
    HeaderHooks.useOnUnMount.hideAndResetBackBtn();
+   FooterHooks.useOnUnMount.resetFooterItemSecondClick();
    const queryClient = useQueryClient();
 
    useEffect(() => {
       if (currentSlide === 1) {
          hideAndResetBackBtn();
          setHeaderTitle('Settings');
+         resetFooterItemSecondClick();
       } else {
          setHandleBackBtnClick(() => scrollToSlide(1));
          setHeaderTitle(StringHelper.firstLetterToUpper(slide2));
+         setHandleFooterItemSecondClick(() => scrollToSlide(1));
       }
    }, [currentSlide]);
 

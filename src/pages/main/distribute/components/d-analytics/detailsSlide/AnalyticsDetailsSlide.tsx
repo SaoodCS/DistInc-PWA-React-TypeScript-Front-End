@@ -10,11 +10,11 @@ import useThemeContext from '../../../../../../global/context/theme/hooks/useThe
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
+import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import useSessionStorage from '../../../../../../global/hooks/useSessionStorage';
 import { DistributeContext } from '../../../context/DistributeContext';
 import NDist from '../../../namespace/NDist';
-import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 
 export default function AnalyticsDetailsSlide(): JSX.Element {
    const { slide2Data } = useContext(DistributeContext);
@@ -94,7 +94,7 @@ export default function AnalyticsDetailsSlide(): JSX.Element {
                      {item.key === 'prevMonth' && (
                         <Fragment>
                            {(item.data as NDist.Carousel.IPrevMonthData[]).map((data) => (
-                              <TextColourizer fontSize="0.85em" padding="0.1em 0em" key={item.key}>
+                              <TextColourizer fontSize="0.85em" padding="0.1em 0em" key={data.key}>
                                  <TextColourizer bold>{data.title}</TextColourizer>
                                  {NumberHelper.asCurrencyStr(data.data)}
                               </TextColourizer>

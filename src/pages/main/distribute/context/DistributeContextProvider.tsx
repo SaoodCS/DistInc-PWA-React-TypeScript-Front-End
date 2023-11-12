@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import useCarousel from '../../../../global/components/lib/carousel/hooks/useCarousel';
+import FooterHooks from '../../../../global/context/widget/footer/hooks/FooterHooks';
+import useFooterContext from '../../../../global/context/widget/footer/hooks/useFooterContext';
 import useHeaderContext from '../../../../global/context/widget/header/hooks/useHeaderContext';
 import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import useSessionStorage from '../../../../global/hooks/useSessionStorage';
@@ -28,7 +30,9 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
       NDist.Carousel.key.currentSlideName,
       ArrayOfObjects.getObjWithKeyValuePair(NDist.Carousel.slides, 'slideNo', 1).name,
    );
+   FooterHooks.useOnUnMount.resetFooterItemSecondClick();
    const { setHandleBackBtnClick, hideAndResetBackBtn, setHeaderTitle } = useHeaderContext();
+   const { setHandleFooterItemSecondClick, resetFooterItemSecondClick } = useFooterContext();
 
    useEffect(() => {
       const slideTitle = NDist.Carousel.getSlideTitle(slideName);
@@ -38,10 +42,12 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
       if (!isSlideNameHistory) {
          if (isCurrentSlide1) setCurrentSlide(2);
          setHandleBackBtnClick(() => scrollToSlide(1));
+         setHandleFooterItemSecondClick(() => scrollToSlide(1));
       }
       if (isSlideNameHistory) {
          if (!isCurrentSlide1) setCurrentSlide(1);
          hideAndResetBackBtn();
+         resetFooterItemSecondClick();
       }
    }, [slideName]);
 
