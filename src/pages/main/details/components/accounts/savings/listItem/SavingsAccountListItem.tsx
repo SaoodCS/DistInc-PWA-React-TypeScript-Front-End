@@ -55,6 +55,7 @@ export default function SavingsAccountListItem(props: ISavingsAccountListItem): 
          type: isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent,
          target: isDarkTheme ? Color.darkThm.error : Color.lightThm.error,
          tracked: isDarkTheme ? Color.darkThm.success : Color.lightThm.success,
+         amount: isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning,
       };
       return Color.setRgbOpacity(mapper[tag], 0.4);
    }
@@ -67,13 +68,22 @@ export default function SavingsAccountListItem(props: ISavingsAccountListItem): 
                   <ItemTitleWrapper>
                      <ItemTitle>{item.accountName}</ItemTitle>
                   </ItemTitleWrapper>
-                  <ItemValue>
-                     {!!item.currentBalance &&
-                        NumberHelper.asCurrencyStr(item.currentBalance as number)}
-                  </ItemValue>
+                  <ConditionalRender condition={isPortableDevice}>
+                     <ItemValue>
+                        {!!item.currentBalance &&
+                           NumberHelper.asCurrencyStr(item.currentBalance as number)}
+                     </ItemValue>
+                  </ConditionalRender>
                </FirstRowWrapper>
                <SecondRowTagsWrapper>
                   <Tag bgColor={tagColor('account')}>Savings Account</Tag>
+                  <ConditionalRender condition={!isPortableDevice && !!item.currentBalance}>
+                     <Tag bgColor={tagColor('amount')}>
+                        Current Balance:{' '}
+                        {!!item.currentBalance &&
+                           NumberHelper.asCurrencyStr(item.currentBalance as number)}
+                     </Tag>
+                  </ConditionalRender>
                   <Tag bgColor={tagColor('type')}>Savings</Tag>
                   <ConditionalRender condition={!!item.targetToReach}>
                      <Tag bgColor={tagColor('target')}>{`Target: £${item.targetToReach}`}</Tag>

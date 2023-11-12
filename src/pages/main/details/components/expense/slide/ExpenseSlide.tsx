@@ -85,6 +85,7 @@ export default function ExpenseSlide(): JSX.Element {
          type: isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent,
          paused: isDarkTheme ? Color.darkThm.error : Color.lightThm.error,
          paymentType: isDarkTheme ? Color.darkThm.success : Color.lightThm.success,
+         amount: isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning,
       };
       return Color.setRgbOpacity(mapper[tag], 0.4);
    }
@@ -127,10 +128,17 @@ export default function ExpenseSlide(): JSX.Element {
                         <ItemTitleWrapper>
                            <ItemTitle>{item.expenseName}</ItemTitle>
                         </ItemTitleWrapper>
-                        <ItemValue>{NumberHelper.asCurrencyStr(item.expenseValue)}</ItemValue>
+                        <ConditionalRender condition={isPortableDevice}>
+                           <ItemValue>{NumberHelper.asCurrencyStr(item.expenseValue)}</ItemValue>
+                        </ConditionalRender>
                      </FirstRowWrapper>
                      <SecondRowTagsWrapper>
                         <Tag bgColor={tagColor('expense')}>Expense</Tag>
+                        <ConditionalRender condition={!isPortableDevice}>
+                           <Tag bgColor={tagColor('amount')}>
+                              Amount: {NumberHelper.asCurrencyStr(item.expenseValue)}
+                           </Tag>
+                        </ConditionalRender>
                         <Tag bgColor={tagColor('type')}>{expenseTypeLabel(item.expenseType)}</Tag>
                         <Tag bgColor={tagColor('paymentType')}>{item.paymentType}</Tag>
                         <ConditionalRender condition={BoolHelper.convert(item.paused)}>

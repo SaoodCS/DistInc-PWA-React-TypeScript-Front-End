@@ -14,6 +14,7 @@ import {
 import FlatListPlaceholder from '../../../../../../global/components/lib/flatList/placeholder/FlatListPlaceholder';
 import Loader from '../../../../../../global/components/lib/loader/Loader';
 import PullToRefresh from '../../../../../../global/components/lib/pullToRefresh/PullToRefresh';
+import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import { ModalContext } from '../../../../../../global/context/widget/modal/ModalContext';
@@ -71,8 +72,12 @@ export default function IncomeSlide(): JSX.Element {
       }
    }
 
-   function tagColor(): string {
-      return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.4);
+   function tagColor(tag: string): string {
+      const mapper: { [key: string]: string } = {
+         income: isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt,
+         amount: isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning,
+      };
+      return Color.setRgbOpacity(mapper[tag], 0.4);
    }
 
    function sortData(fetchedData: typeof data): IIncomeFormInputs[] {
@@ -106,10 +111,17 @@ export default function IncomeSlide(): JSX.Element {
                         <ItemTitleWrapper>
                            <ItemTitle>{item.incomeName}</ItemTitle>
                         </ItemTitleWrapper>
-                        <ItemValue>{NumberHelper.asCurrencyStr(item.incomeValue)}</ItemValue>
+                        <ConditionalRender condition={isPortableDevice}>
+                           <ItemValue>{NumberHelper.asCurrencyStr(item.incomeValue)}</ItemValue>
+                        </ConditionalRender>
                      </FirstRowWrapper>
                      <SecondRowTagsWrapper>
-                        <Tag bgColor={tagColor()}>Income</Tag>
+                        <Tag bgColor={tagColor('income')}>Income</Tag>
+                        <ConditionalRender condition={!isPortableDevice}>
+                           <Tag bgColor={tagColor('amount')}>
+                              Amount: {NumberHelper.asCurrencyStr(item.incomeValue)}
+                           </Tag>
+                        </ConditionalRender>
                      </SecondRowTagsWrapper>
                   </FlatListItem>
                ))}
