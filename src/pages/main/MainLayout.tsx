@@ -10,7 +10,6 @@ import Sidebar from '../../global/components/app/layout/sidebar/Sidebar';
 import ConditionalRender from '../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../global/context/theme/hooks/useThemeContext';
 import useHeaderContext from '../../global/context/widget/header/hooks/useHeaderContext';
-import DistributeContextProvider from './distribute/context/DistributeContextProvider';
 
 export default function MainLayout(): JSX.Element {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
@@ -27,11 +26,9 @@ export default function MainLayout(): JSX.Element {
                {headerRightElement}
             </HeaderRightElWrapper>
          </Header>
-         <DistributeContextProvider>
-            <Body isDarkTheme={isDarkTheme}>
-               <Outlet />
-            </Body>
-         </DistributeContextProvider>
+         <Body isDarkTheme={isDarkTheme}>
+            <Outlet />
+         </Body>
          <ConditionalRender condition={!isPortableDevice}>
             <Sidebar />
          </ConditionalRender>

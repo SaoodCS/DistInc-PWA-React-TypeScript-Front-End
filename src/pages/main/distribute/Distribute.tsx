@@ -23,9 +23,18 @@ import SavingsAccHistDetailsSlide from './components/d-savingsHist/detailsSlide/
 import DistributeForm from './components/form/DistributerForm';
 import HistorySlide from './components/historySlide/HistorySlide';
 import { DistributeContext } from './context/DistributeContext';
+import DistributeContextProvider from './context/DistributeContextProvider';
 import NDist from './namespace/NDist';
 
 export default function Distribute(): JSX.Element {
+   return (
+      <DistributeContextProvider>
+         <DistributePageTemplate />
+      </DistributeContextProvider>
+   );
+}
+
+function DistributePageTemplate(): JSX.Element {
    // -- CONTEXTS + STATES -- //
    HeaderHooks.useOnUnMount.resetHeaderRightEl();
    HeaderHooks.useOnUnMount.hideAndResetBackBtn();
@@ -128,7 +137,7 @@ export default function Distribute(): JSX.Element {
          onScroll={handleScroll}
          style={{ height: '100%' }}
       >
-         <CarouselSlide height={'100%'} style={{}}>
+         <CarouselSlide height={'100%'}>
             <HistorySlide />
          </CarouselSlide>
          <CarouselSlide height={'100%'}>
