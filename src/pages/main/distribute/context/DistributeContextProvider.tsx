@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useCarousel from '../../../../global/components/lib/carousel/hooks/useCarousel';
+import useHeaderContext from '../../../../global/context/widget/header/hooks/useHeaderContext';
 import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import useSessionStorage from '../../../../global/hooks/useSessionStorage';
 import NDist from '../namespace/NDist';
@@ -16,6 +17,7 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
       containerRef: carouselContainerRef,
       scrollToSlide,
       currentSlide,
+      setCurrentSlide,
    } = useCarousel(1, NDist.Carousel.key.currentSlideNo);
    const [slide2Data, setSlide2Data] = useState<
       NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist | undefined
@@ -26,6 +28,22 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
       NDist.Carousel.key.currentSlideName,
       ArrayOfObjects.getObjWithKeyValuePair(NDist.Carousel.slides, 'slideNo', 1).name,
    );
+   const { setHandleBackBtnClick, hideAndResetBackBtn, setHeaderTitle } = useHeaderContext();
+
+   useEffect(() => {
+      const slideTitle = NDist.Carousel.getSlideTitle(slideName);
+      setHeaderTitle(slideTitle);
+      const isSlideNameHistory = slideName === 'history';
+      const isCurrentSlide1 = currentSlide === 1;
+      if (!isSlideNameHistory) {
+         if (isCurrentSlide1) setCurrentSlide(2);
+         setHandleBackBtnClick(() => scrollToSlide(1));
+      }
+      if (isSlideNameHistory) {
+         if (!isCurrentSlide1) setCurrentSlide(1);
+         hideAndResetBackBtn();
+      }
+   }, [slideName]);
 
    function handleItemClick(
       item: NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist,

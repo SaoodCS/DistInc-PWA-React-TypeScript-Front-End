@@ -217,6 +217,11 @@ export namespace NDist {
          historySlideScrollSaver: `${storageKeyPrefix}.historySlide`,
          currentSlideName: `${storageKeyPrefix}.slide2Name`,
       };
+
+      export function getSlideTitle(slideName: ISlide1Name | ISlide2NameOptions): string {
+         return ArrayOfObjects.getObjWithKeyValuePair(NDist.Carousel.slides, 'name', slideName)
+            .title;
+      }
    }
 
    export class Filterer {

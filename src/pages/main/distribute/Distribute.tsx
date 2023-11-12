@@ -49,14 +49,8 @@ function DistributePageTemplate(): JSX.Element {
       setBottomPanelZIndex,
       setIsBottomPanelOpen,
    } = useContext(BottomPanelContext);
-   const {
-      carouselContainerRef,
-      scrollToSlide,
-      currentSlide,
-      slideName,
-      setSlideName,
-      handleItemClick,
-   } = useContext(DistributeContext);
+   const { carouselContainerRef, scrollToSlide, slideName, setSlideName, handleItemClick } =
+      useContext(DistributeContext);
    const [prevScrollPos, setPrevScrollPos] = useState<number>(0);
 
    // -- REACT-QUERY DATA -- //
@@ -78,20 +72,6 @@ function DistributePageTemplate(): JSX.Element {
          }
       },
    });
-
-   useEffect(() => {
-      const slideTitle = ArrayOfObjects.getObjWithKeyValuePair(
-         NDist.Carousel.slides,
-         'name',
-         slideName,
-      ).title;
-      setHeaderTitle(slideTitle);
-      if (currentSlide === 1) {
-         hideAndResetBackBtn();
-      } else {
-         setHandleBackBtnClick(() => scrollToSlide(1));
-      }
-   }, [currentSlide, slideName]);
 
    useEffect(() => {
       const reqCheck = NDist.Calc.checkPreReqsMet(
