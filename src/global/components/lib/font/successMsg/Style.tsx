@@ -2,6 +2,7 @@ import { CheckCircle } from '@styled-icons/material/CheckCircle';
 import styled from 'styled-components';
 import Color from '../../../../css/colors';
 
+
 export const SuccessMsgText = styled.div`
    margin-left: 0.5em;
    font-size: 0.9em;
@@ -20,3 +21,4 @@ export const SuccessMsgHolder = styled.div`
    align-items: center;
    width: 100%;
 `;
+

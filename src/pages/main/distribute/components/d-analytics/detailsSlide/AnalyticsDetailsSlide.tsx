@@ -71,7 +71,7 @@ export default function AnalyticsDetailsSlide(): JSX.Element {
             </TextColourizer>
             <TrashIcon
                darktheme={BoolHelper.toString(isDarkTheme)}
-               height={'2em'}
+               height={'1.5em'}
                onClick={() => handleDelete()}
             />
          </FlexRowWrapper>

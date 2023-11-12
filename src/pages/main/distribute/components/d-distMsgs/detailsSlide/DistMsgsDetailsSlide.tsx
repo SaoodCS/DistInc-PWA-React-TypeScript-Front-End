@@ -17,14 +17,14 @@ import useThemeContext from '../../../../../../global/context/theme/hooks/useThe
 import Color from '../../../../../../global/css/colors';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
+import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import useSessionStorage from '../../../../../../global/hooks/useSessionStorage';
 import { DistributeContext } from '../../../context/DistributeContext';
 import NDist from '../../../namespace/NDist';
-import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 
 export default function DistMsgsDetailsSlide(): JSX.Element {
    const { slide2Data, currentSlide, scrollToSlide } = useContext(DistributeContext);
-   const { isDarkTheme } = useThemeContext();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
    const distMsgsItem = slide2Data as NDist.IDistMsgs;
    const [prevDistMsgs, setPrevDistMsgs] = useSessionStorage('prevDistMsgItem', distMsgsItem);
    const [completedStepNo, setCompletedStepNo] = useSessionStorage(
@@ -89,7 +89,7 @@ export default function DistMsgsDetailsSlide(): JSX.Element {
 
    return (
       <CarouselAndNavBarWrapper style={{ width: '100%' }}>
-         <FlexRowWrapper justifyContent="space-evenly" padding="1em 0em 0em 0em">
+         <FlexRowWrapper justifyContent={'left'} padding="1em 0em 0em 1em">
             <TextColourizer fontSize="2em" bold>
                {DateHelper.fromDDMMYYYYToWord(distMsgsToRender().timestamp)}
             </TextColourizer>

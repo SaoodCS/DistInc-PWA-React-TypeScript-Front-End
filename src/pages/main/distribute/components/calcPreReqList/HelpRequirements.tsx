@@ -1,7 +1,7 @@
+import ErrorMsg from '../../../../../global/components/lib/font/errorMsg/ErrorMsg';
+import SuccessMsg from '../../../../../global/components/lib/font/successMsg/SuccessMsg';
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { BulletList, ListItem } from '../../../../../global/components/lib/list/Style';
-import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
-import Color from '../../../../../global/css/colors';
 import ArrayOfObjects from '../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import IncomeClass from '../../../details/components/Income/class/Class';
 import CurrentClass from '../../../details/components/accounts/current/class/Class';
@@ -12,17 +12,15 @@ export default function HelpRequirements(): JSX.Element {
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
    const { data: income } = IncomeClass.useQuery.getIncomes();
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
-   const { isDarkTheme } = useThemeContext();
 
-   function itemColor(requirement: NDist.Calc.IPreReqs): string {
+   function isReqMet(requirement: NDist.Calc.IPreReqs): boolean {
       const reqCheck = NDist.Calc.checkPreReqsMet(
          currentAccounts || {},
          income || {},
          expenses || {},
       );
       const isValid = ArrayOfObjects.getObjWithKeyValuePair(reqCheck, 'name', requirement).isValid;
-      if (isValid) return isDarkTheme ? Color.darkThm.success : Color.lightThm.success;
-      return isDarkTheme ? Color.darkThm.error : Color.lightThm.error;
+      return isValid;
    }
 
    return (
@@ -30,11 +28,25 @@ export default function HelpRequirements(): JSX.Element {
          <TextColourizer>
             The following are required in order to calculate your income distribution:
          </TextColourizer>
-         <BulletList>
-            <ListItem color={itemColor('salaryExp')}>Salary & Expenses Current Account</ListItem>
-            <ListItem color={itemColor('spending')}>Spendings Current Account</ListItem>
-            <ListItem color={itemColor('income')}>At least 1 Income</ListItem>
-            <ListItem color={itemColor('expense')}>At least 1 Expense</ListItem>
+         <BulletList removeBullets>
+            <ListItem>
+               {isReqMet('salaryExp') && <SuccessMsg>Salary & Expenses Current Account</SuccessMsg>}
+               {!isReqMet('salaryExp') && <ErrorMsg>Salary & Expenses Current Account</ErrorMsg>}
+            </ListItem>
+            <ListItem>
+               {isReqMet('salaryExp') && <SuccessMsg>Spendings Current Account</SuccessMsg>}
+               {!isReqMet('salaryExp') && <ErrorMsg>Spendings Current Account</ErrorMsg>}
+            </ListItem>
+            <ListItem>
+               {isReqMet('income') && <SuccessMsg>At least 1 Income</SuccessMsg>}
+               {!isReqMet('income') && <ErrorMsg>At least 1 Income</ErrorMsg>}
+            </ListItem>
+            <ListItem>
+               <ListItem>
+                  {isReqMet('expense') && <SuccessMsg>At least 1 Expense</SuccessMsg>}
+                  {!isReqMet('expense') && <ErrorMsg>At least 1 Expense</ErrorMsg>}
+               </ListItem>
+            </ListItem>
          </BulletList>
       </>
    );

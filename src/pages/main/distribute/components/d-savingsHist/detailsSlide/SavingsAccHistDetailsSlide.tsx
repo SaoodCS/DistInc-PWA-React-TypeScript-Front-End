@@ -29,7 +29,7 @@ export default function SavingsAccHistDetailsSlide(): JSX.Element {
       'prevSavingsAccHisItem',
       savingsAccHistItem,
    );
-   const { isDarkTheme } = useThemeContext();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
    const { scrollToSlide } = useContext(DistributeContext);
 
    const { data: savingsAccounts } = SavingsClass.useQuery.getSavingsAccounts();
@@ -83,7 +83,7 @@ export default function SavingsAccHistDetailsSlide(): JSX.Element {
             </TextColourizer>
             <TrashIcon
                darktheme={BoolHelper.toString(isDarkTheme)}
-               height={'2em'}
+               height={'1.5em'}
                onClick={() => handleDelete()}
             />
          </FlexRowWrapper>
@@ -130,23 +130,25 @@ export default function SavingsAccHistDetailsSlide(): JSX.Element {
                   </FlexColumnWrapper>
                </CardWidgetWrapper>
 
-               <FlexColumnWrapper>
-                  <TextColourizer fontSize="1.5em" bold padding="0.5em 0em 0em 0em">
+               <FlexColumnWrapper justifyContent="center">
+                  <TextColourizer fontSize="1.5em" bold padding="0.5em 0em 1em 0em">
                      Progress
                   </TextColourizer>
-                  <FlexRowWrapper justifyContent="center" padding={'1em 5em 5em 5em'}>
-                     <CircularProgressbar
-                        value={calculatePercentage()}
-                        text={`${calculatePercentage()}%`}
-                        styles={buildStyles({
-                           textColor: isDarkTheme ? Color.lightThm.accent : Color.darkThm.accent,
-                           pathColor: isDarkTheme ? Color.lightThm.accent : Color.darkThm.accent,
-                           trailColor: isDarkTheme
-                              ? Color.darkThm.inactive
-                              : Color.lightThm.inactive,
-                        })}
-                     />
-                  </FlexRowWrapper>
+                  <FlexColumnWrapper width="100%" alignItems={isPortableDevice ? 'center' : 'left'}>
+                     <FlexRowWrapper width="15em">
+                        <CircularProgressbar
+                           value={calculatePercentage()}
+                           text={`${calculatePercentage()}%`}
+                           styles={buildStyles({
+                              textColor: isDarkTheme ? Color.lightThm.accent : Color.darkThm.accent,
+                              pathColor: isDarkTheme ? Color.lightThm.accent : Color.darkThm.accent,
+                              trailColor: isDarkTheme
+                                 ? Color.darkThm.inactive
+                                 : Color.lightThm.inactive,
+                           })}
+                        />
+                     </FlexRowWrapper>
+                  </FlexColumnWrapper>
                </FlexColumnWrapper>
             </ConditionalRender>
          </FlexColumnWrapper>

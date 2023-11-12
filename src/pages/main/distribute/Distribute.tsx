@@ -96,7 +96,7 @@ function DistributePageTemplate(): JSX.Element {
       setHeaderRightElement(
          isAllReqValid ? <Add onClick={handleModal} /> : <QMark onClick={handleModal} />,
       );
-   }, [currentAccounts, income, expenses]);
+   }, [currentAccounts, income, expenses, isPortableDevice]);
 
    function handleScroll(): void {
       const currentLeftScroll = carouselContainerRef.current?.scrollLeft;
