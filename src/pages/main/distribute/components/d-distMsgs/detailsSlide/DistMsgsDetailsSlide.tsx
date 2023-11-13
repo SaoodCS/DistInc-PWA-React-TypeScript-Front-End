@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { Stepper } from '@zendeskgarden/react-accordions';
-import { useContext, useLayoutEffect } from 'react';
+import { useContext } from 'react';
 import { CarouselAndNavBarWrapper } from '../../../../../../global/components/lib/carousel/NavBar';
 import { TextColourizer } from '../../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { ArrowCircleLeftIcon } from '../../../../../../global/components/lib/icons/arrows/ArrowCircleLeft';
@@ -20,10 +20,9 @@ import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelp
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import { DistributeContext } from '../../../context/DistributeContext';
 import NDist from '../../../namespace/NDist';
-import HeaderHooks from '../../../../../../global/context/widget/header/hooks/HeaderHooks';
 
 export default function DistMsgsDetailsSlide(): JSX.Element {
-   const { slide2Data, currentSlide, scrollToSlide, distCompletedStepNo, setDistCompletedStepNo } =
+   const { slide2Data, currentSlide, scrollToSlide, distStepsCompleted, setDistStepsCompleted } =
       useContext(DistributeContext);
    const { isDarkTheme } = useThemeContext();
    const distMsgsItem = slide2Data as NDist.IDistMsgs;
@@ -38,15 +37,15 @@ export default function DistMsgsDetailsSlide(): JSX.Element {
 
    function changeCompletedStep(stepNo: number): void {
       if (stepNo < 0 || stepNo > distMsgsItem.msgs.length) return;
-      setDistCompletedStepNo(stepNo);
+      setDistStepsCompleted(stepNo);
    }
 
    function isCompleted(stepNo: number): boolean {
-      return stepNo <= distCompletedStepNo;
+      return stepNo <= distStepsCompleted;
    }
 
    function isNextToComplete(stepNo: number): boolean {
-      return stepNo === distCompletedStepNo + 1;
+      return stepNo === distStepsCompleted + 1;
    }
 
    function setBorderLeftCol(index: number): string {
@@ -76,12 +75,12 @@ export default function DistMsgsDetailsSlide(): JSX.Element {
                <ArrowCircleLeftIcon
                   height={'2em'}
                   darktheme={BoolHelper.boolToStr(isDarkTheme)}
-                  onClick={() => changeCompletedStep(distCompletedStepNo - 1)}
+                  onClick={() => changeCompletedStep(distStepsCompleted - 1)}
                />
                <ArrowCircleRightIcon
                   height={'2em'}
                   darktheme={BoolHelper.boolToStr(isDarkTheme)}
-                  onClick={() => changeCompletedStep(distCompletedStepNo + 1)}
+                  onClick={() => changeCompletedStep(distStepsCompleted + 1)}
                />
                <RefreshCircleIcon
                   height={'2em'}
@@ -96,7 +95,7 @@ export default function DistMsgsDetailsSlide(): JSX.Element {
             </FlexRowWrapper>
          </FlexRowWrapper>
 
-         <StyledStepper activeIndex={distCompletedStepNo}>
+         <StyledStepper activeIndex={distStepsCompleted}>
             {distMsgsItem.msgs.map((msg, index) => (
                <Stepper.Step key={msg} onClick={() => changeCompletedStep(index + 1)}>
                   <StyledStepperLabel

@@ -3,17 +3,20 @@ import {
    CardListTitle,
    CardListWrapper,
 } from '../../../../../global/components/lib/cardList/Style';
+import CardListPlaceholder from '../../../../../global/components/lib/cardList/placeholder/CardListPlaceholder';
 import { CarouselAndNavBarWrapper } from '../../../../../global/components/lib/carousel/NavBar';
+import FetchError from '../../../../../global/components/lib/fetch/fetchError/FetchError';
+import OfflineFetch from '../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import { FlatListWrapper } from '../../../../../global/components/lib/flatList/Style';
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { FilterIcon } from '../../../../../global/components/lib/icons/filter/FilterIcon';
 import { HorizontalMenuDots } from '../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
+import Loader from '../../../../../global/components/lib/loader/Loader';
 import { FlexRowWrapper } from '../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
 import { LargeScrnResponsiveFlexWrap } from '../../../../../global/components/lib/positionModifiers/responsiveFlexWrap/LargeScrnResponsiveFlexWrap';
 import PullToRefresh from '../../../../../global/components/lib/pullToRefresh/PullToRefresh';
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
-import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
 import { PopupMenuContext } from '../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import BoolHelper from '../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import DateHelper from '../../../../../global/helpers/dataTypes/date/DateHelper';
@@ -28,7 +31,7 @@ import MonthPopupMenu from '../monthPopupMenu/MonthPopupMenu';
 
 export default function HistorySlide(): JSX.Element {
    const [filterOutState] = useURLState({ key: NDist.Filterer.key });
-   const { isDarkTheme } = useThemeContext();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
    const {
       containerRef: scrollSaverRef,
       handleOnScroll,
@@ -44,7 +47,13 @@ export default function HistorySlide(): JSX.Element {
       setCloseOnInnerClick,
    } = useContext(PopupMenuContext);
 
-   const { data: calcDistData, refetch } = NDist.API.useQuery.getCalcDist();
+   const {
+      data: calcDistData,
+      isLoading,
+      isPaused,
+      error,
+      refetch,
+   } = NDist.API.useQuery.getCalcDist();
 
    async function handleOnRefresh(): Promise<void> {
       await refetch();
@@ -77,6 +86,13 @@ export default function HistorySlide(): JSX.Element {
       setPMWidthPx(200);
       setCloseOnInnerClick(false);
    }
+
+   if (isLoading && !isPaused) {
+      if (!isPortableDevice) return <Loader isDisplayed />;
+      return <CardListPlaceholder repeatItemCount={7} />;
+   }
+   if (isPaused) return <OfflineFetch />;
+   if (error || !calcDistData) return <FetchError />;
 
    return (
       <CarouselAndNavBarWrapper style={{ width: '100%' }}>

@@ -1,33 +1,12 @@
-import { QuestionOctagonFill as QMark } from '@styled-icons/bootstrap/QuestionOctagonFill';
-import { Add } from '@styled-icons/fluentui-system-filled/Add';
-import { useContext, useEffect, useState } from 'react';
-import CardListPlaceholder from '../../../global/components/lib/cardList/placeholder/CardListPlaceholder';
+import { useContext, useState } from 'react';
 import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Carousel';
-import FetchError from '../../../global/components/lib/fetch/fetchError/FetchError';
-import OfflineFetch from '../../../global/components/lib/fetch/offlineFetch/offlineFetch';
-import { AddIcon } from '../../../global/components/lib/icons/add/AddIcon';
-import { QMarkIcon } from '../../../global/components/lib/icons/qMark/QMark';
-import Loader from '../../../global/components/lib/loader/Loader';
 import ConditionalRender from '../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
-import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
-import { BottomPanelContext } from '../../../global/context/widget/bottomPanel/BottomPanelContext';
-import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
-import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
-import { ModalContext } from '../../../global/context/widget/modal/ModalContext';
-import ArrayOfObjects from '../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
-import BoolHelper from '../../../global/helpers/dataTypes/bool/BoolHelper';
-import IncomeClass from '../details/components/Income/class/Class';
-import CurrentClass from '../details/components/accounts/current/class/Class';
-import ExpensesClass from '../details/components/expense/class/ExpensesClass';
-import HelpRequirements from './components/calcPreReqList/HelpRequirements';
 import AnalyticsDetailsSlide from './components/d-analytics/detailsSlide/AnalyticsDetailsSlide';
 import DistMsgsDetailsSlide from './components/d-distMsgs/detailsSlide/DistMsgsDetailsSlide';
 import SavingsAccHistDetailsSlide from './components/d-savingsHist/detailsSlide/SavingsAccHistDetailsSlide';
-import DistributeForm from './components/form/DistributerForm';
 import HistorySlide from './components/historySlide/HistorySlide';
 import { DistributeContext } from './context/DistributeContext';
 import DistributeContextProvider from './context/DistributeContextProvider';
-import NDist from './namespace/NDist';
 
 export default function Distribute(): JSX.Element {
    return (
@@ -38,93 +17,14 @@ export default function Distribute(): JSX.Element {
 }
 
 function DistributePageTemplate(): JSX.Element {
-   // -- CONTEXTS + STATES -- //
-   const { isPortableDevice, isDarkTheme } = useThemeContext();
-   const { setHeaderRightElement } = useHeaderContext();
-   const { toggleModal, setModalContent, setModalZIndex, setModalHeader, isModalOpen } =
-      useContext(ModalContext);
-   const {
-      setBottomPanelContent,
-      setBottomPanelHeading,
-      setBottomPanelZIndex,
-      isBottomPanelOpen,
-      toggleBottomPanel,
-   } = useContext(BottomPanelContext);
-   const {
-      carouselContainerRef,
-      scrollToSlide,
-      slideName,
-      setSlideName,
-      handleItemClick,
-      currentSlide,
-   } = useContext(DistributeContext);
+   const { carouselContainerRef, slideName, setSlideName } = useContext(DistributeContext);
    const [prevScrollPos, setPrevScrollPos] = useState<number>(0);
-
-   // -- REACT-QUERY DATA -- //
-   const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
-   const { data: income } = IncomeClass.useQuery.getIncomes();
-   const { data: expenses } = ExpensesClass.useQuery.getExpenses();
-   const {
-      data: calcDistData,
-      isLoading,
-      isPaused,
-      error,
-   } = NDist.API.useQuery.getCalcDist({
-      onSuccess: () => {
-         if (isModalOpen || isBottomPanelOpen) {
-            toggleModal(false);
-            toggleBottomPanel(false);
-            const firstDistObj = calcDistData?.distributer[0];
-            if (firstDistObj) handleItemClick(firstDistObj, 'distributer');
-            scrollToSlide(2);
-         }
-      },
-   });
-
-   useEffect(() => {
-      const reqCheck = NDist.Calc.checkPreReqsMet(
-         currentAccounts || {},
-         income || {},
-         expenses || {},
-      );
-      const isAllReqValid = ArrayOfObjects.doAllObjectsHaveKeyValuePair(reqCheck, 'isValid', true);
-      function handleModal(): void {
-         if (!isPortableDevice) {
-            toggleModal(true);
-            setModalHeader(isAllReqValid ? 'Distribute' : 'Requirements');
-            setModalContent(isAllReqValid ? <DistributeForm /> : <HelpRequirements />);
-            setModalZIndex(100);
-            return;
-         }
-         toggleBottomPanel(true);
-         setBottomPanelHeading(isAllReqValid ? 'Distribute' : 'Requirements');
-         setBottomPanelContent(isAllReqValid ? <DistributeForm /> : <HelpRequirements />);
-         setBottomPanelZIndex(100);
-      }
-      if (currentSlide === 2) {
-         setHeaderRightElement(null);
-         return;
-      }
-      const darktheme = BoolHelper.boolToStr(isDarkTheme);
-      if (isAllReqValid) {
-         setHeaderRightElement(<AddIcon darktheme={darktheme} onClick={handleModal} />);
-      } else {
-         setHeaderRightElement(<QMarkIcon darktheme={darktheme} onClick={handleModal} />);
-      }
-   }, [currentAccounts, income, expenses, isPortableDevice, currentSlide]);
 
    function handleScroll(): void {
       const currentLeftScroll = carouselContainerRef.current?.scrollLeft;
       if (currentLeftScroll! < prevScrollPos && currentLeftScroll === 0) setSlideName('history');
       setPrevScrollPos(currentLeftScroll!);
    }
-
-   if (isLoading && !isPaused) {
-      if (!isPortableDevice) return <Loader isDisplayed />;
-      return <CardListPlaceholder repeatItemCount={7} />;
-   }
-   if (isPaused) return <OfflineFetch />;
-   if (error || !calcDistData) return <FetchError />;
 
    return (
       <CarouselContainer

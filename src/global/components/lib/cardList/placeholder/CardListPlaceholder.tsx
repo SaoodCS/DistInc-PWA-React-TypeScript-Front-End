@@ -44,20 +44,21 @@ export default function CardListPlaceholder(props: ICardListPlaceholder): JSX.El
    const { isDarkTheme } = useThemeContext();
    return (
       <>
-         <PlaceholderLine
-            isDarkTheme={isDarkTheme}
-            width="7em"
-            height={'1em'}
-            style={{
-               paddingTop: '1em',
-               marginLeft: '1em',
-               paddingRight: '1em',
-               marginTop: '1em',
-            }}
-         />
          <CardListWrapper>
             <CardListTitle>
-               <PlaceholderLine isDarkTheme={isDarkTheme} width="5em" />
+               <div>
+                  <PlaceholderLine
+                     isDarkTheme={isDarkTheme}
+                     width="7em"
+                     height={'1em'}
+                     style={{
+                        paddingTop: '1em',
+                        paddingRight: '1em',
+                        marginBottom: '1.5em',
+                     }}
+                  />
+                  <PlaceholderLine isDarkTheme={isDarkTheme} width="5em" />
+               </div>
             </CardListTitle>
             {JSXHelper.repeatJSX(<CardListItemPlaceholder />, repeatItemCount)}
          </CardListWrapper>

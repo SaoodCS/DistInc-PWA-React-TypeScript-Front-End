@@ -81,6 +81,15 @@ export namespace NDist {
          ];
       }
 
+      export function areAllPreReqMet(
+         currentAccounts: ICurrentAccountFirebase,
+         income: IIncomeFirebase,
+         expenses: IExpensesFirebase,
+      ): boolean {
+         const reqCheck = checkPreReqsMet(currentAccounts, income, expenses);
+         return ArrayOfObjects.doAllObjectsHaveKeyValuePair(reqCheck, 'isValid', true);
+      }
+
       export const run = CalculateDist.calculate;
    }
 
@@ -126,6 +135,8 @@ export namespace NDist {
    export namespace Carousel {
       export type ISlide1Name = 'history';
       export type ISlide2NameOptions = keyof ISchema;
+      export type ISlideNameOptions = ISlide1Name | ISlide2NameOptions;
+      export type ISlide2DataOptions = ISchema[ISlide2NameOptions][0] | null;
       export type IPrevMonthData = {
          key: string;
          data: number;
@@ -223,7 +234,9 @@ export namespace NDist {
       export const key = {
          currentSlideNo: `${storageKeyPrefix}.currentSlideNo`,
          historySlideScrollSaver: `${storageKeyPrefix}.historySlide`,
-         currentSlideName: `${storageKeyPrefix}.slide2Name`,
+         currentSlideName: `${storageKeyPrefix}.currentSlideName`,
+         slide2Data: `${storageKeyPrefix}.slide2Data`,
+         distStepsCompleted: `${storageKeyPrefix}.slide2DistStepsCompleted`,
       };
 
       export function getSlideTitle(slideName: ISlide1Name | ISlide2NameOptions): string {
