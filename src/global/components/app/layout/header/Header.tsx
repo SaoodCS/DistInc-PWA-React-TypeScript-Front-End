@@ -54,7 +54,6 @@ export const HeaderRightElWrapper = styled.div<{ isDarkTheme: boolean }>`
    right: 0px;
    position: fixed;
    color: ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent)};
-
    & > * {
       height: 1.5em;
    }
@@ -64,12 +63,6 @@ export const HeaderRightElWrapper = styled.div<{ isDarkTheme: boolean }>`
    }
    & > *:not(:last-child) {
       margin-right: 0.5em;
-   }
-   & > *:hover {
-      cursor: pointer;
-      color: ${({ isDarkTheme }) =>
-         Color.setRgbOpacity(isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent, 0.7)};
-      transition: color 0.2s;
    }
 
    @media (min-width: ${MyCSS.PortableBp.asPx}) {

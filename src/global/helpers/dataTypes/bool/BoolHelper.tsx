@@ -1,7 +1,7 @@
 export namespace BoolHelper {
    export type IAsString = 'true' | 'false';
 
-   export function strToBool(value: 'true' | 'false'): boolean {
+   export function strToBool(value: IAsString): boolean {
       return value === 'true';
    }
 

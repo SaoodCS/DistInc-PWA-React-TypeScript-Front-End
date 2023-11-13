@@ -44,20 +44,18 @@ export const StaticButton = styled.button.attrs<IStaticButtonAttrs>(({ isDisable
    transition: background-color 0.3s ease-out;
    backdrop-filter: blur(30px);
 
-   @media (min-width: 768px) {
-      :hover {
-         background-color: ${({ isDarkTheme, isDisabled }) =>
-            !isDisabled &&
-            Color.setRgbOpacity(isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent, 0.8)};
-         transition: background-color 0.3s ease-out;
-         cursor: ${({ isDisabled }) => (isDisabled ? 'default' : 'pointer')};
-      }
-   }
-
-   :active {
-      background-color: ${({ isDarkTheme, isDisabled }) =>
-         !isDisabled &&
-         Color.setRgbOpacity(isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent, 0.8)};
-      transition: background-color 0.3s ease-out;
-   }
+   ${({ isDarkTheme, isDisabled }) => {
+      if (isDisabled) return;
+      const color = Color.setRgbOpacity(
+         isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent,
+         0.8,
+      );
+      const mobile = MyCSS.Clickables.portable.changeColorOnClick(
+         color,
+         'background-color',
+         'revert',
+      );
+      const desktop = MyCSS.Clickables.desktop.changeColorOnHover(color, 'background-color');
+      return MyCSS.Helper.concatStyles(mobile, desktop);
+   }};
 `;

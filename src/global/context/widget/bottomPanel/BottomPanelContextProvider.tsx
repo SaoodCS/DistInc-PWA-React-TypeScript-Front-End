@@ -28,9 +28,10 @@ export default function BottomPanelContextProvider(
    function toggleBottomPanel(): void {
       if (isBottomPanelOpen) {
          handleCloseBottomPanel();
-         return;
       }
-      setIsBottomPanelOpen(true);
+      if (!isBottomPanelOpen) {
+         setIsBottomPanelOpen(true);
+      }
    }
 
    const contextMemo = useMemo(

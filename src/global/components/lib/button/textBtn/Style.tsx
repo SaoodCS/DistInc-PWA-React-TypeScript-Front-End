@@ -40,22 +40,23 @@ export const TextBtn = styled.button.attrs<ITextBtnAttrs>(({ isDisabled }) => ({
       position === 'center' ? 'center' : position === 'right' ? 'end' : 'start'};
    display: flex;
 
-   :hover,
-   :active {
-      @media (min-width: ${MyCSS.PortableBp.asPx}) {
-         background-color: ${({ isDarkTheme, isDisabled }) =>
-            !isDisabled &&
-            Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.1)};
-         transition: background-color 0.2s ease-out;
-         cursor: ${({ isDisabled }) => (isDisabled ? 'default' : 'pointer')};
-      }
-   }
+   ${({ isDarkTheme, isDisabled }) => {
+      if (isDisabled) return;
+      const colorMobile = Color.setRgbOpacity(
+         isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent,
+         0.5,
+      );
+      const colorDesktop = Color.setRgbOpacity(
+         isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt,
+         0.1,
+      );
+      const mobile = MyCSS.Clickables.portable.changeColorOnClick(
+         colorMobile,
+         'background-color',
+         'revert',
+      );
+      const desktop = MyCSS.Clickables.desktop.changeColorOnHover(colorDesktop, 'background-color');
 
-   :active {
-      @media (max-width: ${MyCSS.PortableBp.asPx}) {
-         color: ${({ isDarkTheme, isDisabled }) =>
-            !isDisabled &&
-            Color.setRgbOpacity(isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent, 0.5)};
-      }
-   }
+      return MyCSS.Helper.concatStyles(mobile, desktop);
+   }};
 `;

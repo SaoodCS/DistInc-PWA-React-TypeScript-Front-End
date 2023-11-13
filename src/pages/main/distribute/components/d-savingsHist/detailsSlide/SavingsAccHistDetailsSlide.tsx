@@ -127,7 +127,7 @@ export default function SavingsAccHistDetailsSlide(): JSX.Element {
                      </TextColourizer>
                   </ConditionalRender>
                   <FlexColumnWrapper width="100%" alignItems={isPortableDevice ? 'center' : 'left'}>
-                     <FlexRowWrapper width={isPortableDevice ? '12.5em' : '14.5em'}>
+                     <FlexRowWrapper width={isPortableDevice ? '11em' : '14.5em'}>
                         <CircularProgressbar
                            value={calculatePercentage()}
                            text={`${calculatePercentage()}%`}

@@ -5,6 +5,8 @@ import CardListPlaceholder from '../../../global/components/lib/cardList/placeho
 import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Carousel';
 import FetchError from '../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../global/components/lib/fetch/offlineFetch/offlineFetch';
+import { AddIcon } from '../../../global/components/lib/icons/add/AddIcon';
+import { QMarkIcon } from '../../../global/components/lib/icons/qMark/QMark';
 import Loader from '../../../global/components/lib/loader/Loader';
 import ConditionalRender from '../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
@@ -13,6 +15,7 @@ import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks
 import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 import { ModalContext } from '../../../global/context/widget/modal/ModalContext';
 import ArrayOfObjects from '../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
+import BoolHelper from '../../../global/helpers/dataTypes/bool/BoolHelper';
 import IncomeClass from '../details/components/Income/class/Class';
 import CurrentClass from '../details/components/accounts/current/class/Class';
 import ExpensesClass from '../details/components/expense/class/ExpensesClass';
@@ -36,7 +39,7 @@ export default function Distribute(): JSX.Element {
 
 function DistributePageTemplate(): JSX.Element {
    // -- CONTEXTS + STATES -- //
-   const { isPortableDevice } = useThemeContext();
+   const { isPortableDevice, isDarkTheme } = useThemeContext();
    const { setHeaderRightElement } = useHeaderContext();
    const { toggleModal, setModalContent, setModalZIndex, setModalHeader, isModalOpen } =
       useContext(ModalContext);
@@ -98,12 +101,15 @@ function DistributePageTemplate(): JSX.Element {
          setBottomPanelZIndex(100);
          toggleBottomPanel();
       }
-      if (currentSlide === 1) {
-         setHeaderRightElement(
-            isAllReqValid ? <Add onClick={handleModal} /> : <QMark onClick={handleModal} />,
-         );
-      } else {
+      if (currentSlide === 2) {
          setHeaderRightElement(null);
+         return;
+      }
+      const darktheme = BoolHelper.boolToStr(isDarkTheme);
+      if (isAllReqValid) {
+         setHeaderRightElement(<AddIcon darktheme={darktheme} onClick={handleModal} />);
+      } else {
+         setHeaderRightElement(<QMarkIcon darktheme={darktheme} onClick={handleModal} />);
       }
    }, [currentAccounts, income, expenses, isPortableDevice, currentSlide]);
 

@@ -14,7 +14,6 @@ export const Switcher = styled.div<{ isOn: boolean; isDarkTheme: boolean; size: 
    border-radius: ${({ size }) => size};
    width: ${({ size }) => `calc(${size} * 1.867)`};
    height: ${({ size }) => size};
-   cursor: pointer;
    transition: background-color 0.3s ease;
    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
    position: relative;

@@ -8,6 +8,7 @@ import {
    NavBarHeading,
 } from '../../../global/components/lib/carousel/NavBar';
 import useCarousel from '../../../global/components/lib/carousel/hooks/useCarousel';
+import { AddIcon } from '../../../global/components/lib/icons/add/AddIcon';
 import { FilterIcon } from '../../../global/components/lib/icons/filter/FilterIcon';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
@@ -44,7 +45,8 @@ export default function Details(): JSX.Element {
    useEffect(() => {
       setHeaderRightElement(
          <>
-            <Add
+            <AddIcon
+               darktheme={BoolHelper.boolToStr(isDarkTheme)}
                onClick={(e) => {
                   togglePM();
                   setPMContent(<NewFormContextMenu />);

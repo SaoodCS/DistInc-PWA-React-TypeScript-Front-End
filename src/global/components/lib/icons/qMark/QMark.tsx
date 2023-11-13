@@ -1,13 +1,10 @@
-import { Filter } from '@styled-icons/fluentui-system-filled/Filter';
+import { QuestionOctagonFill as QMark } from '@styled-icons/bootstrap/QuestionOctagonFill';
 import styled from 'styled-components';
 import MyCSS from '../../../../css/MyCSS';
 import Color from '../../../../css/colors';
 import BoolHelper from '../../../../helpers/dataTypes/bool/BoolHelper';
 
-export const FilterIcon = styled(Filter)<{ darktheme: 'true' | 'false' }>`
-   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-   -webkit-touch-callout: none;
-   cursor: pointer;
+export const QMarkIcon = styled(QMark)<{ darktheme: 'true' | 'false' }>`
    color: ${({ darktheme }) =>
       BoolHelper.strToBool(darktheme) ? Color.darkThm.accent : Color.lightThm.accent};
    ${({ darktheme }) => {
