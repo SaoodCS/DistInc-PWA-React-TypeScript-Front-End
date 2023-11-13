@@ -18,7 +18,6 @@ import microservices from '../../../../../../global/firebase/apis/microservices/
 import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
-import useSessionStorage from '../../../../../../global/hooks/useSessionStorage';
 import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
 import { DistributeContext } from '../../../context/DistributeContext';
 import NDist from '../../../namespace/NDist';
@@ -26,10 +25,6 @@ import NDist from '../../../namespace/NDist';
 export default function SavingsAccHistDetailsSlide(): JSX.Element {
    const { slide2Data } = useContext(DistributeContext);
    const savingsAccHistItem = slide2Data as NDist.ISavingsAccHist;
-   const [prevSavingsAccHistItem, setPrevSavingsAccHistItem] = useSessionStorage(
-      'prevSavingsAccHisItem',
-      savingsAccHistItem,
-   );
    const { isDarkTheme, isPortableDevice } = useThemeContext();
    const { scrollToSlide } = useContext(DistributeContext);
 
@@ -43,33 +38,21 @@ export default function SavingsAccHistDetailsSlide(): JSX.Element {
       },
    });
 
-   useEffect(() => {
-      if (savingsAccHistItem) {
-         setPrevSavingsAccHistItem(savingsAccHistItem);
-      }
-   }, []);
-
    function savingsAccTargetToReach(): number {
       return (
-         SavingsClass.getObjFromId(savingsAccHistToRender().id, savingsAccounts || {})
-            ?.targetToReach || 0
+         SavingsClass.getObjFromId(savingsAccHistItem.id, savingsAccounts || {})?.targetToReach || 0
       );
-   }
-
-   function savingsAccHistToRender(): NDist.ISavingsAccHist {
-      if (!savingsAccHistItem) return prevSavingsAccHistItem;
-      return savingsAccHistItem;
    }
 
    async function handleDelete(): Promise<void> {
       await delCalcDistItemInFirestore.mutateAsync({
          type: 'savingsAccHistoryItem',
-         data: savingsAccHistToRender(),
+         data: savingsAccHistItem,
       });
    }
 
    function calculatePercentage(): number {
-      const savingsAccHistBalance = savingsAccHistToRender().balance;
+      const savingsAccHistBalance = savingsAccHistItem.balance;
       const savingsAccTarget = savingsAccTargetToReach();
       if (savingsAccTarget === 0) return 0;
       const percentage = (savingsAccHistBalance / savingsAccTarget) * 100;
@@ -80,7 +63,7 @@ export default function SavingsAccHistDetailsSlide(): JSX.Element {
       <CarouselAndNavBarWrapper style={{ width: '100%' }}>
          <FlexRowWrapper padding="2em">
             <TextColourizer fontSize="2em" bold padding="0em 0.25em 0em 0em">
-               {DateHelper.fromDDMMYYYYToWord(savingsAccHistToRender().timestamp)}
+               {DateHelper.fromDDMMYYYYToWord(savingsAccHistItem.timestamp)}
             </TextColourizer>
             <TrashIcon
                darktheme={BoolHelper.boolToStr(isDarkTheme)}
@@ -97,16 +80,13 @@ export default function SavingsAccHistDetailsSlide(): JSX.Element {
                >
                   <FlexColumnWrapper height={'100%'} justifyContent="center" padding="0em 1em">
                      <TextColourizer fontSize="1.25em" bold padding={'0.25em 0em'}>
-                        {SavingsClass.getNameFromId(
-                           savingsAccHistToRender().id,
-                           savingsAccounts || {},
-                        )}
+                        {SavingsClass.getNameFromId(savingsAccHistItem.id, savingsAccounts || {})}
                      </TextColourizer>
                      <TextColourizer fontSize="0.9em">
                         <TextColourizer fontSize="0.9em" bold>
                            Balance:&nbsp;
                         </TextColourizer>
-                        {NumberHelper.asCurrencyStr(savingsAccHistToRender().balance)}
+                        {NumberHelper.asCurrencyStr(savingsAccHistItem.balance)}
                      </TextColourizer>
                   </FlexColumnWrapper>
                   <FlexColumnWrapper height={'100%'} justifyContent="center" padding={'0em 0.5em'}>

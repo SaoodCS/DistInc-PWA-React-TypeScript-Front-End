@@ -21,15 +21,20 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
       currentSlide,
       setCurrentSlide,
    } = useCarousel(1, NDist.Carousel.key.currentSlideNo);
-   const [slide2Data, setSlide2Data] = useState<
+   const [slide2Data, setSlide2Data] = useSessionStorage<
       NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist | undefined
-   >(undefined);
+   >('distributerCarousel.slide2Data', undefined);
    const [slideName, setSlideName] = useSessionStorage<
       NDist.Carousel.ISlide2NameOptions | NDist.Carousel.ISlide1Name
    >(
       NDist.Carousel.key.currentSlideName,
       ArrayOfObjects.getObjWithKeyValuePair(NDist.Carousel.slides, 'slideNo', 1).name,
    );
+   const [distCompletedStepNo, setDistCompletedStepNo] = useSessionStorage<number>(
+      'distributerCarousel.distCompletedStepNo',
+      0,
+   );
+
    FooterHooks.useOnUnMount.resetFooterItemSecondClick();
    const { setHandleBackBtnClick, hideAndResetBackBtn, setHeaderTitle } = useHeaderContext();
    const { setHandleFooterItemSecondClick, resetFooterItemSecondClick } = useFooterContext();
@@ -49,6 +54,7 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
          hideAndResetBackBtn();
          resetFooterItemSecondClick();
          setSlide2Data(undefined);
+         setDistCompletedStepNo(0);
       }
    }, [slideName]);
 
@@ -72,6 +78,8 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
             setSlide2Data,
             slideName,
             setSlideName,
+            distCompletedStepNo,
+            setDistCompletedStepNo,
          }}
       >
          {children}

@@ -19,10 +19,6 @@ import NDist from '../../../namespace/NDist';
 export default function AnalyticsDetailsSlide(): JSX.Element {
    const { slide2Data } = useContext(DistributeContext);
    const analyticsItem = slide2Data as NDist.IAnalytics;
-   const [prevAnalyticsItem, setPrevAnalyticsItem] = useSessionStorage(
-      'prevAnalyticsItem',
-      analyticsItem,
-   );
    const { isDarkTheme } = useThemeContext();
    const { scrollToSlide } = useContext(DistributeContext);
 
@@ -35,21 +31,10 @@ export default function AnalyticsDetailsSlide(): JSX.Element {
       },
    });
 
-   useEffect(() => {
-      if (analyticsItem) {
-         setPrevAnalyticsItem(analyticsItem);
-      }
-   }, []);
-
-   function analyticsToRender(): NDist.IAnalytics {
-      if (!analyticsItem) return prevAnalyticsItem;
-      return analyticsItem;
-   }
-
    async function handleDelete(): Promise<void> {
       await delCalcDistItemInFirestore.mutateAsync({
          type: 'analyticsItem',
-         data: analyticsToRender(),
+         data: analyticsItem,
       });
    }
 
@@ -60,14 +45,14 @@ export default function AnalyticsDetailsSlide(): JSX.Element {
          'analytics',
       );
       const mapArray = analyticsObj?.mapArr as NDist.Carousel.IMapArrFunc;
-      return mapArray(analyticsToRender(), isDarkTheme);
+      return mapArray(analyticsItem, isDarkTheme);
    }
 
    return (
       <CarouselAndNavBarWrapper style={{ width: '100%' }}>
          <FlexRowWrapper padding="2em">
             <TextColourizer fontSize="2em" bold padding="0em 0.25em 0em 0em">
-               {DateHelper.fromDDMMYYYYToWord(analyticsToRender().timestamp)}
+               {DateHelper.fromDDMMYYYYToWord(analyticsItem.timestamp)}
             </TextColourizer>
             <TrashIcon
                darktheme={BoolHelper.boolToStr(isDarkTheme)}
