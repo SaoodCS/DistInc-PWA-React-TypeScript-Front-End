@@ -42,10 +42,10 @@ export default function ChangePasswordForm(): JSX.Element {
                setShowSuccessMsg(true);
                return;
             }
+            toggleModal(true);
             setModalZIndex(2);
             setModalHeader('Password Changed');
             setModalContent(ChangePwdClass.SuccessJSX);
-            toggleModal(true);
          },
       },
    );

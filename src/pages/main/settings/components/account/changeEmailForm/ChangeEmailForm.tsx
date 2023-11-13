@@ -45,10 +45,10 @@ export default function ChangeEmailForm(): JSX.Element {
                setShowSuccessMsg(true);
                return;
             }
+            toggleModal(true);
             setModalZIndex(2);
             setModalHeader('Verify New Email');
             setModalContent(ChangeEmailClass.SuccessJSX(form.newEmail));
-            toggleModal(true);
          },
       },
    );

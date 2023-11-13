@@ -48,10 +48,10 @@ export default function ResetAccount(): JSX.Element {
                setShowSuccessMsg(true);
                return;
             }
+            toggleModal(true);
             setModalZIndex(2);
             setModalHeader('Success');
             setModalContent(<SuccessMsg>Account resetted successfully</SuccessMsg>);
-            toggleModal(true);
          },
       },
    );

@@ -38,10 +38,10 @@ export default function SavingsAccountListItem(props: ISavingsAccountListItem): 
          setBottomPanelContent(<SavingsForm inputValues={item} />);
          setBottomPanelZIndex(100);
       } else {
+         toggleModal(true);
          setModalHeader(item.accountName);
          setModalContent(<SavingsForm inputValues={item} />);
          setModalZIndex(100);
-         toggleModal(true);
       }
    }
 

@@ -11,10 +11,10 @@ export default function BottomPanelExample(): JSX.Element {
    } = useContext(BottomPanelContext);
 
    function handleOpenBottomPanel(): void {
+      toggleBottomPanel(true);
       setBottomPanelContent(<div>Content</div>);
       setBottomPanelHeading('Heading');
       setBottomPanelHeightDvh(50);
-      toggleBottomPanel(true);
    }
 
    return (

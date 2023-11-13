@@ -62,15 +62,15 @@ export default function ExpenseSlide(): JSX.Element {
 
    function handleClick(item: IExpenseFormInputs): void {
       if (isPortableDevice) {
+         toggleBottomPanel(true);
          setBottomPanelHeading(item.expenseName);
          setBottomPanelContent(<ExpenseForm inputValues={item} />);
          setBottomPanelZIndex(100);
-         toggleBottomPanel(true);
       } else {
+         toggleModal(true);
          setModalHeader(item.expenseName);
          setModalContent(<ExpenseForm inputValues={item} />);
          setModalZIndex(100);
-         toggleModal(true);
       }
    }
 

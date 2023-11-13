@@ -5,9 +5,9 @@ export default function ModalExample(): JSX.Element {
    const { setModalContent, setModalHeader, toggleModal } = useContext(ModalContext);
 
    function handleOpenModal(): void {
+      toggleModal(true);
       setModalContent(<div>Content</div>);
       setModalHeader('Header');
-      toggleModal(true);
    }
 
    return (

@@ -24,19 +24,20 @@ export default function NewFormContextMenu(): JSX.Element {
 
    function handleClick(name: 'Savings' | 'Income' | 'Expense'): void {
       if (isPortableDevice) {
+         toggleBottomPanel(true);
          setBottomPanelHeading(`New ${name}`);
          if (name === 'Savings') setBottomPanelContent(<SavingsForm />);
          if (name === 'Income') setBottomPanelContent(<IncomeForm />);
          if (name === 'Expense') setBottomPanelContent(<ExpenseForm />);
          setBottomPanelZIndex(2);
-         toggleBottomPanel(true);
+
       } else {
+         toggleModal(true);
          setModalHeader(`New ${name}`);
          if (name === 'Savings') setModalContent(<SavingsForm />);
          if (name === 'Income') setModalContent(<IncomeForm />);
          if (name === 'Expense') setModalContent(<ExpenseForm />);
          setModalZIndex(2);
-         toggleModal(true);
       }
    }
 

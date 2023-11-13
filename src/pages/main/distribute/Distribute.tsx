@@ -90,16 +90,16 @@ function DistributePageTemplate(): JSX.Element {
       const isAllReqValid = ArrayOfObjects.doAllObjectsHaveKeyValuePair(reqCheck, 'isValid', true);
       function handleModal(): void {
          if (!isPortableDevice) {
+            toggleModal(true);
             setModalHeader(isAllReqValid ? 'Distribute' : 'Requirements');
             setModalContent(isAllReqValid ? <DistributeForm /> : <HelpRequirements />);
             setModalZIndex(100);
-            toggleModal(true);
             return;
          }
+         toggleBottomPanel(true);
          setBottomPanelHeading(isAllReqValid ? 'Distribute' : 'Requirements');
          setBottomPanelContent(isAllReqValid ? <DistributeForm /> : <HelpRequirements />);
          setBottomPanelZIndex(100);
-         toggleBottomPanel(true);
       }
       if (currentSlide === 2) {
          setHeaderRightElement(null);

@@ -55,15 +55,15 @@ export default function IncomeSlide(): JSX.Element {
 
    function handleClick(data: IIncomeFormInputs): void {
       if (isPortableDevice) {
+         toggleBottomPanel(true);
          setBottomPanelHeading(data.incomeName);
          setBottomPanelContent(<IncomeForm inputValues={data} />);
          setBottomPanelZIndex(100);
-         toggleBottomPanel(true);
       } else {
+         toggleModal(true);
          setModalHeader(data.incomeName);
          setModalContent(<IncomeForm inputValues={data} />);
          setModalZIndex(100);
-         toggleModal(true);
       }
    }
 

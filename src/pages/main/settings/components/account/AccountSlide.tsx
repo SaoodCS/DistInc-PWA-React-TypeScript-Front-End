@@ -45,15 +45,15 @@ export default function AccountSlide(): JSX.Element {
 
    function handleClick(item: IAccountMenuOptions): void {
       if (isPortableDevice) {
+         toggleBottomPanel(true);
          setBottomPanelHeading(item.heading);
          setBottomPanelContent(item.content);
          setBottomPanelZIndex(1);
-         toggleBottomPanel(true);
       } else {
+         toggleModal(true);
          setModalHeader(item.heading);
          setModalContent(item.content);
          setModalZIndex(0);
-         toggleModal(true);
       }
    }
 
