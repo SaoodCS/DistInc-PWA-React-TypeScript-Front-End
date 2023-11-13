@@ -22,7 +22,7 @@ import { DistributeContext } from '../../../context/DistributeContext';
 import NDist from '../../../namespace/NDist';
 
 export default function DistMsgsDetailsSlide(): JSX.Element {
-   const { slide2Data, currentSlide, scrollToSlide, distStepsCompleted, setDistStepsCompleted } =
+   const { slide2Data, scrollToSlide, distStepsCompleted, setDistStepsCompleted } =
       useContext(DistributeContext);
    const { isDarkTheme } = useThemeContext();
    const distMsgsItem = slide2Data as NDist.IDistMsgs;

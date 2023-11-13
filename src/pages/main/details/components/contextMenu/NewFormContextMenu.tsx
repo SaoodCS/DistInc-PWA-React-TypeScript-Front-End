@@ -30,7 +30,6 @@ export default function NewFormContextMenu(): JSX.Element {
          if (name === 'Income') setBottomPanelContent(<IncomeForm />);
          if (name === 'Expense') setBottomPanelContent(<ExpenseForm />);
          setBottomPanelZIndex(2);
-
       } else {
          toggleModal(true);
          setModalHeader(`New ${name}`);

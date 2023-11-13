@@ -21,7 +21,6 @@ import NumberHelper from '../../../../../../global/helpers/dataTypes/number/Numb
 import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
 import { DistributeContext } from '../../../context/DistributeContext';
 import NDist from '../../../namespace/NDist';
-import HeaderHooks from '../../../../../../global/context/widget/header/hooks/HeaderHooks';
 
 export default function SavingsAccHistDetailsSlide(): JSX.Element {
    const { slide2Data } = useContext(DistributeContext);

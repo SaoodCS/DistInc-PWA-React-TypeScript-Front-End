@@ -1,6 +1,5 @@
 import type { CSSProperties } from 'react';
 import { useContext, useEffect } from 'react';
-import { Add } from 'styled-icons/fluentui-system-filled';
 import { CarouselContainer, CarouselSlide } from '../../../global/components/lib/carousel/Carousel';
 import {
    CarouselAndNavBarWrapper,

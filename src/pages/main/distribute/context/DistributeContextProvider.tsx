@@ -59,7 +59,7 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
       isBottomPanelOpen,
       toggleBottomPanel,
    } = useContext(BottomPanelContext);
-   
+
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
    const { data: income } = IncomeClass.useQuery.getIncomes();
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
@@ -92,7 +92,7 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
          expenses || {},
       );
       const darktheme = BoolHelper.boolToStr(isDarkTheme);
-      const rightElClick = () => {
+      const rightElClick = (): void => {
          if (!isPortableDevice) {
             toggleModal(true);
             setModalHeader(areAllPreReqMet ? 'Distribute' : 'Requirements');

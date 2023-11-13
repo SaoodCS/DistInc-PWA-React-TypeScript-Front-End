@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { Fragment, useContext, useEffect } from 'react';
+import { Fragment, useContext } from 'react';
 import { CardWidgetWrapper } from '../../../../../../global/components/lib/card/Card';
 import { CarouselAndNavBarWrapper } from '../../../../../../global/components/lib/carousel/NavBar';
 import { TextColourizer } from '../../../../../../global/components/lib/font/textColorizer/TextColourizer';
@@ -7,7 +7,6 @@ import { TrashIcon } from '../../../../../../global/components/lib/icons/delete/
 import { FlexColumnWrapper } from '../../../../../../global/components/lib/positionModifiers/flexColumnWrapper/FlexColumnWrapper';
 import { FlexRowWrapper } from '../../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
-import HeaderHooks from '../../../../../../global/context/widget/header/hooks/HeaderHooks';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
