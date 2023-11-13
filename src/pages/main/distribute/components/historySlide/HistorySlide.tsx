@@ -35,7 +35,6 @@ export default function HistorySlide(): JSX.Element {
       scrollSaverStyle,
    } = useScrollSaver(NDist.Carousel.key.historySlideScrollSaver);
 
-   const { toggleModal } = useContext(ModalContext);
    const {
       setPMContent,
       setPMHeightPx,
@@ -45,11 +44,7 @@ export default function HistorySlide(): JSX.Element {
       setCloseOnInnerClick,
    } = useContext(PopupMenuContext);
 
-   const { data: calcDistData, refetch } = NDist.API.useQuery.getCalcDist({
-      onSuccess: () => {
-         toggleModal(false);
-      },
-   });
+   const { data: calcDistData, refetch } = NDist.API.useQuery.getCalcDist();
 
    async function handleOnRefresh(): Promise<void> {
       await refetch();
