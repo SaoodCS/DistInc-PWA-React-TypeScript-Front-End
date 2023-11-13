@@ -1,5 +1,6 @@
 import type { Keyframes } from 'styled-components';
 import styled, { keyframes } from 'styled-components';
+import MyCSS from '../../../css/MyCSS';
 import Color from '../../../css/colors';
 
 export type TButtonPos = 'top left' | 'top right' | 'bottom left' | 'bottom right';
@@ -70,6 +71,10 @@ export const PMItemsListWrapper = styled.div<{ isDarkTheme: boolean }>`
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
    }
+   & > *:last-child {
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+   }
 `;
 
 export const PMItemContainer = styled.div<{
@@ -78,6 +83,7 @@ export const PMItemContainer = styled.div<{
    dangerItem?: boolean;
    isHeadingItem?: boolean;
 }>`
+   ${MyCSS.Clickables.removeDefaultEffects};
    padding: 8px;
    display: flex;
    justify-content: ${({ isHeadingItem }) => (isHeadingItem ? 'center' : 'space-between')};
@@ -101,12 +107,20 @@ export const PMItemContainer = styled.div<{
    & > *:nth-child(2) {
       height: 15px;
    }
-   &:hover:active {
-      background-color: ${({ isDarkTheme, isHeadingItem }) =>
-         !isHeadingItem &&
-         Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.1)};
-   }
-   cursor: pointer;
+   ${({ isHeadingItem, isDarkTheme }) => {
+      if (isHeadingItem) return;
+      const bgColor = Color.setRgbOpacity(
+         isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt,
+         0.1,
+      );
+      const mobile = MyCSS.Clickables.portable.changeColorOnClick(
+         bgColor,
+         'background-color',
+         'revert',
+      );
+      const desktop = MyCSS.Clickables.desktop.changeColorOnHover(bgColor, 'background-color');
+      return MyCSS.Helper.concatStyles(mobile, desktop);
+   }};
 `;
 
 export const PMItemTitle = styled.div`
