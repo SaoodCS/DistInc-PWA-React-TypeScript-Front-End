@@ -30,7 +30,7 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
    const {
       setPMContent,
       setPMHeightPx,
-      setPMIsOpen,
+      togglePM,
       setPMWidthPx,
       setClickEvent,
       setCloseOnInnerClick,
@@ -41,7 +41,7 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
       savingsAccHistItem: NDist.ISavingsAccHist,
    ): void {
       e.stopPropagation();
-      setPMIsOpen(true);
+      togglePM();
       setPMContent(
          <SavingsAccPopupMenu
             savingsAccHistItem={savingsAccHistItem}

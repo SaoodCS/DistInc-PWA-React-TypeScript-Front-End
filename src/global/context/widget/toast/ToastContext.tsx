@@ -3,8 +3,8 @@ import { createContext } from 'react';
 import type { THorizontalPos, TVerticalPos } from '../../../components/lib/toast/Toast';
 
 interface IToastContext {
-   showToast: boolean;
-   setShowToast: Dispatch<SetStateAction<boolean>>;
+   isToastDisplayed: boolean;
+   toggleToast: () => void;
    setToastMessage: Dispatch<SetStateAction<string>>;
    setWidth: Dispatch<SetStateAction<string>>;
    setVerticalPos: Dispatch<SetStateAction<TVerticalPos>>;
@@ -14,8 +14,8 @@ interface IToastContext {
 }
 
 export const ToastContext = createContext<IToastContext>({
-   showToast: false,
-   setShowToast: () => {},
+   isToastDisplayed: false,
+   toggleToast: () => {},
    setToastMessage: () => {},
    setWidth: () => {},
    setVerticalPos: () => {},

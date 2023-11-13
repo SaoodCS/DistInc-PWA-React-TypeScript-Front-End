@@ -11,7 +11,7 @@ interface IBannerContextProvider {
 
 export const BannerContextProvider = (props: IBannerContextProvider): JSX.Element => {
    const { children } = props;
-   const [showBanner, setShowBanner] = useState(false);
+   const [isBannerDisplayed, setIsBannerDisplayed] = useState(false);
    const [bannerMessage, setBannerMessage] = useState('');
    const [handleBannerClick, setHandleBannerClick] = useFuncState(() => null);
    const [BannerIcon, setBannerIcon] = useState<ReactNode>(undefined);
@@ -20,7 +20,7 @@ export const BannerContextProvider = (props: IBannerContextProvider): JSX.Elemen
    const [bannerType, setBannerType] = useState<IBannerType>('default');
 
    function onClose(): void {
-      setShowBanner(false);
+      setIsBannerDisplayed(false);
       setBannerIcon(undefined);
       setBannerMessage('');
       setHandleBannerClick(() => null);
@@ -28,12 +28,15 @@ export const BannerContextProvider = (props: IBannerContextProvider): JSX.Elemen
       setBannerType('default');
    }
 
+   function toggleBanner(): void {
+      setIsBannerDisplayed((prev) => !prev);
+   }
+
    return (
       <>
          <BannerContext.Provider
             value={{
-               showBanner,
-               setShowBanner,
+               isBannerDisplayed,
                bannerMessage,
                setBannerMessage,
                setHandleBannerClick,
@@ -42,6 +45,7 @@ export const BannerContextProvider = (props: IBannerContextProvider): JSX.Elemen
                bannerZIndex,
                setBannerZIndex,
                setBannerType,
+               toggleBanner,
             }}
          >
             {children}
@@ -49,7 +53,7 @@ export const BannerContextProvider = (props: IBannerContextProvider): JSX.Elemen
          <Banner
             message={bannerMessage}
             handleClick={handleBannerClick}
-            isVisible={showBanner}
+            isVisible={isBannerDisplayed}
             Icon={BannerIcon ? BannerIcon : undefined}
             onClose={onClose}
             heightEm={bannerHeightEm}

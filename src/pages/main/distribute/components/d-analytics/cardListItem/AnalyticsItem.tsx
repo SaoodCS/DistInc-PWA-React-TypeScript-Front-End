@@ -26,7 +26,7 @@ export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
    const {
       setPMContent,
       setPMHeightPx,
-      setPMIsOpen,
+      togglePM,
       setPMWidthPx,
       setClickEvent,
       setCloseOnInnerClick,
@@ -38,7 +38,7 @@ export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
       analyticsItem: NDist.IAnalytics,
    ): void {
       e.stopPropagation();
-      setPMIsOpen(true);
+      togglePM();
       setPMContent(
          <AnalyticsPopupMenu analyticsItem={analyticsItem} handleItemClick={handleItemClick} />,
       );

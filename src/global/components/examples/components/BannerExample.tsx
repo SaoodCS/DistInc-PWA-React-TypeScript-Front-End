@@ -3,17 +3,22 @@ import { useContext } from 'react';
 import { BannerContext } from '../../../context/widget/banner/BannerContext';
 
 export default function BannerExample(): JSX.Element {
-   const { setHandleBannerClick, setShowBanner, setBannerHeightEm, setBannerMessage, showBanner } =
-      useContext(BannerContext);
+   const {
+      setHandleBannerClick,
+      toggleBanner,
+      setBannerHeightEm,
+      setBannerMessage,
+      isBannerDisplayed,
+   } = useContext(BannerContext);
 
    function handleShowBanner(): void {
       setHandleBannerClick(() => console.log('Banner clicked'));
       setBannerHeightEm(5);
       setBannerMessage('Banner message');
-      setShowBanner(true);
+      toggleBanner();
    }
    return (
-      <button onClick={() => handleShowBanner()} disabled={showBanner}>
+      <button onClick={() => handleShowBanner()} disabled={isBannerDisplayed}>
          Show Banner
       </button>
    );

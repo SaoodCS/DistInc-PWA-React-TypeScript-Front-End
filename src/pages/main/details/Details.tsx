@@ -8,17 +8,17 @@ import {
    NavBarHeading,
 } from '../../../global/components/lib/carousel/NavBar';
 import useCarousel from '../../../global/components/lib/carousel/hooks/useCarousel';
+import { FilterIcon } from '../../../global/components/lib/icons/filter/FilterIcon';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
 import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 import { PopupMenuContext } from '../../../global/context/widget/popupMenu/PopupMenuContext';
 import Color from '../../../global/css/colors';
 import ArrayOfObjects from '../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
+import BoolHelper from '../../../global/helpers/dataTypes/bool/BoolHelper';
 import FiltererContextMenu from './components/contextMenu/FiltererContextMenu';
 import NewFormContextMenu from './components/contextMenu/NewFormContextMenu';
 import NDetails from './namespace/NDetails';
-import { FilterIcon } from '../../../global/components/lib/icons/filter/FilterIcon';
-import BoolHelper from '../../../global/helpers/dataTypes/bool/BoolHelper';
 
 export default function Details(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Details');
@@ -35,7 +35,7 @@ export default function Details(): JSX.Element {
    const {
       setPMContent,
       setPMHeightPx,
-      setPMIsOpen,
+      togglePM,
       setPMWidthPx,
       setClickEvent,
       setCloseOnInnerClick,
@@ -46,7 +46,7 @@ export default function Details(): JSX.Element {
          <>
             <Add
                onClick={(e) => {
-                  setPMIsOpen(true);
+                  togglePM();
                   setPMContent(<NewFormContextMenu />);
                   setClickEvent(e);
                   setPMHeightPx(100);
@@ -57,7 +57,7 @@ export default function Details(): JSX.Element {
             <FilterIcon
                darktheme={BoolHelper.boolToStr(isDarkTheme)}
                onClick={(e) => {
-                  setPMIsOpen(true);
+                  togglePM();
                   setPMContent(<FiltererContextMenu currentSlide={currentSlide} />);
                   setClickEvent(e);
                   setPMWidthPx(200);

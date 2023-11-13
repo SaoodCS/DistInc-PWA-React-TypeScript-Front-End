@@ -39,7 +39,7 @@ export default function HistorySlide(): JSX.Element {
    const {
       setPMContent,
       setPMHeightPx,
-      setPMIsOpen,
+      togglePM,
       setPMWidthPx,
       setClickEvent,
       setCloseOnInnerClick,
@@ -66,7 +66,7 @@ export default function HistorySlide(): JSX.Element {
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
       monthYear: string,
    ): void {
-      setPMIsOpen(true);
+      togglePM();
       setPMContent(<MonthPopupMenu monthYear={monthYear} />);
       setClickEvent(e);
       setPMHeightPx(30);
@@ -75,7 +75,7 @@ export default function HistorySlide(): JSX.Element {
    }
 
    function handleFilterClick(e: React.MouseEvent<SVGSVGElement, MouseEvent>): void {
-      setPMIsOpen(true);
+      togglePM();
       setPMContent(<FilterHistoryPopupMenu />);
       setClickEvent(e);
       setPMHeightPx(100);

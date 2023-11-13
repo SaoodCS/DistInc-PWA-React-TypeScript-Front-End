@@ -4,8 +4,7 @@ import { createContext } from 'react';
 export type IBannerType = 'success' | 'error' | 'warning' | 'default';
 
 interface IBannerContext {
-   showBanner: boolean;
-   setShowBanner: Dispatch<SetStateAction<boolean>>;
+   isBannerDisplayed: boolean;
    bannerMessage: string;
    setBannerMessage: Dispatch<SetStateAction<string>>;
    setHandleBannerClick: Dispatch<SetStateAction<() => void>>;
@@ -14,11 +13,11 @@ interface IBannerContext {
    bannerZIndex: number | undefined;
    setBannerZIndex: Dispatch<SetStateAction<number | undefined>>;
    setBannerType: Dispatch<SetStateAction<IBannerType>>;
+   toggleBanner: () => void;
 }
 
 export const BannerContext = createContext<IBannerContext>({
-   showBanner: false,
-   setShowBanner: () => {},
+   isBannerDisplayed: false,
    bannerMessage: '',
    setBannerMessage: () => {},
    setHandleBannerClick: () => {},
@@ -27,4 +26,5 @@ export const BannerContext = createContext<IBannerContext>({
    bannerZIndex: undefined,
    setBannerZIndex: () => {},
    setBannerType: () => {},
+   toggleBanner: () => {},
 });

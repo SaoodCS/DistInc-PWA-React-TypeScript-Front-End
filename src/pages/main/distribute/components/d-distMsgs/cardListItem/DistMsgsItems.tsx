@@ -26,7 +26,7 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
    const {
       setPMContent,
       setPMHeightPx,
-      setPMIsOpen,
+      togglePM,
       setPMWidthPx,
       setClickEvent,
       setCloseOnInnerClick,
@@ -38,7 +38,7 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
       distMsgsItem: NDist.IDistMsgs,
    ): void {
       e.stopPropagation();
-      setPMIsOpen(true);
+      togglePM();
       setPMContent(
          <DistMsgsPopupMenu distributerItem={distMsgsItem} handleItemClick={handleItemClick} />,
       );

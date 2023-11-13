@@ -20,7 +20,7 @@ export default function ResetPwdForm(): JSX.Element {
       ResetPwdClass.validate,
    );
    const { apiError } = useApiErrorContext();
-   const { setShowToast, setToastMessage, setToastZIndex } = useContext(ToastContext);
+   const { toggleToast, setToastMessage, setToastZIndex } = useContext(ToastContext);
    const sendResetPwdEmail = useCustomMutation(
       async (formData: IResetPwdInputs) => {
          await sendPasswordResetEmail(auth, formData.email);
@@ -29,7 +29,7 @@ export default function ResetPwdForm(): JSX.Element {
          onSuccess: () => {
             setToastMessage('Email sent successfully. Check your inbox!');
             setToastZIndex(1);
-            setShowToast(true);
+            toggleToast();
          },
       },
    );

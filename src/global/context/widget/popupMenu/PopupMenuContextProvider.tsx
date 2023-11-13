@@ -37,11 +37,19 @@ export default function PopupMenuContextProvider(props: IPopupMenuContextProvide
       }, 250);
    }
 
+   function togglePM(): void {
+      if (pmIsOpen) {
+         setPMIsOpen(false);
+      } else {
+         setPMIsOpen(true);
+      }
+   }
+
    return (
       <>
          <PopupMenuContext.Provider
             value={{
-               setPMIsOpen,
+               togglePM,
                setPMWidthPx,
                setPMHeightPx,
                setPMContent,

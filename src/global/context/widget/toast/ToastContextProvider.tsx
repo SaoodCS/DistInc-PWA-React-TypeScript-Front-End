@@ -11,7 +11,7 @@ interface IToastContextProvider {
 export default function ToastContextProvider(props: IToastContextProvider): JSX.Element {
    const { children } = props;
 
-   const [showToast, setShowToast] = useState(false);
+   const [isToastDisplayed, setIsToastDisplayed] = useState(false);
    const [toastMessage, setToastMessage] = useState('');
    const [width, setWidth] = useState('auto');
    const [verticalPos, setVerticalPos] = useState<TVerticalPos>('bottom');
@@ -20,16 +20,24 @@ export default function ToastContextProvider(props: IToastContextProvider): JSX.
 
    function handleOnClose(): void {
       setToastMessage('');
-      setShowToast(false);
+      setIsToastDisplayed(false);
       setToastZIndex(undefined);
+   }
+
+   function toggleToast(): void {
+      if (isToastDisplayed) {
+         setIsToastDisplayed(false);
+      } else {
+         setIsToastDisplayed(true);
+      }
    }
 
    return (
       <>
          <ToastContext.Provider
             value={{
-               showToast,
-               setShowToast,
+               isToastDisplayed,
+               toggleToast,
                setToastMessage,
                setWidth,
                setVerticalPos,
@@ -42,7 +50,7 @@ export default function ToastContextProvider(props: IToastContextProvider): JSX.
          </ToastContext.Provider>
          <Toast
             message={toastMessage}
-            isVisible={showToast}
+            isVisible={isToastDisplayed}
             onClose={handleOnClose}
             width={width}
             horizontalPos={horizontalPos}

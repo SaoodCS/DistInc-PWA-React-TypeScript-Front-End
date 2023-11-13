@@ -5,20 +5,20 @@ export default function PopupMenuExample(): JSX.Element {
    const {
       setPMContent,
       setPMHeightPx,
-      setPMIsOpen,
+      togglePM,
       setPMWidthPx,
       setClickEvent,
       setCloseOnInnerClick,
    } = useContext(PopupMenuContext);
 
    function handleOpen(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
-      setPMIsOpen(true);
+      togglePM();
       setClickEvent(e);
       setPMWidthPx(100);
       setPMHeightPx(100);
       setPMContent(
          <div>
-            <button onClick={() => setPMIsOpen(false)}>Close</button>
+            <button onClick={() => togglePM()}>Close</button>
             <div>hello</div>
             <div>hello</div>
             <div>hello</div>
