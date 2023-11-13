@@ -1,7 +1,7 @@
 import { BuildingBank } from '@styled-icons/fluentui-system-regular/BuildingBank';
 import { TargetArrow } from '@styled-icons/fluentui-system-regular/TargetArrow';
 import { useQueryClient } from '@tanstack/react-query';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { CardWidgetWrapper } from '../../../../../../global/components/lib/card/Card';

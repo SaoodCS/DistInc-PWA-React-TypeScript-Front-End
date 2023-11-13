@@ -15,9 +15,9 @@ export default function ModalContextProvider(props: IModalContextProvider): JSX.
    const [modalZIndex, setModalZIndex] = useState<number | undefined>(undefined);
 
    function handleCloseModal(): void {
+      setIsModalOpen(false);
       setModalContent(<></>);
       setModalHeader(``);
-      setIsModalOpen(false);
       setModalZIndex(undefined);
    }
 

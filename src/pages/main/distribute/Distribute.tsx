@@ -40,13 +40,21 @@ function DistributePageTemplate(): JSX.Element {
    HeaderHooks.useOnUnMount.hideAndResetBackBtn();
    const { isPortableDevice } = useThemeContext();
    const { setHeaderRightElement } = useHeaderContext();
-   const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader, isModalOpen } =
-      useContext(ModalContext);
+   const {
+      setIsModalOpen,
+      setModalContent,
+      setModalZIndex,
+      setModalHeader,
+      isModalOpen,
+      handleCloseModal,
+   } = useContext(ModalContext);
    const {
       setBottomPanelContent,
       setBottomPanelHeading,
       setBottomPanelZIndex,
       setIsBottomPanelOpen,
+      handleCloseBottomPanel,
+      isBottomPanelOpen,
    } = useContext(BottomPanelContext);
    const { carouselContainerRef, scrollToSlide, slideName, setSlideName, handleItemClick } =
       useContext(DistributeContext);
@@ -63,8 +71,9 @@ function DistributePageTemplate(): JSX.Element {
       error,
    } = NDist.API.useQuery.getCalcDist({
       onSuccess: () => {
-         if (isModalOpen) {
-            setIsModalOpen(false);
+         if (isModalOpen || isBottomPanelOpen) {
+            handleCloseModal();
+            handleCloseBottomPanel();
             const firstDistObj = calcDistData?.distributer[0];
             if (firstDistObj) handleItemClick(firstDistObj, 'distributer');
             scrollToSlide(2);

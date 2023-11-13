@@ -10,6 +10,7 @@ interface IBottomPanelContext {
    handleCloseBottomPanel: () => void;
    bottomPanelZIndex: number | undefined;
    setBottomPanelZIndex: Dispatch<SetStateAction<number | undefined>>;
+   isBottomPanelOpen: boolean;
 }
 
 export const BottomPanelContext = createContext<IBottomPanelContext>({
@@ -21,4 +22,5 @@ export const BottomPanelContext = createContext<IBottomPanelContext>({
    handleCloseBottomPanel: () => {},
    bottomPanelZIndex: undefined,
    setBottomPanelZIndex: () => {},
+   isBottomPanelOpen: false,
 });

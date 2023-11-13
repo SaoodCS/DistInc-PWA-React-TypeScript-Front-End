@@ -18,10 +18,10 @@ export default function BottomPanelContextProvider(
    const [bottomPanelZIndex, setBottomPanelZIndex] = useState<number | undefined>(undefined);
 
    function handleCloseBottomPanel(): void {
+      setIsBottomPanelOpen(false);
       setBottomPanelContent(<></>);
       setBottomPanelHeading(undefined);
       setBottomPanelHeightDvh(undefined);
-      setIsBottomPanelOpen(false);
       setBottomPanelZIndex(undefined);
    }
 
@@ -35,6 +35,7 @@ export default function BottomPanelContextProvider(
          handleCloseBottomPanel,
          bottomPanelZIndex,
          setBottomPanelZIndex,
+         isBottomPanelOpen,
       }),
       [
          setIsBottomPanelOpen,
@@ -45,6 +46,7 @@ export default function BottomPanelContextProvider(
          handleCloseBottomPanel,
          bottomPanelZIndex,
          setBottomPanelZIndex,
+         isBottomPanelOpen,
       ],
    );
 
