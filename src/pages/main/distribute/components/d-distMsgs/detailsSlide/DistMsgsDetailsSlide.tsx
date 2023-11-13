@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { Stepper } from '@zendeskgarden/react-accordions';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useLayoutEffect } from 'react';
 import { CarouselAndNavBarWrapper } from '../../../../../../global/components/lib/carousel/NavBar';
 import { TextColourizer } from '../../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { ArrowCircleLeftIcon } from '../../../../../../global/components/lib/icons/arrows/ArrowCircleLeft';
@@ -46,11 +46,11 @@ export default function DistMsgsDetailsSlide(): JSX.Element {
       }
    }, []);
 
-   useEffect(() => {
+   useLayoutEffect(() => {
       if (currentSlide === 1) {
          setCompletedStepNo(0);
       }
-   }, []);
+   }, [currentSlide]);
 
    function distMsgsToRender(): NDist.IDistMsgs {
       if (!distMsgsItem) return prevDistMsgs;

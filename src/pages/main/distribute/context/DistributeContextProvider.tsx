@@ -48,6 +48,7 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
          if (!isCurrentSlide1) setCurrentSlide(1);
          hideAndResetBackBtn();
          resetFooterItemSecondClick();
+         setSlide2Data(undefined);
       }
    }, [slideName]);
 
