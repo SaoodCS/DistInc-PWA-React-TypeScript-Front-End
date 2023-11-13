@@ -35,6 +35,18 @@ export default class HeaderHooks {
             setHeaderTitle(title);
          }, []);
       },
+      hideAndResetBackBtn: () => {
+         const { hideAndResetBackBtn } = HeaderHooks.useHeaderContext();
+         useEffect(() => {
+            hideAndResetBackBtn();
+         }, []);
+      },
+      resetHeaderRightEl: () => {
+         const { setHeaderRightElement } = HeaderHooks.useHeaderContext();
+         useEffect(() => {
+            setHeaderRightElement(null);
+         }, []);
+      },
    };
 
    static useOnUnMount = {

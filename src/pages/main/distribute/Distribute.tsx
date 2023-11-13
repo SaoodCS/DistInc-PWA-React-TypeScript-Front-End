@@ -36,8 +36,6 @@ export default function Distribute(): JSX.Element {
 
 function DistributePageTemplate(): JSX.Element {
    // -- CONTEXTS + STATES -- //
-   HeaderHooks.useOnUnMount.resetHeaderRightEl();
-   HeaderHooks.useOnUnMount.hideAndResetBackBtn();
    const { isPortableDevice } = useThemeContext();
    const { setHeaderRightElement } = useHeaderContext();
    const { toggleModal, setModalContent, setModalZIndex, setModalHeader, isModalOpen } =
@@ -49,8 +47,14 @@ function DistributePageTemplate(): JSX.Element {
       isBottomPanelOpen,
       toggleBottomPanel,
    } = useContext(BottomPanelContext);
-   const { carouselContainerRef, scrollToSlide, slideName, setSlideName, handleItemClick } =
-      useContext(DistributeContext);
+   const {
+      carouselContainerRef,
+      scrollToSlide,
+      slideName,
+      setSlideName,
+      handleItemClick,
+      currentSlide,
+   } = useContext(DistributeContext);
    const [prevScrollPos, setPrevScrollPos] = useState<number>(0);
 
    // -- REACT-QUERY DATA -- //
@@ -94,10 +98,14 @@ function DistributePageTemplate(): JSX.Element {
          setBottomPanelZIndex(100);
          toggleBottomPanel();
       }
-      setHeaderRightElement(
-         isAllReqValid ? <Add onClick={handleModal} /> : <QMark onClick={handleModal} />,
-      );
-   }, [currentAccounts, income, expenses, isPortableDevice]);
+      if (currentSlide === 1) {
+         setHeaderRightElement(
+            isAllReqValid ? <Add onClick={handleModal} /> : <QMark onClick={handleModal} />,
+         );
+      } else {
+         setHeaderRightElement(null);
+      }
+   }, [currentAccounts, income, expenses, isPortableDevice, currentSlide]);
 
    function handleScroll(): void {
       const currentLeftScroll = carouselContainerRef.current?.scrollLeft;

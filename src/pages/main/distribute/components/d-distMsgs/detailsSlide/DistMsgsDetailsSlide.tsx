@@ -20,6 +20,7 @@ import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelp
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import { DistributeContext } from '../../../context/DistributeContext';
 import NDist from '../../../namespace/NDist';
+import HeaderHooks from '../../../../../../global/context/widget/header/hooks/HeaderHooks';
 
 export default function DistMsgsDetailsSlide(): JSX.Element {
    const { slide2Data, currentSlide, scrollToSlide, distCompletedStepNo, setDistCompletedStepNo } =

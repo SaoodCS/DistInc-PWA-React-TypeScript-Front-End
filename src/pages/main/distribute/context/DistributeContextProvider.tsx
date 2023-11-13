@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import useCarousel from '../../../../global/components/lib/carousel/hooks/useCarousel';
 import FooterHooks from '../../../../global/context/widget/footer/hooks/FooterHooks';
 import useFooterContext from '../../../../global/context/widget/footer/hooks/useFooterContext';
+import HeaderHooks from '../../../../global/context/widget/header/hooks/HeaderHooks';
 import useHeaderContext from '../../../../global/context/widget/header/hooks/useHeaderContext';
 import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import useSessionStorage from '../../../../global/hooks/useSessionStorage';
@@ -15,6 +16,8 @@ interface IDistributeContextProvider {
 
 export default function DistributeContextProvider(props: IDistributeContextProvider): JSX.Element {
    const { children } = props;
+   HeaderHooks.useOnUnMount.resetHeaderRightEl();
+   HeaderHooks.useOnUnMount.hideAndResetBackBtn();
    const {
       containerRef: carouselContainerRef,
       scrollToSlide,
