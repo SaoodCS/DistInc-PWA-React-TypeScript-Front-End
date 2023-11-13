@@ -8,9 +8,7 @@ interface IFooterContextProvider {
 
 export default function FooterContextProvider(props: IFooterContextProvider): JSX.Element {
    const { children } = props;
-   const [handleFooterItemSecondClick, setHandleFooterItemSecondClick] = useFuncState(
-      (footerItemName: string) => {},
-   );
+   const [handleFooterItemSecondClick, setHandleFooterItemSecondClick] = useFuncState(() => {});
 
    function resetFooterItemSecondClick(): void {
       setHandleFooterItemSecondClick(() => {});

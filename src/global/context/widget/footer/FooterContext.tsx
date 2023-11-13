@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { createContext } from 'react';
-import NavItems from '../../../components/app/layout/utils/navItems';
+import type NavItems from '../../../components/app/layout/utils/navItems';
 
 export interface IFooterContext {
    handleFooterItemSecondClick: (footerItemName: NavItems.IFooterNames) => void;

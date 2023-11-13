@@ -13,5 +13,5 @@ export const FlexColumnWrapper = styled.div<{
       justifyContent ? justifyContent : 'flex-start'};
    padding: ${({ padding }): string => (padding ? padding : '0')};
    height: ${({ height }) => height};
-   align-items: ${({ alignItems }) => alignItems ? alignItems : ''};
+   align-items: ${({ alignItems }) => (alignItems ? alignItems : '')};
 `;

@@ -10,6 +10,7 @@ import { TextColourizer } from '../../../../../../global/components/lib/font/tex
 import { HorizontalMenuDots } from '../../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { PopupMenuContext } from '../../../../../../global/context/widget/popupMenu/PopupMenuContext';
+import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
@@ -76,7 +77,7 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
                <ItemRightColWrapper>
                   <HorizontalMenuDots
                      onClick={(e) => handleMenuDotsClick(e, savingsHistObj)}
-                     darktheme={isDarkTheme.toString()}
+                     darktheme={BoolHelper.boolToStr(isDarkTheme)}
                   />
                   <TextColourizer fontSize="0.8em">
                      {DateHelper.fromDDMMYYYYToWord(savingsHistObj.timestamp)}

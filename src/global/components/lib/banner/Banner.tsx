@@ -4,7 +4,7 @@ import { Warning } from '@styled-icons/entypo/Warning';
 import type { ReactNode } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../../../context/theme/ThemeContext';
-import { IBannerType } from '../../../context/widget/banner/BannerContext';
+import type { IBannerType } from '../../../context/widget/banner/BannerContext';
 import { VerticalSeperator } from '../positionModifiers/verticalSeperator/VerticalSeperator';
 import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalRender';
 import { BannerBackground, BannerContainer, BannerContent } from './Style';

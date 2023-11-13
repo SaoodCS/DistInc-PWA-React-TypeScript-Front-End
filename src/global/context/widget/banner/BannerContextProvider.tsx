@@ -2,7 +2,8 @@ import type { ReactNode } from 'react';
 import { useState } from 'react';
 import Banner from '../../../components/lib/banner/Banner';
 import useFuncState from '../../../hooks/useFuncState';
-import { BannerContext, IBannerType } from './BannerContext';
+import type { IBannerType } from './BannerContext';
+import { BannerContext } from './BannerContext';
 
 interface IBannerContextProvider {
    children: ReactNode;

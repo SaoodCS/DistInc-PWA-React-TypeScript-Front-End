@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import { FooterContext, IFooterContext } from '../FooterContext';
+import type { IFooterContext } from '../FooterContext';
+import { FooterContext } from '../FooterContext';
 
 export default function useFooterContext(): IFooterContext {
    const {

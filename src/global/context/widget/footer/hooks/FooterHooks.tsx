@@ -1,5 +1,6 @@
 import { useContext, useEffect } from 'react';
-import { FooterContext, IFooterContext } from '../FooterContext';
+import type { IFooterContext } from '../FooterContext';
+import { FooterContext } from '../FooterContext';
 
 export default class FooterHooks {
    static useFooterContext(): IFooterContext {

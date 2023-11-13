@@ -22,14 +22,8 @@ import NDist from '../../namespace/NDist';
 export default function DistributeForm(): JSX.Element {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
    const { apiError } = useApiErrorContext();
-   const {
-      setShowBanner,
-      setBannerIcon,
-      setBannerMessage,
-      setBannerZIndex,
-      setHandleBannerClick,
-      setBannerType,
-   } = useContext(BannerContext);
+   const { setShowBanner, setBannerMessage, setBannerZIndex, setHandleBannerClick, setBannerType } =
+      useContext(BannerContext);
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
    const { data: savingsAccount } = SavingsClass.useQuery.getSavingsAccounts();
    const { data: incomes } = IncomeClass.useQuery.getIncomes();

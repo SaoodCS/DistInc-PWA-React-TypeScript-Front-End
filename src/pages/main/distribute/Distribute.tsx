@@ -39,8 +39,7 @@ function DistributePageTemplate(): JSX.Element {
    HeaderHooks.useOnUnMount.resetHeaderRightEl();
    HeaderHooks.useOnUnMount.hideAndResetBackBtn();
    const { isPortableDevice } = useThemeContext();
-   const { setHeaderRightElement, setHandleBackBtnClick, hideAndResetBackBtn, setHeaderTitle } =
-      useHeaderContext();
+   const { setHeaderRightElement } = useHeaderContext();
    const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader, isModalOpen } =
       useContext(ModalContext);
    const {

@@ -1,4 +1,3 @@
-import { Filter } from '@styled-icons/fluentui-system-filled/Filter';
 import type { CSSProperties } from 'react';
 import { useContext, useEffect } from 'react';
 import { Add } from 'styled-icons/fluentui-system-filled';

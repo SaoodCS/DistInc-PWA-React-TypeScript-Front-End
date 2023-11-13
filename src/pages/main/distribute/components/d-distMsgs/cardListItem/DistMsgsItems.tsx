@@ -10,6 +10,7 @@ import { TextColourizer } from '../../../../../../global/components/lib/font/tex
 import { HorizontalMenuDots } from '../../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { PopupMenuContext } from '../../../../../../global/context/widget/popupMenu/PopupMenuContext';
+import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import { DistributeContext } from '../../../context/DistributeContext';
 import type NDist from '../../../namespace/NDist';
@@ -65,7 +66,7 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
                <ItemRightColWrapper>
                   <HorizontalMenuDots
                      onClick={(e) => handleMenuDotsClick(e, distMsgsObj)}
-                     darktheme={isDarkTheme.toString()}
+                     darktheme={BoolHelper.boolToStr(isDarkTheme)}
                   />
                   <TextColourizer fontSize="0.8em">
                      {DateHelper.fromDDMMYYYYToWord(distMsgsObj.timestamp)}

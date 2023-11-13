@@ -1,6 +1,5 @@
 import type { FlattenSimpleInterpolation } from 'styled-components';
 import { css } from 'styled-components';
-import Color from './colors';
 
 export namespace MyCSS {
    export class PortableBp {

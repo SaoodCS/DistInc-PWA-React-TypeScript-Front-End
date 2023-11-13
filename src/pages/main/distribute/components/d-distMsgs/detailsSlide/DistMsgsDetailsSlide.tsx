@@ -24,7 +24,7 @@ import NDist from '../../../namespace/NDist';
 
 export default function DistMsgsDetailsSlide(): JSX.Element {
    const { slide2Data, currentSlide, scrollToSlide } = useContext(DistributeContext);
-   const { isDarkTheme, isPortableDevice } = useThemeContext();
+   const { isDarkTheme } = useThemeContext();
    const distMsgsItem = slide2Data as NDist.IDistMsgs;
    const [prevDistMsgs, setPrevDistMsgs] = useSessionStorage('prevDistMsgItem', distMsgsItem);
    const [completedStepNo, setCompletedStepNo] = useSessionStorage(

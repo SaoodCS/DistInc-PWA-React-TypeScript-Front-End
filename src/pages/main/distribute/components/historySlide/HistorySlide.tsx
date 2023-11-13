@@ -1,6 +1,4 @@
-import { Filter } from '@styled-icons/fluentui-system-filled/Filter';
 import { useContext } from 'react';
-import styled from 'styled-components';
 import {
    CardListTitle,
    CardListWrapper,
@@ -17,7 +15,6 @@ import ConditionalRender from '../../../../../global/components/lib/renderModifi
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
 import { PopupMenuContext } from '../../../../../global/context/widget/popupMenu/PopupMenuContext';
-import Color from '../../../../../global/css/colors';
 import BoolHelper from '../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import DateHelper from '../../../../../global/helpers/dataTypes/date/DateHelper';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';

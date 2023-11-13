@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { IBannerType } from '../../../context/widget/banner/BannerContext';
+import type { IBannerType } from '../../../context/widget/banner/BannerContext';
 import MyCSS from '../../../css/MyCSS';
 import Color from '../../../css/colors';
 

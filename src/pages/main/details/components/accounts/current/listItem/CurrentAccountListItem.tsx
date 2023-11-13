@@ -71,7 +71,6 @@ export default function CurrentAccountListItem(props: ICurrentAccountListItem): 
       <>
          {CurrentClass.isType.currentItem(item) && (
             <FlatListItem key={item.id} isDarkTheme={isDarkTheme} onClick={() => handleClick(item)}>
-               
                <FirstRowWrapper>
                   <ItemTitleWrapper>
                      <ItemTitle>{item.accountName}</ItemTitle>

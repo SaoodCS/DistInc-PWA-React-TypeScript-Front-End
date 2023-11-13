@@ -14,6 +14,7 @@ import useThemeContext from '../../../../../global/context/theme/hooks/useThemeC
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
 import { auth } from '../../../../../global/firebase/config/config';
+import BoolHelper from '../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useSessionStorage from '../../../../../global/hooks/useSessionStorage';
 import NSettings from '../../namespace/NSettings';
@@ -91,7 +92,7 @@ export default function AccountSlide(): JSX.Element {
                   </ItemContentWrapper>
                   <ConditionalRender condition={!!item.withMenuDots && isPortableDevice}>
                      <ItemSubElement>
-                        <HorizontalMenuDots darktheme={isDarkTheme.toString()} />
+                        <HorizontalMenuDots darktheme={BoolHelper.boolToStr(isDarkTheme)} />
                      </ItemSubElement>
                   </ConditionalRender>
                </ItemContainer>
