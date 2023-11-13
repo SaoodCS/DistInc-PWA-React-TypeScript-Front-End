@@ -2,6 +2,7 @@ import { ArrowIosBack } from '@styled-icons/evaicons-solid/ArrowIosBack';
 import styled from 'styled-components';
 import MyCSS from '../../../../css/MyCSS';
 import Color from '../../../../css/colors';
+import BoolHelper from '../../../../helpers/dataTypes/bool/BoolHelper';
 
 export const Header = styled.div<{ isDarkTheme: boolean }>`
    position: fixed;
@@ -27,23 +28,25 @@ export const Header = styled.div<{ isDarkTheme: boolean }>`
    z-index: 1;
 `;
 
-export const StyledBackArr = styled(ArrowIosBack)<{ darktheme: string }>`
+export const StyledBackArr = styled(ArrowIosBack)<{ darktheme: 'true' | 'false' }>`
+   ${MyCSS.Clickables.removeDefaultEffects};
    height: 1.5em;
    position: fixed;
    left: 0;
    padding-left: 1em;
+   ${({ darktheme }) => {
+      const color = Color.setRgbOpacity(
+         BoolHelper.strToBool(darktheme) ? Color.darkThm.txt : Color.lightThm.txt,
+         0.3,
+      );
+      const dekstop = MyCSS.Clickables.desktop.changeColorOnHover(color, 'color');
+      const mobile = MyCSS.Clickables.portable.changeColorOnClick(color, 'color', 'persist');
+      return MyCSS.Helper.concatStyles(dekstop, mobile);
+   }};
    @media (min-width: ${MyCSS.PortableBp.asPx}) {
       left: 15%;
       padding-left: 0;
       height: 1.25em;
-      &:hover {
-         cursor: pointer;
-         color: ${({ darktheme }) =>
-            Color.setRgbOpacity(
-               darktheme === 'true' ? Color.darkThm.txt : Color.lightThm.txt,
-               0.5,
-            )};
-      }
    }
 `;
 
