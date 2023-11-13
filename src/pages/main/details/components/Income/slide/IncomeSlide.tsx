@@ -43,7 +43,7 @@ export default function IncomeSlide(): JSX.Element {
       useContext(ModalContext);
    const { isLoading, error, isPaused, refetch, data } = IncomeClass.useQuery.getIncomes({
       onSettled: () => {
-         isPortableDevice ? toggleBottomPanel() : toggleModal();
+         isPortableDevice ? toggleBottomPanel(false) : toggleModal(false);
       },
    });
    if (isLoading && !isPaused) {
@@ -55,15 +55,15 @@ export default function IncomeSlide(): JSX.Element {
 
    function handleClick(data: IIncomeFormInputs): void {
       if (isPortableDevice) {
-         toggleBottomPanel();
          setBottomPanelHeading(data.incomeName);
          setBottomPanelContent(<IncomeForm inputValues={data} />);
          setBottomPanelZIndex(100);
+         toggleBottomPanel(true);
       } else {
          setModalHeader(data.incomeName);
          setModalContent(<IncomeForm inputValues={data} />);
          setModalZIndex(100);
-         toggleModal();
+         toggleModal(true);
       }
    }
 

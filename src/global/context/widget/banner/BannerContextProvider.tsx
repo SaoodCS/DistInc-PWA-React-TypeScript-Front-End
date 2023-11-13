@@ -28,8 +28,9 @@ export const BannerContextProvider = (props: IBannerContextProvider): JSX.Elemen
       setBannerType('default');
    }
 
-   function toggleBanner(): void {
-      setIsBannerDisplayed((prev) => !prev);
+   function toggleBanner(show: boolean): void {
+      if (show) setIsBannerDisplayed(true);
+      else setIsBannerDisplayed(false);
    }
 
    return (

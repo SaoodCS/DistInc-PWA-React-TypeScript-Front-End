@@ -45,7 +45,7 @@ export default function ChangePasswordForm(): JSX.Element {
             setModalZIndex(2);
             setModalHeader('Password Changed');
             setModalContent(ChangePwdClass.SuccessJSX);
-            toggleModal();
+            toggleModal(true);
          },
       },
    );

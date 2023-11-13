@@ -48,7 +48,7 @@ export default function ChangeEmailForm(): JSX.Element {
             setModalZIndex(2);
             setModalHeader('Verify New Email');
             setModalContent(ChangeEmailClass.SuccessJSX(form.newEmail));
-            toggleModal();
+            toggleModal(true);
          },
       },
    );

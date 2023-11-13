@@ -29,14 +29,14 @@ export default function NewFormContextMenu(): JSX.Element {
          if (name === 'Income') setBottomPanelContent(<IncomeForm />);
          if (name === 'Expense') setBottomPanelContent(<ExpenseForm />);
          setBottomPanelZIndex(2);
-         toggleBottomPanel();
+         toggleBottomPanel(true);
       } else {
          setModalHeader(`New ${name}`);
          if (name === 'Savings') setModalContent(<SavingsForm />);
          if (name === 'Income') setModalContent(<IncomeForm />);
          if (name === 'Expense') setModalContent(<ExpenseForm />);
          setModalZIndex(2);
-         toggleModal();
+         toggleModal(true);
       }
    }
 

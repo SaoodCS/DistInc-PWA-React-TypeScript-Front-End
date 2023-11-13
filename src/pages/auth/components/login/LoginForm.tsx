@@ -40,7 +40,7 @@ export default function LoginForm(): JSX.Element {
       setModalHeader('Reset Password');
       setModalContent(<ResetPwdForm />);
       setModalZIndex(0);
-      toggleModal();
+      toggleModal(true);
    }
 
    return (

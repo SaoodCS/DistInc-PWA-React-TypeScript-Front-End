@@ -72,8 +72,8 @@ function DistributePageTemplate(): JSX.Element {
    } = NDist.API.useQuery.getCalcDist({
       onSuccess: () => {
          if (isModalOpen || isBottomPanelOpen) {
-            toggleModal();
-            toggleBottomPanel();
+            toggleModal(false);
+            toggleBottomPanel(false);
             const firstDistObj = calcDistData?.distributer[0];
             if (firstDistObj) handleItemClick(firstDistObj, 'distributer');
             scrollToSlide(2);
@@ -93,13 +93,13 @@ function DistributePageTemplate(): JSX.Element {
             setModalHeader(isAllReqValid ? 'Distribute' : 'Requirements');
             setModalContent(isAllReqValid ? <DistributeForm /> : <HelpRequirements />);
             setModalZIndex(100);
-            toggleModal();
+            toggleModal(true);
             return;
          }
          setBottomPanelHeading(isAllReqValid ? 'Distribute' : 'Requirements');
          setBottomPanelContent(isAllReqValid ? <DistributeForm /> : <HelpRequirements />);
          setBottomPanelZIndex(100);
-         toggleBottomPanel();
+         toggleBottomPanel(true);
       }
       if (currentSlide === 2) {
          setHeaderRightElement(null);

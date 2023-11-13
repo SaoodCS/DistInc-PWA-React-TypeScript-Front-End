@@ -14,7 +14,7 @@ export default function BottomPanelExample(): JSX.Element {
       setBottomPanelContent(<div>Content</div>);
       setBottomPanelHeading('Heading');
       setBottomPanelHeightDvh(50);
-      toggleBottomPanel();
+      toggleBottomPanel(true);
    }
 
    return (

@@ -38,8 +38,8 @@ export default function AccountSlide(): JSX.Element {
          scrollToTop();
       }
       return () => {
-         toggleBottomPanel();
-         toggleModal();
+         toggleBottomPanel(false);
+         toggleModal(false);
       };
    }, []);
 
@@ -48,12 +48,12 @@ export default function AccountSlide(): JSX.Element {
          setBottomPanelHeading(item.heading);
          setBottomPanelContent(item.content);
          setBottomPanelZIndex(1);
-         toggleBottomPanel();
+         toggleBottomPanel(true);
       } else {
          setModalHeader(item.heading);
          setModalContent(item.content);
          setModalZIndex(0);
-         toggleModal();
+         toggleModal(true);
       }
    }
 

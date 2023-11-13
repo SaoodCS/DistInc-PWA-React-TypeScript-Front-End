@@ -35,15 +35,15 @@ export default function CurrentAccountListItem(props: ICurrentAccountListItem): 
 
    function handleClick(item: ICurrentFormInputs): void {
       if (isPortableDevice) {
-         toggleBottomPanel();
          setBottomPanelHeading(item.accountName);
          setBottomPanelContent(<CurrentForm inputValues={item} />);
          setBottomPanelZIndex(100);
+         toggleBottomPanel(true);
       } else {
          setModalHeader(item.accountName);
          setModalContent(<CurrentForm inputValues={item} />);
          setModalZIndex(100);
-         toggleModal();
+         toggleModal(true);
       }
    }
 

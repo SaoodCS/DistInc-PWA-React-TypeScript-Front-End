@@ -47,7 +47,7 @@ export default function HistorySlide(): JSX.Element {
 
    const { data: calcDistData, refetch } = NDist.API.useQuery.getCalcDist({
       onSuccess: () => {
-         toggleModal();
+         toggleModal(false);
       },
    });
 

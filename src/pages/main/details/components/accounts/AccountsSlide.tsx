@@ -38,7 +38,7 @@ export default function AccountsSlide(): JSX.Element {
       data: savingsData,
    } = SavingsClass.useQuery.getSavingsAccounts({
       onSettled: () => {
-         toggleBottomPanel();
+         toggleBottomPanel(false);
       },
    });
 
@@ -50,7 +50,7 @@ export default function AccountsSlide(): JSX.Element {
       data: currentData,
    } = CurrentClass.useQuery.getCurrentAccounts({
       onSettled: () => {
-         isPortableDevice ? toggleBottomPanel() : toggleModal();
+         isPortableDevice ? toggleBottomPanel(false) : toggleModal(false);
       },
    });
 

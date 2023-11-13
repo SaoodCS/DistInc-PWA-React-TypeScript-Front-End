@@ -7,7 +7,7 @@ export default function ModalExample(): JSX.Element {
    function handleOpenModal(): void {
       setModalContent(<div>Content</div>);
       setModalHeader('Header');
-      toggleModal();
+      toggleModal(true);
    }
 
    return (

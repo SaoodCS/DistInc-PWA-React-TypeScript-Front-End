@@ -13,7 +13,7 @@ interface IBannerContext {
    bannerZIndex: number | undefined;
    setBannerZIndex: Dispatch<SetStateAction<number | undefined>>;
    setBannerType: Dispatch<SetStateAction<IBannerType>>;
-   toggleBanner: () => void;
+   toggleBanner: (show: boolean) => void;
 }
 
 export const BannerContext = createContext<IBannerContext>({

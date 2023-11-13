@@ -33,7 +33,7 @@ export default function SavingsAccountListItem(props: ISavingsAccountListItem): 
 
    function handleClick(item: ISavingsFormInputs): void {
       if (isPortableDevice) {
-         toggleBottomPanel();
+         toggleBottomPanel(true);
          setBottomPanelHeading(item.accountName);
          setBottomPanelContent(<SavingsForm inputValues={item} />);
          setBottomPanelZIndex(100);
@@ -41,7 +41,7 @@ export default function SavingsAccountListItem(props: ISavingsAccountListItem): 
          setModalHeader(item.accountName);
          setModalContent(<SavingsForm inputValues={item} />);
          setModalZIndex(100);
-         toggleModal();
+         toggleModal(true);
       }
    }
 

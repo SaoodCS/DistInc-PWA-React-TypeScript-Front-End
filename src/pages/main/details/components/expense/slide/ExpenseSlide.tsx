@@ -47,7 +47,7 @@ export default function ExpenseSlide(): JSX.Element {
    );
    const { isLoading, error, isPaused, refetch, data } = ExpensesClass.useQuery.getExpenses({
       onSettled: () => {
-         isPortableDevice ? toggleBottomPanel() : toggleModal();
+         isPortableDevice ? toggleBottomPanel(false) : toggleModal(false);
       },
    });
 
@@ -62,15 +62,15 @@ export default function ExpenseSlide(): JSX.Element {
 
    function handleClick(item: IExpenseFormInputs): void {
       if (isPortableDevice) {
-         toggleBottomPanel();
          setBottomPanelHeading(item.expenseName);
          setBottomPanelContent(<ExpenseForm inputValues={item} />);
          setBottomPanelZIndex(100);
+         toggleBottomPanel(true);
       } else {
          setModalHeader(item.expenseName);
          setModalContent(<ExpenseForm inputValues={item} />);
          setModalZIndex(100);
-         toggleModal();
+         toggleModal(true);
       }
    }
 

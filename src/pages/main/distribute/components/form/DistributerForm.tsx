@@ -43,7 +43,7 @@ export default function DistributeForm(): JSX.Element {
 
    useEffect(() => {
       if (isCurrentMonthDistributed && isPortableDevice) {
-         toggleBanner();
+         toggleBanner(true);
          setBannerMessage(`Continuing overwrites current month as it's already distributed.`);
          setBannerType('warning');
          setHandleBannerClick(() => null);

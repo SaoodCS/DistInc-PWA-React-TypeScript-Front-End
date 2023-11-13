@@ -15,7 +15,7 @@ export default function BannerExample(): JSX.Element {
       setHandleBannerClick(() => console.log('Banner clicked'));
       setBannerHeightEm(5);
       setBannerMessage('Banner message');
-      toggleBanner();
+      toggleBanner(true);
    }
    return (
       <button onClick={() => handleShowBanner()} disabled={isBannerDisplayed}>

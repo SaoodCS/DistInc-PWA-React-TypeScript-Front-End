@@ -51,7 +51,7 @@ export default function ResetAccount(): JSX.Element {
             setModalZIndex(2);
             setModalHeader('Success');
             setModalContent(<SuccessMsg>Account resetted successfully</SuccessMsg>);
-            toggleModal();
+            toggleModal(true);
          },
       },
    );

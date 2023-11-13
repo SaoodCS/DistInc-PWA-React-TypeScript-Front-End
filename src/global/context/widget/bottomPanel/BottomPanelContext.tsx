@@ -9,7 +9,7 @@ interface IBottomPanelContext {
    bottomPanelZIndex: number | undefined;
    setBottomPanelZIndex: Dispatch<SetStateAction<number | undefined>>;
    isBottomPanelOpen: boolean;
-   toggleBottomPanel: () => void;
+   toggleBottomPanel: (show: boolean) => void;
 }
 
 export const BottomPanelContext = createContext<IBottomPanelContext>({

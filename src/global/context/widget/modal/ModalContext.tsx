@@ -8,7 +8,7 @@ interface IModalContext {
    modalZIndex: number | undefined;
    setModalZIndex: Dispatch<SetStateAction<number | undefined>>;
    isModalOpen: boolean;
-   toggleModal: () => void;
+   toggleModal: (show: boolean) => void;
 }
 
 export const ModalContext = createContext<IModalContext>({
