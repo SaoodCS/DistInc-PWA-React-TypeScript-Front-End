@@ -36,23 +36,18 @@ export default function ExpenseSlide(): JSX.Element {
    const [sortExpenseBy] = useURLState({ key: NDetails.keys.searchParams.sort.expense });
    const [orderExpense] = useURLState({ key: NDetails.keys.searchParams.order.expense });
    const { isDarkTheme, isPortableDevice } = useThemeContext();
-   const {
-      setIsBottomPanelOpen,
-      setBottomPanelContent,
-      setBottomPanelHeading,
-      setBottomPanelZIndex,
-   } = useContext(BottomPanelContext);
+   const { toggleBottomPanel, setBottomPanelContent, setBottomPanelHeading, setBottomPanelZIndex } =
+      useContext(BottomPanelContext);
 
-   const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader, handleCloseModal } =
+   const { toggleModal, setModalContent, setModalZIndex, setModalHeader } =
       useContext(ModalContext);
 
    const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(
       NDetails.keys.localStorage.expenseSlide,
    );
-   const { handleCloseBottomPanel } = useContext(BottomPanelContext);
    const { isLoading, error, isPaused, refetch, data } = ExpensesClass.useQuery.getExpenses({
       onSettled: () => {
-         isPortableDevice ? handleCloseBottomPanel() : handleCloseModal();
+         isPortableDevice ? toggleBottomPanel() : toggleModal();
       },
    });
 
@@ -67,7 +62,7 @@ export default function ExpenseSlide(): JSX.Element {
 
    function handleClick(item: IExpenseFormInputs): void {
       if (isPortableDevice) {
-         setIsBottomPanelOpen(true);
+         toggleBottomPanel();
          setBottomPanelHeading(item.expenseName);
          setBottomPanelContent(<ExpenseForm inputValues={item} />);
          setBottomPanelZIndex(100);
@@ -75,7 +70,7 @@ export default function ExpenseSlide(): JSX.Element {
          setModalHeader(item.expenseName);
          setModalContent(<ExpenseForm inputValues={item} />);
          setModalZIndex(100);
-         setIsModalOpen(true);
+         toggleModal();
       }
    }
 

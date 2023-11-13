@@ -23,7 +23,7 @@ export default function LoginForm(): JSX.Element {
       initHandleSubmit,
    } = useForm(LoginClass.initialState, LoginClass.initialErrors, LoginClass.validate);
    const { apiError } = useApiErrorContext();
-   const { setIsModalOpen, setModalHeader, setModalContent, setModalZIndex } =
+   const { toggleModal, setModalHeader, setModalContent, setModalZIndex } =
       useContext(ModalContext);
 
    const loginUser = useCustomMutation(async (formData: ILoginInputs) => {
@@ -40,7 +40,7 @@ export default function LoginForm(): JSX.Element {
       setModalHeader('Reset Password');
       setModalContent(<ResetPwdForm />);
       setModalZIndex(0);
-      setIsModalOpen(true);
+      toggleModal();
    }
 
    return (

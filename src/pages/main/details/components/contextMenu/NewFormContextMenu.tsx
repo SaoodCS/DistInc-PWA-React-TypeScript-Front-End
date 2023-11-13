@@ -16,14 +16,10 @@ import ExpenseForm from '../expense/form/ExpenseForm';
 
 export default function NewFormContextMenu(): JSX.Element {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
-   const {
-      setIsBottomPanelOpen,
-      setBottomPanelContent,
-      setBottomPanelHeading,
-      setBottomPanelZIndex,
-   } = useContext(BottomPanelContext);
+   const { toggleBottomPanel, setBottomPanelContent, setBottomPanelHeading, setBottomPanelZIndex } =
+      useContext(BottomPanelContext);
 
-   const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader } =
+   const { toggleModal, setModalContent, setModalZIndex, setModalHeader } =
       useContext(ModalContext);
 
    function handleClick(name: 'Savings' | 'Income' | 'Expense'): void {
@@ -33,14 +29,14 @@ export default function NewFormContextMenu(): JSX.Element {
          if (name === 'Income') setBottomPanelContent(<IncomeForm />);
          if (name === 'Expense') setBottomPanelContent(<ExpenseForm />);
          setBottomPanelZIndex(2);
-         setIsBottomPanelOpen(true);
+         toggleBottomPanel();
       } else {
          setModalHeader(`New ${name}`);
          if (name === 'Savings') setModalContent(<SavingsForm />);
          if (name === 'Income') setModalContent(<IncomeForm />);
          if (name === 'Expense') setModalContent(<ExpenseForm />);
          setModalZIndex(2);
-         setIsModalOpen(true);
+         toggleModal();
       }
    }
 

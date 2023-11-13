@@ -40,21 +40,14 @@ function DistributePageTemplate(): JSX.Element {
    HeaderHooks.useOnUnMount.hideAndResetBackBtn();
    const { isPortableDevice } = useThemeContext();
    const { setHeaderRightElement } = useHeaderContext();
-   const {
-      setIsModalOpen,
-      setModalContent,
-      setModalZIndex,
-      setModalHeader,
-      isModalOpen,
-      handleCloseModal,
-   } = useContext(ModalContext);
+   const { toggleModal, setModalContent, setModalZIndex, setModalHeader, isModalOpen } =
+      useContext(ModalContext);
    const {
       setBottomPanelContent,
       setBottomPanelHeading,
       setBottomPanelZIndex,
-      setIsBottomPanelOpen,
-      handleCloseBottomPanel,
       isBottomPanelOpen,
+      toggleBottomPanel,
    } = useContext(BottomPanelContext);
    const { carouselContainerRef, scrollToSlide, slideName, setSlideName, handleItemClick } =
       useContext(DistributeContext);
@@ -72,8 +65,8 @@ function DistributePageTemplate(): JSX.Element {
    } = NDist.API.useQuery.getCalcDist({
       onSuccess: () => {
          if (isModalOpen || isBottomPanelOpen) {
-            handleCloseModal();
-            handleCloseBottomPanel();
+            toggleModal();
+            toggleBottomPanel();
             const firstDistObj = calcDistData?.distributer[0];
             if (firstDistObj) handleItemClick(firstDistObj, 'distributer');
             scrollToSlide(2);
@@ -93,13 +86,13 @@ function DistributePageTemplate(): JSX.Element {
             setModalHeader(isAllReqValid ? 'Distribute' : 'Requirements');
             setModalContent(isAllReqValid ? <DistributeForm /> : <HelpRequirements />);
             setModalZIndex(100);
-            setIsModalOpen(true);
+            toggleModal();
             return;
          }
          setBottomPanelHeading(isAllReqValid ? 'Distribute' : 'Requirements');
          setBottomPanelContent(isAllReqValid ? <DistributeForm /> : <HelpRequirements />);
          setBottomPanelZIndex(100);
-         setIsBottomPanelOpen(true);
+         toggleBottomPanel();
       }
       setHeaderRightElement(
          isAllReqValid ? <Add onClick={handleModal} /> : <QMark onClick={handleModal} />,

@@ -16,7 +16,7 @@ export default function ResetAccount(): JSX.Element {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
    const { apiError } = useApiErrorContext();
    const [showSuccessMsg, setShowSuccessMsg] = useState<boolean>(false);
-   const { setIsModalOpen, setModalContent, setModalHeader, setModalZIndex } =
+   const { toggleModal, setModalContent, setModalHeader, setModalZIndex } =
       useContext(ModalContext);
    const setCurrentAccountInFirestore = CurrentClass.useMutation.setCurrentAccount({});
 
@@ -51,7 +51,7 @@ export default function ResetAccount(): JSX.Element {
             setModalZIndex(2);
             setModalHeader('Success');
             setModalContent(<SuccessMsg>Account resetted successfully</SuccessMsg>);
-            setIsModalOpen(true);
+            toggleModal();
          },
       },
    );

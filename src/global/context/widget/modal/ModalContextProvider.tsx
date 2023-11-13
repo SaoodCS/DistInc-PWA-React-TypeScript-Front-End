@@ -21,25 +21,32 @@ export default function ModalContextProvider(props: IModalContextProvider): JSX.
       setModalZIndex(undefined);
    }
 
+   function toggleModal(): void {
+      if (isModalOpen) {
+         handleCloseModal();
+      } else {
+         setIsModalOpen(true);
+      }
+   }
+
    const contextMemo = useMemo(
       () => ({
-         setIsModalOpen,
          setModalContent,
          setModalHeader,
          setModalZIndex,
          modalContent,
          modalZIndex,
-         handleCloseModal,
          isModalOpen,
+         toggleModal,
       }),
       [
-         setIsModalOpen,
          setModalContent,
          setModalHeader,
          modalContent,
          setModalZIndex,
          modalZIndex,
          isModalOpen,
+         toggleModal,
       ],
    );
 

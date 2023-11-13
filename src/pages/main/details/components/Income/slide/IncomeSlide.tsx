@@ -34,21 +34,16 @@ export default function IncomeSlide(): JSX.Element {
    const [sortIncomeBy] = useURLState({ key: NDetails.keys.searchParams.sort.income });
    const [orderIncome] = useURLState({ key: NDetails.keys.searchParams.order.income });
    const { isDarkTheme, isPortableDevice } = useThemeContext();
-   const {
-      setIsBottomPanelOpen,
-      setBottomPanelContent,
-      setBottomPanelHeading,
-      setBottomPanelZIndex,
-      handleCloseBottomPanel,
-   } = useContext(BottomPanelContext);
+   const { toggleBottomPanel, setBottomPanelContent, setBottomPanelHeading, setBottomPanelZIndex } =
+      useContext(BottomPanelContext);
    const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(
       NDetails.keys.localStorage.incomeSlide,
    );
-   const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader, handleCloseModal } =
+   const { toggleModal, setModalContent, setModalZIndex, setModalHeader } =
       useContext(ModalContext);
    const { isLoading, error, isPaused, refetch, data } = IncomeClass.useQuery.getIncomes({
       onSettled: () => {
-         isPortableDevice ? handleCloseBottomPanel() : handleCloseModal();
+         isPortableDevice ? toggleBottomPanel() : toggleModal();
       },
    });
    if (isLoading && !isPaused) {
@@ -60,7 +55,7 @@ export default function IncomeSlide(): JSX.Element {
 
    function handleClick(data: IIncomeFormInputs): void {
       if (isPortableDevice) {
-         setIsBottomPanelOpen(true);
+         toggleBottomPanel();
          setBottomPanelHeading(data.incomeName);
          setBottomPanelContent(<IncomeForm inputValues={data} />);
          setBottomPanelZIndex(100);
@@ -68,7 +63,7 @@ export default function IncomeSlide(): JSX.Element {
          setModalHeader(data.incomeName);
          setModalContent(<IncomeForm inputValues={data} />);
          setModalZIndex(100);
-         setIsModalOpen(true);
+         toggleModal();
       }
    }
 

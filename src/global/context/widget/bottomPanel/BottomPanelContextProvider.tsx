@@ -25,28 +25,34 @@ export default function BottomPanelContextProvider(
       setBottomPanelZIndex(undefined);
    }
 
+   function toggleBottomPanel(): void {
+      if (isBottomPanelOpen) {
+         handleCloseBottomPanel();
+         return;
+      }
+      setIsBottomPanelOpen(true);
+   }
+
    const contextMemo = useMemo(
       () => ({
-         setIsBottomPanelOpen,
          setBottomPanelContent,
          bottomPanelContent,
          setBottomPanelHeading,
          setBottomPanelHeightDvh,
-         handleCloseBottomPanel,
          bottomPanelZIndex,
          setBottomPanelZIndex,
          isBottomPanelOpen,
+         toggleBottomPanel,
       }),
       [
-         setIsBottomPanelOpen,
          setBottomPanelContent,
          bottomPanelContent,
          setBottomPanelHeading,
          setBottomPanelHeightDvh,
-         handleCloseBottomPanel,
          bottomPanelZIndex,
          setBottomPanelZIndex,
          isBottomPanelOpen,
+         toggleBottomPanel,
       ],
    );
 

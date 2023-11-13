@@ -25,7 +25,7 @@ export default function ChangeEmailForm(): JSX.Element {
    );
    const { apiError } = useApiErrorContext();
    const { isDarkTheme, isPortableDevice } = useThemeContext();
-   const { setIsModalOpen, setModalContent, setModalHeader, setModalZIndex } =
+   const { toggleModal, setModalContent, setModalHeader, setModalZIndex } =
       useContext(ModalContext);
    const [showSuccessMsg, setShowSuccessMsg] = useState<boolean>(false);
 
@@ -48,7 +48,7 @@ export default function ChangeEmailForm(): JSX.Element {
             setModalZIndex(2);
             setModalHeader('Verify New Email');
             setModalContent(ChangeEmailClass.SuccessJSX(form.newEmail));
-            setIsModalOpen(true);
+            toggleModal();
          },
       },
    );

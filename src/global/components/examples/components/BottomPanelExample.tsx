@@ -3,7 +3,7 @@ import { BottomPanelContext } from '../../../context/widget/bottomPanel/BottomPa
 
 export default function BottomPanelExample(): JSX.Element {
    const {
-      setIsBottomPanelOpen,
+      toggleBottomPanel,
       setBottomPanelContent,
       bottomPanelContent,
       setBottomPanelHeading,
@@ -14,7 +14,7 @@ export default function BottomPanelExample(): JSX.Element {
       setBottomPanelContent(<div>Content</div>);
       setBottomPanelHeading('Heading');
       setBottomPanelHeightDvh(50);
-      setIsBottomPanelOpen(true);
+      toggleBottomPanel();
    }
 
    return (

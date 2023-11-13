@@ -25,21 +25,17 @@ interface ICurrentAccountListItem {
 export default function CurrentAccountListItem(props: ICurrentAccountListItem): JSX.Element {
    const { item } = props;
    const { isDarkTheme, isPortableDevice } = useThemeContext();
-   const {
-      setIsBottomPanelOpen,
-      setBottomPanelContent,
-      setBottomPanelHeading,
-      setBottomPanelZIndex,
-   } = useContext(BottomPanelContext);
+   const { toggleBottomPanel, setBottomPanelContent, setBottomPanelHeading, setBottomPanelZIndex } =
+      useContext(BottomPanelContext);
 
-   const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader } =
+   const { toggleModal, setModalContent, setModalZIndex, setModalHeader } =
       useContext(ModalContext);
 
    const { data: savingsData } = SavingsClass.useQuery.getSavingsAccounts();
 
    function handleClick(item: ICurrentFormInputs): void {
       if (isPortableDevice) {
-         setIsBottomPanelOpen(true);
+         toggleBottomPanel();
          setBottomPanelHeading(item.accountName);
          setBottomPanelContent(<CurrentForm inputValues={item} />);
          setBottomPanelZIndex(100);
@@ -47,7 +43,7 @@ export default function CurrentAccountListItem(props: ICurrentAccountListItem): 
          setModalHeader(item.accountName);
          setModalContent(<CurrentForm inputValues={item} />);
          setModalZIndex(100);
-         setIsModalOpen(true);
+         toggleModal();
       }
    }
 

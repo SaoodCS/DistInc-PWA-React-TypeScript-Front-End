@@ -25,19 +25,15 @@ interface ISavingsAccountListItem {
 export default function SavingsAccountListItem(props: ISavingsAccountListItem): JSX.Element {
    const { item } = props;
    const { isDarkTheme, isPortableDevice } = useThemeContext();
-   const {
-      setIsBottomPanelOpen,
-      setBottomPanelContent,
-      setBottomPanelHeading,
-      setBottomPanelZIndex,
-   } = useContext(BottomPanelContext);
+   const { toggleBottomPanel, setBottomPanelContent, setBottomPanelHeading, setBottomPanelZIndex } =
+      useContext(BottomPanelContext);
 
-   const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader } =
+   const { toggleModal, setModalContent, setModalZIndex, setModalHeader } =
       useContext(ModalContext);
 
    function handleClick(item: ISavingsFormInputs): void {
       if (isPortableDevice) {
-         setIsBottomPanelOpen(true);
+         toggleBottomPanel();
          setBottomPanelHeading(item.accountName);
          setBottomPanelContent(<SavingsForm inputValues={item} />);
          setBottomPanelZIndex(100);
@@ -45,7 +41,7 @@ export default function SavingsAccountListItem(props: ISavingsAccountListItem): 
          setModalHeader(item.accountName);
          setModalContent(<SavingsForm inputValues={item} />);
          setModalZIndex(100);
-         setIsModalOpen(true);
+         toggleModal();
       }
    }
 

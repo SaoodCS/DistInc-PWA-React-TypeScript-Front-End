@@ -28,8 +28,8 @@ export default function AccountsSlide(): JSX.Element {
    const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(
       NDetails.keys.localStorage.accountsSlide,
    );
-   const { handleCloseBottomPanel } = useContext(BottomPanelContext);
-   const { handleCloseModal } = useContext(ModalContext);
+   const { toggleBottomPanel } = useContext(BottomPanelContext);
+   const { toggleModal } = useContext(ModalContext);
    const {
       isLoading: isLoadingSavings,
       error: errorSavings,
@@ -38,7 +38,7 @@ export default function AccountsSlide(): JSX.Element {
       data: savingsData,
    } = SavingsClass.useQuery.getSavingsAccounts({
       onSettled: () => {
-         handleCloseBottomPanel();
+         toggleBottomPanel();
       },
    });
 
@@ -50,7 +50,7 @@ export default function AccountsSlide(): JSX.Element {
       data: currentData,
    } = CurrentClass.useQuery.getCurrentAccounts({
       onSettled: () => {
-         isPortableDevice ? handleCloseBottomPanel() : handleCloseModal();
+         isPortableDevice ? toggleBottomPanel() : toggleModal();
       },
    });
 

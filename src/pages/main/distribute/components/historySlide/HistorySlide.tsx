@@ -35,7 +35,7 @@ export default function HistorySlide(): JSX.Element {
       scrollSaverStyle,
    } = useScrollSaver(NDist.Carousel.key.historySlideScrollSaver);
 
-   const { setIsModalOpen } = useContext(ModalContext);
+   const { toggleModal } = useContext(ModalContext);
    const {
       setPMContent,
       setPMHeightPx,
@@ -47,7 +47,7 @@ export default function HistorySlide(): JSX.Element {
 
    const { data: calcDistData, refetch } = NDist.API.useQuery.getCalcDist({
       onSuccess: () => {
-         setIsModalOpen(false);
+         toggleModal();
       },
    });
 

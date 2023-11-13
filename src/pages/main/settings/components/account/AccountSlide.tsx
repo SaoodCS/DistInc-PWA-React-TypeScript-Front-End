@@ -27,14 +27,10 @@ export default function AccountSlide(): JSX.Element {
    const { containerRef, handleOnScroll, scrollToTop, scrollSaverStyle } = useScrollSaver(
       NSettings.key.accountSlide,
    );
-   const {
-      setIsBottomPanelOpen,
-      setBottomPanelContent,
-      setBottomPanelHeading,
-      setBottomPanelZIndex,
-   } = useContext(BottomPanelContext);
+   const { toggleBottomPanel, setBottomPanelContent, setBottomPanelHeading, setBottomPanelZIndex } =
+      useContext(BottomPanelContext);
 
-   const { setIsModalOpen, setModalContent, setModalZIndex, setModalHeader } =
+   const { toggleModal, setModalContent, setModalZIndex, setModalHeader } =
       useContext(ModalContext);
 
    useEffect(() => {
@@ -42,8 +38,8 @@ export default function AccountSlide(): JSX.Element {
          scrollToTop();
       }
       return () => {
-         setIsBottomPanelOpen(false);
-         setIsModalOpen(false);
+         toggleBottomPanel();
+         toggleModal();
       };
    }, []);
 
@@ -52,12 +48,12 @@ export default function AccountSlide(): JSX.Element {
          setBottomPanelHeading(item.heading);
          setBottomPanelContent(item.content);
          setBottomPanelZIndex(1);
-         setIsBottomPanelOpen(true);
+         toggleBottomPanel();
       } else {
          setModalHeader(item.heading);
          setModalContent(item.content);
          setModalZIndex(0);
-         setIsModalOpen(true);
+         toggleModal();
       }
    }
 

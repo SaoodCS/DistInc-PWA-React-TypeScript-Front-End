@@ -22,7 +22,7 @@ export default function ChangePasswordForm(): JSX.Element {
 
    const { apiError } = useApiErrorContext();
    const { isDarkTheme, isPortableDevice } = useThemeContext();
-   const { setIsModalOpen, setModalContent, setModalHeader, setModalZIndex } =
+   const { toggleModal, setModalContent, setModalHeader, setModalZIndex } =
       useContext(ModalContext);
    const [showSuccessMsg, setShowSuccessMsg] = useState<boolean>(false);
 
@@ -45,7 +45,7 @@ export default function ChangePasswordForm(): JSX.Element {
             setModalZIndex(2);
             setModalHeader('Password Changed');
             setModalContent(ChangePwdClass.SuccessJSX);
-            setIsModalOpen(true);
+            toggleModal();
          },
       },
    );
