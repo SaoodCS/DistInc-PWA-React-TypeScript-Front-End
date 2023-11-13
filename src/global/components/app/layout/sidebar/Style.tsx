@@ -106,9 +106,14 @@ export const SidebarItem = styled.div<{ isActive: boolean; isDarkTheme: boolean 
    }
 
    :hover {
-      background-color: ${({ isDarkTheme, isActive }) =>
-         !isActive && Color.setRgbOpacity(isDarkTheme ? Color.darkThm.bg : Color.lightThm.bg, 0.5)};
-      cursor: pointer;
+      ${({ isDarkTheme, isActive }) => {
+         if (isActive) return;
+         const bgColor = Color.setRgbOpacity(
+            isDarkTheme ? Color.darkThm.bg : Color.lightThm.bg,
+            0.5,
+         );
+         return MyCSS.Clickables.desktop.changeColorOnHover(bgColor, 'background-color');
+      }}
    }
    & > :first-child {
       position: absolute;

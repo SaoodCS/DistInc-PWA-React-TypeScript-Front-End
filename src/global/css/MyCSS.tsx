@@ -58,6 +58,7 @@ export namespace MyCSS {
          ) => {
             return css`
                @media (min-width: ${MyCSS.PortableBp.asPx}) {
+                  cursor: pointer;
                   transition: ${propertyToChange} 0.2s;
                   ${postClick === 'revert'
                      ? `&:active {
@@ -87,6 +88,7 @@ export namespace MyCSS {
             propertyToChange: 'background-color' | 'color' | 'border',
          ) => {
             return css`
+               cursor: pointer;
                transition: ${propertyToChange} 0.2s;
                @media (min-width: ${MyCSS.PortableBp.asPx}) {
                   &:hover {

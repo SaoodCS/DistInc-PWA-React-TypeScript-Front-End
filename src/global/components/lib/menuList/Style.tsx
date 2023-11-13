@@ -57,12 +57,10 @@ class ItemContainerStyles {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      &:hover {
-         background-color: ${Color.setRgbOpacity(
-            isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt,
-            0.1,
-         )};
-      }
+      ${MyCSS.Clickables.desktop.changeColorOnHover(
+         Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.1),
+         'background-color',
+      )};
    `;
 
    static smallSrn = (spaceRow: boolean): FlattenSimpleInterpolation => css`
