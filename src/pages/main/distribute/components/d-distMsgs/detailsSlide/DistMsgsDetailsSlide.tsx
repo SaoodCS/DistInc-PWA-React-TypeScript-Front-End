@@ -28,7 +28,7 @@ export default function DistMsgsDetailsSlide(): JSX.Element {
    const distMsgsItem = slide2Data as NDist.IDistMsgs;
    const [prevDistMsgs, setPrevDistMsgs] = useSessionStorage('prevDistMsgItem', distMsgsItem);
    const [completedStepNo, setCompletedStepNo] = useSessionStorage(
-      `distMsgItem.${distMsgsItem?.timestamp}.completedStepNo`,
+      `distMsgItem.completedStepNo`,
       0,
    );
    const queryClient = useQueryClient();
