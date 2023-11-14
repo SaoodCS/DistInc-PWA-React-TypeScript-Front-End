@@ -20,6 +20,7 @@ import useThemeContext from '../../../../../global/context/theme/hooks/useThemeC
 import { PopupMenuContext } from '../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import BoolHelper from '../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import DateHelper from '../../../../../global/helpers/dataTypes/date/DateHelper';
+import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useURLState from '../../../../../global/hooks/useURLState';
 import NDist from '../../namespace/NDist';
@@ -60,7 +61,7 @@ export default function HistorySlide(): JSX.Element {
    }
 
    function sortData(): NDist.ISchemaByMonth[] | undefined {
-      if (!calcDistData) return;
+      if (!MiscHelper.isNotFalsyOrEmpty<NDist.ISchema>(calcDistData)) return;
       const groupedByMonth = NDist.Data.groupByMonth(calcDistData);
       groupedByMonth.reverse();
       return groupedByMonth;
