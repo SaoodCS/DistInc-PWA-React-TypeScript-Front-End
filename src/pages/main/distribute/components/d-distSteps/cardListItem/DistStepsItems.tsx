@@ -14,14 +14,14 @@ import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelp
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import { DistributeContext } from '../../../context/DistributeContext';
 import type NDist from '../../../namespace/NDist';
-import DistMsgsPopupMenu from '../popupMenu/DistMsgsPopupMenu';
+import DistStepsPopupMenu from '../popupMenu/DistStepsPopupMenu';
 
-interface IDistributeMsgsItems {
-   distributer: NDist.IDistMsgs[];
+interface IDistStepsItems {
+   distSteps: NDist.IDistSteps[];
 }
 
-export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element {
-   const { distributer } = props;
+export default function DistStepsItems(props: IDistStepsItems): JSX.Element {
+   const { distSteps } = props;
    const { handleItemClick } = useContext(DistributeContext);
    const {
       setPMContent,
@@ -35,12 +35,12 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
 
    function handleMenuDotsClick(
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
-      distMsgsItem: NDist.IDistMsgs,
+      distStepsItem: NDist.IDistSteps,
    ): void {
       e.stopPropagation();
       togglePM();
       setPMContent(
-         <DistMsgsPopupMenu distributerItem={distMsgsItem} handleItemClick={handleItemClick} />,
+         <DistStepsPopupMenu distStepsItem={distStepsItem} handleItemClick={handleItemClick} />,
       );
       setClickEvent(e);
       setPMHeightPx(62);
@@ -50,10 +50,10 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
 
    return (
       <>
-         {distributer.map((distMsgsObj) => (
+         {distSteps.map((distStepsObj) => (
             <CardListItem
-               key={distMsgsObj.timestamp}
-               onClick={() => handleItemClick(distMsgsObj, 'distributer')}
+               key={distStepsObj.timestamp}
+               onClick={() => handleItemClick(distStepsObj, 'distSteps')}
                isDarkTheme={isDarkTheme}
                width={!isPortableDevice ? '20em' : undefined}
             >
@@ -65,11 +65,11 @@ export default function DistMsgsItems(props: IDistributeMsgsItems): JSX.Element 
                </ItemTitleAndIconWrapper>
                <ItemRightColWrapper>
                   <HorizontalMenuDots
-                     onClick={(e) => handleMenuDotsClick(e, distMsgsObj)}
+                     onClick={(e) => handleMenuDotsClick(e, distStepsObj)}
                      darktheme={BoolHelper.boolToStr(isDarkTheme)}
                   />
                   <TextColourizer fontSize="0.8em">
-                     {DateHelper.fromDDMMYYYYToWord(distMsgsObj.timestamp)}
+                     {DateHelper.fromDDMMYYYYToWord(distStepsObj.timestamp)}
                   </TextColourizer>
                </ItemRightColWrapper>
             </CardListItem>

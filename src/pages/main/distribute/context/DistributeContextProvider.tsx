@@ -68,8 +68,8 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
          if (isModalOpen || isBottomPanelOpen) {
             toggleModal(false);
             toggleBottomPanel(false);
-            const firstDistObj = calcDistData?.distributer[0];
-            if (firstDistObj) handleItemClick(firstDistObj, 'distributer');
+            const firstDistObj = calcDistData?.distSteps[0];
+            if (firstDistObj) handleItemClick(firstDistObj, 'distSteps');
             scrollToSlide(2);
          }
       },
@@ -126,7 +126,7 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
    }, [slideName, currentAccounts, income, expenses, isPortableDevice]);
 
    function handleItemClick(
-      item: NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist,
+      item: NDist.IAnalytics | NDist.IDistSteps | NDist.ISavingsAccHist,
       itemType: NDist.Carousel.ISlide2NameOptions,
    ): void {
       setSlideName(itemType);

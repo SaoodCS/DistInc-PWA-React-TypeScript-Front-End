@@ -16,7 +16,7 @@ export namespace MyCSS {
          -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
          -webkit-touch-callout: none;
       `;
-      
+
       export const portable = {
          changeColorOnClick: (
             changeToColor: string,

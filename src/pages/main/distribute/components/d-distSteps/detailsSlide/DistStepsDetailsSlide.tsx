@@ -21,11 +21,11 @@ import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelp
 import { DistributeContext } from '../../../context/DistributeContext';
 import NDist from '../../../namespace/NDist';
 
-export default function DistMsgsDetailsSlide(): JSX.Element {
+export default function DistStepsDetailsSlide(): JSX.Element {
    const { slide2Data, scrollToSlide, distStepsCompleted, setDistStepsCompleted } =
       useContext(DistributeContext);
    const { isDarkTheme } = useThemeContext();
-   const distMsgsItem = slide2Data as NDist.IDistMsgs;
+   const distStepsItem = slide2Data as NDist.IDistSteps;
    const queryClient = useQueryClient();
    const delCalcDistItemInFirestore = NDist.API.useMutation.delCalcDist({
       onSuccess: () => {
@@ -36,7 +36,7 @@ export default function DistMsgsDetailsSlide(): JSX.Element {
    });
 
    function changeCompletedStep(stepNo: number): void {
-      if (stepNo < 0 || stepNo > distMsgsItem.msgs.length) return;
+      if (stepNo < 0 || stepNo > distStepsItem.list.length) return;
       setDistStepsCompleted(stepNo);
    }
 
@@ -60,8 +60,8 @@ export default function DistMsgsDetailsSlide(): JSX.Element {
 
    async function handleDelete(): Promise<void> {
       await delCalcDistItemInFirestore.mutateAsync({
-         type: 'distributerItem',
-         data: distMsgsItem,
+         type: 'distStepsItem',
+         data: distStepsItem,
       });
    }
 
@@ -69,7 +69,7 @@ export default function DistMsgsDetailsSlide(): JSX.Element {
       <CarouselAndNavBarWrapper style={{ width: '100%' }}>
          <FlexRowWrapper justifyContent={'left'} padding="1em 0em 0em 1em">
             <TextColourizer fontSize="2em" bold>
-               {DateHelper.fromDDMMYYYYToWord(distMsgsItem.timestamp)}
+               {DateHelper.fromDDMMYYYYToWord(distStepsItem.timestamp)}
             </TextColourizer>
             <FlexRowWrapper justifyContent="center" padding="1em 0em 1em 1em">
                <ArrowCircleLeftIcon
@@ -96,14 +96,14 @@ export default function DistMsgsDetailsSlide(): JSX.Element {
          </FlexRowWrapper>
 
          <StyledStepper activeIndex={distStepsCompleted}>
-            {distMsgsItem.msgs.map((msg, index) => (
-               <Stepper.Step key={msg} onClick={() => changeCompletedStep(index + 1)}>
+            {distStepsItem.list.map((step, index) => (
+               <Stepper.Step key={step} onClick={() => changeCompletedStep(index + 1)}>
                   <StyledStepperLabel
                      completed={BoolHelper.boolToStr(isCompleted(index + 1))}
                      darktheme={BoolHelper.boolToStr(isDarkTheme)}
                      isnext={BoolHelper.boolToStr(isNextToComplete(index + 1))}
                   >
-                     {msg}
+                     {step}
                   </StyledStepperLabel>
                   <StyledStepperLine style={{ borderLeftColor: setBorderLeftCol(index) }} />
                </Stepper.Step>

@@ -24,7 +24,7 @@ import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useURLState from '../../../../../global/hooks/useURLState';
 import NDist from '../../namespace/NDist';
 import AnalyticsItems from '../d-analytics/cardListItem/AnalyticsItem';
-import DistMsgsItems from '../d-distMsgs/cardListItem/DistMsgsItems';
+import DistStepsItems from '../d-distSteps/cardListItem/DistStepsItems';
 import SavingsAccHistoryItems from '../d-savingsHist/cardListItems/SavingsAccHistoryItem';
 import FilterHistoryPopupMenu from '../filterHistoryPopupMenu/FilterHistoryPopupMenu';
 import MonthPopupMenu from '../monthPopupMenu/MonthPopupMenu';
@@ -125,10 +125,8 @@ export default function HistorySlide(): JSX.Element {
                         />
                      </CardListTitle>
                      <LargeScrnResponsiveFlexWrap childrenMargin="1em">
-                        <ConditionalRender condition={!filterOutState.includes('distributer')}>
-                           {monthObj.distributer && (
-                              <DistMsgsItems distributer={monthObj.distributer} />
-                           )}
+                        <ConditionalRender condition={!filterOutState.includes('distSteps')}>
+                           {monthObj.distSteps && <DistStepsItems distSteps={monthObj.distSteps} />}
                         </ConditionalRender>
                         <ConditionalRender condition={!filterOutState.includes('analytics')}>
                            {monthObj.analytics && <AnalyticsItems analytics={monthObj.analytics} />}

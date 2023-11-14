@@ -68,13 +68,13 @@ export default class CalculateDist {
          savingsAccArr,
       );
 
-      // Create Messages Array
-      const messages = [...currentAccTransfers.messages, ...expensesTransfers.messages];
+      // Create stepsList Array
+      const stepsList = [...currentAccTransfers.stepsList, ...expensesTransfers.stepsList];
 
-      // Create Distributer Obj:
-      const distributer = {
+      // Create distSteps Obj:
+      const distSteps = {
          timestamp: DateHelper.toDDMMYYYY(new Date()),
-         msgs: messages,
+         list: stepsList,
       };
 
       // Create Analytics Obj:
@@ -86,7 +86,7 @@ export default class CalculateDist {
       };
 
       return {
-         distributer: [distributer],
+         distSteps: [distSteps],
          savingsAccHistory: savingsAccHistory,
          analytics: [analytics],
       };
@@ -101,7 +101,7 @@ export default class CalculateDist {
    ): ICalcTransfers {
       let salaryExpToTransferLeftoversAcc: number = 0;
       let salaryExpToSpendingAcc: number = 0;
-      const messages: string[] = [];
+      const stepsList: string[] = [];
       const savingsAccountTransfers: ISavingsAccountTransfers = [];
 
       const isLeftoverLessThanMinCushion =
@@ -126,7 +126,7 @@ export default class CalculateDist {
          salaryExpToSpendingAcc,
       )}`;
 
-      messages.push(salaryExpToSpendingAccMsg);
+      stepsList.push(salaryExpToSpendingAccMsg);
 
       const currentAccArr = ObjectOfObjects.convertToArrayOfObj(currentAcc);
 
@@ -146,7 +146,7 @@ export default class CalculateDist {
          const leftoverToTransferToMsg = `Leftover amount to transfer from ${
             acc.accountName
          } to ${transferLeftoverToAccName}: ${NumberHelper.asCurrencyStr(amountToTransfer)}`;
-         messages.push(leftoverToTransferToMsg);
+         stepsList.push(leftoverToTransferToMsg);
 
          if (savingsAccToTransferTo.isTracked === 'true') {
             const savingsAccHistoryObj = {
@@ -157,7 +157,7 @@ export default class CalculateDist {
          }
       }
       return {
-         messages,
+         stepsList,
          savingsAccountTransfers,
       };
    }
@@ -168,7 +168,7 @@ export default class CalculateDist {
       savingsAccArr: ISavingsFormInputs[],
       currentAcc: IFormattedCurrentAcc,
    ): ICalcTransfers {
-      const messages: string[] = [];
+      const stepsList: string[] = [];
       const savingsAccountTransfers: ISavingsAccountTransfers = [];
 
       for (let i = 0; i < expenseArr.length; i++) {
@@ -193,7 +193,7 @@ export default class CalculateDist {
                savingsAccountTransfers.push(savingsAccHistoryObj);
             }
             if (isPaymentTypeManual) {
-               messages.push(
+               stepsList.push(
                   `Manual Expense: Amount to transfer from ${currentAcc.salaryExp.accountName} to ${
                      savingsAcc.accountName
                   }: ${NumberHelper.asCurrencyStr(expense.expenseValue)}`,
@@ -201,7 +201,7 @@ export default class CalculateDist {
             }
          }
          if (!isExpenseTypeSavingsTransfer && isPaymentTypeManual) {
-            messages.push(
+            stepsList.push(
                `Manual Expense: Make Payment from ${
                   currentAcc.salaryExp.accountName
                } for expense: ${expense.expenseName}: ${NumberHelper.asCurrencyStr(
@@ -211,7 +211,7 @@ export default class CalculateDist {
          }
       }
       return {
-         messages,
+         stepsList,
          savingsAccountTransfers,
       };
    }
@@ -305,6 +305,6 @@ type ISavingsAccountTransfers = {
 }[];
 
 type ICalcTransfers = {
-   messages: string[];
+   stepsList: string[];
    savingsAccountTransfers: ISavingsAccountTransfers;
 };

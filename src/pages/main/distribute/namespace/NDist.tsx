@@ -11,10 +11,15 @@ import type { IExpensesFirebase } from '../../details/components/expense/class/E
 import CalculateDist from '../calculation/CalculateDist';
 import DistFormAndAPI from '../components/form/class/DistFormAPI';
 
+// export interface IDistMsgs {
+//    timestamp: string;
+//    msgs: string[];
+// }
+
 export namespace NDist {
-   export interface IDistMsgs {
+   export interface IDistSteps {
       timestamp: string;
-      msgs: string[];
+      list: string[];
    }
 
    export interface ISavingsAccHist {
@@ -34,8 +39,14 @@ export namespace NDist {
       timestamp: string;
    }
 
+   // export interface ISchema {
+   //    distributer: IDistSteps[];
+   //    savingsAccHistory: ISavingsAccHist[];
+   //    analytics: IAnalytics[];
+   // }
+
    export interface ISchema {
-      distributer: IDistMsgs[];
+      distSteps: IDistSteps[];
       savingsAccHistory: ISavingsAccHist[];
       analytics: IAnalytics[];
    }
@@ -43,7 +54,7 @@ export namespace NDist {
    export interface ISchemaByMonth {
       monthYear: string;
       analytics?: NDist.IAnalytics[];
-      distributer?: NDist.IDistMsgs[];
+      distSteps?: NDist.IDistSteps[];
       savingsAccHistory?: NDist.ISavingsAccHist[];
    }
 
@@ -98,7 +109,7 @@ export namespace NDist {
          const result: NDist.ISchemaByMonth[] = [];
          // eslint-disable-next-line @typescript-eslint/no-explicit-any
          const months: { [key: string]: any } = {};
-         ['analytics', 'distributer', 'savingsAccHistory'].forEach((key) => {
+         ['analytics', 'distSteps', 'savingsAccHistory'].forEach((key) => {
             calcDistData[key as keyof NDist.ISchema].forEach((item: { timestamp: string }) => {
                const monthYear = item.timestamp.slice(3);
                if (!months[monthYear]) {
@@ -220,7 +231,7 @@ export namespace NDist {
             ],
          },
          {
-            name: 'distributer',
+            name: 'distSteps',
             title: 'Distribution Steps History',
             slideNo: 2,
          },

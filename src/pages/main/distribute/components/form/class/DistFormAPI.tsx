@@ -13,7 +13,6 @@ import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutat
 import type { ICurrentFormInputs } from '../../../../details/components/accounts/current/class/Class';
 import type NDist from '../../../namespace/NDist';
 
-// TODO: Change all instances of "DistributerClass" in project to DistFormAPI
 export default class DistFormAndAPI {
    // -- FORM -- //
    constructor(currentAccounts: ICurrentFormInputs[]) {
@@ -140,8 +139,8 @@ export default class DistFormAndAPI {
 // -- PRIVATE TYPES FOR DELCALCDIST MUTATION: -- //
 
 interface IDelCalcDistItem {
-   type: 'analyticsItem' | 'distributerItem' | 'savingsAccHistoryItem';
-   data: NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist;
+   type: 'analyticsItem' | 'distStepsItem' | 'savingsAccHistoryItem';
+   data: NDist.IAnalytics | NDist.IDistSteps | NDist.ISavingsAccHist;
 }
 
 interface IDelCalcDistMonth {

@@ -7,11 +7,11 @@ export interface IDistributeContext {
    scrollToSlide: (slideNumber: number) => void;
    currentSlide: number;
    handleItemClick: (
-      item: NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist,
+      item: NDist.IAnalytics | NDist.IDistSteps | NDist.ISavingsAccHist,
       itemType: NDist.Carousel.ISlide2NameOptions,
    ) => void;
-   slide2Data: NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist | null;
-   setSlide2Data: SetValue<NDist.IAnalytics | NDist.IDistMsgs | NDist.ISavingsAccHist | null>;
+   slide2Data: NDist.IAnalytics | NDist.IDistSteps | NDist.ISavingsAccHist | null;
+   setSlide2Data: SetValue<NDist.IAnalytics | NDist.IDistSteps | NDist.ISavingsAccHist | null>;
    slideName: NDist.Carousel.ISlide2NameOptions | NDist.Carousel.ISlide1Name;
    setSlideName: SetValue<NDist.Carousel.ISlide2NameOptions | NDist.Carousel.ISlide1Name>;
    distStepsCompleted: number;

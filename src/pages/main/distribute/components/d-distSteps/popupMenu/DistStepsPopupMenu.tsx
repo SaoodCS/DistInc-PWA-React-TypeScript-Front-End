@@ -11,13 +11,13 @@ import useThemeContext from '../../../../../../global/context/theme/hooks/useThe
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import NDist from '../../../namespace/NDist';
 
-interface IDistMsgsPopupMenu {
-   distributerItem: NDist.IDistMsgs;
-   handleItemClick: (item: NDist.IDistMsgs, itemType: NDist.Carousel.ISlide2NameOptions) => void;
+interface IDistStepsPopupMenu {
+   distStepsItem: NDist.IDistSteps;
+   handleItemClick: (item: NDist.IDistSteps, itemType: NDist.Carousel.ISlide2NameOptions) => void;
 }
 
-export default function DistMsgsPopupMenu(props: IDistMsgsPopupMenu): JSX.Element {
-   const { distributerItem, handleItemClick } = props;
+export default function DistStepsPopupMenu(props: IDistStepsPopupMenu): JSX.Element {
+   const { distStepsItem, handleItemClick } = props;
    const { isDarkTheme } = useThemeContext();
 
    const queryClient = useQueryClient();
@@ -28,15 +28,15 @@ export default function DistMsgsPopupMenu(props: IDistMsgsPopupMenu): JSX.Elemen
    });
    async function handleDelete(): Promise<void> {
       await delCalcDistItemInFirestore.mutateAsync({
-         type: 'distributerItem',
-         data: distributerItem,
+         type: 'distStepsItem',
+         data: distStepsItem,
       });
    }
 
    return (
       <PMItemsListWrapper isDarkTheme={isDarkTheme}>
          <PMItemContainer
-            onClick={() => handleItemClick(distributerItem, 'distributer')}
+            onClick={() => handleItemClick(distStepsItem, 'distSteps')}
             isDarkTheme={isDarkTheme}
          >
             <PMItemTitle>View Details</PMItemTitle>
