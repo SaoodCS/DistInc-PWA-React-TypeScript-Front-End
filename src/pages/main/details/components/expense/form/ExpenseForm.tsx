@@ -8,6 +8,7 @@ import ConditionalRender from '../../../../../../global/components/lib/renderMod
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
+import MiscHelper from '../../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import useForm from '../../../../../../global/hooks/useForm';
 import SavingsClass from '../../accounts/savings/class/Class';
 import type { IExpenseFormInputs } from '../class/ExpensesClass';
@@ -28,7 +29,7 @@ export default function ExpenseForm(props: IExpenseForm): JSX.Element {
    );
 
    const queryClient = useQueryClient();
-   const { data } = SavingsClass.useQuery.getSavingsAccounts();
+   const { data: savingsAccData } = SavingsClass.useQuery.getSavingsAccounts();
 
    const setExpenseInFirestore = ExpensesClass.useMutation.setExpense({
       onSuccess: () => {
@@ -57,10 +58,10 @@ export default function ExpenseForm(props: IExpenseForm): JSX.Element {
       input: (typeof ExpensesClass.form.inputs)[0],
    ): IDropDownOption[] | undefined {
       if (!input.isDropDown) return undefined;
-      if (!data) return [];
+      if (!MiscHelper.isNotFalsyOrEmpty(savingsAccData)) return [];
       if (input.name === 'expenseType') {
          const dropDownOptions: IDropDownOption[] = [];
-         Object.entries(data).forEach(([id, savingsAccount]) => {
+         Object.entries(savingsAccData).forEach(([id, savingsAccount]) => {
             dropDownOptions.push({
                value: `Savings Transfer:${id}`,
                label: `Savings Transfer: ${savingsAccount.accountName}`,

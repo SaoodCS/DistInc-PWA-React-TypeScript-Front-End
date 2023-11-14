@@ -21,6 +21,7 @@ import { ModalContext } from '../../../../../../global/context/widget/modal/Moda
 import Color from '../../../../../../global/css/colors';
 import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import JSXHelper from '../../../../../../global/helpers/dataTypes/jsx/jsxHelper';
+import MiscHelper from '../../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
@@ -75,9 +76,9 @@ export default function IncomeSlide(): JSX.Element {
       return Color.setRgbOpacity(mapper[tag], 0.4);
    }
 
-   function sortData(fetchedData: typeof data): IIncomeFormInputs[] {
-      if (!fetchedData) return [];
-      const dataAsArr = ObjectOfObjects.convertToArrayOfObj(fetchedData);
+   function sortData(incomeData: typeof data): IIncomeFormInputs[] {
+      if (!MiscHelper.isNotFalsyOrEmpty(incomeData)) return [];
+      const dataAsArr = ObjectOfObjects.convertToArrayOfObj(incomeData);
       if (!sortIncomeBy) return dataAsArr;
       const desc = orderIncome?.includes('desc');
       const sortedData = ArrayOfObjects.sort(

@@ -4,6 +4,7 @@ import { DocumentTextClock } from '@styled-icons/fluentui-system-filled/Document
 import Color from '../../../../global/css/colors';
 import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import DateHelper from '../../../../global/helpers/dataTypes/date/DateHelper';
+import MiscHelper from '../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import ObjectOfObjects from '../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import type { IIncomeFirebase } from '../../details/components/Income/class/Class';
 import type { ICurrentAccountFirebase } from '../../details/components/accounts/current/class/Class';
@@ -70,8 +71,8 @@ export namespace NDist {
             'Salary & Expenses',
          );
          const spendings = ObjectOfObjects.findObjFromUniqueVal(currentAccounts, 'Spending');
-         const incomeExists = !ObjectOfObjects.isEmpty(income);
-         const expensesExists = !ObjectOfObjects.isEmpty(expenses);
+         const incomeExists = MiscHelper.isNotFalsyOrEmpty(income);
+         const expensesExists = MiscHelper.isNotFalsyOrEmpty(expenses);
          return [
             {
                name: 'salaryExp',
@@ -134,7 +135,7 @@ export namespace NDist {
          if (ObjectOfObjects.isEmpty(calcDistData)) return false;
          const currentMonth = DateHelper.toDDMMYYYY(new Date()).split('/')[1];
          const { analytics } = calcDistData;
-         if (!analytics) return false;
+         if (!MiscHelper.isNotFalsyOrEmpty(analytics)) return false;
          for (const analyticsObj of analytics) {
             const analyticsObjMonth = analyticsObj.timestamp.split('/')[1];
             if (analyticsObjMonth === currentMonth) return true;

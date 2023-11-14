@@ -11,6 +11,7 @@ import {
 } from '../../../../../../global/components/lib/popupMenu/Style';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
+import MiscHelper from '../../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
 import NDist from '../../../namespace/NDist';
@@ -64,7 +65,7 @@ export default function SavingsAccPopupMenu(props: ISavingsAccPopupMenu): JSX.El
          savingsAccData || {},
          savingsAccHistItem.id,
       );
-      if (!savingsAccObj) return;
+      if (!MiscHelper.isNotFalsyOrEmpty(savingsAccObj)) return;
       await setSavingAccountInFirestore.mutateAsync({
          ...savingsAccObj,
          isTracked: 'false',

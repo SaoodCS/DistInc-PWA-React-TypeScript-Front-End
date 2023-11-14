@@ -7,6 +7,7 @@ import InputCombination from '../../../../../../../global/components/lib/form/in
 import useThemeContext from '../../../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
 import microservices from '../../../../../../../global/firebase/apis/microservices/microservices';
+import MiscHelper from '../../../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import useForm from '../../../../../../../global/hooks/useForm';
 import SavingsClass from '../../savings/class/Class';
 import type { ICurrentFormInputs } from '../class/Class';
@@ -45,7 +46,7 @@ export default function CurrentForm(props: ICurrentForm): JSX.Element {
       input: (typeof CurrentClass.form.inputs)[0],
    ): IDropDownOption[] | undefined {
       if (!input.isDropDown) return undefined;
-      if (!savingsAccount) return [];
+      if (!MiscHelper.isNotFalsyOrEmpty(savingsAccount)) return [];
       if (!input.dropDownOptions) {
          // eslint-disable-next-line @typescript-eslint/naming-convention, unused-imports/no-unused-vars
          return Object.entries(savingsAccount).map(([_, account]) => ({

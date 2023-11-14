@@ -10,6 +10,7 @@ import { BottomPanelContext } from '../../../../../global/context/widget/bottomP
 import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
 import ArrayOfObjects from '../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import JSXHelper from '../../../../../global/helpers/dataTypes/jsx/jsxHelper';
+import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useURLState from '../../../../../global/hooks/useURLState';
@@ -66,7 +67,12 @@ export default function AccountsSlide(): JSX.Element {
    }
 
    function sortData(): (ISavingsFormInputs | ICurrentFormInputs)[] {
-      if (!savingsData || !currentData) return [];
+      if (
+         !MiscHelper.isNotFalsyOrEmpty(savingsData) ||
+         !MiscHelper.isNotFalsyOrEmpty(currentData)
+      ) {
+         return [];
+      }
       const savingsWithFilterProps = ObjectOfObjects.addPropsToAll(savingsData, {
          accountType: 'Savings',
          category: 'Savings',

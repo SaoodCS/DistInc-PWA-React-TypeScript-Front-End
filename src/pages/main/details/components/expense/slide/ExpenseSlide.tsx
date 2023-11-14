@@ -22,6 +22,7 @@ import Color from '../../../../../../global/css/colors';
 import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import JSXHelper from '../../../../../../global/helpers/dataTypes/jsx/jsxHelper';
+import MiscHelper from '../../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
@@ -45,7 +46,13 @@ export default function ExpenseSlide(): JSX.Element {
    const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(
       NDetails.keys.localStorage.expenseSlide,
    );
-   const { isLoading, error, isPaused, refetch, data } = ExpensesClass.useQuery.getExpenses({
+   const {
+      isLoading,
+      error,
+      isPaused,
+      refetch,
+      data: expensesData,
+   } = ExpensesClass.useQuery.getExpenses({
       onSettled: () => {
          isPortableDevice ? toggleBottomPanel(false) : toggleModal(false);
       },
@@ -92,9 +99,9 @@ export default function ExpenseSlide(): JSX.Element {
       return `Transfer: ${savingsAccount?.accountName}` || 'Savings Transfer';
    }
 
-   function sortData(fetchedData: typeof data): IExpenseFormInputs[] {
-      if (!fetchedData) return [];
-      const dataAsArr = ObjectOfObjects.convertToArrayOfObj(fetchedData);
+   function sortData(expensesDataData: typeof expensesData): IExpenseFormInputs[] {
+      if (!MiscHelper.isNotFalsyOrEmpty(expensesDataData)) return [];
+      const dataAsArr = ObjectOfObjects.convertToArrayOfObj(expensesDataData);
       if (!sortExpenseBy) return dataAsArr;
       const desc = orderExpense?.includes('desc');
       const sortedData = ArrayOfObjects.sort(
@@ -112,8 +119,8 @@ export default function ExpenseSlide(): JSX.Element {
             onScroll={handleOnScroll}
             style={{ ...scrollSaverStyle, height: '100%' }}
          >
-            {!!data &&
-               sortData(data).map((item) => (
+            {!!expensesData &&
+               sortData(expensesData).map((item) => (
                   <FlatListItem
                      isDarkTheme={isDarkTheme}
                      key={item.id}
