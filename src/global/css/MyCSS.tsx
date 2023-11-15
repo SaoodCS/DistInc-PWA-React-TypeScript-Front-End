@@ -23,7 +23,7 @@ export namespace MyCSS {
             property: 'background-color' | 'color' | 'border',
             postClick: 'revert' | 'persist',
          ) => {
-            const selector = postClick === 'persist' ? '&:active' : '&:hover';
+            const selector = postClick === 'persist' ? '&:hover' : '&:active';
             const propVal = property === 'border' ? `1px solid ${changeToColor}` : changeToColor;
             return css`
                @media (max-width: ${MyCSS.PortableBp.asPx}) {

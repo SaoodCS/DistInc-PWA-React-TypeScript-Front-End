@@ -5,8 +5,7 @@ import Color from '../../../../css/colors';
 import BoolHelper from '../../../../helpers/dataTypes/bool/BoolHelper';
 
 export const FilterIcon = styled(Filter)<{ darktheme: 'true' | 'false' }>`
-   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-   -webkit-touch-callout: none;
+   ${MyCSS.Clickables.removeDefaultEffects};
    cursor: pointer;
    color: ${({ darktheme }) =>
       BoolHelper.strToBool(darktheme) ? Color.darkThm.accent : Color.lightThm.accent};

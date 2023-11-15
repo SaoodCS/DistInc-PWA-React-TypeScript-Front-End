@@ -5,6 +5,7 @@ import Color from '../../../../css/colors';
 import BoolHelper from '../../../../helpers/dataTypes/bool/BoolHelper';
 
 export const CloseCircleIcon = styled(CloseCircleOutline)<{ darktheme: 'true' | 'false' }>`
+   ${MyCSS.Clickables.removeDefaultEffects};
    color: ${({ darktheme }): string =>
       Color.setRgbOpacity(
          BoolHelper.strToBool(darktheme) ? Color.darkThm.error : Color.lightThm.error,

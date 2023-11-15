@@ -5,6 +5,7 @@ import Color from '../../../../css/colors';
 import BoolHelper from '../../../../helpers/dataTypes/bool/BoolHelper';
 
 export const QMarkIcon = styled(QMark)<{ darktheme: 'true' | 'false' }>`
+   ${MyCSS.Clickables.removeDefaultEffects};
    color: ${({ darktheme }) =>
       BoolHelper.strToBool(darktheme) ? Color.darkThm.accent : Color.lightThm.accent};
    ${({ darktheme }) => {

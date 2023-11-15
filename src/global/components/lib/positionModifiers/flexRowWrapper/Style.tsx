@@ -5,9 +5,11 @@ export const FlexRowWrapper = styled.div<{
    padding?: string;
    width?: string;
    height?: string;
+   alignItems?: string;
 }>`
    display: flex;
    flex-direction: row;
+   align-items: ${({ alignItems }) => (alignItems ? alignItems : 'center')};
    align-items: center;
    justify-content: ${({ justifyContent }): string =>
       justifyContent ? justifyContent : 'flex-start'};
