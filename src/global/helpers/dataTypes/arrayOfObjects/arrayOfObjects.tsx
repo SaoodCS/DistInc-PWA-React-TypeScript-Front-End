@@ -62,4 +62,16 @@ export default class ArrayOfObjects {
    static doAllObjectsHaveKeyValuePair<T>(arr: T[], key: keyof T, value: T[keyof T]): boolean {
       return arr.every((obj) => obj[key] === value);
    }
+
+   static getArrOfValuesFromKey<T, K extends keyof T>(arr: T[], key: K): T[K][] {
+      return arr.map((obj) => obj[key]);
+   }
+
+   static getArrOfValuesFromNestedKey<T, K extends keyof T, N extends keyof T[K]>(
+      arr: T[],
+      outerKey: K,
+      nestedKey: N,
+   ): T[K][N][] {
+      return arr.map((obj) => obj[outerKey][nestedKey]);
+   }
 }

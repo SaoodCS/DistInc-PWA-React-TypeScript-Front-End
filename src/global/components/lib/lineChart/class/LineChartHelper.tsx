@@ -9,7 +9,7 @@ import {
 } from 'chart.js';
 import { Padding } from 'chart.js/dist/types/geometric';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
-import Color from '../../../css/colors';
+import Color from '../../../../css/colors';
 
 export namespace LineChartHelper {
    export type ILineChartPointStyles = {

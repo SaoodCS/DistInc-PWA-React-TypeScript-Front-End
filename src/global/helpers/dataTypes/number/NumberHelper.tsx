@@ -20,4 +20,10 @@ export default class NumberHelper {
    static roundTo(value: number, decimalPlaces: number): number {
       return Number(value.toFixed(decimalPlaces));
    }
+
+   static calcPercentageChange(prev: number, curr: number): number {
+      const diff = curr - prev;
+      const percentageChange = ((diff / prev) * 100).toFixed(2);
+      return Number(percentageChange);
+   };
 }

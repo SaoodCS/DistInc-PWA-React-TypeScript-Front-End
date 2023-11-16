@@ -1,5 +1,9 @@
-import LineChartHelper from '../../../../global/components/lib/lineChart/LineChartHelper';
+import LineChartHelper from '../../../../global/components/lib/lineChart/class/LineChartHelper';
 import Color from '../../../../global/css/colors';
+import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
+import DateHelper from '../../../../global/helpers/dataTypes/date/DateHelper';
+import MiscHelper from '../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
+import NDist from '../../distribute/namespace/NDist';
 
 export default class SpendingsChart {
    static config(isDarkTheme: boolean): LineChartHelper.ILineChartConfig {
@@ -56,14 +60,20 @@ export default class SpendingsChart {
       };
    }
 
-   static dataAndStyles(isDarkTheme: boolean): LineChartHelper.ILineChartDataStyles[] {
+   static dataAndStyles(
+      isDarkTheme: boolean,
+      totalSpendingData: number[],
+      disposableSpendingData: number[],
+      expenseSpendingData: number[],
+   ): LineChartHelper.ILineChartDataStyles[] {
       const accentColor = isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent;
       const warningColor = isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning;
+      const errorColor = isDarkTheme ? Color.darkThm.error : Color.lightThm.error;
 
       return [
          {
             lineTitle: 'Total Spending',
-            data: [65, 59, 80, 81, 56, 55, 40],
+            data: totalSpendingData,
             fillAreaBelow: true,
             lineSmoothness: 0.4,
             pointColor: accentColor,
@@ -81,7 +91,7 @@ export default class SpendingsChart {
          },
          {
             lineTitle: 'Disposable Spending',
-            data: [10, 70, 90, 60, 40, 70, 50],
+            data: disposableSpendingData,
             fillAreaBelow: true,
             lineSmoothness: 0.4,
             pointColor: warningColor,
@@ -97,6 +107,24 @@ export default class SpendingsChart {
                endColor: Color.setRgbOpacity(warningColor, 0),
             }),
          },
+         {
+            lineTitle: 'Expense Spending',
+            data: expenseSpendingData,
+            fillAreaBelow: true,
+            lineSmoothness: 0.4,
+            pointColor: errorColor,
+            pointBgColor: errorColor,
+            lineColor: LineChartHelper.setLineOrBgColor(undefined, {
+               direction: 'horizontal',
+               startColor: Color.setRgbOpacity(errorColor, 1),
+               endColor: Color.setRgbOpacity(errorColor, 0.75),
+            }),
+            fillAreaBelowColor: LineChartHelper.setLineOrBgColor(undefined, {
+               direction: 'vertical',
+               startColor: Color.setRgbOpacity(errorColor, 0.8),
+               endColor: Color.setRgbOpacity(errorColor, 0),
+            }),
+         },
       ];
    }
 
@@ -107,4 +135,38 @@ export default class SpendingsChart {
       pointBorderWidth: 0,
       pointHoverBorderWidth: 0,
    };
+
+   // ------ HELPERS FOR GETTING DATA FROM ANALYTICS ARRAY ------ //
+   static getXAxisLabels(analytics: NDist.IAnalytics[]): string[] {
+      const timestamps = ArrayOfObjects.getArrOfValuesFromKey(analytics, 'timestamp');
+      const monthNames = timestamps.map((timestamp) => {
+         const month = DateHelper.getPrevMonthName(timestamp);
+         return month;
+      });
+      return monthNames;
+   }
+
+   static getSpendingsValues(
+      type: 'totalSpendings' | 'totalDisposableSpending',
+      analytics: NDist.IAnalytics[],
+   ): number[] {
+      const spendingsValues = ArrayOfObjects.getArrOfValuesFromNestedKey(
+         analytics,
+         'prevMonth',
+         type,
+      );
+      return spendingsValues;
+   }
+
+   static getExpenseSpendingsValues(analytics: NDist.IAnalytics[]): number[] {
+      const totalExpensesArr = ArrayOfObjects.getArrOfValuesFromKey(analytics, 'totalExpenses');
+      if (!MiscHelper.isNotFalsyOrEmpty(totalExpensesArr)) return [0];
+      const duplicatedItem = totalExpensesArr[0];
+      const shiftedArr = totalExpensesArr.slice();
+      for (let i = shiftedArr.length - 1; i >= 0; i--) {
+         shiftedArr[i] = shiftedArr[i - 1];
+      }
+      shiftedArr[0] = duplicatedItem;
+      return shiftedArr;
+   }
 }
