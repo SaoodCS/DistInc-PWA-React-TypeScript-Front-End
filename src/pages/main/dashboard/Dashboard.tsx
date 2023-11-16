@@ -12,13 +12,10 @@ import {
    Title,
    Tooltip,
 } from 'chart.js';
-
 import { UpArrow } from '@styled-icons/boxicons-solid/UpArrow';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
-import React from 'react';
 import { Line } from 'react-chartjs-2';
 import styled from 'styled-components';
-import { F } from 'styled-icons/fa-solid';
 import { TextColourizer } from '../../../global/components/lib/font/textColorizer/TextColourizer';
 import { FlexRowWrapper } from '../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
