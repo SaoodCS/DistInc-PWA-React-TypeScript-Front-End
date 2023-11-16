@@ -18,6 +18,9 @@ import NumberHelper from '../../../../global/helpers/dataTypes/number/NumberHelp
 import NDist from '../../distribute/namespace/NDist';
 import SpendingsChart from './class';
 
+//TODO: NEXT: Create a Placeholder for this component if the data is empty / or set some default dummy data if the data is empty
+//TODO: NEXT: Figure out wher to place the ChartJS.register function call (do I need to place it in every file i use the chartjs library in or do I just place it in the entry point file of the app?)
+
 export default function SpendingsAnalytics() {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
    const { data: calcDistData, isLoading, isPaused, error } = NDist.API.useQuery.getCalcDist();
