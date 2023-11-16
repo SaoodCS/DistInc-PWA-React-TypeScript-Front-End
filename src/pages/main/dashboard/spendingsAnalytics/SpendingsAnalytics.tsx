@@ -39,9 +39,21 @@ export default function SpendingsAnalytics() {
             SpendingsChart.getSpendingsValues('totalDisposableSpending', analytics),
          );
          setExpensesSpendingsValues(SpendingsChart.getExpenseSpendingsValues(analytics));
-         setLatestSpendingsPercChange(calcLatestSpendingsPercChange());
+         setLatestSpendingsPercChange(calcLatestSpendingsPercChange(analytics));
       }
    }, [calcDistData]);
+
+   function calcLatestSpendingsPercChange(analytics: NDist.IAnalytics[]): number {
+      const totalSpendingsValues = SpendingsChart.getSpendingsValues('totalSpendings', analytics);
+      if (!totalSpendingsValues || totalSpendingsValues.length < 2) return 0;
+      const prevMonthTotalSpendings = totalSpendingsValues[totalSpendingsValues.length - 2];
+      const currentMonthTotalSpendings = totalSpendingsValues[totalSpendingsValues.length - 1];
+      const percentageChange = NumberHelper.calcPercentageChange(
+         prevMonthTotalSpendings,
+         currentMonthTotalSpendings,
+      );
+      return percentageChange;
+   }
 
    const options = LineChartHelper.constructOptions(SpendingsChart.config(isDarkTheme));
    const chartDataAndStyles = SpendingsChart.dataAndStyles(
@@ -55,16 +67,6 @@ export default function SpendingsAnalytics() {
       chartDataAndStyles,
       xAxisLabels,
    );
-
-   function calcLatestSpendingsPercChange(): number {
-      const prevMonthTotalSpendings = totalSpendingsValues[totalSpendingsValues.length - 2];
-      const currentMonthTotalSpendings = totalSpendingsValues[totalSpendingsValues.length - 1];
-      const percentageChange = NumberHelper.calcPercentageChange(
-         prevMonthTotalSpendings,
-         currentMonthTotalSpendings,
-      );
-      return percentageChange;
-   }
 
    if (isLoading && !isPaused) {
       if (!isPortableDevice) return <Loader isDisplayed />;
