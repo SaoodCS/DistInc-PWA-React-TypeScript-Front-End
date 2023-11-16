@@ -18,6 +18,8 @@ import NumberHelper from '../../../../global/helpers/dataTypes/number/NumberHelp
 import NDist from '../../distribute/namespace/NDist';
 import SpendingsChart from './class';
 
+//TODO: NEXT: Add a filterer next to the title of the chart to filter out disposable spendings / expenses spendings / total spendings
+//TODO: NEXT: Update the code such that it only shows the last 12 months of data (labels and data need to be edited to reflect this)
 //TODO: NEXT: Create a Placeholder for this component if the data is empty / or set some default dummy data if the data is empty
 //TODO: NEXT: Figure out wher to place the ChartJS.register function call (do I need to place it in every file i use the chartjs library in or do I just place it in the entry point file of the app?)
 
