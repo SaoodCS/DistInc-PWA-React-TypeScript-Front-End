@@ -1,5 +1,6 @@
 import LineChartHelper from '../../../../global/components/lib/lineChart/class/LineChartHelper';
 import Color from '../../../../global/css/colors';
+import ArrayHelper from '../../../../global/helpers/dataTypes/arrayHelper/ArrayHelper';
 import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import DateHelper from '../../../../global/helpers/dataTypes/date/DateHelper';
 import MiscHelper from '../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
@@ -143,7 +144,8 @@ export default class SpendingsChart {
          const month = DateHelper.getPrevMonthName(timestamp);
          return month;
       });
-      return monthNames;
+      const last12Months = ArrayHelper.trimLength(monthNames, 12, 'start');
+      return last12Months;
    }
 
    static getSpendingsValues(
@@ -155,7 +157,8 @@ export default class SpendingsChart {
          'prevMonth',
          type,
       );
-      return spendingsValues;
+      const last12Spendings = ArrayHelper.trimLength(spendingsValues, 12, 'start');
+      return last12Spendings;
    }
 
    static getExpenseSpendingsValues(analytics: NDist.IAnalytics[]): number[] {
@@ -167,6 +170,7 @@ export default class SpendingsChart {
          shiftedArr[i] = shiftedArr[i - 1];
       }
       shiftedArr[0] = duplicatedItem;
-      return shiftedArr;
+      const last12Expenses = ArrayHelper.trimLength(shiftedArr, 12, 'start');
+      return last12Expenses;
    }
 }

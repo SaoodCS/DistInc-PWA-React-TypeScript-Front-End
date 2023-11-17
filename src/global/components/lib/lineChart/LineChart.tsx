@@ -1,35 +1,8 @@
-import { UpArrow } from '@styled-icons/boxicons-solid/UpArrow';
-import {
-   CategoryScale,
-   ChartData,
-   Chart as ChartJS,
-   ChartOptions,
-   Filler,
-   Legend,
-   LineElement,
-   LinearScale,
-   PointElement,
-   Title,
-   Tooltip,
-} from 'chart.js';
+import { ChartData, ChartOptions } from 'chart.js';
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { ReactNode } from 'react';
 import { Line } from 'react-chartjs-2';
-import Color from '../../../css/colors';
-import { TextColourizer } from '../font/textColorizer/TextColourizer';
-import { FlexRowWrapper } from '../positionModifiers/flexRowWrapper/Style';
 import { ChartInfo, ChartTitle, LineChartCardWrapper } from './Style';
-
-ChartJS.register(
-   CategoryScale,
-   LinearScale,
-   PointElement,
-   LineElement,
-   Title,
-   Tooltip,
-   Filler,
-   Legend,
-);
 
 interface ILineChart {
    width: string;
