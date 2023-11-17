@@ -22,8 +22,6 @@ import NDist from '../../distribute/namespace/NDist';
 import FilterSpendingsPopupMenu from './FilterSpendingsPopupMenu';
 import SpendingsChart from './class';
 
-//TODO: NEXT: Create a Placeholder for this component if the data is empty
-
 export default function SpendingsAnalytics() {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
    const { data: calcDistData, isLoading, isPaused, error } = NDist.API.useQuery.getCalcDist();
@@ -114,6 +112,7 @@ export default function SpendingsAnalytics() {
             title="Spendings"
             options={options}
             data={data}
+            showPlaceholder={!MiscHelper.isNotFalsyOrEmpty(calcDistData?.analytics)}
             titleElement={
                <FilterIcon
                   height="1em"

@@ -1,5 +1,7 @@
+import { AreaGraph } from '@styled-icons/entypo/AreaGraph';
 import styled from 'styled-components';
 import Color from '../../../css/colors';
+import BoolHelper from '../../../helpers/dataTypes/bool/BoolHelper';
 
 export const ChartInfo = styled.div`
    position: absolute;
@@ -20,8 +22,6 @@ export const ChartTitle = styled.div`
    & > :first-child {
       padding-right: 0.25em;
    }
-  
-  
 `;
 
 export const LineChartCardWrapper = styled.div`
@@ -30,7 +30,16 @@ export const LineChartCardWrapper = styled.div`
    display: flex;
    background-color: ${Color.setRgbOpacity(Color.lightThm.bg, 0.05)};
    border-radius: 10px;
-   overflow: hidden;
-   display: flex;
    position: relative;
+`;
+
+export const LineChartPlaceholder = styled(AreaGraph)<{ darktheme: 'true' | 'false' }>`
+   position: absolute;
+   bottom: -10em;
+   left: -3em;
+   right: 0;
+   margin: auto;
+   transform: scaleY(0.5);
+   color: ${({ darktheme }) =>
+      BoolHelper.strToBool(darktheme) ? Color.darkThm.border : Color.lightThm.border};
 `;
