@@ -6,8 +6,42 @@ import DateHelper from '../../../../global/helpers/dataTypes/date/DateHelper';
 import MiscHelper from '../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import NDist from '../../distribute/namespace/NDist';
 
-export default class SpendingsChart {
-   static config(isDarkTheme: boolean): LineChartHelper.ILineChartConfig {
+export namespace SpendingsChart {
+   interface ITotalSpendingsLine {
+      name: 'totalSpendings';
+      title: 'Total Spendings';
+   }
+   interface ITotalDisposableSpendingLine {
+      name: 'totalDisposableSpending';
+      title: 'Disposable Spendings';
+   }
+
+   interface ITotalExpensesSpendingsLine {
+      name: 'totalExpensesSpendings';
+      title: 'Expenses Spendings';
+   }
+
+   export type ILineDetails =
+      | ITotalSpendingsLine
+      | ITotalDisposableSpendingLine
+      | ITotalExpensesSpendingsLine;
+
+   export const lineDetails: ILineDetails[] = [
+      {
+         name: 'totalSpendings',
+         title: 'Total Spendings',
+      },
+      {
+         name: 'totalDisposableSpending',
+         title: 'Disposable Spendings',
+      },
+      {
+         name: 'totalExpensesSpendings',
+         title: 'Expenses Spendings',
+      },
+   ];
+
+   export function config(isDarkTheme: boolean): LineChartHelper.ILineChartConfig {
       const textColor = isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt;
       return {
          layout: {
@@ -61,7 +95,7 @@ export default class SpendingsChart {
       };
    }
 
-   static dataAndStyles(
+   export function dataAndStyles(
       isDarkTheme: boolean,
       totalSpendingData: number[],
       disposableSpendingData: number[],
@@ -129,7 +163,7 @@ export default class SpendingsChart {
       ];
    }
 
-   static linePointStyles: LineChartHelper.ILineChartPointStyles = {
+   export const linePointStyles: LineChartHelper.ILineChartPointStyles = {
       pointInitialSize: 0,
       pointSizeOnHover: 5,
       pointDetectionRadius: 100,
@@ -138,7 +172,7 @@ export default class SpendingsChart {
    };
 
    // ------ HELPERS FOR GETTING DATA FROM ANALYTICS ARRAY ------ //
-   static getXAxisLabels(analytics: NDist.IAnalytics[]): string[] {
+   export function getXAxisLabels(analytics: NDist.IAnalytics[]): string[] {
       const timestamps = ArrayOfObjects.getArrOfValuesFromKey(analytics, 'timestamp');
       const monthNames = timestamps.map((timestamp) => {
          const month = DateHelper.getPrevMonthName(timestamp);
@@ -148,8 +182,8 @@ export default class SpendingsChart {
       return last12Months;
    }
 
-   static getSpendingsValues(
-      type: 'totalSpendings' | 'totalDisposableSpending',
+   export function getSpendingsValues(
+      type: ITotalSpendingsLine['name'] | ITotalDisposableSpendingLine['name'],
       analytics: NDist.IAnalytics[],
    ): number[] {
       const spendingsValues = ArrayOfObjects.getArrOfValuesFromNestedKey(
@@ -161,7 +195,7 @@ export default class SpendingsChart {
       return last12Spendings;
    }
 
-   static getExpenseSpendingsValues(analytics: NDist.IAnalytics[]): number[] {
+   export function getExpenseSpendingsValues(analytics: NDist.IAnalytics[]): number[] {
       const totalExpensesArr = ArrayOfObjects.getArrOfValuesFromKey(analytics, 'totalExpenses');
       if (!MiscHelper.isNotFalsyOrEmpty(totalExpensesArr)) return [0];
       const duplicatedItem = totalExpensesArr[0];
@@ -173,4 +207,8 @@ export default class SpendingsChart {
       const last12Expenses = ArrayHelper.trimLength(shiftedArr, 12, 'start');
       return last12Expenses;
    }
+
+   export const filtererKey = 'spendingsChart';
 }
+
+export default SpendingsChart;

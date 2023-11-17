@@ -1,24 +1,27 @@
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 import CardListPlaceholder from '../../../../global/components/lib/cardList/placeholder/CardListPlaceholder';
 import FetchError from '../../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import { CurrencyOnCardTxt } from '../../../../global/components/lib/font/currencyOnCardText/CurrencyOnCardTxt';
 import { TextColourizer } from '../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { TriangularArrowIcon } from '../../../../global/components/lib/icons/arrows/TriangularArrow';
+import { FilterIcon } from '../../../../global/components/lib/icons/filter/FilterIcon';
 import LineChart from '../../../../global/components/lib/lineChart/LineChart';
 import LineChartHelper from '../../../../global/components/lib/lineChart/class/LineChartHelper';
 import Loader from '../../../../global/components/lib/loader/Loader';
 import { FlexRowWrapper } from '../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
 import useThemeContext from '../../../../global/context/theme/hooks/useThemeContext';
+import { PopupMenuContext } from '../../../../global/context/widget/popupMenu/PopupMenuContext';
 import Color from '../../../../global/css/colors';
 import BoolHelper from '../../../../global/helpers/dataTypes/bool/BoolHelper';
 import MiscHelper from '../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import NumberHelper from '../../../../global/helpers/dataTypes/number/NumberHelper';
+import useURLState from '../../../../global/hooks/useURLState';
 import NDist from '../../distribute/namespace/NDist';
+import FilterSpendingsPopupMenu from './FilterSpendingsPopupMenu';
 import SpendingsChart from './class';
 
-//TODO: NEXT: Add a filterer next to the title of the chart to filter out disposable spendings / expenses spendings / total spendings
 //TODO: NEXT: Create a Placeholder for this component if the data is empty / or set some default dummy data if the data is empty
 
 export default function SpendingsAnalytics() {
@@ -29,19 +32,40 @@ export default function SpendingsAnalytics() {
    const [disposableSpendingsValues, setDisposableSpendingsValues] = useState<number[]>([0]);
    const [expensesSpendingsValues, setExpensesSpendingsValues] = useState<number[]>([0]);
    const [latestSpendingsPercChange, setLatestSpendingsPercChange] = useState<number>(0);
+   const [filterOutState] = useURLState({ key: SpendingsChart.filtererKey });
+   const {
+      setPMContent,
+      setPMHeightPx,
+      togglePM,
+      setPMWidthPx,
+      setClickEvent,
+      setCloseOnInnerClick,
+   } = useContext(PopupMenuContext);
 
    useEffect(() => {
       const analytics = calcDistData?.analytics;
       if (MiscHelper.isNotFalsyOrEmpty(analytics)) {
          setXAxisLabels(SpendingsChart.getXAxisLabels(analytics));
-         setTotalSpendingsValues(SpendingsChart.getSpendingsValues('totalSpendings', analytics));
-         setDisposableSpendingsValues(
-            SpendingsChart.getSpendingsValues('totalDisposableSpending', analytics),
-         );
-         setExpensesSpendingsValues(SpendingsChart.getExpenseSpendingsValues(analytics));
          setLatestSpendingsPercChange(calcLatestSpendingsPercChange(analytics));
+         if (!filterOutState.includes('totalSpendings')) {
+            setTotalSpendingsValues(SpendingsChart.getSpendingsValues('totalSpendings', analytics));
+         } else {
+            setTotalSpendingsValues([0]);
+         }
+         if (!filterOutState.includes('totalDisposableSpending')) {
+            setDisposableSpendingsValues(
+               SpendingsChart.getSpendingsValues('totalDisposableSpending', analytics),
+            );
+         } else {
+            setDisposableSpendingsValues([0]);
+         }
+         if (!filterOutState.includes('totalExpensesSpending')) {
+            setExpensesSpendingsValues(SpendingsChart.getExpenseSpendingsValues(analytics));
+         } else {
+            setExpensesSpendingsValues([0]);
+         }
       }
-   }, [calcDistData]);
+   }, [calcDistData, filterOutState]);
 
    function calcLatestSpendingsPercChange(analytics: NDist.IAnalytics[]): number {
       const totalSpendingsValues = SpendingsChart.getSpendingsValues('totalSpendings', analytics);
@@ -68,6 +92,15 @@ export default function SpendingsAnalytics() {
       xAxisLabels,
    );
 
+   function handleFilterClick(e: React.MouseEvent<SVGSVGElement, MouseEvent>): void {
+      togglePM();
+      setPMContent(<FilterSpendingsPopupMenu />);
+      setClickEvent(e);
+      setPMHeightPx(100);
+      setPMWidthPx(200);
+      setCloseOnInnerClick(false);
+   }
+
    if (isLoading && !isPaused) {
       if (!isPortableDevice) return <Loader isDisplayed />;
       return <CardListPlaceholder repeatItemCount={7} />;
@@ -81,6 +114,13 @@ export default function SpendingsAnalytics() {
             title="Spendings"
             options={options}
             data={data}
+            titleElement={
+               <FilterIcon
+                  height="1em"
+                  darktheme={BoolHelper.boolToStr(isDarkTheme)}
+                  onClick={(e) => handleFilterClick(e)}
+               />
+            }
             infoComponent={
                <Fragment>
                   <FlexRowWrapper justifyContent="end" alignItems="end" padding="0em 0em 0.3em 0em">
