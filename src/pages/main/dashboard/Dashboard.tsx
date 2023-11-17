@@ -8,6 +8,7 @@ export default function Dashboard(): JSX.Element {
    return (
       <div style={{ padding: '1em' }}>
          <SpendingsAnalytics />
+         
       </div>
    );
 }

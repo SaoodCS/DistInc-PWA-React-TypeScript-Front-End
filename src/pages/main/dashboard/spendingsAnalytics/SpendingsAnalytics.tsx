@@ -22,7 +22,7 @@ import NDist from '../../distribute/namespace/NDist';
 import FilterSpendingsPopupMenu from './FilterSpendingsPopupMenu';
 import SpendingsChart from './class';
 
-//TODO: NEXT: Create a Placeholder for this component if the data is empty / or set some default dummy data if the data is empty
+//TODO: NEXT: Create a Placeholder for this component if the data is empty
 
 export default function SpendingsAnalytics() {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
