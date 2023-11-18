@@ -11,7 +11,6 @@ import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalR
 import { ChartInfo, ChartTitle, LineChartCardWrapper, LineChartPlaceholder } from './Style';
 
 interface ILineChart {
-   width: string;
    title: string;
    options: _DeepPartialObject<ChartOptions<'line'>>;
    data: () => ChartData<'line', number[], string>;
@@ -21,10 +20,10 @@ interface ILineChart {
 }
 
 export default function LineChart(props: ILineChart) {
-   const { width, title, options, data, infoComponent, titleElement, showPlaceholder } = props;
+   const { title, options, data, infoComponent, titleElement, showPlaceholder } = props;
    const { isDarkTheme } = useThemeContext();
    return (
-      <LineChartCardWrapper style={{ maxWidth: width }}>
+      <LineChartCardWrapper>
          <ChartTitle>
             <TextColourizer fontSize="0.95em">{title}</TextColourizer>
             <ConditionalRender condition={!!titleElement && !showPlaceholder}>

@@ -108,7 +108,6 @@ export default function SpendingsAnalytics() {
    return (
       <>
          <LineChart
-            width="30em"
             title="Spendings"
             options={options}
             data={data}
