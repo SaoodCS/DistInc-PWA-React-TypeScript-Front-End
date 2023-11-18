@@ -1,9 +1,7 @@
 import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import styled from 'styled-components';
-import { LargeScrnResponsiveFlexWrap } from '../../../global/components/lib/positionModifiers/responsiveFlexWrap/LargeScrnResponsiveFlexWrap';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
 import MyCSS from '../../../global/css/MyCSS';
-import Color from '../../../global/css/colors';
 import SpendingsAnalytics from './spendingsAnalytics/SpendingsAnalytics';
 
 const ExtraSmallCardSquareHolder = styled.div`

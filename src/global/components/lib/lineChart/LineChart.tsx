@@ -3,7 +3,6 @@ import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { ReactNode } from 'react';
 import { Line } from 'react-chartjs-2';
 import useThemeContext from '../../../context/theme/hooks/useThemeContext';
-import Color from '../../../css/colors';
 import BoolHelper from '../../../helpers/dataTypes/bool/BoolHelper';
 import { TextColourizer } from '../font/textColorizer/TextColourizer';
 import { FlexRowWrapper } from '../positionModifiers/flexRowWrapper/Style';
