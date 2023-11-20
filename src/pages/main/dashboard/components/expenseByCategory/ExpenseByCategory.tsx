@@ -101,7 +101,7 @@ export default function ExpenseByCategory() {
             {donutChartLabels.map((label, index) => (
                <KeyIndicatorAndTextWrapper key={label}>
                   <KeyIndicator color={backgroundColors[index]} />
-                  <TextColourizer fontSize="0.9em"> {label}</TextColourizer>
+                  <TextColourizer fontSize="0.9em">{label}</TextColourizer>
                </KeyIndicatorAndTextWrapper>
             ))}
          </DonutChartKeysWrapper>

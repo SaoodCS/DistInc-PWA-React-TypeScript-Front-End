@@ -12,8 +12,8 @@ export const KeyIndicator = styled.div<{ color: string }>`
 `;
 
 export const KeyIndicatorAndTextWrapper = styled.div`
-   padding-top: 0.5em;
-   padding-bottom: 0.5em;
+   padding-top: 0.25em;
+   padding-bottom: 0.25em;
 `;
 
 export const DonutChartTitle = styled.div`
