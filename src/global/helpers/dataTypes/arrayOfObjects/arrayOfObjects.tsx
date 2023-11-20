@@ -1,3 +1,5 @@
+import DateHelper from '../date/DateHelper';
+
 export default class ArrayOfObjects {
    static sort<T>(arr: T[], key: keyof T, descending?: boolean): T[] {
       if (descending) {
@@ -73,5 +75,13 @@ export default class ArrayOfObjects {
       nestedKey: N,
    ): T[K][N][] {
       return arr.map((obj) => obj[outerKey][nestedKey]);
+   }
+
+   static getLatestObj<T>(arrayOfObj: T[], ddmmyyPropName: keyof T): T {
+      return arrayOfObj.sort(
+         (a, b) =>
+            DateHelper.fromDDMMYYYY(b[ddmmyyPropName] as string).getTime() -
+            DateHelper.fromDDMMYYYY(a[ddmmyyPropName] as string).getTime(),
+      )[0];
    }
 }

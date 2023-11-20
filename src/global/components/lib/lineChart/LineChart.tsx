@@ -1,6 +1,6 @@
-import { ChartData, ChartOptions } from 'chart.js';
-import { _DeepPartialObject } from 'chart.js/dist/types/utils';
-import { ReactNode } from 'react';
+import type { ChartData, ChartOptions } from 'chart.js';
+import type { _DeepPartialObject } from 'chart.js/dist/types/utils';
+import type { ReactNode } from 'react';
 import { Line } from 'react-chartjs-2';
 import useThemeContext from '../../../context/theme/hooks/useThemeContext';
 import BoolHelper from '../../../helpers/dataTypes/bool/BoolHelper';
@@ -18,13 +18,13 @@ interface ILineChart {
    showPlaceholder: boolean;
 }
 
-export default function LineChart(props: ILineChart) {
+export default function LineChart(props: ILineChart): JSX.Element {
    const { title, options, data, infoComponent, titleElement, showPlaceholder } = props;
    const { isDarkTheme } = useThemeContext();
    return (
       <LineChartCardWrapper>
          <ChartTitle>
-            <TextColourizer fontSize="0.95em">{title}</TextColourizer>
+            <TextColourizer>{title}</TextColourizer>
             <ConditionalRender condition={!!titleElement && !showPlaceholder}>
                {titleElement}
             </ConditionalRender>

@@ -1,30 +1,25 @@
-import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { Fragment, useContext, useEffect, useState } from 'react';
-import CardListPlaceholder from '../../../../global/components/lib/cardList/placeholder/CardListPlaceholder';
-import FetchError from '../../../../global/components/lib/fetch/fetchError/FetchError';
-import OfflineFetch from '../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
-import { CurrencyOnCardTxt } from '../../../../global/components/lib/font/currencyOnCardText/CurrencyOnCardTxt';
-import { TextColourizer } from '../../../../global/components/lib/font/textColorizer/TextColourizer';
-import { TriangularArrowIcon } from '../../../../global/components/lib/icons/arrows/TriangularArrow';
-import { FilterIcon } from '../../../../global/components/lib/icons/filter/FilterIcon';
-import LineChart from '../../../../global/components/lib/lineChart/LineChart';
-import LineChartHelper from '../../../../global/components/lib/lineChart/class/LineChartHelper';
-import Loader from '../../../../global/components/lib/loader/Loader';
-import { FlexRowWrapper } from '../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
-import useThemeContext from '../../../../global/context/theme/hooks/useThemeContext';
-import { PopupMenuContext } from '../../../../global/context/widget/popupMenu/PopupMenuContext';
-import Color from '../../../../global/css/colors';
-import BoolHelper from '../../../../global/helpers/dataTypes/bool/BoolHelper';
-import MiscHelper from '../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
-import NumberHelper from '../../../../global/helpers/dataTypes/number/NumberHelper';
-import useURLState from '../../../../global/hooks/useURLState';
-import NDist from '../../distribute/namespace/NDist';
-import FilterSpendingsPopupMenu from './FilterSpendingsPopupMenu';
-import SpendingsChart from './class';
+import { CurrencyOnCardTxt } from '../../../../../global/components/lib/font/currencyOnCardText/CurrencyOnCardTxt';
+import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
+import { TriangularArrowIcon } from '../../../../../global/components/lib/icons/arrows/TriangularArrow';
+import { FilterIcon } from '../../../../../global/components/lib/icons/filter/FilterIcon';
+import LineChart from '../../../../../global/components/lib/lineChart/LineChart';
+import LineChartHelper from '../../../../../global/components/lib/lineChart/class/LineChartHelper';
+import { FlexRowWrapper } from '../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
+import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
+import { PopupMenuContext } from '../../../../../global/context/widget/popupMenu/PopupMenuContext';
+import Color from '../../../../../global/css/colors';
+import BoolHelper from '../../../../../global/helpers/dataTypes/bool/BoolHelper';
+import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
+import NumberHelper from '../../../../../global/helpers/dataTypes/number/NumberHelper';
+import useURLState from '../../../../../global/hooks/useURLState';
+import NDist from '../../../distribute/namespace/NDist';
+import FilterSpendingsPopupMenu from './filterPopupMenu/FilterSpendingsPopupMenu';
+import SpendingsChart from './namespace/SpendingsChart';
 
-export default function SpendingsAnalytics() {
-   const { isDarkTheme, isPortableDevice } = useThemeContext();
-   const { data: calcDistData, isLoading, isPaused, error } = NDist.API.useQuery.getCalcDist();
+export default function SpendingsAnalytics(): JSX.Element {
+   const { isDarkTheme } = useThemeContext();
+   const { data: calcDistData } = NDist.API.useQuery.getCalcDist();
    const [xAxisLabels, setXAxisLabels] = useState<string[]>(['']);
    const [totalSpendingsValues, setTotalSpendingsValues] = useState<number[]>([0]);
    const [disposableSpendingsValues, setDisposableSpendingsValues] = useState<number[]>([0]);
@@ -99,12 +94,6 @@ export default function SpendingsAnalytics() {
       setCloseOnInnerClick(false);
    }
 
-   if (isLoading && !isPaused) {
-      if (!isPortableDevice) return <Loader isDisplayed />;
-      return <CardListPlaceholder repeatItemCount={7} />;
-   }
-   if (isPaused) return <OfflineFetch />;
-   if (error || !calcDistData) return <FetchError />;
    return (
       <>
          <LineChart
@@ -127,7 +116,6 @@ export default function SpendingsAnalytics() {
                            totalSpendingsValues[totalSpendingsValues.length - 1],
                         )}
                      </CurrencyOnCardTxt>
-                     <TextColourizer fontSize="0.9em">&nbsp;&nbsp;GBP</TextColourizer>
                   </FlexRowWrapper>
                   <FlexRowWrapper justifyContent="end" alignItems="center">
                      <TextColourizer

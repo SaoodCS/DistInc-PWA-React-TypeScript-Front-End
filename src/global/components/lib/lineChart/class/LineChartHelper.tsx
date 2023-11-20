@@ -1,4 +1,4 @@
-import {
+import type {
    CartesianScaleTypeRegistry,
    ChartData,
    ChartOptions,
@@ -7,8 +7,8 @@ import {
    Scriptable,
    ScriptableContext,
 } from 'chart.js';
-import { Padding } from 'chart.js/dist/types/geometric';
-import { _DeepPartialObject } from 'chart.js/dist/types/utils';
+import type { Padding } from 'chart.js/dist/types/geometric';
+import type { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import Color from '../../../../css/colors';
 
 export namespace LineChartHelper {
@@ -128,16 +128,16 @@ export namespace LineChartHelper {
             gradient.addColorStop(1, endColor);
             return gradient;
          };
-      } else {
-         return Color.darkThm.accent;
       }
+      return Color.darkThm.accent;
    }
 
+   // eslint-disable-next-line no-inner-declarations
    function mapLineChartDataAndStyles(
       lineChartDataAndStyles: ILineChartDataStyles[],
       linePointStyles: ILineChartPointStyles,
    ): ChartData<'line', number[], string>['datasets'] {
-      let mappedLineCharts: ChartData<'line', number[], string>['datasets'] = [];
+      const mappedLineCharts: ChartData<'line', number[], string>['datasets'] = [];
       for (let i = 0; i < lineChartDataAndStyles.length; i++) {
          const lineChart = lineChartDataAndStyles[i];
          mappedLineCharts.push({

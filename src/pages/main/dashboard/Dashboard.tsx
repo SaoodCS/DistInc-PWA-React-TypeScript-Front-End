@@ -1,77 +1,59 @@
-import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import styled from 'styled-components';
+import CardListPlaceholder from '../../../global/components/lib/cardList/placeholder/CardListPlaceholder';
+import {
+   CardContentWrapper,
+   CardHolder,
+   CardHolderRow,
+   ExtraSmallCardSquareHolder,
+   SmallCardSquareHolder,
+} from '../../../global/components/lib/dashboardCards/Style';
+import FetchError from '../../../global/components/lib/fetch/fetchError/FetchError';
+import OfflineFetch from '../../../global/components/lib/fetch/offlineFetch/offlineFetch';
+import Loader from '../../../global/components/lib/loader/Loader';
+import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
 import MyCSS from '../../../global/css/MyCSS';
-import SpendingsAnalytics from './spendingsAnalytics/SpendingsAnalytics';
-
-const ExtraSmallCardSquareHolder = styled.div`
-   width: 100%;
-   height: 50%;
-   position: relative;
-`;
-
-const CardContentWrapper = styled.div`
-   border: 1px solid red;
-   position: absolute;
-   top: 0.5em;
-   bottom: 0.5em;
-   left: 0.5em;
-   right: 0.5em;
-   border-radius: 10px;
-   overflow: hidden;
-`;
-
-const SmallCardSquareHolder = styled.div`
-   width: 50%;
-   height: 100%;
-   position: relative;
-`;
-
-const CardHolderRow = styled.div`
-   display: flex;
-   height: 50%;
-   width: 100%;
-   position: relative;
-`;
-
-const CardHolder = styled.div`
-   width: 25em;
-   height: 25em;
-   position: relative;
-   max-width: 100%;
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   align-items: center;
-   @media (min-width: ${MyCSS.PortableBp.asPx}) {
-      width: 35em;
-      height: 35em;
-   }
-`;
+import NDist from '../distribute/namespace/NDist';
+import TotalExpense from './components/totalExpense/TotalExpense';
+import TotalIncome from './components/totalIncome/TotalIncome';
+import SpendingsAnalytics from './components/spendingsAnalytics/SpendingsAnalytics';
 
 export default function Dashboard(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Dashboard');
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
+   const { data: calcDistData, isLoading, isPaused, error } = NDist.API.useQuery.getCalcDist();
+
+   if (isLoading && !isPaused) {
+      if (!isPortableDevice) return <Loader isDisplayed />;
+      return <CardListPlaceholder repeatItemCount={7} />;
+   }
+   if (isPaused) return <OfflineFetch />;
+   if (error || !calcDistData) return <FetchError />;
 
    return (
       <ScrnResponsiveFlexWrap padding={'0.25em'}>
          {/**/}
          <CardHolder>
             <CardHolderRow>
-               <CardContentWrapper>
+               <CardContentWrapper isDarkTheme>
                   <SpendingsAnalytics />
                </CardContentWrapper>
             </CardHolderRow>
             <CardHolderRow>
                <SmallCardSquareHolder>
-                  <CardContentWrapper></CardContentWrapper>
+                  <ExtraSmallCardSquareHolder>
+                     <CardContentWrapper isDarkTheme={isDarkTheme}>
+                        <TotalIncome />
+                     </CardContentWrapper>
+                  </ExtraSmallCardSquareHolder>
+                  <ExtraSmallCardSquareHolder>
+                     <CardContentWrapper isDarkTheme={isDarkTheme}>
+                        <TotalExpense />
+                     </CardContentWrapper>
+                  </ExtraSmallCardSquareHolder>
                </SmallCardSquareHolder>
                <SmallCardSquareHolder>
-                  <ExtraSmallCardSquareHolder>
-                     <CardContentWrapper></CardContentWrapper>
-                  </ExtraSmallCardSquareHolder>
-                  <ExtraSmallCardSquareHolder>
-                     <CardContentWrapper></CardContentWrapper>
-                  </ExtraSmallCardSquareHolder>
+                  <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
                </SmallCardSquareHolder>
             </CardHolderRow>
          </CardHolder>
@@ -80,56 +62,56 @@ export default function Dashboard(): JSX.Element {
             <CardHolderRow>
                <SmallCardSquareHolder>
                   <ExtraSmallCardSquareHolder>
-                     <CardContentWrapper></CardContentWrapper>
+                     <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
                   </ExtraSmallCardSquareHolder>
                   <ExtraSmallCardSquareHolder>
-                     <CardContentWrapper></CardContentWrapper>
+                     <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
                   </ExtraSmallCardSquareHolder>
                </SmallCardSquareHolder>
                <SmallCardSquareHolder>
                   <ExtraSmallCardSquareHolder>
-                     <CardContentWrapper></CardContentWrapper>
+                     <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
                   </ExtraSmallCardSquareHolder>
                   <ExtraSmallCardSquareHolder>
-                     <CardContentWrapper></CardContentWrapper>
+                     <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
                   </ExtraSmallCardSquareHolder>
                </SmallCardSquareHolder>
             </CardHolderRow>
             <CardHolderRow>
                <SmallCardSquareHolder>
                   <ExtraSmallCardSquareHolder>
-                     <CardContentWrapper></CardContentWrapper>
+                     <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
                   </ExtraSmallCardSquareHolder>
                   <ExtraSmallCardSquareHolder>
-                     <CardContentWrapper></CardContentWrapper>
+                     <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
                   </ExtraSmallCardSquareHolder>
                </SmallCardSquareHolder>
                <SmallCardSquareHolder>
-                  <CardContentWrapper></CardContentWrapper>
+                  <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
                </SmallCardSquareHolder>
             </CardHolderRow>
          </CardHolder>
 
          {/**/}
          <CardHolder>
-            <CardContentWrapper></CardContentWrapper>
+            <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
          </CardHolder>
          {/**/}
          <CardHolder>
             <CardHolderRow>
                <SmallCardSquareHolder>
-                  <CardContentWrapper></CardContentWrapper>
+                  <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
                </SmallCardSquareHolder>
                <SmallCardSquareHolder>
-                  <CardContentWrapper></CardContentWrapper>
+                  <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
                </SmallCardSquareHolder>
             </CardHolderRow>
             <CardHolderRow>
                <SmallCardSquareHolder>
-                  <CardContentWrapper></CardContentWrapper>
+                  <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
                </SmallCardSquareHolder>
                <SmallCardSquareHolder>
-                  <CardContentWrapper></CardContentWrapper>
+                  <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
                </SmallCardSquareHolder>
             </CardHolderRow>
          </CardHolder>
