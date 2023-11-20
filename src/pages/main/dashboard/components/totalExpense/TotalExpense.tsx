@@ -17,7 +17,8 @@ export default function TotalExpense(): JSX.Element {
    useEffect(() => {
       const analytics = calcDistData?.analytics;
       if (MiscHelper.isNotFalsyOrEmpty(analytics)) {
-         const latestAnalytics = ArrayOfObjects.getLatestObj(analytics, 'timestamp');
+         const orderedAnalytics = ArrayOfObjects.sortByDateStr(analytics, 'timestamp', true);
+         const latestAnalytics = orderedAnalytics[0];
          setLatestTotalExpense(latestAnalytics.totalExpenses);
       }
    }, [calcDistData]);

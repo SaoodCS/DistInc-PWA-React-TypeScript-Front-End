@@ -77,10 +77,6 @@ export default class ArrayOfObjects {
       return arr.map((obj) => obj[outerKey][nestedKey]);
    }
 
-   static getLatestObj<T>(arrayOfObj: T[], ddmmyyPropName: keyof T): T {
-      return ArrayOfObjects.sortByDateStr(arrayOfObj, ddmmyyPropName)[0];
-   }
-
    static sortByDateStr<T>(arrayOfObj: T[], ddmmyyPropName: keyof T, descending?: boolean): T[] {
       const sortedArr = arrayOfObj.sort(
          (a, b) =>
