@@ -173,7 +173,8 @@ export namespace SpendingsChart {
 
    // ------ HELPERS FOR GETTING DATA FROM ANALYTICS ARRAY ------ //
    export function getXAxisLabels(analytics: NDist.IAnalytics[]): string[] {
-      const timestamps = ArrayOfObjects.getArrOfValuesFromKey(analytics, 'timestamp');
+      const orderedAnalytics = ArrayOfObjects.sortByDateStr(analytics, 'timestamp', true);
+      const timestamps = ArrayOfObjects.getArrOfValuesFromKey(orderedAnalytics, 'timestamp');
       const monthNames = timestamps.map((timestamp) => {
          const month = DateHelper.getPrevMonthName(timestamp);
          return month;
@@ -186,8 +187,9 @@ export namespace SpendingsChart {
       type: ITotalSpendingsLine['name'] | ITotalDisposableSpendingLine['name'],
       analytics: NDist.IAnalytics[],
    ): number[] {
+      const orderedAnalytics = ArrayOfObjects.sortByDateStr(analytics, 'timestamp', true);
       const spendingsValues = ArrayOfObjects.getArrOfValuesFromNestedKey(
-         analytics,
+         orderedAnalytics,
          'prevMonth',
          type,
       );
@@ -196,7 +198,11 @@ export namespace SpendingsChart {
    }
 
    export function getExpenseSpendingsValues(analytics: NDist.IAnalytics[]): number[] {
-      const totalExpensesArr = ArrayOfObjects.getArrOfValuesFromKey(analytics, 'totalExpenses');
+      const orderedAnalytics = ArrayOfObjects.sortByDateStr(analytics, 'timestamp', true);
+      const totalExpensesArr = ArrayOfObjects.getArrOfValuesFromKey(
+         orderedAnalytics,
+         'totalExpenses',
+      );
       if (!MiscHelper.isNotFalsyOrEmpty(totalExpensesArr)) return [0];
       const duplicatedItem = totalExpensesArr[0];
       const shiftedArr = totalExpensesArr.slice();

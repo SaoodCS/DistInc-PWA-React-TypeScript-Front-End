@@ -7,6 +7,7 @@ import LineChartHelper from '../../../../../global/components/lib/lineChart/clas
 import { FlexRowWrapper } from '../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import Color from '../../../../../global/css/colors';
+import ArrayOfObjects from '../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import BoolHelper from '../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import NumberHelper from '../../../../../global/helpers/dataTypes/number/NumberHelper';
@@ -30,7 +31,8 @@ export default function TotalSavings(): JSX.Element {
    }, [calcDistData]);
 
    function calcLatestSavingsPercChange(analytics: NDist.IAnalytics[]): number {
-      const totalSavingsValues = SavingsChart.getSavingsValues('totalSavings', analytics);
+      const orderedAnalytics = ArrayOfObjects.sortByDateStr(analytics, 'timestamp', true);
+      const totalSavingsValues = SavingsChart.getSavingsValues('totalSavings', orderedAnalytics);
       if (!totalSavingsValues || totalSavingsValues.length < 2) return 0;
       const prevMonthTotalSavings = totalSavingsValues[totalSavingsValues.length - 2];
       const currentMonthTotalSavings = totalSavingsValues[totalSavingsValues.length - 1];

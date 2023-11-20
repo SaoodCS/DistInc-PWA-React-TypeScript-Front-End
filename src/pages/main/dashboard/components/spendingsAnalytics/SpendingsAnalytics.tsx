@@ -9,6 +9,7 @@ import { FlexRowWrapper } from '../../../../../global/components/lib/positionMod
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { PopupMenuContext } from '../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import Color from '../../../../../global/css/colors';
+import ArrayOfObjects from '../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import BoolHelper from '../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import NumberHelper from '../../../../../global/helpers/dataTypes/number/NumberHelper';
@@ -61,7 +62,11 @@ export default function SpendingsAnalytics(): JSX.Element {
    }, [calcDistData, filterOutState]);
 
    function calcLatestSpendingsPercChange(analytics: NDist.IAnalytics[]): number {
-      const totalSpendingsValues = SpendingsChart.getSpendingsValues('totalSpendings', analytics);
+      const orderedAnalytics = ArrayOfObjects.sortByDateStr(analytics, 'timestamp', true);
+      const totalSpendingsValues = SpendingsChart.getSpendingsValues(
+         'totalSpendings',
+         orderedAnalytics,
+      );
       if (!totalSpendingsValues || totalSpendingsValues.length < 2) return 0;
       const prevMonthTotalSpendings = totalSpendingsValues[totalSpendingsValues.length - 2];
       const currentMonthTotalSpendings = totalSpendingsValues[totalSpendingsValues.length - 1];
@@ -108,7 +113,7 @@ export default function SpendingsAnalytics(): JSX.Element {
                   onClick={(e) => handleFilterClick(e)}
                />
             }
-            infoComponentPlacemenet='right'
+            infoComponentPlacemenet="right"
             infoComponent={
                <Fragment>
                   <FlexRowWrapper justifyContent="end" alignItems="end" padding="0em 0em 0.3em 0em">

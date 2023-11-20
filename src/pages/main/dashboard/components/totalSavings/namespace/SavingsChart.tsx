@@ -110,7 +110,8 @@ export namespace SavingsChart {
    };
 
    export function getXAxisLabels(analytics: NDist.IAnalytics[]): string[] {
-      const timestamps = ArrayOfObjects.getArrOfValuesFromKey(analytics, 'timestamp');
+      const orderedAnalytics = ArrayOfObjects.sortByDateStr(analytics, 'timestamp', true);
+      const timestamps = ArrayOfObjects.getArrOfValuesFromKey(orderedAnalytics, 'timestamp');
       const monthNames = timestamps.map((timestamp) => {
          const month = DateHelper.getPrevMonthName(timestamp);
          return month;
@@ -123,8 +124,9 @@ export namespace SavingsChart {
       type: ITotalSavingsLine['name'],
       analytics: NDist.IAnalytics[],
    ): number[] {
+      const orderedAnalytics = ArrayOfObjects.sortByDateStr(analytics, 'timestamp', true);
       const savingsValues = ArrayOfObjects.getArrOfValuesFromNestedKey(
-         analytics,
+         orderedAnalytics,
          'prevMonth',
          type,
       );

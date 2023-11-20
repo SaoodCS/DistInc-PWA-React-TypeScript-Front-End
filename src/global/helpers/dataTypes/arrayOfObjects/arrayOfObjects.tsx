@@ -78,10 +78,18 @@ export default class ArrayOfObjects {
    }
 
    static getLatestObj<T>(arrayOfObj: T[], ddmmyyPropName: keyof T): T {
-      return arrayOfObj.sort(
+      return ArrayOfObjects.sortByDateStr(arrayOfObj, ddmmyyPropName)[0];
+   }
+
+   static sortByDateStr<T>(arrayOfObj: T[], ddmmyyPropName: keyof T, descending?: boolean): T[] {
+      const sortedArr = arrayOfObj.sort(
          (a, b) =>
             DateHelper.fromDDMMYYYY(b[ddmmyyPropName] as string).getTime() -
             DateHelper.fromDDMMYYYY(a[ddmmyyPropName] as string).getTime(),
-      )[0];
+      );
+      if (descending) {
+         return sortedArr.reverse();
+      }
+      return sortedArr;
    }
 }
