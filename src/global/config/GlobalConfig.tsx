@@ -1,5 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 import {
+   ArcElement,
    CategoryScale,
    Chart as ChartJS,
    Filler,
@@ -34,6 +35,7 @@ export default class GlobalUtils {
          LinearScale,
          PointElement,
          LineElement,
+         ArcElement,
          Title,
          Tooltip,
          Filler,
