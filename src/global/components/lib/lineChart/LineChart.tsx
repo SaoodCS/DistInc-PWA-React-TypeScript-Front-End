@@ -6,32 +6,55 @@ import useThemeContext from '../../../context/theme/hooks/useThemeContext';
 import BoolHelper from '../../../helpers/dataTypes/bool/BoolHelper';
 import { TextColourizer } from '../font/textColorizer/TextColourizer';
 import { FlexRowWrapper } from '../positionModifiers/flexRowWrapper/Style';
+import { Wrapper } from '../positionModifiers/wrapper/Style';
 import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalRender';
-import { ChartInfo, ChartTitle, LineChartCardWrapper, LineChartPlaceholder } from './Style';
+import {
+   ChartInfoBelowTitle,
+   ChartInfoRight,
+   ChartTitle,
+   LineChartCardWrapper,
+   LineChartPlaceholder,
+} from './Style';
 
 interface ILineChart {
    title: string;
    options: _DeepPartialObject<ChartOptions<'line'>>;
    data: () => ChartData<'line', number[], string>;
    infoComponent: ReactNode;
+   infoComponentPlacemenet: 'belowTitle' | 'right';
    titleElement?: ReactNode;
    showPlaceholder: boolean;
 }
 
 export default function LineChart(props: ILineChart): JSX.Element {
-   const { title, options, data, infoComponent, titleElement, showPlaceholder } = props;
+   const {
+      title,
+      options,
+      data,
+      infoComponent,
+      titleElement,
+      showPlaceholder,
+      infoComponentPlacemenet,
+   } = props;
    const { isDarkTheme } = useThemeContext();
    return (
       <LineChartCardWrapper>
-         <ChartTitle>
-            <TextColourizer>{title}</TextColourizer>
-            <ConditionalRender condition={!!titleElement && !showPlaceholder}>
-               {titleElement}
+         <Wrapper>
+            <ChartTitle>
+               <TextColourizer>{title}</TextColourizer>
+               <ConditionalRender condition={!!titleElement && !showPlaceholder}>
+                  {titleElement}
+               </ConditionalRender>
+            </ChartTitle>
+            <ConditionalRender condition={!showPlaceholder}>
+               <ConditionalRender condition={infoComponentPlacemenet === 'belowTitle'}>
+                  <ChartInfoBelowTitle> {infoComponent}</ChartInfoBelowTitle>
+               </ConditionalRender>
+               <ConditionalRender condition={infoComponentPlacemenet === 'right'}>
+                  <ChartInfoRight> {infoComponent}</ChartInfoRight>
+               </ConditionalRender>
             </ConditionalRender>
-         </ChartTitle>
-         <ConditionalRender condition={!showPlaceholder}>
-            <ChartInfo> {infoComponent}</ChartInfo>
-         </ConditionalRender>
+         </Wrapper>
          <Line options={options} data={data()} />
          <ConditionalRender condition={showPlaceholder}>
             <LineChartPlaceholder darktheme={BoolHelper.boolToStr(isDarkTheme)} />

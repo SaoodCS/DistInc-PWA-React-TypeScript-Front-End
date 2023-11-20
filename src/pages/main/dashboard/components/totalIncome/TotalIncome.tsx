@@ -29,7 +29,12 @@ export default function TotalIncome(): JSX.Element {
          width="100%"
          justifyContent="center"
       >
-         <TextColourizer padding='0em 0em 1em 0em'>Total Income</TextColourizer>
+         <TextColourizer
+            padding="0em 0em 1em 0em"
+            color={Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.9)}
+         >
+            Total Income
+         </TextColourizer>
          <CurrencyOnCardTxt
             isDarkTheme={isDarkTheme}
             color={Color.setRgbOpacity(

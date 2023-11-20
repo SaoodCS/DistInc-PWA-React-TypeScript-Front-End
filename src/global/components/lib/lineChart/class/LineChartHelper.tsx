@@ -66,7 +66,7 @@ export namespace LineChartHelper {
    ): _DeepPartialObject<ChartOptions<'line'>> {
       return {
          responsive: true,
-         maintainAspectRatio: true,
+         maintainAspectRatio: false,
          layout: {
             padding: chartConfig.layout.containerPadding,
          },

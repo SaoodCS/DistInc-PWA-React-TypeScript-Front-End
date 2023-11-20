@@ -3,11 +3,18 @@ import styled from 'styled-components';
 import Color from '../../../css/colors';
 import BoolHelper from '../../../helpers/dataTypes/bool/BoolHelper';
 
-export const ChartInfo = styled.div`
+export const ChartInfoRight = styled.div`
    position: absolute;
    padding: 1em 1em 0em 0em;
    top: 0;
    right: 0;
+   box-sizing: border-box;
+`;
+
+export const ChartInfoBelowTitle = styled.div`
+   position: absolute;
+   padding: 2.5em 0em 0em 1em;
+   top: 0;
    box-sizing: border-box;
 `;
 
@@ -28,6 +35,10 @@ export const LineChartCardWrapper = styled.div`
    overflow: hidden;
    display: flex;
    position: relative;
+   flex-direction: column;
+   height:100%;
+   width: 100%;
+   justify-content: space-between;
 `;
 
 export const LineChartPlaceholder = styled(AreaGraph)<{ darktheme: 'true' | 'false' }>`

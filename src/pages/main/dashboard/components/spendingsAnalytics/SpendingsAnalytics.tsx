@@ -108,6 +108,7 @@ export default function SpendingsAnalytics(): JSX.Element {
                   onClick={(e) => handleFilterClick(e)}
                />
             }
+            infoComponentPlacemenet='right'
             infoComponent={
                <Fragment>
                   <FlexRowWrapper justifyContent="end" alignItems="end" padding="0em 0em 0.3em 0em">

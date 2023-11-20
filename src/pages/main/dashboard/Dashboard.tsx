@@ -17,6 +17,7 @@ import NDist from '../distribute/namespace/NDist';
 import TotalExpense from './components/totalExpense/TotalExpense';
 import TotalIncome from './components/totalIncome/TotalIncome';
 import SpendingsAnalytics from './components/spendingsAnalytics/SpendingsAnalytics';
+import TotalSavings from './components/totalSavings/TotalSavings';
 
 export default function Dashboard(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Dashboard');
@@ -53,7 +54,9 @@ export default function Dashboard(): JSX.Element {
                   </ExtraSmallCardSquareHolder>
                </SmallCardSquareHolder>
                <SmallCardSquareHolder>
-                  <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
+                  <CardContentWrapper isDarkTheme={isDarkTheme}>
+                     <TotalSavings/>
+                  </CardContentWrapper>
                </SmallCardSquareHolder>
             </CardHolderRow>
          </CardHolder>
