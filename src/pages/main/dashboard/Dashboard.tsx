@@ -14,9 +14,10 @@ import useThemeContext from '../../../global/context/theme/hooks/useThemeContext
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
 import MyCSS from '../../../global/css/MyCSS';
 import NDist from '../distribute/namespace/NDist';
+import ExpenseByCategory from './components/expenseByCategory/ExpenseByCategory';
+import SpendingsAnalytics from './components/spendingsAnalytics/SpendingsAnalytics';
 import TotalExpense from './components/totalExpense/TotalExpense';
 import TotalIncome from './components/totalIncome/TotalIncome';
-import SpendingsAnalytics from './components/spendingsAnalytics/SpendingsAnalytics';
 import TotalSavings from './components/totalSavings/TotalSavings';
 
 export default function Dashboard(): JSX.Element {
@@ -42,6 +43,11 @@ export default function Dashboard(): JSX.Element {
             </CardHolderRow>
             <CardHolderRow>
                <SmallCardSquareHolder>
+                  <CardContentWrapper isDarkTheme={isDarkTheme}>
+                     <TotalSavings />
+                  </CardContentWrapper>
+               </SmallCardSquareHolder>
+               <SmallCardSquareHolder>
                   <ExtraSmallCardSquareHolder>
                      <CardContentWrapper isDarkTheme={isDarkTheme}>
                         <TotalIncome />
@@ -53,32 +59,14 @@ export default function Dashboard(): JSX.Element {
                      </CardContentWrapper>
                   </ExtraSmallCardSquareHolder>
                </SmallCardSquareHolder>
-               <SmallCardSquareHolder>
-                  <CardContentWrapper isDarkTheme={isDarkTheme}>
-                     <TotalSavings/>
-                  </CardContentWrapper>
-               </SmallCardSquareHolder>
             </CardHolderRow>
          </CardHolder>
          {/**/}
          <CardHolder>
             <CardHolderRow>
-               <SmallCardSquareHolder>
-                  <ExtraSmallCardSquareHolder>
-                     <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
-                  </ExtraSmallCardSquareHolder>
-                  <ExtraSmallCardSquareHolder>
-                     <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
-                  </ExtraSmallCardSquareHolder>
-               </SmallCardSquareHolder>
-               <SmallCardSquareHolder>
-                  <ExtraSmallCardSquareHolder>
-                     <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
-                  </ExtraSmallCardSquareHolder>
-                  <ExtraSmallCardSquareHolder>
-                     <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
-                  </ExtraSmallCardSquareHolder>
-               </SmallCardSquareHolder>
+               <CardContentWrapper isDarkTheme>
+                  <ExpenseByCategory />
+               </CardContentWrapper>
             </CardHolderRow>
             <CardHolderRow>
                <SmallCardSquareHolder>
