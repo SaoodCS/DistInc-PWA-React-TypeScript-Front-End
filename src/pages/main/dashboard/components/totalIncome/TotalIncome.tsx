@@ -27,9 +27,9 @@ export default function TotalIncome(): JSX.Element {
          padding="0em 1em 0em 1em"
          height="100%"
          width="100%"
-         justifyContent="space-evenly"
+         justifyContent="center"
       >
-         <TextColourizer>Total Income</TextColourizer>
+         <TextColourizer padding='0em 0em 1em 0em'>Total Income</TextColourizer>
          <CurrencyOnCardTxt
             isDarkTheme={isDarkTheme}
             color={Color.setRgbOpacity(
