@@ -1,15 +1,14 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import {
+   ProgressChartInfo,
+   ProgressChartTitle,
+} from '../../../../../global/components/lib/progressChartCard/Style';
 import { CurrencyOnCardTxt } from '../../../../../global/components/lib/font/currencyOnCardText/CurrencyOnCardTxt';
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { SelectIcon } from '../../../../../global/components/lib/icons/select/SelectIcon';
-import {
-   ChartInfoBelowTitle,
-   ChartTitle,
-} from '../../../../../global/components/lib/lineChart/Style';
 import { FlexColumnWrapper } from '../../../../../global/components/lib/positionModifiers/flexColumnWrapper/FlexColumnWrapper';
 import { FlexRowWrapper } from '../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
-import { Wrapper } from '../../../../../global/components/lib/positionModifiers/wrapper/Style';
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { PopupMenuContext } from '../../../../../global/context/widget/popupMenu/PopupMenuContext';
@@ -84,80 +83,75 @@ export default function TrackedSavings() {
    }
 
    return (
-      <FlexColumnWrapper position="relative" height="100%">
-         <Wrapper>
-            <ChartTitle>
-               <TextColourizer>
-                  {selectedSavingsAccData?.accountName || 'Tracked Savings'}
-               </TextColourizer>
-               <ConditionalRender condition={MiscHelper.isNotFalsyOrEmpty(trackedSavingsAccounts)}>
-                  <SelectIcon
-                     height={'1em'}
-                     darktheme={BoolHelper.boolToStr(isDarkTheme)}
-                     onClick={handleSelectorClick}
-                     zindex="1"
-                     padding="0em 0em 0em 0.25em"
-                  />
-               </ConditionalRender>
-            </ChartTitle>
-            <ConditionalRender condition={MiscHelper.isNotFalsyOrEmpty(selectedSavingsAccData)}>
-               <ChartInfoBelowTitle>
-                  <Fragment>
-                     <FlexRowWrapper
-                        justifyContent="end"
-                        alignItems="end"
-                        padding="0em 0em 0.3em 0em"
-                     >
-                        <CurrencyOnCardTxt isDarkTheme={isDarkTheme}>
-                           {NumberHelper.asCurrencyStr(
-                              selectedSavingsAccData?.currentBalance || 0,
-                              true,
-                           )}
-                        </CurrencyOnCardTxt>
-                     </FlexRowWrapper>
-                     <ConditionalRender condition={selectedSavingsAccData?.targetToReach !== 0}>
-                        <FlexRowWrapper justifyContent="start" alignItems="center">
-                           <TextColourizer
-                              fontSize="0.9em"
-                              color={Color.setRgbOpacity(Color.darkThm.txt, 0.7)}
-                           >
-                              Target&nbsp;&nbsp;
-                           </TextColourizer>
-                           <TextColourizer fontSize="0.9em" padding="0em 0em 0em 0.15em">
-                              {NumberHelper.asCurrencyStr(
-                                 selectedSavingsAccData?.targetToReach || 0,
-                              )}
-                           </TextColourizer>
-                        </FlexRowWrapper>
-                     </ConditionalRender>
-                  </Fragment>
-               </ChartInfoBelowTitle>
-            </ConditionalRender>
-         </Wrapper>
-         <ConditionalRender
-            condition={
-               MiscHelper.isNotFalsyOrEmpty(selectedSavingsAccData) &&
-               selectedSavingsAccData?.targetToReach !== 0
-            }
-         >
-            <FlexRowWrapper
-               width="40%"
-               position="absolute"
-               style={{ right: 0 }}
-               height="100%"
-               padding="0em 1em 0em 0em"
-            >
-               <CircularProgressbar
-                  value={calculatePercentage()}
-                  text={`${calculatePercentage()}%`}
-                  styles={buildStyles({
-                     textColor: progressChartColor(),
-                     pathColor: progressChartColor(),
-                     trailColor: isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive,
-                  })}
+      <>
+         <ProgressChartTitle>
+            <TextColourizer>{'Tracked Savings'}</TextColourizer>
+            <ConditionalRender condition={MiscHelper.isNotFalsyOrEmpty(trackedSavingsAccounts)}>
+               <SelectIcon
+                  height={'1em'}
+                  darktheme={BoolHelper.boolToStr(isDarkTheme)}
+                  onClick={handleSelectorClick}
+                  zindex="1"
+                  padding="0em 0em 0em 0.25em"
                />
-            </FlexRowWrapper>
-         </ConditionalRender>
-      </FlexColumnWrapper>
+            </ConditionalRender>
+         </ProgressChartTitle>
+         <FlexRowWrapper position="relative" height="100%" justifyContent="space-evenly">
+            <FlexColumnWrapper justifyContent="center" padding={'1em'}>
+               <ConditionalRender condition={MiscHelper.isNotFalsyOrEmpty(selectedSavingsAccData)}>
+                  <ProgressChartInfo>
+                     <Fragment>
+                        <TextColourizer>{selectedSavingsAccData?.accountName}</TextColourizer>
+                        <FlexRowWrapper
+                           justifyContent="end"
+                           alignItems="end"
+                           padding="0.3em 0em 0.3em 0em"
+                        >
+                           <CurrencyOnCardTxt isDarkTheme={isDarkTheme}>
+                              {NumberHelper.asCurrencyStr(
+                                 selectedSavingsAccData?.currentBalance || 0,
+                                 true,
+                              )}
+                           </CurrencyOnCardTxt>
+                        </FlexRowWrapper>
+                        <ConditionalRender condition={selectedSavingsAccData?.targetToReach !== 0}>
+                           <FlexRowWrapper justifyContent="start" alignItems="center">
+                              <TextColourizer
+                                 fontSize="0.9em"
+                                 color={Color.setRgbOpacity(Color.darkThm.txt, 0.7)}
+                              >
+                                 Target&nbsp;&nbsp;
+                              </TextColourizer>
+                              <TextColourizer fontSize="0.9em" padding="0em 0em 0em 0.15em">
+                                 {NumberHelper.asCurrencyStr(
+                                    selectedSavingsAccData?.targetToReach || 0,
+                                 )}
+                              </TextColourizer>
+                           </FlexRowWrapper>
+                        </ConditionalRender>
+                     </Fragment>
+                  </ProgressChartInfo>
+               </ConditionalRender>
+            </FlexColumnWrapper>
+            <ConditionalRender
+               condition={
+                  MiscHelper.isNotFalsyOrEmpty(selectedSavingsAccData) &&
+                  selectedSavingsAccData?.targetToReach !== 0
+               }
+            >
+               <FlexRowWrapper width="40%" height="100%" padding="0em 1em 0em 0em">
+                  <CircularProgressbar
+                     value={calculatePercentage()}
+                     text={`${calculatePercentage()}%`}
+                     styles={buildStyles({
+                        textColor: progressChartColor(),
+                        pathColor: progressChartColor(),
+                        trailColor: isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive,
+                     })}
+                  />
+               </FlexRowWrapper>
+            </ConditionalRender>
+         </FlexRowWrapper>
+      </>
    );
 }
