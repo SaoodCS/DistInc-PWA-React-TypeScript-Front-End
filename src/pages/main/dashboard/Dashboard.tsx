@@ -19,6 +19,7 @@ import SpendingsAnalytics from './components/spendingsAnalytics/SpendingsAnalyti
 import TotalExpense from './components/totalExpense/TotalExpense';
 import TotalIncome from './components/totalIncome/TotalIncome';
 import TotalSavings from './components/totalSavings/TotalSavings';
+import TrackedSavings from './components/trackedSavings/TrackedSavings';
 
 export default function Dashboard(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Dashboard');
@@ -70,12 +71,9 @@ export default function Dashboard(): JSX.Element {
             </CardHolderRow>
             <CardHolderRow>
                <SmallCardSquareHolder>
-                  <ExtraSmallCardSquareHolder>
-                     <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
-                  </ExtraSmallCardSquareHolder>
-                  <ExtraSmallCardSquareHolder>
-                     <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
-                  </ExtraSmallCardSquareHolder>
+                  <CardContentWrapper isDarkTheme={isDarkTheme}>
+                     <TrackedSavings />
+                  </CardContentWrapper>
                </SmallCardSquareHolder>
                <SmallCardSquareHolder>
                   <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
