@@ -36,15 +36,17 @@ export default function TotalIncome(): JSX.Element {
          >
             Total Income
          </TextColourizer>
-         <CurrencyOnCardTxt
-            isDarkTheme={isDarkTheme}
-            color={Color.setRgbOpacity(
-               isDarkTheme ? Color.darkThm.success : Color.lightThm.success,
-               0.7,
-            )}
-         >
-            {NumberHelper.asCurrencyStr(latestTotalIncome, true)}
-         </CurrencyOnCardTxt>
+         <TextColourizer padding="0em 0em 0em 0.2em">
+            <CurrencyOnCardTxt
+               isDarkTheme={isDarkTheme}
+               color={Color.setRgbOpacity(
+                  isDarkTheme ? Color.darkThm.success : Color.lightThm.success,
+                  0.7,
+               )}
+            >
+               {NumberHelper.asCurrencyStr(latestTotalIncome, true)}
+            </CurrencyOnCardTxt>
+         </TextColourizer>
       </FlexColumnWrapper>
    );
 }

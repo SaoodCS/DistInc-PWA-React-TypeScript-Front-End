@@ -36,15 +36,17 @@ export default function TotalExpense(): JSX.Element {
          >
             Total Expense
          </TextColourizer>
-         <CurrencyOnCardTxt
-            isDarkTheme={isDarkTheme}
-            color={Color.setRgbOpacity(
-               isDarkTheme ? Color.darkThm.error : Color.lightThm.error,
-               0.7,
-            )}
-         >
-            -{NumberHelper.asCurrencyStr(latestTotalExpense, true)}
-         </CurrencyOnCardTxt>
+         <TextColourizer padding="0em 0em 0em 0.2em">
+            <CurrencyOnCardTxt
+               isDarkTheme={isDarkTheme}
+               color={Color.setRgbOpacity(
+                  isDarkTheme ? Color.darkThm.error : Color.lightThm.error,
+                  0.7,
+               )}
+            >
+               -{NumberHelper.asCurrencyStr(latestTotalExpense, true)}
+            </CurrencyOnCardTxt>
+         </TextColourizer>
       </FlexColumnWrapper>
    );
 }
