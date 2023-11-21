@@ -8,7 +8,7 @@ export const SidebarContainer = styled.div<{ isDarkTheme: boolean }>`
    top: 0;
    bottom: 0px;
    background-color: ${({ isDarkTheme }) =>
-      Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.1)};
+      Color.setRgbOpacity(isDarkTheme ? Color.lightThm.bg : Color.darkThm.bg, 0.05)};
    backdrop-filter: blur(10px);
    border-top-right-radius: 20px;
    border-bottom-right-radius: 20px;

@@ -20,6 +20,7 @@ import TotalExpense from './components/totalExpense/TotalExpense';
 import TotalIncome from './components/totalIncome/TotalIncome';
 import TotalSavings from './components/totalSavings/TotalSavings';
 import TrackedSavings from './components/trackedSavings/TrackedSavings';
+import { ScrnResponsiveFlexWrap } from '../../../global/components/lib/positionModifiers/responsiveFlexWrap/ScrnResponsiveFlexWrap';
 
 export default function Dashboard(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Dashboard');
@@ -38,7 +39,7 @@ export default function Dashboard(): JSX.Element {
          {/**/}
          <CardHolder>
             <CardHolderRow>
-               <CardContentWrapper isDarkTheme>
+               <CardContentWrapper isDarkTheme={isDarkTheme}>
                   <SpendingsAnalytics />
                </CardContentWrapper>
             </CardHolderRow>
@@ -65,7 +66,7 @@ export default function Dashboard(): JSX.Element {
          {/**/}
          <CardHolder>
             <CardHolderRow>
-               <CardContentWrapper isDarkTheme>
+               <CardContentWrapper isDarkTheme={isDarkTheme}>
                   <ExpenseByCategory />
                </CardContentWrapper>
             </CardHolderRow>
@@ -75,47 +76,6 @@ export default function Dashboard(): JSX.Element {
                </CardContentWrapper>
             </CardHolderRow>
          </CardHolder>
-
-         {/**/}
-         <CardHolder>
-            <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
-         </CardHolder>
-         {/**/}
-         <CardHolder>
-            <CardHolderRow>
-               <SmallCardSquareHolder>
-                  <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
-               </SmallCardSquareHolder>
-               <SmallCardSquareHolder>
-                  <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
-               </SmallCardSquareHolder>
-            </CardHolderRow>
-            <CardHolderRow>
-               <SmallCardSquareHolder>
-                  <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
-               </SmallCardSquareHolder>
-               <SmallCardSquareHolder>
-                  <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
-               </SmallCardSquareHolder>
-            </CardHolderRow>
-         </CardHolder>
       </ScrnResponsiveFlexWrap>
    );
 }
-
-// ----------------- STYLES -----------------
-
-export const ScrnResponsiveFlexWrap = styled.div<{
-   childrenMargin?: string;
-   padding?: string;
-}>`
-   padding: ${({ padding }) => (padding ? padding : '0')};
-   display: flex;
-   flex-wrap: wrap;
-   @media (max-width: ${MyCSS.PortableBp.asPx}) {
-      overflow: scroll;
-      justify-content: center;
-      align-items: center;
-      height: 99%;
-   }
-`;
