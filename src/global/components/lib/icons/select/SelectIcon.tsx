@@ -4,7 +4,7 @@ import MyCSS from '../../../../css/MyCSS';
 import Color from '../../../../css/colors';
 import BoolHelper from '../../../../helpers/dataTypes/bool/BoolHelper';
 
-export const SelectIcon = styled(MultiSelect)<{ darktheme: 'true' | 'false' }>`
+export const SelectIcon = styled(MultiSelect)<{ darktheme: 'true' | 'false'; zindex?: string, padding?: string }>`
    ${MyCSS.Clickables.removeDefaultEffects};
    cursor: pointer;
    color: ${({ darktheme }) =>
@@ -18,4 +18,6 @@ export const SelectIcon = styled(MultiSelect)<{ darktheme: 'true' | 'false' }>`
       const desktop = MyCSS.Clickables.desktop.changeColorOnHover(bgColor, 'color');
       return MyCSS.Helper.concatStyles(mobile, desktop);
    }};
+   z-index: ${({ zindex }) => (zindex ? Number(zindex) : 0)};
+   padding: ${({ padding }) => (padding ? padding : '0')};
 `;

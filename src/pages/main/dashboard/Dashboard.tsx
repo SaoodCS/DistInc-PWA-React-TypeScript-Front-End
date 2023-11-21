@@ -70,14 +70,9 @@ export default function Dashboard(): JSX.Element {
                </CardContentWrapper>
             </CardHolderRow>
             <CardHolderRow>
-               <SmallCardSquareHolder>
-                  <CardContentWrapper isDarkTheme={isDarkTheme}>
-                     <TrackedSavings />
-                  </CardContentWrapper>
-               </SmallCardSquareHolder>
-               <SmallCardSquareHolder>
-                  <CardContentWrapper isDarkTheme={isDarkTheme}></CardContentWrapper>
-               </SmallCardSquareHolder>
+               <CardContentWrapper isDarkTheme={isDarkTheme}>
+                  <TrackedSavings />
+               </CardContentWrapper>
             </CardHolderRow>
          </CardHolder>
 

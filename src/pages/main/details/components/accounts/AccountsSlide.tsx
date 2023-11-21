@@ -15,10 +15,10 @@ import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObj
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useURLState from '../../../../../global/hooks/useURLState';
 import { NDetails } from '../../namespace/NDetails';
-import type { ICurrentFormInputs } from './current/class/Class';
+import type { ICurrentAccountFirebase, ICurrentFormInputs } from './current/class/Class';
 import CurrentClass from './current/class/Class';
 import CurrentAccountListItem from './current/listItem/CurrentAccountListItem';
-import type { ISavingsFormInputs } from './savings/class/Class';
+import type { ISavingsAccountFirebase, ISavingsFormInputs } from './savings/class/Class';
 import SavingsClass from './savings/class/Class';
 import SavingsAccountListItem from './savings/listItem/SavingsAccountListItem';
 
@@ -67,20 +67,28 @@ export default function AccountsSlide(): JSX.Element {
    }
 
    function sortData(): (ISavingsFormInputs | ICurrentFormInputs)[] {
-      if (
-         !MiscHelper.isNotFalsyOrEmpty(savingsData) ||
-         !MiscHelper.isNotFalsyOrEmpty(currentData)
-      ) {
-         return [];
+      let savingsWithFilterProps: ISavingsAccountFirebase = {};
+      let currentWithFilterProps: ICurrentAccountFirebase = {};
+      let savingsAndCurrentConcat: {
+         [x: string]: ICurrentFormInputs | ISavingsFormInputs;
+      } = {};
+      if (MiscHelper.isNotFalsyOrEmpty(savingsData)) {
+         savingsWithFilterProps = ObjectOfObjects.addPropsToAll(savingsData, {
+            accountType: 'Savings',
+            category: 'Savings',
+         });
       }
-      const savingsWithFilterProps = ObjectOfObjects.addPropsToAll(savingsData, {
-         accountType: 'Savings',
-         category: 'Savings',
-      });
-      const currentWithFilterProps = ObjectOfObjects.addPropsToAll(currentData, {
-         category: 'Current',
-      });
-      const savingsAndCurrentConcat = { ...savingsWithFilterProps, ...currentWithFilterProps };
+      if (MiscHelper.isNotFalsyOrEmpty(currentData)) {
+         currentWithFilterProps = ObjectOfObjects.addPropsToAll(currentData, {
+            category: 'Current',
+         });
+      }
+      if (MiscHelper.isNotFalsyOrEmpty(savingsWithFilterProps)) {
+         savingsAndCurrentConcat = { ...savingsWithFilterProps };
+      }
+      if (MiscHelper.isNotFalsyOrEmpty(currentWithFilterProps)) {
+         savingsAndCurrentConcat = { ...savingsAndCurrentConcat, ...currentWithFilterProps };
+      }
       const dataAsArr = ObjectOfObjects.convertToArrayOfObj(savingsAndCurrentConcat);
       if (!sortAccountBy) return dataAsArr;
       const desc = orderAccount?.includes('desc');

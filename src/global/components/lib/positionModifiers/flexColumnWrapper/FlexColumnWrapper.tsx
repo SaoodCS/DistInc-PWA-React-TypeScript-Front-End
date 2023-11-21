@@ -6,6 +6,7 @@ export const FlexColumnWrapper = styled.div<{
    padding?: string;
    height?: string;
    width?: string;
+   position?: string;
 }>`
    display: flex;
    flex-direction: column;
@@ -14,4 +15,6 @@ export const FlexColumnWrapper = styled.div<{
    padding: ${({ padding }): string => (padding ? padding : '0')};
    height: ${({ height }) => height};
    align-items: ${({ alignItems }) => (alignItems ? alignItems : '')};
+   position: ${({ position }) => (position ? position : 'static')};
+   width: ${({ width }) => (width ? width : 'auto')};
 `;
