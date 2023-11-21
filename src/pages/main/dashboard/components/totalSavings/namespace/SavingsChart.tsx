@@ -116,7 +116,7 @@ export namespace SavingsChart {
          const month = DateHelper.getPrevMonthName(timestamp);
          return month;
       });
-      const last12Months = ArrayHelper.trimLength(monthNames, 12, 'start');
+      const last12Months = ArrayHelper.trimLength(monthNames, 6, 'start');
       return last12Months;
    }
 
@@ -130,8 +130,8 @@ export namespace SavingsChart {
          'prevMonth',
          type,
       );
-      const last12Savings = ArrayHelper.trimLength(savingsValues, 12, 'start');
-      return last12Savings;
+      const last6Savings = ArrayHelper.trimLength(savingsValues, 6, 'start');
+      return last6Savings;
    }
 }
 
