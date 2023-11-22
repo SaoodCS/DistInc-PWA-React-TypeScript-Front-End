@@ -27,4 +27,10 @@ export default class NumberHelper {
       const percentageChange = ((diff / prev) * 100).toFixed(2);
       return Number(percentageChange);
    }
+
+   static calcPercentage(num: number, outOf: number, capAt100?: boolean): number {
+      const completedAsPerc = Number(((num / outOf) * 100).toFixed(2));
+      if (completedAsPerc >= 100 && capAt100) return 100;
+      return completedAsPerc;
+   }
 }

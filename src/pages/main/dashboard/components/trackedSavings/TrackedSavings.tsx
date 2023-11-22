@@ -1,14 +1,14 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
-import {
-   ProgressChartInfo,
-   ProgressChartTitle,
-} from '../../../../../global/components/lib/progressChartCard/Style';
 import { CurrencyOnCardTxt } from '../../../../../global/components/lib/font/currencyOnCardText/CurrencyOnCardTxt';
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { SelectIcon } from '../../../../../global/components/lib/icons/select/SelectIcon';
 import { FlexColumnWrapper } from '../../../../../global/components/lib/positionModifiers/flexColumnWrapper/FlexColumnWrapper';
 import { FlexRowWrapper } from '../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
+import {
+   ProgressChartInfo,
+   ProgressChartTitle,
+} from '../../../../../global/components/lib/progressChartCard/Style';
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { PopupMenuContext } from '../../../../../global/context/widget/popupMenu/PopupMenuContext';
@@ -67,9 +67,7 @@ export default function TrackedSavings() {
       const selectedAccBalance = selectedSavingsAccData?.currentBalance || 0;
       const selectedAccTarget = selectedSavingsAccData?.targetToReach || 0;
       if (selectedAccTarget === 0) return 0;
-      const percentage = (selectedAccBalance / selectedAccTarget) * 100;
-      if (percentage >= 100) return 100;
-      return NumberHelper.roundTo(percentage, 2);
+      return NumberHelper.calcPercentage(selectedAccBalance, selectedAccTarget, true);
    }
 
    function progressChartColor() {

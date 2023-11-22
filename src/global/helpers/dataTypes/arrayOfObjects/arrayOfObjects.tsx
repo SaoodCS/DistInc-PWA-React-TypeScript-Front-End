@@ -33,6 +33,7 @@ export default class ArrayOfObjects {
       return arr.filter((obj) => obj[key] === value) as T[];
    }
 
+
    static sumKeyValues<T>(arr: T[], key: keyof T): number {
       return arr.reduce((acc, curr) => acc + Number(curr[key]), 0);
    }

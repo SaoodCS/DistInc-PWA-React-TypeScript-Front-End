@@ -89,6 +89,13 @@ export namespace MyCSS {
          }
       `;
 
+      static show = css`
+         scrollbar-width: thin;
+         ::-webkit-scrollbar {
+            display: block;
+         }
+      `;
+
       static gradientStyle = css`
          ::-webkit-scrollbar {
             width: 0.25em;

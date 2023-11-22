@@ -10,6 +10,7 @@ import {
 import FetchError from '../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import Loader from '../../../global/components/lib/loader/Loader';
+import { ScrnResponsiveFlexWrap } from '../../../global/components/lib/positionModifiers/responsiveFlexWrap/ScrnResponsiveFlexWrap';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
 import MyCSS from '../../../global/css/MyCSS';
@@ -20,7 +21,7 @@ import TotalExpense from './components/totalExpense/TotalExpense';
 import TotalIncome from './components/totalIncome/TotalIncome';
 import TotalSavings from './components/totalSavings/TotalSavings';
 import TrackedSavings from './components/trackedSavings/TrackedSavings';
-import { ScrnResponsiveFlexWrap } from '../../../global/components/lib/positionModifiers/responsiveFlexWrap/ScrnResponsiveFlexWrap';
+import TargetSavings from './components/targetSavings/TargetSavings';
 
 export default function Dashboard(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Dashboard');
@@ -76,6 +77,16 @@ export default function Dashboard(): JSX.Element {
                </CardContentWrapper>
             </CardHolderRow>
          </CardHolder>
+         {/**/}
+         <CardHolder>
+            <CardHolderRow>
+               <CardContentWrapper isDarkTheme={isDarkTheme}>
+                  <TargetSavings />
+               </CardContentWrapper>
+            </CardHolderRow>
+            <CardHolderRow></CardHolderRow>
+         </CardHolder>
+         {/**/}
       </ScrnResponsiveFlexWrap>
    );
 }
