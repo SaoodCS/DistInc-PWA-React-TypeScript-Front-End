@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { FlexColumnWrapper } from '../../../../../global/components/lib/positionModifiers/flexColumnWrapper/FlexColumnWrapper';
-import { ScrollableWrapper } from '../../../../../global/components/lib/positionModifiers/scrollableWrapper/ScrollableWrapper';
 import ProgressBarChart, {
    IProgressBarChartData,
 } from '../../../../../global/components/lib/progressBarChart/ProgressBarChart';
@@ -25,16 +24,16 @@ export default function TargetSavings() {
    }, [savingsAccounts]);
 
    return (
-      <FlexColumnWrapper height="100%" position="relative">
+      <FlexColumnWrapper height="100%">
          <TextColourizer padding="1em 0em 0em 1em">Target Savings</TextColourizer>
-         <ScrollableWrapper position="absolute" width="100%" bottom="0" top="4em">
+         <FlexColumnWrapper padding="1.5em 0em 0em 0em">
             <ProgressBarChart
                data={savingsAccChartData}
                tooltipOptions={TargetSavingsChart.toolTipOptions}
                barHeight={'1.5em'}
                barWidth="80%"
             />
-         </ScrollableWrapper>
+         </FlexColumnWrapper>
       </FlexColumnWrapper>
    );
 }

@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import CardListPlaceholder from '../../../global/components/lib/cardList/placeholder/CardListPlaceholder';
 import {
    CardContentWrapper,
@@ -13,15 +12,14 @@ import Loader from '../../../global/components/lib/loader/Loader';
 import { ScrnResponsiveFlexWrap } from '../../../global/components/lib/positionModifiers/responsiveFlexWrap/ScrnResponsiveFlexWrap';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
-import MyCSS from '../../../global/css/MyCSS';
 import NDist from '../distribute/namespace/NDist';
 import ExpenseByCategory from './components/expenseByCategory/ExpenseByCategory';
 import SpendingsAnalytics from './components/spendingsAnalytics/SpendingsAnalytics';
+import TargetSavings from './components/targetSavings/TargetSavings';
 import TotalExpense from './components/totalExpense/TotalExpense';
 import TotalIncome from './components/totalIncome/TotalIncome';
 import TotalSavings from './components/totalSavings/TotalSavings';
 import TrackedSavings from './components/trackedSavings/TrackedSavings';
-import TargetSavings from './components/targetSavings/TargetSavings';
 
 export default function Dashboard(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Dashboard');
@@ -79,12 +77,9 @@ export default function Dashboard(): JSX.Element {
          </CardHolder>
          {/**/}
          <CardHolder>
-            <CardHolderRow>
-               <CardContentWrapper isDarkTheme={isDarkTheme}>
-                  <TargetSavings />
-               </CardContentWrapper>
-            </CardHolderRow>
-            <CardHolderRow></CardHolderRow>
+            <CardContentWrapper isDarkTheme={isDarkTheme} height={'fit-content'}>
+               <TargetSavings />
+            </CardContentWrapper>
          </CardHolder>
          {/**/}
       </ScrnResponsiveFlexWrap>
