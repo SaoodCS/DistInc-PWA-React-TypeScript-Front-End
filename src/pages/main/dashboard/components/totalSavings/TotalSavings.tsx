@@ -1,9 +1,13 @@
 import { Fragment, useEffect, useState } from 'react';
+import FetchError from '../../../../../global/components/lib/fetch/fetchError/FetchError';
+import OfflineFetch from '../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import { CurrencyOnCardTxt } from '../../../../../global/components/lib/font/currencyOnCardText/CurrencyOnCardTxt';
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { TriangularArrowIcon } from '../../../../../global/components/lib/icons/arrows/TriangularArrow';
 import LineChart from '../../../../../global/components/lib/lineChart/LineChart';
 import LineChartHelper from '../../../../../global/components/lib/lineChart/class/LineChartHelper';
+import RelativeLoader from '../../../../../global/components/lib/loader/RelativeLoader';
+import { FlexCenterer } from '../../../../../global/components/lib/positionModifiers/centerers/FlexCenterer';
 import { FlexRowWrapper } from '../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import Color from '../../../../../global/css/colors';
@@ -15,8 +19,8 @@ import NDist from '../../../distribute/namespace/NDist';
 import SavingsChart from './namespace/SavingsChart';
 
 export default function TotalSavings(): JSX.Element {
-   const { isDarkTheme } = useThemeContext();
-   const { data: calcDistData } = NDist.API.useQuery.getCalcDist();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
+   const { data: calcDistData, isLoading, isPaused, error } = NDist.API.useQuery.getCalcDist();
    const [xAxisLabels, setXAxisLabels] = useState<string[]>(['']);
    const [totalSavingsValues, setTotalSavingsValues] = useState<number[]>([0]);
    const [latestSavingsPercChange, setLatestSavingsPercChange] = useState<number>(0);
@@ -51,6 +55,24 @@ export default function TotalSavings(): JSX.Element {
       chartDataAndStyles,
       xAxisLabels,
    );
+
+   if (isLoading && !isPaused && isPortableDevice) {
+      return <RelativeLoader isDisplayed />;
+   }
+   if (isPaused) {
+      return (
+         <FlexCenterer height="100%" width="100%">
+            <OfflineFetch />
+         </FlexCenterer>
+      );
+   }
+   if (error || !calcDistData) {
+      return (
+         <FlexCenterer height="90%" width="100%">
+            <FetchError />
+         </FlexCenterer>
+      );
+   }
 
    return (
       <>

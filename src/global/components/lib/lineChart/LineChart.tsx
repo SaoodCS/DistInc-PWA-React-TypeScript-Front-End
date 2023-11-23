@@ -8,13 +8,8 @@ import { TextColourizer } from '../font/textColorizer/TextColourizer';
 import { FlexRowWrapper } from '../positionModifiers/flexRowWrapper/Style';
 import { Wrapper } from '../positionModifiers/wrapper/Style';
 import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalRender';
-import {
-   ChartInfoBelowTitle,
-   ChartInfoRight,
-   ChartTitle,
-   LineChartCardWrapper,
-   LineChartPlaceholder,
-} from './Style';
+import { ChartInfoBelowTitle, ChartInfoRight, ChartTitle, LineChartCardWrapper } from './Style';
+import { LineChartNoDataPlaceholder } from './placeholder/NoDataPlaceholder';
 
 interface ILineChart {
    title: string;
@@ -57,7 +52,7 @@ export default function LineChart(props: ILineChart): JSX.Element {
          </Wrapper>
          <Line options={options} data={data()} />
          <ConditionalRender condition={showPlaceholder}>
-            <LineChartPlaceholder darktheme={BoolHelper.boolToStr(isDarkTheme)} />
+            <LineChartNoDataPlaceholder darktheme={BoolHelper.boolToStr(isDarkTheme)} />
             <FlexRowWrapper
                height="100%"
                width="100%"

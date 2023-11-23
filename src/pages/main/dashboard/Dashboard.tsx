@@ -1,4 +1,3 @@
-import CardListPlaceholder from '../../../global/components/lib/cardList/placeholder/CardListPlaceholder';
 import {
    CardContentWrapper,
    CardHolder,
@@ -6,8 +5,6 @@ import {
    ExtraSmallCardSquareHolder,
    SmallCardSquareHolder,
 } from '../../../global/components/lib/dashboardCards/Style';
-import FetchError from '../../../global/components/lib/fetch/fetchError/FetchError';
-import OfflineFetch from '../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import Loader from '../../../global/components/lib/loader/Loader';
 import { ScrnResponsiveFlexWrap } from '../../../global/components/lib/positionModifiers/responsiveFlexWrap/ScrnResponsiveFlexWrap';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
@@ -24,14 +21,8 @@ import TrackedSavings from './components/trackedSavings/TrackedSavings';
 export default function Dashboard(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Dashboard');
    const { isDarkTheme, isPortableDevice } = useThemeContext();
-   const { data: calcDistData, isLoading, isPaused, error } = NDist.API.useQuery.getCalcDist();
-
-   if (isLoading && !isPaused) {
-      if (!isPortableDevice) return <Loader isDisplayed />;
-      return <CardListPlaceholder repeatItemCount={7} />;
-   }
-   if (isPaused) return <OfflineFetch />;
-   if (error || !calcDistData) return <FetchError />;
+   const { isLoading, isPaused } = NDist.API.useQuery.getCalcDist();
+   if (isLoading && !isPaused && !isPortableDevice) return <Loader isDisplayed />;
 
    return (
       <ScrnResponsiveFlexWrap padding={'0.25em'}>

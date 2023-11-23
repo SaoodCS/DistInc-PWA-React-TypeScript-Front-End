@@ -17,13 +17,13 @@ export const FetchErrorWrapper = styled.div`
    align-items: center;
    width: 100%;
    box-sizing: border-box;
+   text-align: center;
    & > * {
-      margin-top: 1em;
+      margin-top: 0.5em;
    }
 `;
 
 export const ErrorIcon = styled(Error)<{ darktheme: string }>`
-   height: 5em;
    color: ${({ darktheme }) =>
       darktheme === 'true'
          ? Color.setRgbOpacity(Color.darkThm.error, 0.6)

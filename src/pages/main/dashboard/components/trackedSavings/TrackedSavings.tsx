@@ -1,8 +1,12 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import FetchError from '../../../../../global/components/lib/fetch/fetchError/FetchError';
+import OfflineFetch from '../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import { CurrencyOnCardTxt } from '../../../../../global/components/lib/font/currencyOnCardText/CurrencyOnCardTxt';
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { SelectIcon } from '../../../../../global/components/lib/icons/select/SelectIcon';
+import RelativeLoader from '../../../../../global/components/lib/loader/RelativeLoader';
+import { FlexCenterer } from '../../../../../global/components/lib/positionModifiers/centerers/FlexCenterer';
 import { FlexColumnWrapper } from '../../../../../global/components/lib/positionModifiers/flexColumnWrapper/FlexColumnWrapper';
 import { FlexRowWrapper } from '../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
 import {
@@ -25,8 +29,13 @@ import TrackedSavingsChart from './namespace/TrackedSavingsChart';
 import SelectTrackedSavingsPopupMenu from './selectPopupMenu/SelectTrackedSavingsPopupMenu';
 
 export default function TrackedSavings() {
-   const { isDarkTheme } = useThemeContext();
-   const { data: savingsAcc } = SavingsClass.useQuery.getSavingsAccounts();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
+   const {
+      data: savingsAcc,
+      isLoading,
+      isPaused,
+      error,
+   } = SavingsClass.useQuery.getSavingsAccounts();
    const [trackedSavingsAccounts, setTrackedSavingsAccounts] = useState<ISavingsFormInputs[]>();
    const [selectedSavingsAccData, setSelectedSavingsAccData] = useState<ISavingsFormInputs>();
    const [selectedSavingsAcc, setSelectedSavingsAcc] = useURLState({
@@ -78,6 +87,24 @@ export default function TrackedSavings() {
          );
       }
       return Color.setRgbOpacity(isDarkTheme ? Color.darkThm.success : Color.lightThm.success, 0.7);
+   }
+
+   if (isLoading && !isPaused && isPortableDevice) {
+      return <RelativeLoader isDisplayed />;
+   }
+   if (isPaused) {
+      return (
+         <FlexCenterer height="100%" width="100%">
+            <OfflineFetch />
+         </FlexCenterer>
+      );
+   }
+   if (error || !savingsAcc) {
+      return (
+         <FlexCenterer height="90%" width="100%">
+            <FetchError />
+         </FlexCenterer>
+      );
    }
 
    return (

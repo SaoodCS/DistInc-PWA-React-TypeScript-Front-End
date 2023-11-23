@@ -1,12 +1,17 @@
 import useThemeContext from '../../../../context/theme/hooks/useThemeContext';
 import { ErrorIcon, ErrorMsg, FetchErrorWrapper } from './Style';
 
-export default function FetchError(): JSX.Element {
+interface IFetchError {
+   iconHeightEm?: number;
+}
+
+export default function FetchError(props: IFetchError): JSX.Element {
+   const { iconHeightEm } = props;
    const { isDarkTheme } = useThemeContext();
 
    return (
       <FetchErrorWrapper>
-         <ErrorIcon size="100%" darktheme={isDarkTheme.toString()} />
+         <ErrorIcon darktheme={isDarkTheme.toString()} height={`${iconHeightEm || 5}em`} />
          <ErrorMsg isDarkTheme={isDarkTheme}>An error occured whilst getting data.</ErrorMsg>
       </FetchErrorWrapper>
    );

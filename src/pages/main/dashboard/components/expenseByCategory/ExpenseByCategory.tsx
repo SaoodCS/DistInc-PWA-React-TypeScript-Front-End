@@ -2,6 +2,10 @@ import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { useEffect, useState } from 'react';
 import DonutChart from '../../../../../global/components/lib/donutChart/DonutChart';
 import DonutChartHelper from '../../../../../global/components/lib/donutChart/namespace/DonutChartHelper';
+import FetchError from '../../../../../global/components/lib/fetch/fetchError/FetchError';
+import OfflineFetch from '../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
+import RelativeLoader from '../../../../../global/components/lib/loader/RelativeLoader';
+import { FlexCenterer } from '../../../../../global/components/lib/positionModifiers/centerers/FlexCenterer';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
@@ -9,10 +13,10 @@ import ExpensesClass from '../../../details/components/expense/class/ExpensesCla
 import ExpenseChart from './namespace/ExpenseChart';
 
 export default function ExpenseByCategory() {
-   const { data: expenseData } = ExpensesClass.useQuery.getExpenses();
+   const { data: expenseData, isLoading, isPaused, error } = ExpensesClass.useQuery.getExpenses();
    const [donutChartLabels, setDonutChartLabels] = useState<string[]>([]);
    const [donutChartData, setDonutChartData] = useState<number[]>([]);
-   const { isDarkTheme } = useThemeContext();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
 
    useEffect(() => {
       if (MiscHelper.isNotFalsyOrEmpty(expenseData)) {
@@ -32,6 +36,24 @@ export default function ExpenseByCategory() {
       borderColors: ExpenseChart.borderColors(isDarkTheme),
       borderWidth: ExpenseChart.borderWidth,
    });
+
+   if (isLoading && !isPaused && isPortableDevice) {
+      return <RelativeLoader isDisplayed />;
+   }
+   if (isPaused) {
+      return (
+         <FlexCenterer height="100%" width="100%">
+            <OfflineFetch />
+         </FlexCenterer>
+      );
+   }
+   if (error || !expenseData) {
+      return (
+         <FlexCenterer height="90%" width="100%">
+            <FetchError />
+         </FlexCenterer>
+      );
+   }
 
    return (
       <>

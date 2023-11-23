@@ -1,10 +1,14 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
+import FetchError from '../../../../../global/components/lib/fetch/fetchError/FetchError';
+import OfflineFetch from '../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import { CurrencyOnCardTxt } from '../../../../../global/components/lib/font/currencyOnCardText/CurrencyOnCardTxt';
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { TriangularArrowIcon } from '../../../../../global/components/lib/icons/arrows/TriangularArrow';
 import { FilterIcon } from '../../../../../global/components/lib/icons/filter/FilterIcon';
 import LineChart from '../../../../../global/components/lib/lineChart/LineChart';
 import LineChartHelper from '../../../../../global/components/lib/lineChart/class/LineChartHelper';
+import RelativeLoader from '../../../../../global/components/lib/loader/RelativeLoader';
+import { FlexCenterer } from '../../../../../global/components/lib/positionModifiers/centerers/FlexCenterer';
 import { FlexRowWrapper } from '../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { PopupMenuContext } from '../../../../../global/context/widget/popupMenu/PopupMenuContext';
@@ -19,8 +23,8 @@ import FilterSpendingsPopupMenu from './filterPopupMenu/FilterSpendingsPopupMenu
 import SpendingsChart from './namespace/SpendingsChart';
 
 export default function SpendingsAnalytics(): JSX.Element {
-   const { isDarkTheme } = useThemeContext();
-   const { data: calcDistData } = NDist.API.useQuery.getCalcDist();
+   const { isDarkTheme, isPortableDevice } = useThemeContext();
+   const { data: calcDistData, isLoading, isPaused, error } = NDist.API.useQuery.getCalcDist();
    const [xAxisLabels, setXAxisLabels] = useState<string[]>(['']);
    const [totalSpendingsValues, setTotalSpendingsValues] = useState<number[]>([0]);
    const [disposableSpendingsValues, setDisposableSpendingsValues] = useState<number[]>([0]);
@@ -97,6 +101,24 @@ export default function SpendingsAnalytics(): JSX.Element {
       setPMHeightPx(100);
       setPMWidthPx(200);
       setCloseOnInnerClick(false);
+   }
+
+   if (isLoading && !isPaused && isPortableDevice) {
+      return <RelativeLoader isDisplayed />;
+   }
+   if (isPaused) {
+      return (
+         <FlexCenterer height="100%" width="100%">
+            <OfflineFetch />
+         </FlexCenterer>
+      );
+   }
+   if (error || !calcDistData) {
+      return (
+         <FlexCenterer height="90%" width="100%">
+            <FetchError />
+         </FlexCenterer>
+      );
    }
 
    return (
