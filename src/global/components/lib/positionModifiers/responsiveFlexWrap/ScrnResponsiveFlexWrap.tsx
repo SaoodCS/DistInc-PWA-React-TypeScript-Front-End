@@ -8,6 +8,9 @@ export const ScrnResponsiveFlexWrap = styled.div<{
    padding: ${({ padding }) => (padding ? padding : '0')};
    display: flex;
    flex-wrap: wrap;
+   overflow: scroll;
+   height: 100%;
+   ${MyCSS.Scrollbar.hide};
    @media (max-width: ${MyCSS.PortableBp.asPx}) {
       overflow: scroll;
       justify-content: center;

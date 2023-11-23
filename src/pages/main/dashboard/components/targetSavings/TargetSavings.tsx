@@ -84,7 +84,7 @@ export default function TargetSavings() {
                >
                   <TextColourizer color={'darkgrey'}>No Data For a Current Period</TextColourizer>
                </FlexRowWrapper>
-               <FlexColumnWrapper height="13em" style={{ marginTop: '-3.5em', marginLeft: '6em' }}>
+               <FlexColumnWrapper height={isPortableDevice ? '10em' : '14.75em'}>
                   <BarChartNoDataPlaceholder horizontal />
                </FlexColumnWrapper>
             </ConditionalRender>
