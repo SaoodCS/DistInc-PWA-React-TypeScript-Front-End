@@ -24,7 +24,7 @@ export default function TargetSavings() {
    }, [savingsAccounts]);
 
    return (
-      <FlexColumnWrapper height="100%">
+      <FlexColumnWrapper>
          <TextColourizer padding="1em 0em 0em 1em">Target Savings</TextColourizer>
          <FlexColumnWrapper padding="1.5em 0em 0em 0em">
             <ProgressBarChart

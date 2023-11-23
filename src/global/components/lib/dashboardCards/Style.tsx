@@ -47,7 +47,5 @@ export const CardContentWrapper = styled.div<{ isDarkTheme: boolean; height?: st
    background-color: ${({ isDarkTheme }) =>
       Color.setRgbOpacity(isDarkTheme ? Color.lightThm.bg : Color.darkThm.bg, 0.05)};
    font-size: 0.9em;
-   @media (min-width: ${MyCSS.PortableBp.asPx}) {
-      height: ${({ height }) => height || 'auto'};
-   }
+   height: ${({ height }) => height || 'auto'};
 `;
