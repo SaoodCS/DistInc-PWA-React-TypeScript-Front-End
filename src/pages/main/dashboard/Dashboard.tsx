@@ -9,6 +9,8 @@ import Loader from '../../../global/components/lib/loader/fullScreen/Loader';
 import { ScrnResponsiveFlexWrap } from '../../../global/components/lib/positionModifiers/responsiveFlexWrap/ScrnResponsiveFlexWrap';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
+import SavingsClass from '../details/components/accounts/savings/class/Class';
+import ExpensesClass from '../details/components/expense/class/ExpensesClass';
 import NDist from '../distribute/namespace/NDist';
 import ExpenseByCategory from './components/expenseByCategory/ExpenseByCategory';
 import SpendingsAnalytics from './components/spendingsAnalytics/SpendingsAnalytics';
@@ -21,8 +23,20 @@ import TrackedSavings from './components/trackedSavings/TrackedSavings';
 export default function Dashboard(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Dashboard');
    const { isDarkTheme, isPortableDevice } = useThemeContext();
-   const { isLoading, isPaused } = NDist.API.useQuery.getCalcDist();
-   if (isLoading && !isPaused && !isPortableDevice) return <Loader isDisplayed />;
+
+   const { isLoading: calcDistLoading, isPaused: calcDistPaused } =
+      NDist.API.useQuery.getCalcDist();
+
+   const { isLoading: expenseLoading, isPaused: expensePaused } =
+      ExpensesClass.useQuery.getExpenses();
+
+   const { isLoading: savingsLoading, isPaused: savingsPaused } =
+      SavingsClass.useQuery.getSavingsAccounts();
+
+   const areLoading = calcDistLoading || expenseLoading || savingsLoading;
+   const arePaused = calcDistPaused || expensePaused || savingsPaused; // Might be && instead of || for paused
+
+   if (areLoading && !arePaused && !isPortableDevice) return <Loader isDisplayed />;
 
    return (
       <ScrnResponsiveFlexWrap padding={'0.25em'}>
