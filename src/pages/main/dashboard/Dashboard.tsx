@@ -68,7 +68,7 @@ export default function Dashboard(): JSX.Element {
          </CardHolder>
          {/**/}
          <CardHolder>
-            <CardContentWrapper isDarkTheme={isDarkTheme} height={'fit-content'}>
+            <CardContentWrapper isDarkTheme={isDarkTheme} height={'fit-content'} minHeight="10em">
                <TargetSavings />
             </CardContentWrapper>
          </CardHolder>

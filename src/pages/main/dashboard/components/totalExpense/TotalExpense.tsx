@@ -6,6 +6,7 @@ import { TextColourizer } from '../../../../../global/components/lib/font/textCo
 import RelativeLoader from '../../../../../global/components/lib/loader/RelativeLoader';
 import { FlexCenterer } from '../../../../../global/components/lib/positionModifiers/centerers/FlexCenterer';
 import { FlexColumnWrapper } from '../../../../../global/components/lib/positionModifiers/flexColumnWrapper/FlexColumnWrapper';
+import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import Color from '../../../../../global/css/colors';
 import ArrayOfObjects from '../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
@@ -47,7 +48,7 @@ export default function TotalExpense(): JSX.Element {
 
    return (
       <FlexColumnWrapper
-         padding="0em 1em 0em 1em"
+         padding={'0em 1em 0em 1em'}
          height="100%"
          width="100%"
          justifyContent="center"
@@ -59,15 +60,22 @@ export default function TotalExpense(): JSX.Element {
             Total Expense
          </TextColourizer>
          <TextColourizer padding="0em 0em 0em 0.2em">
-            <CurrencyOnCardTxt
-               isDarkTheme={isDarkTheme}
-               color={Color.setRgbOpacity(
-                  isDarkTheme ? Color.darkThm.error : Color.lightThm.error,
-                  0.7,
-               )}
-            >
-               -{NumberHelper.asCurrencyStr(latestTotalExpense, true)}
-            </CurrencyOnCardTxt>
+            <ConditionalRender condition={latestTotalExpense !== 0}>
+               <CurrencyOnCardTxt
+                  isDarkTheme={isDarkTheme}
+                  color={Color.setRgbOpacity(
+                     isDarkTheme ? Color.darkThm.error : Color.lightThm.error,
+                     0.7,
+                  )}
+               >
+                  -{NumberHelper.asCurrencyStr(latestTotalExpense, true)}
+               </CurrencyOnCardTxt>
+            </ConditionalRender>
+            <ConditionalRender condition={latestTotalExpense === 0}>
+               <TextColourizer color={'darkgrey'} fontSize="0.85em">
+                  No Data to Display
+               </TextColourizer>
+            </ConditionalRender>
          </TextColourizer>
       </FlexColumnWrapper>
    );

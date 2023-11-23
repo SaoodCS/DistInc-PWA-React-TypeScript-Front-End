@@ -1,5 +1,6 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import { DonutChartNoDataPlaceholder } from '../../../../../global/components/lib/donutChart/placeholder/NoDataPlaceholder';
 import FetchError from '../../../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import { CurrencyOnCardTxt } from '../../../../../global/components/lib/font/currencyOnCardText/CurrencyOnCardTxt';
@@ -38,6 +39,7 @@ export default function TrackedSavings() {
    } = SavingsClass.useQuery.getSavingsAccounts();
    const [trackedSavingsAccounts, setTrackedSavingsAccounts] = useState<ISavingsFormInputs[]>();
    const [selectedSavingsAccData, setSelectedSavingsAccData] = useState<ISavingsFormInputs>();
+   const [showPlaceholder, setShowPlaceholder] = useState<boolean>(true);
    const [selectedSavingsAcc, setSelectedSavingsAcc] = useURLState({
       key: TrackedSavingsChart.currentlySelectedKey,
    });
@@ -53,7 +55,9 @@ export default function TrackedSavings() {
    useEffect(() => {
       if (MiscHelper.isNotFalsyOrEmpty(savingsAcc)) {
          const savingsAccAsArr = ObjectOfObjects.convertToArrayOfObj(savingsAcc);
-         setTrackedSavingsAccounts(TrackedSavingsChart.getAccounts(savingsAccAsArr));
+         const trackedAccounts = TrackedSavingsChart.getAccounts(savingsAccAsArr);
+         setTrackedSavingsAccounts(trackedAccounts);
+         setShowPlaceholder(!MiscHelper.isNotFalsyOrEmpty(trackedAccounts));
          setSelectedSavingsAccData(
             TrackedSavingsChart.getSelectedAccount(savingsAccAsArr, selectedSavingsAcc),
          );
@@ -111,7 +115,7 @@ export default function TrackedSavings() {
       <>
          <ProgressChartTitle>
             <TextColourizer>{'Tracked Savings'}</TextColourizer>
-            <ConditionalRender condition={MiscHelper.isNotFalsyOrEmpty(trackedSavingsAccounts)}>
+            <ConditionalRender condition={!showPlaceholder}>
                <SelectIcon
                   height={'1em'}
                   darktheme={BoolHelper.boolToStr(isDarkTheme)}
@@ -123,7 +127,7 @@ export default function TrackedSavings() {
          </ProgressChartTitle>
          <FlexRowWrapper position="relative" height="100%" justifyContent="space-evenly">
             <FlexColumnWrapper justifyContent="center" padding={'1em'}>
-               <ConditionalRender condition={MiscHelper.isNotFalsyOrEmpty(selectedSavingsAccData)}>
+               <ConditionalRender condition={!showPlaceholder}>
                   <ProgressChartInfo>
                      <Fragment>
                         <TextColourizer>{selectedSavingsAccData?.accountName}</TextColourizer>
@@ -174,6 +178,14 @@ export default function TrackedSavings() {
                         trailColor: isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive,
                      })}
                   />
+               </FlexRowWrapper>
+            </ConditionalRender>
+            <ConditionalRender condition={showPlaceholder}>
+               <FlexCenterer position="absolute">
+                  <TextColourizer color={'darkgrey'}>No Data For a Current Period</TextColourizer>
+               </FlexCenterer>
+               <FlexRowWrapper position="absolute">
+                  <DonutChartNoDataPlaceholder />
                </FlexRowWrapper>
             </ConditionalRender>
          </FlexRowWrapper>

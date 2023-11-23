@@ -2,8 +2,6 @@ import type { ChartData, ChartOptions } from 'chart.js';
 import type { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import type { ReactNode } from 'react';
 import { Line } from 'react-chartjs-2';
-import useThemeContext from '../../../context/theme/hooks/useThemeContext';
-import BoolHelper from '../../../helpers/dataTypes/bool/BoolHelper';
 import { TextColourizer } from '../font/textColorizer/TextColourizer';
 import { FlexRowWrapper } from '../positionModifiers/flexRowWrapper/Style';
 import { Wrapper } from '../positionModifiers/wrapper/Style';
@@ -31,7 +29,6 @@ export default function LineChart(props: ILineChart): JSX.Element {
       showPlaceholder,
       infoComponentPlacemenet,
    } = props;
-   const { isDarkTheme } = useThemeContext();
    return (
       <LineChartCardWrapper>
          <Wrapper>
@@ -50,17 +47,20 @@ export default function LineChart(props: ILineChart): JSX.Element {
                </ConditionalRender>
             </ConditionalRender>
          </Wrapper>
-         <Line options={options} data={data()} />
+         <ConditionalRender condition={!showPlaceholder}>
+            <Line options={options} data={data()} />
+         </ConditionalRender>
          <ConditionalRender condition={showPlaceholder}>
-            <LineChartNoDataPlaceholder darktheme={BoolHelper.boolToStr(isDarkTheme)} />
+            <LineChartNoDataPlaceholder />
             <FlexRowWrapper
                height="100%"
                width="100%"
                position="absolute"
                justifyContent="center"
                alignItems="center"
+               style={{ textAlign: 'center' }}
             >
-               <TextColourizer color={'darkgrey'}>No Data For Current Period</TextColourizer>
+               <TextColourizer color={'darkgrey'}>No Data For a Current Period</TextColourizer>
             </FlexRowWrapper>
          </ConditionalRender>
       </LineChartCardWrapper>

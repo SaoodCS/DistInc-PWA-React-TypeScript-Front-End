@@ -36,7 +36,7 @@ export const ExtraSmallCardSquareHolder = styled.div`
    position: relative;
 `;
 
-export const CardContentWrapper = styled.div<{ isDarkTheme: boolean; height?: string }>`
+export const CardContentWrapper = styled.div<{ isDarkTheme: boolean; height?: string, minHeight?: string }>`
    position: absolute;
    top: 0.5em;
    bottom: 0.5em;
@@ -48,4 +48,5 @@ export const CardContentWrapper = styled.div<{ isDarkTheme: boolean; height?: st
       Color.setRgbOpacity(isDarkTheme ? Color.lightThm.bg : Color.darkThm.bg, 0.05)};
    font-size: 0.9em;
    height: ${({ height }) => height || 'auto'};
+   min-height: ${({minHeight}) => minHeight};
 `;

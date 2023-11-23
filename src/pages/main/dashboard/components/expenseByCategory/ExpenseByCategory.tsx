@@ -57,7 +57,12 @@ export default function ExpenseByCategory() {
 
    return (
       <>
-         <DonutChart title="Expense by category" data={data} options={options} />
+         <DonutChart
+            title="Expense by category"
+            data={data}
+            options={options}
+            showPlaceholder={!MiscHelper.isNotFalsyOrEmpty(expenseData)}
+         />
       </>
    );
 }
