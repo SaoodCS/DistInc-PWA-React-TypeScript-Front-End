@@ -11,7 +11,7 @@ import { FlatListWrapper } from '../../../../../global/components/lib/flatList/S
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { FilterIcon } from '../../../../../global/components/lib/icons/filter/FilterIcon';
 import { HorizontalMenuDots } from '../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
-import Loader from '../../../../../global/components/lib/loader/Loader';
+import Loader from '../../../../../global/components/lib/loader/fullScreen/Loader';
 import { FlexRowWrapper } from '../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
 import { LargeScrnResponsiveFlexWrap } from '../../../../../global/components/lib/positionModifiers/responsiveFlexWrap/LargeScrnResponsiveFlexWrap';
 import PullToRefresh from '../../../../../global/components/lib/pullToRefresh/PullToRefresh';

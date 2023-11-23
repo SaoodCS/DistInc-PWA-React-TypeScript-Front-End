@@ -4,13 +4,13 @@ import DonutChart from '../../../../../global/components/lib/donutChart/DonutCha
 import DonutChartHelper from '../../../../../global/components/lib/donutChart/namespace/DonutChartHelper';
 import FetchError from '../../../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
-import RelativeLoader from '../../../../../global/components/lib/loader/RelativeLoader';
 import { FlexCenterer } from '../../../../../global/components/lib/positionModifiers/centerers/FlexCenterer';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import ExpensesClass from '../../../details/components/expense/class/ExpensesClass';
 import ExpenseChart from './namespace/ExpenseChart';
+import { CardLoadingPlaceholder } from '../../../../../global/components/lib/dashboardCards/placeholder/CardLoadingPlaceholder';
 
 export default function ExpenseByCategory() {
    const { data: expenseData, isLoading, isPaused, error } = ExpensesClass.useQuery.getExpenses();
@@ -38,7 +38,7 @@ export default function ExpenseByCategory() {
    });
 
    if (isLoading && !isPaused && isPortableDevice) {
-      return <RelativeLoader isDisplayed />;
+      return <CardLoadingPlaceholder isDarkTheme={isDarkTheme} />;
    }
    if (isPaused) {
       return (

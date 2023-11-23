@@ -3,7 +3,7 @@ import FetchError from '../../../../../global/components/lib/fetch/fetchError/Fe
 import OfflineFetch from '../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import { FlatListWrapper } from '../../../../../global/components/lib/flatList/Style';
 import FlatListPlaceholder from '../../../../../global/components/lib/flatList/placeholder/FlatListPlaceholder';
-import Loader from '../../../../../global/components/lib/loader/Loader';
+import Loader from '../../../../../global/components/lib/loader/fullScreen/Loader';
 import PullToRefresh from '../../../../../global/components/lib/pullToRefresh/PullToRefresh';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';

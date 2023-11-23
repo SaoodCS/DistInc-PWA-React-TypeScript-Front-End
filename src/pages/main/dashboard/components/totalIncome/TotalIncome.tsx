@@ -3,7 +3,6 @@ import FetchError from '../../../../../global/components/lib/fetch/fetchError/Fe
 import OfflineFetch from '../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import { CurrencyOnCardTxt } from '../../../../../global/components/lib/font/currencyOnCardText/CurrencyOnCardTxt';
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
-import RelativeLoader from '../../../../../global/components/lib/loader/RelativeLoader';
 import { FlexCenterer } from '../../../../../global/components/lib/positionModifiers/centerers/FlexCenterer';
 import { FlexColumnWrapper } from '../../../../../global/components/lib/positionModifiers/flexColumnWrapper/FlexColumnWrapper';
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
@@ -13,6 +12,7 @@ import ArrayOfObjects from '../../../../../global/helpers/dataTypes/arrayOfObjec
 import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import NumberHelper from '../../../../../global/helpers/dataTypes/number/NumberHelper';
 import NDist from '../../../distribute/namespace/NDist';
+import { CardLoadingPlaceholder } from '../../../../../global/components/lib/dashboardCards/placeholder/CardLoadingPlaceholder';
 
 export default function TotalIncome(): JSX.Element {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
@@ -29,7 +29,7 @@ export default function TotalIncome(): JSX.Element {
    }, [calcDistData]);
 
    if (isLoading && !isPaused && isPortableDevice) {
-      return <RelativeLoader isDisplayed sizePx={30} />;
+      return <CardLoadingPlaceholder isDarkTheme={isDarkTheme} />;
    }
    if (isPaused) {
       return (

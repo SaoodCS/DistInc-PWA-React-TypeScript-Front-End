@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
+import { CardLoadingPlaceholder } from '../../../../../global/components/lib/dashboardCards/placeholder/CardLoadingPlaceholder';
 import FetchError from '../../../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
-import RelativeLoader from '../../../../../global/components/lib/loader/RelativeLoader';
 import { FlexCenterer } from '../../../../../global/components/lib/positionModifiers/centerers/FlexCenterer';
 import { FlexColumnWrapper } from '../../../../../global/components/lib/positionModifiers/flexColumnWrapper/FlexColumnWrapper';
 import { FlexRowWrapper } from '../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
@@ -25,7 +25,7 @@ export default function TargetSavings() {
       error,
    } = SavingsClass.useQuery.getSavingsAccounts();
    const [savingsAccChartData, setSavingsAccChartData] = useState<IProgressBarChartData[]>([]);
-   const { isPortableDevice } = useThemeContext();
+   const { isPortableDevice, isDarkTheme } = useThemeContext();
    const [showPlaceholder, setShowPlaceholder] = useState(true);
 
    useEffect(() => {
@@ -41,8 +41,8 @@ export default function TargetSavings() {
 
    if (isLoading && !isPaused && isPortableDevice) {
       return (
-         <FlexColumnWrapper padding="1em">
-            <RelativeLoader isDisplayed />
+         <FlexColumnWrapper height="10em">
+            <CardLoadingPlaceholder isDarkTheme={isDarkTheme} />
          </FlexColumnWrapper>
       );
    }

@@ -6,7 +6,6 @@ import OfflineFetch from '../../../../../global/components/lib/fetch/offlineFetc
 import { CurrencyOnCardTxt } from '../../../../../global/components/lib/font/currencyOnCardText/CurrencyOnCardTxt';
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { SelectIcon } from '../../../../../global/components/lib/icons/select/SelectIcon';
-import RelativeLoader from '../../../../../global/components/lib/loader/RelativeLoader';
 import { FlexCenterer } from '../../../../../global/components/lib/positionModifiers/centerers/FlexCenterer';
 import { FlexColumnWrapper } from '../../../../../global/components/lib/positionModifiers/flexColumnWrapper/FlexColumnWrapper';
 import { FlexRowWrapper } from '../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
@@ -28,6 +27,7 @@ import SavingsClass, {
 } from '../../../details/components/accounts/savings/class/Class';
 import TrackedSavingsChart from './namespace/TrackedSavingsChart';
 import SelectTrackedSavingsPopupMenu from './selectPopupMenu/SelectTrackedSavingsPopupMenu';
+import { CardLoadingPlaceholder } from '../../../../../global/components/lib/dashboardCards/placeholder/CardLoadingPlaceholder';
 
 export default function TrackedSavings() {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
@@ -94,7 +94,7 @@ export default function TrackedSavings() {
    }
 
    if (isLoading && !isPaused && isPortableDevice) {
-      return <RelativeLoader isDisplayed />;
+      return <CardLoadingPlaceholder isDarkTheme={isDarkTheme} />
    }
    if (isPaused) {
       return (

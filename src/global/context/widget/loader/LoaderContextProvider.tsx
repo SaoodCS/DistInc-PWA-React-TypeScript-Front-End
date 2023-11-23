@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { useState } from 'react';
-import Loader from '../../../components/lib/loader/Loader';
+import Loader from '../../../components/lib/loader/fullScreen/Loader';
 import { LoaderContext } from './LoaderContext';
 
 interface ILoaderContextProvider {

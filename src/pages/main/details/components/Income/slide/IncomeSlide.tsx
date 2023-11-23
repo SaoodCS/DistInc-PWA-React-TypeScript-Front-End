@@ -12,7 +12,7 @@ import {
    Tag,
 } from '../../../../../../global/components/lib/flatList/Style';
 import FlatListPlaceholder from '../../../../../../global/components/lib/flatList/placeholder/FlatListPlaceholder';
-import Loader from '../../../../../../global/components/lib/loader/Loader';
+import Loader from '../../../../../../global/components/lib/loader/fullScreen/Loader';
 import PullToRefresh from '../../../../../../global/components/lib/pullToRefresh/PullToRefresh';
 import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';

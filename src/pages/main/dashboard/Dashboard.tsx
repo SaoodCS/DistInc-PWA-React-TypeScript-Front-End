@@ -5,7 +5,7 @@ import {
    ExtraSmallCardSquareHolder,
    SmallCardSquareHolder,
 } from '../../../global/components/lib/dashboardCards/Style';
-import Loader from '../../../global/components/lib/loader/Loader';
+import Loader from '../../../global/components/lib/loader/fullScreen/Loader';
 import { ScrnResponsiveFlexWrap } from '../../../global/components/lib/positionModifiers/responsiveFlexWrap/ScrnResponsiveFlexWrap';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';

@@ -6,7 +6,6 @@ import { TextColourizer } from '../../../../../global/components/lib/font/textCo
 import { TriangularArrowIcon } from '../../../../../global/components/lib/icons/arrows/TriangularArrow';
 import LineChart from '../../../../../global/components/lib/lineChart/LineChart';
 import LineChartHelper from '../../../../../global/components/lib/lineChart/class/LineChartHelper';
-import RelativeLoader from '../../../../../global/components/lib/loader/RelativeLoader';
 import { FlexCenterer } from '../../../../../global/components/lib/positionModifiers/centerers/FlexCenterer';
 import { FlexRowWrapper } from '../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
@@ -17,6 +16,7 @@ import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscH
 import NumberHelper from '../../../../../global/helpers/dataTypes/number/NumberHelper';
 import NDist from '../../../distribute/namespace/NDist';
 import SavingsChart from './namespace/SavingsChart';
+import { CardLoadingPlaceholder } from '../../../../../global/components/lib/dashboardCards/placeholder/CardLoadingPlaceholder';
 
 export default function TotalSavings(): JSX.Element {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
@@ -57,7 +57,7 @@ export default function TotalSavings(): JSX.Element {
    );
 
    if (isLoading && !isPaused && isPortableDevice) {
-      return <RelativeLoader isDisplayed />;
+      return <CardLoadingPlaceholder isDarkTheme={isDarkTheme} />
    }
    if (isPaused) {
       return (

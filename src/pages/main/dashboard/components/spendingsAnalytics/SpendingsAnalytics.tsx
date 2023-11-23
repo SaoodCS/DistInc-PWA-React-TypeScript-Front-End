@@ -7,7 +7,6 @@ import { TriangularArrowIcon } from '../../../../../global/components/lib/icons/
 import { FilterIcon } from '../../../../../global/components/lib/icons/filter/FilterIcon';
 import LineChart from '../../../../../global/components/lib/lineChart/LineChart';
 import LineChartHelper from '../../../../../global/components/lib/lineChart/class/LineChartHelper';
-import RelativeLoader from '../../../../../global/components/lib/loader/RelativeLoader';
 import { FlexCenterer } from '../../../../../global/components/lib/positionModifiers/centerers/FlexCenterer';
 import { FlexRowWrapper } from '../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
@@ -21,6 +20,7 @@ import useURLState from '../../../../../global/hooks/useURLState';
 import NDist from '../../../distribute/namespace/NDist';
 import FilterSpendingsPopupMenu from './filterPopupMenu/FilterSpendingsPopupMenu';
 import SpendingsChart from './namespace/SpendingsChart';
+import { CardLoadingPlaceholder } from '../../../../../global/components/lib/dashboardCards/placeholder/CardLoadingPlaceholder';
 
 export default function SpendingsAnalytics(): JSX.Element {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
@@ -104,7 +104,7 @@ export default function SpendingsAnalytics(): JSX.Element {
    }
 
    if (isLoading && !isPaused && isPortableDevice) {
-      return <RelativeLoader isDisplayed />;
+      return <CardLoadingPlaceholder isDarkTheme={isDarkTheme} />;
    }
    if (isPaused) {
       return (
