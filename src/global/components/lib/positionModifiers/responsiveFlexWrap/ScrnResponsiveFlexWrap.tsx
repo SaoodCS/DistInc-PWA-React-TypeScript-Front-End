@@ -11,8 +11,7 @@ export const ScrnResponsiveFlexWrap = styled.div<{
    overflow: scroll;
    height: 100%;
    ${MyCSS.Scrollbar.hide};
-   @media (max-width: ${MyCSS.PortableBp.asPx}) {
-      overflow: scroll;
+   @media (max-width: 952px) {
       justify-content: center;
       align-items: center;
       height: 99%;
