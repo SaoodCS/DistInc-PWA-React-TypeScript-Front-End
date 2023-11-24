@@ -44,10 +44,11 @@ export const StaticButton = styled.button.attrs<IStaticButtonAttrs>(({ isDisable
    transition: background-color 0.3s ease-out;
    backdrop-filter: blur(30px);
 
-   ${({ isDarkTheme, isDisabled }) => {
+   ${({ isDarkTheme, isDisabled, isDangerBtn, isWarningBtn }) => {
       if (isDisabled) return;
+      const colorType = isDangerBtn ? 'error' : isWarningBtn ? 'warning' : 'accent';
       const color = Color.setRgbOpacity(
-         isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent,
+         isDarkTheme ? Color.darkThm[colorType] : Color.lightThm[colorType],
          0.8,
       );
       const mobile = MyCSS.Clickables.portable.changeColorOnClick(

@@ -39,6 +39,7 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
          queryClient.invalidateQueries({ queryKey: [microservices.getSavingsAccount.name] });
          queryClient.invalidateQueries({ queryKey: [microservices.getCurrentAccount.name] });
          queryClient.invalidateQueries({ queryKey: [microservices.getExpenses.name] });
+         queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
       },
    });
 
