@@ -41,7 +41,7 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
       savingsAccHistItem: NDist.ISavingsAccHist,
    ): void {
       e.stopPropagation();
-      togglePM();
+      togglePM(true);
       setPMContent(
          <SavingsAccPopupMenu
             savingsAccHistItem={savingsAccHistItem}

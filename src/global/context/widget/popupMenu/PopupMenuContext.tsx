@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 interface IPopupMenuContext {
-   togglePM: () => void;
+   togglePM: (show: boolean) => void;
    setPMWidthPx: React.Dispatch<React.SetStateAction<number>>;
    setPMHeightPx: React.Dispatch<React.SetStateAction<number>>;
    setPMContent: React.Dispatch<React.SetStateAction<JSX.Element>>;

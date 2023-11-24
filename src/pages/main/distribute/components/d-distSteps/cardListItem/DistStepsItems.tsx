@@ -38,7 +38,7 @@ export default function DistStepsItems(props: IDistStepsItems): JSX.Element {
       distStepsItem: NDist.IDistSteps,
    ): void {
       e.stopPropagation();
-      togglePM();
+      togglePM(true);
       setPMContent(
          <DistStepsPopupMenu distStepsItem={distStepsItem} handleItemClick={handleItemClick} />,
       );

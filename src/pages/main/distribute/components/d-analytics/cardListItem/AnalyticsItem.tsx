@@ -38,7 +38,7 @@ export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
       analyticsItem: NDist.IAnalytics,
    ): void {
       e.stopPropagation();
-      togglePM();
+      togglePM(true);
       setPMContent(
          <AnalyticsPopupMenu analyticsItem={analyticsItem} handleItemClick={handleItemClick} />,
       );

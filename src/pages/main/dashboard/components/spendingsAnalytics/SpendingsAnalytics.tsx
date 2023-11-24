@@ -1,4 +1,5 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
+import { CardLoadingPlaceholder } from '../../../../../global/components/lib/dashboardCards/placeholder/CardLoadingPlaceholder';
 import FetchError from '../../../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import { CurrencyOnCardTxt } from '../../../../../global/components/lib/font/currencyOnCardText/CurrencyOnCardTxt';
@@ -20,7 +21,6 @@ import useURLState from '../../../../../global/hooks/useURLState';
 import NDist from '../../../distribute/namespace/NDist';
 import FilterSpendingsPopupMenu from './filterPopupMenu/FilterSpendingsPopupMenu';
 import SpendingsChart from './namespace/SpendingsChart';
-import { CardLoadingPlaceholder } from '../../../../../global/components/lib/dashboardCards/placeholder/CardLoadingPlaceholder';
 
 export default function SpendingsAnalytics(): JSX.Element {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
@@ -95,7 +95,7 @@ export default function SpendingsAnalytics(): JSX.Element {
    );
 
    function handleFilterClick(e: React.MouseEvent<SVGSVGElement, MouseEvent>): void {
-      togglePM();
+      togglePM(true);
       setPMContent(<FilterSpendingsPopupMenu />);
       setClickEvent(e);
       setPMHeightPx(100);

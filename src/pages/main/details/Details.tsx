@@ -47,7 +47,7 @@ export default function Details(): JSX.Element {
             <AddIcon
                darktheme={BoolHelper.boolToStr(isDarkTheme)}
                onClick={(e) => {
-                  togglePM();
+                  togglePM(true);
                   setPMContent(<NewFormContextMenu />);
                   setClickEvent(e);
                   setPMHeightPx(100);
@@ -58,7 +58,7 @@ export default function Details(): JSX.Element {
             <FilterIcon
                darktheme={BoolHelper.boolToStr(isDarkTheme)}
                onClick={(e) => {
-                  togglePM();
+                  togglePM(true);
                   setPMContent(<FiltererContextMenu currentSlide={currentSlide} />);
                   setClickEvent(e);
                   setPMWidthPx(200);

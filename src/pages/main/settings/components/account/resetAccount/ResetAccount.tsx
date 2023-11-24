@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useContext, useState } from 'react';
 import { InlineTxtBtn } from '../../../../../../global/components/lib/button/inlineTextBtn/Style';
 import SuccessMsg from '../../../../../../global/components/lib/font/successMsg/SuccessMsg';
@@ -19,6 +20,7 @@ export default function ResetAccount(): JSX.Element {
    const { toggleModal, setModalContent, setModalHeader, setModalZIndex } =
       useContext(ModalContext);
    const setCurrentAccountInFirestore = CurrentClass.useMutation.setCurrentAccount({});
+   const queryClient = useQueryClient();
 
    const resetAccount = useCustomMutation(
       async (email: string) => {
@@ -44,6 +46,11 @@ export default function ResetAccount(): JSX.Element {
             console.error(apiError);
          },
          onSuccess: async () => {
+            queryClient.invalidateQueries({ queryKey: [microservices.getSavingsAccount.name] });
+            queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
+            queryClient.invalidateQueries({ queryKey: [microservices.getCurrentAccount.name] });
+            queryClient.invalidateQueries({ queryKey: [microservices.getExpenses.name] });
+            queryClient.invalidateQueries({ queryKey: [microservices.getIncomes.name] });
             if (!isPortableDevice) {
                setShowSuccessMsg(true);
                return;

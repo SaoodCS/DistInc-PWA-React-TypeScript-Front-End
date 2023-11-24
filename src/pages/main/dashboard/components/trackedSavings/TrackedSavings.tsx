@@ -1,5 +1,6 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import { CardLoadingPlaceholder } from '../../../../../global/components/lib/dashboardCards/placeholder/CardLoadingPlaceholder';
 import { DonutChartNoDataPlaceholder } from '../../../../../global/components/lib/donutChart/placeholder/NoDataPlaceholder';
 import FetchError from '../../../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
@@ -27,7 +28,6 @@ import SavingsClass, {
 } from '../../../details/components/accounts/savings/class/Class';
 import TrackedSavingsChart from './namespace/TrackedSavingsChart';
 import SelectTrackedSavingsPopupMenu from './selectPopupMenu/SelectTrackedSavingsPopupMenu';
-import { CardLoadingPlaceholder } from '../../../../../global/components/lib/dashboardCards/placeholder/CardLoadingPlaceholder';
 
 export default function TrackedSavings() {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
@@ -68,7 +68,7 @@ export default function TrackedSavings() {
    }, [savingsAcc, selectedSavingsAcc]);
 
    function handleSelectorClick(e: React.MouseEvent<SVGSVGElement, MouseEvent>) {
-      togglePM();
+      togglePM(true);
       setPMContent(<SelectTrackedSavingsPopupMenu />);
       setClickEvent(e);
       setPMHeightPx((trackedSavingsAccounts?.length || 0) * 35);
@@ -94,7 +94,7 @@ export default function TrackedSavings() {
    }
 
    if (isLoading && !isPaused && isPortableDevice) {
-      return <CardLoadingPlaceholder isDarkTheme={isDarkTheme} />
+      return <CardLoadingPlaceholder isDarkTheme={isDarkTheme} />;
    }
    if (isPaused) {
       return (
