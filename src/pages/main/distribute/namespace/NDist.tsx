@@ -111,7 +111,8 @@ export namespace NDist {
          // eslint-disable-next-line @typescript-eslint/no-explicit-any
          const months: { [key: string]: any } = {};
          ['analytics', 'distSteps', 'savingsAccHistory'].forEach((key) => {
-            calcDistData[key as keyof NDist.ISchema].forEach((item: { timestamp: string }) => {
+            const data = calcDistData[key as keyof NDist.ISchema] || [];
+            data.forEach((item: { timestamp: string }) => {
                const monthYear = item.timestamp.slice(3);
                if (!months[monthYear]) {
                   months[monthYear] = { monthYear };

@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
+import { CardLoadingPlaceholder } from '../../../../../global/components/lib/dashboardCards/placeholder/CardLoadingPlaceholder';
 import FetchError from '../../../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import { CurrencyOnCardTxt } from '../../../../../global/components/lib/font/currencyOnCardText/CurrencyOnCardTxt';
@@ -16,7 +17,6 @@ import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscH
 import NumberHelper from '../../../../../global/helpers/dataTypes/number/NumberHelper';
 import NDist from '../../../distribute/namespace/NDist';
 import SavingsChart from './namespace/SavingsChart';
-import { CardLoadingPlaceholder } from '../../../../../global/components/lib/dashboardCards/placeholder/CardLoadingPlaceholder';
 
 export default function TotalSavings(): JSX.Element {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
@@ -57,7 +57,7 @@ export default function TotalSavings(): JSX.Element {
    );
 
    if (isLoading && !isPaused && isPortableDevice) {
-      return <CardLoadingPlaceholder isDarkTheme={isDarkTheme} />
+      return <CardLoadingPlaceholder isDarkTheme={isDarkTheme} />;
    }
    if (isPaused) {
       return (
@@ -74,13 +74,20 @@ export default function TotalSavings(): JSX.Element {
       );
    }
 
+   function handleShowPlaceholder() {
+      const analyticsArr = calcDistData?.analytics;
+      if (!MiscHelper.isNotFalsyOrEmpty(analyticsArr)) return true;
+      if (analyticsArr.length <= 1) return true;
+      return false;
+   }
+
    return (
       <>
          <LineChart
             title="Total Savings"
             options={options}
             data={data}
-            showPlaceholder={!MiscHelper.isNotFalsyOrEmpty(calcDistData?.analytics)}
+            showPlaceholder={handleShowPlaceholder()}
             infoComponentPlacemenet="belowTitle"
             infoComponent={
                <Fragment>
@@ -95,7 +102,10 @@ export default function TotalSavings(): JSX.Element {
                   <FlexRowWrapper justifyContent="start" alignItems="center">
                      <TextColourizer
                         fontSize="0.9em"
-                        color={Color.setRgbOpacity(Color.darkThm.txt, 0.7)}
+                        color={Color.setRgbOpacity(
+                           isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt,
+                           0.8,
+                        )}
                      >
                         {xAxisLabels[xAxisLabels.length - 1]}&nbsp;&nbsp;
                      </TextColourizer>
@@ -109,8 +119,14 @@ export default function TotalSavings(): JSX.Element {
                         fontSize="0.9em"
                         color={
                            latestSavingsPercChange < 0
-                              ? Color.setRgbOpacity(Color.darkThm.error, 0.8)
-                              : Color.setRgbOpacity(Color.darkThm.success, 0.8)
+                              ? Color.setRgbOpacity(
+                                   isDarkTheme ? Color.darkThm.error : Color.lightThm.error,
+                                   0.8,
+                                )
+                              : Color.setRgbOpacity(
+                                   isDarkTheme ? Color.darkThm.success : Color.lightThm.success,
+                                   0.8,
+                                )
                         }
                         padding="0em 0em 0em 0.15em"
                      >

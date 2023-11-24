@@ -58,8 +58,8 @@ export default function ExpenseForm(props: IExpenseForm): JSX.Element {
       input: (typeof ExpensesClass.form.inputs)[0],
    ): IDropDownOption[] | undefined {
       if (!input.isDropDown) return undefined;
-      if (!MiscHelper.isNotFalsyOrEmpty(savingsAccData)) return [];
       if (input.name === 'expenseType') {
+         if (!MiscHelper.isNotFalsyOrEmpty(savingsAccData)) return input.dropDownOptions;
          const dropDownOptions: IDropDownOption[] = [];
          Object.entries(savingsAccData).forEach(([id, savingsAccount]) => {
             dropDownOptions.push({

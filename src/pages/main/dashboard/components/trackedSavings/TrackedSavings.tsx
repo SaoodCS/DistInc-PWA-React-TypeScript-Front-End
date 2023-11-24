@@ -147,7 +147,10 @@ export default function TrackedSavings() {
                            <FlexRowWrapper justifyContent="start" alignItems="center">
                               <TextColourizer
                                  fontSize="0.9em"
-                                 color={Color.setRgbOpacity(Color.darkThm.txt, 0.7)}
+                                 color={Color.setRgbOpacity(
+                                    isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt,
+                                    0.8,
+                                 )}
                               >
                                  Target&nbsp;&nbsp;
                               </TextColourizer>

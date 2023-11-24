@@ -60,7 +60,7 @@ export default function LineChart(props: ILineChart): JSX.Element {
                alignItems="center"
                style={{ textAlign: 'center' }}
             >
-               <TextColourizer color={'darkgrey'}>No Data For a Current Period</TextColourizer>
+               <TextColourizer color={'darkgrey'}>Not Enough Data To Display</TextColourizer>
             </FlexRowWrapper>
          </ConditionalRender>
       </LineChartCardWrapper>

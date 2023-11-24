@@ -121,13 +121,21 @@ export default function SpendingsAnalytics(): JSX.Element {
       );
    }
 
+   function handleShowPlaceholder(): boolean {
+      const analyticsArr = calcDistData?.analytics
+      if (!MiscHelper.isNotFalsyOrEmpty(analyticsArr)) return true;
+      if (analyticsArr.length <= 1) return true;
+      return false;
+      
+   }
+
    return (
       <>
          <LineChart
             title="Spendings"
             options={options}
             data={data}
-            showPlaceholder={!MiscHelper.isNotFalsyOrEmpty(calcDistData?.analytics)}
+            showPlaceholder={handleShowPlaceholder()}
             titleElement={
                <FilterIcon
                   height="1em"
@@ -148,7 +156,7 @@ export default function SpendingsAnalytics(): JSX.Element {
                   <FlexRowWrapper justifyContent="end" alignItems="center">
                      <TextColourizer
                         fontSize="0.9em"
-                        color={Color.setRgbOpacity(Color.darkThm.txt, 0.7)}
+                        color={Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.8)}
                      >
                         {xAxisLabels[xAxisLabels.length - 1]}&nbsp;&nbsp;
                      </TextColourizer>

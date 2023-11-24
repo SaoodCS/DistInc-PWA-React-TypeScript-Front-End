@@ -50,7 +50,7 @@ export default function ProgressBarChart(props: IProgressBarChart) {
 
    return (
       <>
-         {data.map((item, index) => (
+         {data.map((item) => (
             <BarAndInfoWrapper key={item.label}>
                <BarTitle>{item.label}</BarTitle>
                <BarAndPercentageWrapper>
@@ -65,13 +65,13 @@ export default function ProgressBarChart(props: IProgressBarChart) {
                         height={toolTipHeight}
                         content={
                            <FlexColumnWrapper>
-                              <TextColourizer padding="0em 0em 0.5em 0em">
+                              <TextColourizer padding="0em 0em 0.5em 0em" color={Color.darkThm.txt}>
                                  Target: {NumberHelper.asCurrencyStr(item.target)}
                               </TextColourizer>
-                              <TextColourizer padding="0em 0em 0.5em 0em">
+                              <TextColourizer padding="0em 0em 0.5em 0em" color={Color.darkThm.txt}>
                                  Current: {NumberHelper.asCurrencyStr(item.completedAmnt)}
                               </TextColourizer>
-                              <TextColourizer padding="0em 0em 0.5em 0em">
+                              <TextColourizer padding="0em 0em 0.5em 0em" color={Color.darkThm.txt}>
                                  Remaining:
                                  {NumberHelper.asCurrencyStr(
                                     getRemainingAmount(item.completedAmnt, item.target),
@@ -91,7 +91,10 @@ export default function ProgressBarChart(props: IProgressBarChart) {
                   </BarBackground>
 
                   <TextColourizer
-                     color={Color.setRgbOpacity(Color.darkThm.txt, 0.7)}
+                     color={Color.setRgbOpacity(
+                        isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt,
+                        0.8,
+                     )}
                      fontSize="0.9em"
                      padding="0em 0em 0em 0.75em"
                   >

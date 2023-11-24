@@ -66,7 +66,7 @@ export default function TotalIncome(): JSX.Element {
                   isDarkTheme={isDarkTheme}
                   color={Color.setRgbOpacity(
                      isDarkTheme ? Color.darkThm.success : Color.lightThm.success,
-                     0.7,
+                     0.8,
                   )}
                >
                   {NumberHelper.asCurrencyStr(latestTotalIncome, true)}

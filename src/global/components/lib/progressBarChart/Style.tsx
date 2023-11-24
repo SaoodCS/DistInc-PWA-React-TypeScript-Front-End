@@ -39,9 +39,9 @@ export const CompletedBar = styled.div<{
          ? `linear-gradient(90deg, ${'rgba(0,0,0,0)'} -50%, ${Color.darkThm.success} ${
               100 - completedPercentage + 100
            }%)`
-         : `linear-gradient(90deg, ${'rgba(0,0,0,0)'} 0%, ${Color.lightThm.success} ${
+         : `linear-gradient(90deg, ${'rgba(0,0,0,0)'} -50%, ${Color.lightThm.success} ${
               100 - completedPercentage + 100
-           }%`};
+           }%)`};
 
    border-top-right-radius: 10px;
    border-bottom-right-radius: 10px;

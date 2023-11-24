@@ -37,4 +37,14 @@ export const NavBarHeading = styled.button<{ isActive: boolean; isDarkTheme: boo
    transition: border-bottom 0.2s ease-in-out;
    box-sizing: border-box;
    cursor: pointer;
+
+   ${({ isDarkTheme }) => {
+      const changeToColor = Color.setRgbOpacity(
+         isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt,
+         0.7,
+      );
+      const desktop = MyCSS.Clickables.desktop.changeColorOnHover(changeToColor, 'color');
+      const mobile = MyCSS.Clickables.portable.changeColorOnClick(changeToColor, 'color', 'revert');
+      return MyCSS.Helper.concatStyles(desktop, mobile);
+   }}
 `;

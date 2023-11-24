@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
    CardListTitle,
    CardListWrapper,
@@ -32,6 +32,7 @@ import MonthPopupMenu from '../monthPopupMenu/MonthPopupMenu';
 
 export default function HistorySlide(): JSX.Element {
    const [filterOutState] = useURLState({ key: NDist.Filterer.key });
+   const [sortedData, setSortedData] = useState<NDist.ISchemaByMonth[]>();
    const { isDarkTheme, isPortableDevice } = useThemeContext();
    const {
       containerRef: scrollSaverRef,
@@ -56,15 +57,16 @@ export default function HistorySlide(): JSX.Element {
       refetch,
    } = NDist.API.useQuery.getCalcDist();
 
+   useEffect(() => {
+      if (MiscHelper.isNotFalsyOrEmpty<NDist.ISchema>(calcDistData)) {
+         const groupedByMonth = NDist.Data.groupByMonth(calcDistData);
+         groupedByMonth.reverse();
+         setSortedData(groupedByMonth);
+      }
+   }, [calcDistData]);
+
    async function handleOnRefresh(): Promise<void> {
       await refetch();
-   }
-
-   function sortData(): NDist.ISchemaByMonth[] | undefined {
-      if (!MiscHelper.isNotFalsyOrEmpty<NDist.ISchema>(calcDistData)) return;
-      const groupedByMonth = NDist.Data.groupByMonth(calcDistData);
-      groupedByMonth.reverse();
-      return groupedByMonth;
    }
 
    function handleMenuDotsClick(
@@ -114,7 +116,7 @@ export default function HistorySlide(): JSX.Element {
                style={{ ...scrollSaverStyle, height: '100%' }}
                onScroll={handleOnScroll}
             >
-               {sortData()?.map((monthObj) => (
+               {sortedData?.map((monthObj) => (
                   <CardListWrapper key={monthObj.monthYear}>
                      <CardListTitle>
                         <TextColourizer padding={'0 0.5em 0 0'}>

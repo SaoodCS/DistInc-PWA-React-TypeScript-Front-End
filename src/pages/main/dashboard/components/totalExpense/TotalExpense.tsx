@@ -65,7 +65,7 @@ export default function TotalExpense(): JSX.Element {
                   isDarkTheme={isDarkTheme}
                   color={Color.setRgbOpacity(
                      isDarkTheme ? Color.darkThm.error : Color.lightThm.error,
-                     0.7,
+                     0.8,
                   )}
                >
                   -{NumberHelper.asCurrencyStr(latestTotalExpense, true)}

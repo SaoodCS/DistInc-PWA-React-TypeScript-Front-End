@@ -46,6 +46,12 @@ export const ModalCloseButton = styled(Close)`
    height: 1.25em;
    cursor: pointer;
    font-weight: 1000;
+   border-radius: 50%;
+   &:active {
+      background-color: ${Color.lightThm.border};
+      background-position: center;
+      transition: background 0.05s;
+   }
 `;
 
 export const ModalFooterWrapper = styled.div`
