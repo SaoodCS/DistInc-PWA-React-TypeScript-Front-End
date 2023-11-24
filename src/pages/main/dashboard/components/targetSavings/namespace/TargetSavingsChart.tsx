@@ -1,9 +1,9 @@
-import {
+import type {
    IProgressBarChartData,
    IProgressBarTooltipOptions,
 } from '../../../../../../global/components/lib/progressBarChart/ProgressBarChart';
 import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
-import { ISavingsFormInputs } from '../../../../details/components/accounts/savings/class/Class';
+import type { ISavingsFormInputs } from '../../../../details/components/accounts/savings/class/Class';
 
 export namespace TargetSavingsChart {
    export const toolTipOptions: IProgressBarTooltipOptions = {
@@ -25,7 +25,9 @@ export namespace TargetSavingsChart {
       return savingsAccChartData;
    }
 
-   export function getSavingsAccWithSetTarget(savingsAccAsArr: ISavingsFormInputs[]) {
+   export function getSavingsAccWithSetTarget(
+      savingsAccAsArr: ISavingsFormInputs[],
+   ): ISavingsFormInputs[] {
       return ArrayOfObjects.filterOut(savingsAccAsArr, 'targetToReach', 0);
    }
 }

@@ -6,9 +6,8 @@ import { TextColourizer } from '../../../../../global/components/lib/font/textCo
 import { FlexCenterer } from '../../../../../global/components/lib/positionModifiers/centerers/FlexCenterer';
 import { FlexColumnWrapper } from '../../../../../global/components/lib/positionModifiers/flexColumnWrapper/FlexColumnWrapper';
 import { FlexRowWrapper } from '../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
-import ProgressBarChart, {
-   IProgressBarChartData,
-} from '../../../../../global/components/lib/progressBarChart/ProgressBarChart';
+import type { IProgressBarChartData } from '../../../../../global/components/lib/progressBarChart/ProgressBarChart';
+import ProgressBarChart from '../../../../../global/components/lib/progressBarChart/ProgressBarChart';
 import { BarChartNoDataPlaceholder } from '../../../../../global/components/lib/progressBarChart/placeholder/NoDataPlaceholder';
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
@@ -17,7 +16,7 @@ import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObj
 import SavingsClass from '../../../details/components/accounts/savings/class/Class';
 import TargetSavingsChart from './namespace/TargetSavingsChart';
 
-export default function TargetSavings() {
+export default function TargetSavings(): JSX.Element {
    const {
       data: savingsAccounts,
       isLoading,

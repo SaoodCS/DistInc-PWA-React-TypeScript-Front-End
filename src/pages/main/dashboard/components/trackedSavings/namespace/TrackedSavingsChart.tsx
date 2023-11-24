@@ -1,6 +1,6 @@
 import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import MiscHelper from '../../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
-import { ISavingsFormInputs } from '../../../../details/components/accounts/savings/class/Class';
+import type { ISavingsFormInputs } from '../../../../details/components/accounts/savings/class/Class';
 
 export namespace TrackedSavingsChart {
    export const currentlySelectedKey = 'displayedSavingsAcc';

@@ -52,7 +52,6 @@ export const CardHolder = styled.div`
       height: 27em;
    }
 
-
    @media (min-width: 1100px) {
       width: 28em;
       height: 28em;

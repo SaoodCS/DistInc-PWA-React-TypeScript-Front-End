@@ -1,6 +1,4 @@
-
 import styled from 'styled-components';
-
 
 export const ChartInfoRight = styled.div`
    position: absolute;
@@ -35,7 +33,7 @@ export const LineChartCardWrapper = styled.div`
    display: flex;
    position: relative;
    flex-direction: column;
-   height:100%;
+   height: 100%;
    width: 100%;
    justify-content: space-between;
 `;

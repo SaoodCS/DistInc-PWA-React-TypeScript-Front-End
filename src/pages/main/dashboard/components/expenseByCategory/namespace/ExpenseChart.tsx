@@ -1,5 +1,5 @@
 import Color from '../../../../../../global/css/colors';
-import { IExpenseFormInputs } from '../../../../details/components/expense/class/ExpensesClass';
+import type { IExpenseFormInputs } from '../../../../details/components/expense/class/ExpensesClass';
 
 export namespace ExpenseChart {
    export const borderWidth = 1.5;
@@ -24,7 +24,8 @@ export namespace ExpenseChart {
       ];
    }
 
-   export function getTypesAndSumValues(expenses: IExpenseFormInputs[]) {
+   type IGetTypesAndSumValues = { expenseTypes: string[]; expenseValues: number[] };
+   export function getTypesAndSumValues(expenses: IExpenseFormInputs[]): IGetTypesAndSumValues {
       const expenseMap: Record<string, number> = {};
       expenses.forEach((expense) => {
          const type = expense.expenseType.includes('Savings Transfer')

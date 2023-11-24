@@ -1,5 +1,5 @@
-import { ChartData, ChartOptions } from 'chart.js';
-import { _DeepPartialObject } from 'chart.js/dist/types/utils';
+import type { ChartData, ChartOptions } from 'chart.js';
+import type { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { Doughnut } from 'react-chartjs-2';
 import useThemeContext from '../../../context/theme/hooks/useThemeContext';
 import { TextColourizer } from '../font/textColorizer/TextColourizer';
@@ -22,7 +22,7 @@ interface IDonutChart {
    showPlaceholder: boolean;
 }
 
-export default function DonutChart(props: IDonutChart) {
+export default function DonutChart(props: IDonutChart): JSX.Element {
    const { options, data, title, showPlaceholder } = props;
    const { isDarkTheme } = useThemeContext();
    const backgroundColors = data.datasets![0].backgroundColor! as string[];

@@ -3,7 +3,8 @@ import Color from '../../../css/colors';
 import NumberHelper from '../../../helpers/dataTypes/number/NumberHelper';
 import { TextColourizer } from '../font/textColorizer/TextColourizer';
 import { FlexColumnWrapper } from '../positionModifiers/flexColumnWrapper/FlexColumnWrapper';
-import Tooltip, { ITooltipPositioning } from '../tooltip/Tooltip';
+import type { ITooltipPositioning } from '../tooltip/Tooltip';
+import Tooltip from '../tooltip/Tooltip';
 import {
    BarAndInfoWrapper,
    BarAndPercentageWrapper,
@@ -31,7 +32,7 @@ interface IProgressBarChart {
    barHeight?: string;
 }
 
-export default function ProgressBarChart(props: IProgressBarChart) {
+export default function ProgressBarChart(props: IProgressBarChart): JSX.Element {
    const { data, tooltipOptions, barHeight, barWidth } = props;
    const {
       positioning: toolTipPos,
@@ -40,11 +41,11 @@ export default function ProgressBarChart(props: IProgressBarChart) {
    } = tooltipOptions || {};
    const { isDarkTheme } = useThemeContext();
 
-   function getCompletedPercentage(completedAmnt: number, target: number) {
+   function getCompletedPercentage(completedAmnt: number, target: number): number {
       return NumberHelper.calcPercentage(completedAmnt, target, true);
    }
 
-   function getRemainingAmount(completed: number, target: number) {
+   function getRemainingAmount(completed: number, target: number): number {
       return target - completed;
    }
 

@@ -10,12 +10,11 @@ import useThemeContext from '../../../../../../global/context/theme/hooks/useThe
 import MiscHelper from '../../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import useURLState from '../../../../../../global/hooks/useURLState';
-import SavingsClass, {
-   ISavingsFormInputs,
-} from '../../../../details/components/accounts/savings/class/Class';
+import type { ISavingsFormInputs } from '../../../../details/components/accounts/savings/class/Class';
+import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
 import TrackedSavingsChart from '../namespace/TrackedSavingsChart';
 
-export default function SelectTrackedSavingsPopupMenu() {
+export default function SelectTrackedSavingsPopupMenu(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const { data: savingsAcc } = SavingsClass.useQuery.getSavingsAccounts();
    const [selectedSavingsAcc, setSelectedSavingsAcc] = useURLState({
@@ -30,7 +29,7 @@ export default function SelectTrackedSavingsPopupMenu() {
       }
    }, [savingsAcc]);
 
-   function changeSelectedSavingsAcc(savingsAccName: string) {
+   function changeSelectedSavingsAcc(savingsAccName: string): void {
       setSelectedSavingsAcc(savingsAccName);
    }
 

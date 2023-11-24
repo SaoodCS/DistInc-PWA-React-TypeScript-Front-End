@@ -3,7 +3,7 @@ import Color from '../../../../../../global/css/colors';
 import ArrayHelper from '../../../../../../global/helpers/dataTypes/arrayHelper/ArrayHelper';
 import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
-import NDist from '../../../../distribute/namespace/NDist';
+import type NDist from '../../../../distribute/namespace/NDist';
 
 export namespace SavingsChart {
    interface ITotalSavingsLine {

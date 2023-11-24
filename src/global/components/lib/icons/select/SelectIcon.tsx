@@ -4,7 +4,11 @@ import MyCSS from '../../../../css/MyCSS';
 import Color from '../../../../css/colors';
 import BoolHelper from '../../../../helpers/dataTypes/bool/BoolHelper';
 
-export const SelectIcon = styled(MultiSelect)<{ darktheme: 'true' | 'false'; zindex?: string, padding?: string }>`
+export const SelectIcon = styled(MultiSelect)<{
+   darktheme: 'true' | 'false';
+   zindex?: string;
+   padding?: string;
+}>`
    ${MyCSS.Clickables.removeDefaultEffects};
    cursor: pointer;
    color: ${({ darktheme }) =>

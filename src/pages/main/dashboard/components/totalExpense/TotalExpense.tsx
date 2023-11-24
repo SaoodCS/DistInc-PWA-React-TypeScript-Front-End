@@ -29,7 +29,7 @@ export default function TotalExpense(): JSX.Element {
    }, [calcDistData]);
 
    if (isLoading && !isPaused && isPortableDevice) {
-      return <CardLoadingPlaceholder isDarkTheme={isDarkTheme} />
+      return <CardLoadingPlaceholder isDarkTheme={isDarkTheme} />;
    }
    if (isPaused) {
       return (

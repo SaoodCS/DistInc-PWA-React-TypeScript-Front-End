@@ -1,4 +1,3 @@
-import { _DeepPartialObject } from 'chart.js/dist/types/utils';
 import { useEffect, useState } from 'react';
 import DonutChart from '../../../../../global/components/lib/donutChart/DonutChart';
 import DonutChartHelper from '../../../../../global/components/lib/donutChart/namespace/DonutChartHelper';
@@ -12,7 +11,7 @@ import ExpensesClass from '../../../details/components/expense/class/ExpensesCla
 import ExpenseChart from './namespace/ExpenseChart';
 import { CardLoadingPlaceholder } from '../../../../../global/components/lib/dashboardCards/placeholder/CardLoadingPlaceholder';
 
-export default function ExpenseByCategory() {
+export default function ExpenseByCategory(): JSX.Element {
    const { data: expenseData, isLoading, isPaused, error } = ExpensesClass.useQuery.getExpenses();
    const [donutChartLabels, setDonutChartLabels] = useState<string[]>([]);
    const [donutChartData, setDonutChartData] = useState<number[]>([]);

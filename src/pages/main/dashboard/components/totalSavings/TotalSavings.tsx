@@ -74,7 +74,7 @@ export default function TotalSavings(): JSX.Element {
       );
    }
 
-   function handleShowPlaceholder() {
+   function handleShowPlaceholder(): boolean {
       const analyticsArr = calcDistData?.analytics;
       if (!MiscHelper.isNotFalsyOrEmpty(analyticsArr)) return true;
       if (analyticsArr.length <= 1) return true;

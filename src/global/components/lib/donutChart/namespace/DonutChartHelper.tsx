@@ -1,5 +1,5 @@
-import { ChartData, ChartOptions } from 'chart.js';
-import { _DeepPartialObject } from 'chart.js/dist/types/utils';
+import type { ChartData, ChartOptions } from 'chart.js';
+import type { _DeepPartialObject } from 'chart.js/dist/types/utils';
 
 export namespace DonutChartHelper {
    export interface IDonutChartConfig {

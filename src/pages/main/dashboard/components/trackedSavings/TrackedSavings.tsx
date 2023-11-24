@@ -23,13 +23,12 @@ import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscH
 import NumberHelper from '../../../../../global/helpers/dataTypes/number/NumberHelper';
 import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import useURLState from '../../../../../global/hooks/useURLState';
-import SavingsClass, {
-   ISavingsFormInputs,
-} from '../../../details/components/accounts/savings/class/Class';
+import type { ISavingsFormInputs } from '../../../details/components/accounts/savings/class/Class';
+import SavingsClass from '../../../details/components/accounts/savings/class/Class';
 import TrackedSavingsChart from './namespace/TrackedSavingsChart';
 import SelectTrackedSavingsPopupMenu from './selectPopupMenu/SelectTrackedSavingsPopupMenu';
 
-export default function TrackedSavings() {
+export default function TrackedSavings(): JSX.Element {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
    const {
       data: savingsAcc,
@@ -67,7 +66,7 @@ export default function TrackedSavings() {
       }
    }, [savingsAcc, selectedSavingsAcc]);
 
-   function handleSelectorClick(e: React.MouseEvent<SVGSVGElement, MouseEvent>) {
+   function handleSelectorClick(e: React.MouseEvent<SVGSVGElement, MouseEvent>): void {
       togglePM(true);
       setPMContent(<SelectTrackedSavingsPopupMenu />);
       setClickEvent(e);
@@ -76,14 +75,14 @@ export default function TrackedSavings() {
       setCloseOnInnerClick(false);
    }
 
-   function calculatePercentage() {
+   function calculatePercentage(): number {
       const selectedAccBalance = selectedSavingsAccData?.currentBalance || 0;
       const selectedAccTarget = selectedSavingsAccData?.targetToReach || 0;
       if (selectedAccTarget === 0) return 0;
       return NumberHelper.calcPercentage(selectedAccBalance, selectedAccTarget, true);
    }
 
-   function progressChartColor() {
+   function progressChartColor(): string {
       if (calculatePercentage() < 100) {
          return Color.setRgbOpacity(
             isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning,

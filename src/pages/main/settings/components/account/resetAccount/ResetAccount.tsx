@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { useQueryClient } from '@tanstack/react-query';
 import { useContext, useState } from 'react';
 import { InlineTxtBtn } from '../../../../../../global/components/lib/button/inlineTextBtn/Style';

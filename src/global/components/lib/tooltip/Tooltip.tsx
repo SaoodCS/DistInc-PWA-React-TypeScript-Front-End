@@ -17,7 +17,7 @@ interface IToolTip {
    positioning?: ITooltipPositioning;
 }
 
-export default function Tooltip(props: IToolTip) {
+export default function Tooltip(props: IToolTip): JSX.Element {
    const { children, content, width, height } = props;
    const { isDarkTheme } = useThemeContext();
 
