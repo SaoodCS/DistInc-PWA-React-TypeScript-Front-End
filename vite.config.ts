@@ -7,21 +7,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 const oneDayInSeconds = 86400;
 
-// This configuration is used so that you can run the app locally with https and a trusted SSL certificate. This is needed so that you can:
-// 1. develop and test browser caching locally
-// 2. test FCM notifications locally
-// - at the moment the mkcert certificate is available till Feb 2026
-
-// To generate an SSL certificate using mkcert:
-// 1. install mkcert by running 'choco install mkcert' in terminal
-// 2. run 'mkcert -install' in terminal
-// 3. run 'mkdir .cert' in terminal in the root of the project
-// 4. run 'mkcert -key-file .\.cert\key.pem -cert-file .\.cert\cert.pem localhost' in terminal in the root of the project
-
-// TODO: may have to consider disabling this in the production version of the app
-// TODO: check if this would work on localnet 192... ip address
-// TODO: write a guide on how to generate a certificate (as I've git ignored .cert folder)
-
+// Local https ssl certificate is valid till Feb 2026:
 const localHttpsServerConfig: ServerOptions = {
    https: {
       key: fs.readFileSync('./.cert/key.pem'),
@@ -94,3 +80,17 @@ export default defineConfig({
       setupFiles: ['./src/setupTests.ts'],
    },
 });
+
+// --- LOCAL HTTPS SERVER CONFIG --- //
+// The localHttpsServerConfig is used so that you can run the app locally with https and a trusted SSL certificate. This is needed so that you can:
+// - Develop and test browser caching locally
+// - Test FCM notifications locally
+
+// How to generate an SSL certificate using mkcert:
+// 1. install mkcert by running 'choco install mkcert' in terminal (if not already installed)
+// 2. run 'mkcert -install' in terminal (if not already installed)
+// 3. delete the .cert file in the root of the project (if it exists)
+// 4. run 'mkdir .cert' in terminal in the root of the project
+// 5. run 'mkcert -key-file .\.cert\key.pem -cert-file .\.cert\cert.pem localhost 192.168.1.80' in terminal in the root of the project (this generates a certificate for localhost and your local IP address (so is setup to only work locally which is what we want))
+// 6. Note down when the certificate in available till above the localHttpsServerConfig const (in this case it's Feb 2026)
+// --- When the certificate expires, run steps 3 and 4 again to generate a new certificate
