@@ -7,6 +7,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 const oneDayInSeconds = 86400;
 
+// Install the app's local https url as a PWA in order to test/develop FCM notifications on iPhone devices
 const localHttpsForTestingFCM = {
    server: {
       https: true,

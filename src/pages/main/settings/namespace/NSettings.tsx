@@ -53,6 +53,7 @@ export namespace NSettings {
       currentSlide: `${storageKeyPrefix}.currentSlide`,
       slide2: `${storageKeyPrefix}.slide2`,
       accountSlide: `${storageKeyPrefix}.accountSlide`,
+      notifSlide: `${storageKeyPrefix}.notifSlide`,
    };
 }
 
