@@ -31,7 +31,6 @@
 	"dependencies": {
 		"@tanstack/react-query": "^4.33.0",
 		"@tanstack/react-query-devtools": "^4.33.0",
-		"@vitejs/plugin-basic-ssl": "^1.0.1",
 		"@zendeskgarden/react-accordions": "^8.73.2",
 		"chart.js": "^4.4.0",
 		"firebase": "^10.3.0",
@@ -75,7 +74,6 @@
 		"pwa-asset-generator": "^6.3.1",
 		"typescript": "^5.0.2",
 		"vite": "^4.3.9",
-		"vite-plugin-mkcert": "^1.16.0",
 		"vite-plugin-pwa": "^0.16.4"
 	}
 }

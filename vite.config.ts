@@ -1,24 +1,37 @@
 /// <reference types="vitest" />
 /// <reference types="vite/client" />
-import basicSsl from '@vitejs/plugin-basic-ssl';
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
+import fs from 'fs';
+import { ServerOptions, defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 const oneDayInSeconds = 86400;
 
-// Install the app's local https url as a PWA in order to test/develop FCM notifications on iPhone devices
-const localHttpsForTestingFCM = {
-   server: {
-      https: true,
+// This configuration is used so that you can run the app locally with https and a trusted SSL certificate. This is needed so that you can:
+// 1. develop and test browser caching locally
+// 2. test FCM notifications locally
+// - at the moment the mkcert certificate is available till Feb 2026
+
+// To generate an SSL certificate using mkcert:
+// 1. install mkcert by running 'choco install mkcert' in terminal
+// 2. run 'mkcert -install' in terminal
+// 3. run 'mkdir .cert' in terminal in the root of the project
+// 4. run 'mkcert -key-file .\.cert\key.pem -cert-file .\.cert\cert.pem localhost' in terminal in the root of the project
+
+// TODO: may have to consider disabling this in the production version of the app
+// TODO: check if this would work on localnet 192... ip address
+// TODO: write a guide on how to generate a certificate (as I've git ignored .cert folder)
+
+const localHttpsServerConfig: ServerOptions = {
+   https: {
+      key: fs.readFileSync('./.cert/key.pem'),
+      cert: fs.readFileSync('./.cert/cert.pem'),
    },
-   sslPlugin: basicSsl(),
 };
 
 export default defineConfig({
-   server: localHttpsForTestingFCM.server,
+   server: localHttpsServerConfig,
    plugins: [
-      localHttpsForTestingFCM.sslPlugin,
       react(),
       VitePWA({
          registerType: 'autoUpdate',

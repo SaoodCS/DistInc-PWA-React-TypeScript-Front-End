@@ -10,11 +10,11 @@ import {
 } from '../../../../../global/components/lib/menuList/Style';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
+import { getCloudMsgRegToken } from '../../../../../global/firebase/config/config';
 import useLocalStorage from '../../../../../global/hooks/useLocalStorage';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useSessionStorage from '../../../../../global/hooks/useSessionStorage';
 import NSettings from '../../namespace/NSettings';
-import { getCloudMsgRegToken } from '../../../../../global/firebase/config/config';
 
 export default function NotificationsSlide(): JSX.Element {
    const [settingsCarousel] = useSessionStorage(NSettings.key.currentSlide, 1);
@@ -39,12 +39,12 @@ export default function NotificationsSlide(): JSX.Element {
    useEffect(() => {
       Notification.requestPermission().then((permission) => {
          setNotifPermission(permission);
-         if (requestedNotifPermission === false) {
-            setRequestedNotifPermission(true);
-            // Run the cloud messaging function here that creates a token and stores it in firestore / deletes the old one if it exists and updates it to the new one in firestore
-            if (permission === 'granted') {
-               getCloudMsgRegToken();
-            }
+         //if (requestedNotifPermission === false) {
+         setRequestedNotifPermission(true);
+         // Run the cloud messaging function here that creates a token and stores it in firestore / deletes the old one if it exists and updates it to the new one in firestore
+         if (permission === 'granted') {
+            getCloudMsgRegToken();
+            //}
          }
       });
    }, []);
