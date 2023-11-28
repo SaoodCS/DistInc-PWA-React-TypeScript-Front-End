@@ -89,7 +89,7 @@ export namespace APIHelper {
          );
       }
       if (los >= 1) {
-         const idToken = await auth.currentUser?.getIdToken(true);
+         const idToken = await auth.currentUser?.getIdToken();
          if (!idToken) throw new ErrorThrower('Unauthorized');
          headers.append('Authorization', `Bearer ${idToken}`);
       }

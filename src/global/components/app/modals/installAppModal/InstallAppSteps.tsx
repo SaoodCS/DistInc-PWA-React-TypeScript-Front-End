@@ -30,7 +30,7 @@ export default function InstallAppSteps(): JSX.Element {
 
    return (
       <>
-         <ConditionalRender condition={Device.isIphone}>
+         <ConditionalRender condition={Device.isIphone()}>
             {iPhoneInstallSteps.map((step, index) => (
                <Fragment key={step}>
                   <TextColourizer color={Color.darkThm.accent}>
@@ -41,7 +41,7 @@ export default function InstallAppSteps(): JSX.Element {
                </Fragment>
             ))}
          </ConditionalRender>
-         <ConditionalRender condition={Device.isAndroid}>
+         <ConditionalRender condition={Device.isAndroid()}>
             {androidInstallSteps.map((step, index) => (
                <Fragment key={step}>
                   <TextColourizer color={Color.darkThm.accent}>
@@ -52,7 +52,7 @@ export default function InstallAppSteps(): JSX.Element {
                </Fragment>
             ))}
          </ConditionalRender>
-         <ConditionalRender condition={Device.isDesktop}>
+         <ConditionalRender condition={Device.isDesktop()}>
             {desktopInstallSteps.map((step, index) => (
                <Fragment key={step}>
                   <TextColourizer color={Color.darkThm.accent}>

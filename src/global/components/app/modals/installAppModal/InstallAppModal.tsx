@@ -17,7 +17,7 @@ export default function InstallAppModal(): JSX.Element {
    return (
       <>
          <Modal
-            isOpen={!Device.hasInstalledApp && !installationRequested}
+            isOpen={!Device.hasInstalledApp() && !installationRequested}
             onClose={() => toggleClose()}
             header="Installation"
          >

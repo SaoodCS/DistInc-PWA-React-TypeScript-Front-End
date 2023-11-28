@@ -64,7 +64,7 @@ export default function Settings(): JSX.Element {
 
    async function handleItemClick(item: NSettings.ISettingsOptions): Promise<void> {
       if (item.hasSlide) {
-         if (item.name === 'Notifications' && !Device.hasPushNotifSupport) {
+         if (item.name === 'Notifications' && !Device.hasPushNotifSupport()) {
             setModalHeader('Notifications');
             setModalContent(
                <>

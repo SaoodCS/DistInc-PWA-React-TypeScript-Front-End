@@ -18,9 +18,11 @@ import PullToRefresh from '../../../../../global/components/lib/pullToRefresh/Pu
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { PopupMenuContext } from '../../../../../global/context/widget/popupMenu/PopupMenuContext';
+import { ToastContext } from '../../../../../global/context/widget/toast/ToastContext';
 import BoolHelper from '../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import DateHelper from '../../../../../global/helpers/dataTypes/date/DateHelper';
 import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
+import Device from '../../../../../global/helpers/pwa/deviceHelper';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useURLState from '../../../../../global/hooks/useURLState';
 import NDist from '../../namespace/NDist';
@@ -50,6 +52,16 @@ export default function HistorySlide(): JSX.Element {
    } = useContext(PopupMenuContext);
 
    const {
+      setHorizontalPos,
+      setToastMessage,
+      setToastZIndex,
+      setVerticalPos,
+      setWidth,
+      toastZIndex,
+      toggleToast,
+   } = useContext(ToastContext);
+
+   const {
       data: calcDistData,
       isLoading,
       isPaused,
@@ -66,6 +78,15 @@ export default function HistorySlide(): JSX.Element {
    }, [calcDistData]);
 
    async function handleOnRefresh(): Promise<void> {
+      if (!Device.isOnline()) {
+         setToastMessage('No network connection.');
+         setWidth('70%');
+         setVerticalPos('bottom');
+         setHorizontalPos('center');
+         setToastZIndex(1);
+         toggleToast();
+         return;
+      }
       await refetch();
    }
 
