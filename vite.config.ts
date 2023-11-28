@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => {
    const localUrlPattern = /^https?.*/;
    const deployedUrlPattern = /^https?:\/\/[^\/]+\/apiGateway\/gatewayRequestGet\?.+$/;
    const urlPattern = isRunningLocally ? localUrlPattern : deployedUrlPattern;
-   const server = (): ServerOptions => {
+   const server = (): ServerOptions | undefined => {
       if (isRunningLocally) {
          return {
             https: {
