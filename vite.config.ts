@@ -9,22 +9,27 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 const oneDayInSeconds = 86400;
 
-// Local https ssl certificate is valid till Feb 2026:
-const localHttpsServerConfig: ServerOptions = {
-   https: {
-      key: fs.readFileSync('./.cert/key.pem'),
-      cert: fs.readFileSync('./.cert/cert.pem'),
-   },
-};
-
 export default defineConfig(({ mode }) => {
    const env = loadEnv(mode, process.cwd(), '');
    const runningVar = env.VITE_RUNNING as 'locally' | 'deployed';
+   const isRunningLocally = runningVar === 'locally';
    const localUrlPattern = /^https?.*/;
    const deployedUrlPattern = /^https?:\/\/[^\/]+\/apiGateway\/gatewayRequestGet\?.+$/;
-   const urlPattern = runningVar === 'locally' ? localUrlPattern : deployedUrlPattern;
+   const urlPattern = isRunningLocally ? localUrlPattern : deployedUrlPattern;
+   const server = (): ServerOptions => {
+      if (isRunningLocally) {
+         return {
+            https: {
+               key: fs.readFileSync('./.cert/key.pem'),
+               cert: fs.readFileSync('./.cert/cert.pem'),
+            },
+         };
+      }
+      return undefined;
+   };
+
    return {
-      server: localHttpsServerConfig,
+      server: server(),
       plugins: [
          react(),
          VitePWA({
