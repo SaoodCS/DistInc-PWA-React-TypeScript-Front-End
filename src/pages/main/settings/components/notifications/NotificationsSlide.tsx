@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { Power } from '@styled-icons/fluentui-system-filled/Power';
 import { useContext, useEffect, useState } from 'react';
 import { Switcher } from '../../../../../global/components/lib/button/switch/Style';
@@ -49,7 +50,7 @@ export default function NotificationsSlide(): JSX.Element {
       });
    }, []);
 
-   function toggleNotifPermission() {
+   function toggleNotifPermission(): void {
       setModalHeader('Notification Settings');
       setModalContent(
          <>

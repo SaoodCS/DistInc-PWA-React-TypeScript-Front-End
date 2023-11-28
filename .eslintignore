@@ -3,4 +3,5 @@ dist/*
 dev-dist/*
 public/*
 src/global/firebase/sw
+src/global/config/script/setRunningEnv.js
 pwa-assets.config.ts

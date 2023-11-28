@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import useThemeContext from '../../../context/theme/hooks/useThemeContext';
 import Fader from '../animation/fader/Fader';
 import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalRender';
-import { ToastContainer } from './Style';
+import { StyledToast, ToastContainer } from './Style';
 
 export type TVerticalPos = 'top' | 'bottom';
 export type THorizontalPos = 'left' | 'center' | 'right';
@@ -45,13 +45,13 @@ export default function Toast(props: IToast): JSX.Element {
          <ConditionalRender condition={isVisible}>
             <Fader fadeInCondition={renderToast}>
                <ToastContainer
-                  isDarkTheme={isDarkTheme}
                   verticalPos={verticalPos || 'bottom'}
                   horizontalPos={horizontalPos || 'left'}
-                  width={width || 'auto'}
                   zIndex={zIndex || undefined}
                >
-                  {message}
+                  <StyledToast isDarkTheme={isDarkTheme} width={width || 'auto'}>
+                     {message}
+                  </StyledToast>
                </ToastContainer>
             </Fader>
          </ConditionalRender>

@@ -57,7 +57,6 @@ export default function HistorySlide(): JSX.Element {
       setToastZIndex,
       setVerticalPos,
       setWidth,
-      toastZIndex,
       toggleToast,
    } = useContext(ToastContext);
 
@@ -76,19 +75,6 @@ export default function HistorySlide(): JSX.Element {
          setSortedData(groupedByMonth);
       }
    }, [calcDistData]);
-
-   async function handleOnRefresh(): Promise<void> {
-      if (!Device.isOnline()) {
-         setToastMessage('No network connection.');
-         setWidth('70%');
-         setVerticalPos('bottom');
-         setHorizontalPos('center');
-         setToastZIndex(1);
-         toggleToast();
-         return;
-      }
-      await refetch();
-   }
 
    function handleMenuDotsClick(
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
@@ -109,6 +95,19 @@ export default function HistorySlide(): JSX.Element {
       setPMHeightPx(100);
       setPMWidthPx(200);
       setCloseOnInnerClick(false);
+   }
+
+   async function handleOnRefresh(): Promise<void> {
+      if (!Device.isOnline()) {
+         setToastMessage('No network connection.');
+         setWidth('auto');
+         setVerticalPos('bottom');
+         setHorizontalPos('center');
+         setToastZIndex(1);
+         toggleToast();
+         return;
+      }
+      await refetch();
    }
 
    if (isLoading && !isPaused) {

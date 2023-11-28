@@ -18,12 +18,14 @@ import ConditionalRender from '../../../../../../global/components/lib/renderMod
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import { ModalContext } from '../../../../../../global/context/widget/modal/ModalContext';
+import { ToastContext } from '../../../../../../global/context/widget/toast/ToastContext';
 import Color from '../../../../../../global/css/colors';
 import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import JSXHelper from '../../../../../../global/helpers/dataTypes/jsx/jsxHelper';
 import MiscHelper from '../../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
+import Device from '../../../../../../global/helpers/pwa/deviceHelper';
 import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
 import useURLState from '../../../../../../global/hooks/useURLState';
 import { NDetails } from '../../../namespace/NDetails';
@@ -42,17 +44,20 @@ export default function IncomeSlide(): JSX.Element {
    );
    const { toggleModal, setModalContent, setModalZIndex, setModalHeader } =
       useContext(ModalContext);
+   const {
+      setHorizontalPos,
+      setToastMessage,
+      setToastZIndex,
+      setVerticalPos,
+      setWidth,
+      toggleToast,
+   } = useContext(ToastContext);
+
    const { isLoading, error, isPaused, refetch, data } = IncomeClass.useQuery.getIncomes({
       onSettled: () => {
          isPortableDevice ? toggleBottomPanel(false) : toggleModal(false);
       },
    });
-   if (isLoading && !isPaused) {
-      if (!isPortableDevice) return <Loader isDisplayed />;
-      return <FlatListWrapper>{JSXHelper.repeatJSX(<FlatListPlaceholder />, 7)}</FlatListWrapper>;
-   }
-   if (isPaused) return <OfflineFetch />;
-   if (error) return <FetchError />;
 
    function handleClick(data: IIncomeFormInputs): void {
       if (isPortableDevice) {
@@ -89,8 +94,28 @@ export default function IncomeSlide(): JSX.Element {
       return sortedData;
    }
 
+   async function handleOnRefresh(): Promise<void> {
+      if (!Device.isOnline()) {
+         setToastMessage('No network connection.');
+         setWidth('auto');
+         setVerticalPos('bottom');
+         setHorizontalPos('center');
+         setToastZIndex(1);
+         toggleToast();
+         return;
+      }
+      await refetch();
+   }
+
+   if (isLoading && !isPaused) {
+      if (!isPortableDevice) return <Loader isDisplayed />;
+      return <FlatListWrapper>{JSXHelper.repeatJSX(<FlatListPlaceholder />, 7)}</FlatListWrapper>;
+   }
+   if (isPaused) return <OfflineFetch />;
+   if (error) return <FetchError />;
+
    return (
-      <PullToRefresh onRefresh={refetch} isDarkTheme={isDarkTheme}>
+      <PullToRefresh onRefresh={handleOnRefresh} isDarkTheme={isDarkTheme}>
          <FlatListWrapper
             ref={containerRef}
             onScroll={handleOnScroll}

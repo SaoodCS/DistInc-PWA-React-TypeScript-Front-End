@@ -1,8 +1,10 @@
+/* eslint-disable no-useless-escape */
 /// <reference types="vitest" />
 /// <reference types="vite/client" />
 import react from '@vitejs/plugin-react';
 import fs from 'fs';
-import { ServerOptions, defineConfig, loadEnv } from 'vite';
+import type { ServerOptions } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 const oneDayInSeconds = 86400;
