@@ -16,7 +16,6 @@ export const DatePickerWrapper = styled.div<{ isDarkTheme: boolean; isActive: bo
       color: unset;
       border: none;
       font-size: 1em;
-
       width: 100%;
       margin: 0;
       padding: 0;
@@ -49,5 +48,43 @@ export const DatePickerWrapper = styled.div<{ isDarkTheme: boolean; isActive: bo
       position: absolute;
       right: 0;
       bottom: -0.1em;
+   }
+
+   // make entire calendar darkThm:
+   .react-datepicker {
+      background-color: ${({ isDarkTheme }) =>
+         isDarkTheme ? Color.darkThm.dialog : Color.lightThm.dialog};
+      color: ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt)};
+      border: 1px solid
+         ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.border : Color.lightThm.border)};
+   }
+
+   // make all calendar text darkThm:
+   .react-datepicker__current-month,
+   .react-datepicker-time__header,
+   .react-datepicker__day-name,
+   .react-datepicker__day,
+   .react-datepicker__time-name {
+      color: ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt)};
+   }
+
+   // make entire calendar header darkThm:
+   .react-datepicker__header {
+      background-color: ${({ isDarkTheme }) =>
+         isDarkTheme ? Color.darkThm.dialog : Color.lightThm.dialog};
+      border-bottom: 1px solid
+         ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.border : Color.lightThm.border)};
+   }
+
+   // make entire time section darkThm:
+   .react-datepicker__time-container {
+      background-color: ${({ isDarkTheme }) =>
+         isDarkTheme ? Color.darkThm.dialog : Color.lightThm.dialog};
+   }
+
+   // make entire time section header darkThm:
+   .react-datepicker__time-container .react-datepicker__time {
+      background-color: ${({ isDarkTheme }) =>
+         isDarkTheme ? Color.darkThm.dialog : Color.lightThm.dialog};
    }
 `;
