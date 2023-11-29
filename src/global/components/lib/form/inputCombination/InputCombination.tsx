@@ -1,3 +1,5 @@
+import { IDateChangeEvent } from '../../../../hooks/useForm';
+import DatePickerInput from '../datePicker/DatePickerInput';
 import type { IDropDownOption } from '../dropDown/DropDownInput';
 import DropDownInput from '../dropDown/DropDownInput';
 import InputComponent from '../input/Input';
@@ -6,12 +8,14 @@ interface IInputCombination {
    placeholder: string;
    name: string | number;
    isRequired?: boolean;
-   handleChange: (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => void;
+   handleChange: (
+      e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement> | IDateChangeEvent,
+   ) => void;
    error: string;
    dropDownOptions?: IDropDownOption[];
    id: string;
    type: string;
-   value: string | number;
+   value: string | number | Date;
    autoComplete?: 'current-password' | 'new-password';
    isDisabled?: boolean | undefined;
 }
@@ -31,9 +35,19 @@ export default function InputCombination(props: IInputCombination): JSX.Element 
       isDisabled,
    } = props;
 
+   const hasDropDownOptions = !!dropDownOptions;
+
+   function isValueDate(value: unknown): value is Date {
+      return value instanceof Date;
+   }
+
+   function isTypeDate(type: string): type is 'date' {
+      return type === 'date';
+   }
+
    return (
       <>
-         {!dropDownOptions && (
+         {!hasDropDownOptions && !isValueDate(value) && !isTypeDate(type) && (
             <InputComponent
                placeholder={placeholder}
                type={type}
@@ -47,7 +61,7 @@ export default function InputCombination(props: IInputCombination): JSX.Element 
                isDisabled={isDisabled}
             />
          )}
-         {!!dropDownOptions && (
+         {hasDropDownOptions && !isValueDate(value) && !isTypeDate(type) && (
             <DropDownInput
                placeholder={placeholder}
                name={name}
@@ -58,6 +72,19 @@ export default function InputCombination(props: IInputCombination): JSX.Element 
                handleChange={handleChange}
                id={id}
                isDisabled={isDisabled}
+            />
+         )}
+         {isTypeDate(type) && isValueDate(value) && (
+            <DatePickerInput
+               placeholder={placeholder}
+               name={name}
+               isRequired={isRequired}
+               value={value}
+               error={error}
+               handleChange={handleChange}
+               id={id}
+               isDisabled={isDisabled}
+               type={type}
             />
          )}
       </>

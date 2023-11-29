@@ -79,6 +79,21 @@ const microservices = {
       name: 'setFcmToken',
       los: 1,
    },
+
+   //TODO: create microservice for the following 3:
+
+   getNotifSchedule: {
+      name: 'getNotifSchedule',
+      los: 1,
+   },
+   setNotifSchedule: {
+      name: 'setNotifSchedule',
+      los: 1,
+   },
+   delNotifSchedule: {
+      name: 'deleteNotifSchedule',
+      los: 1,
+   },
 };
 
 export default microservices;

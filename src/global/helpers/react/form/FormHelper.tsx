@@ -32,6 +32,9 @@ export default class FormHelper {
          if (input.type === 'number') {
             initialState[input.name] = '';
          }
+         if (input.type === 'date') {
+            initialState[input.name] = new Date();
+         }
       });
       return initialState as T;
    }

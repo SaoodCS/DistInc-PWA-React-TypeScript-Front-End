@@ -1,14 +1,21 @@
 import { useState } from 'react';
 import useApiErrorContext from '../context/widget/apiError/hooks/useApiErrorContext';
-import FormHelper from '../helpers/react/form/FormHelper';
 import StringHelper from '../helpers/dataTypes/string/StringHelper';
+import FormHelper from '../helpers/react/form/FormHelper';
+
+export interface IDateChangeEvent {
+   date: Date | null;
+   name: string | number;
+}
 
 interface IUseFormReturn<T> {
    form: T;
    setForm: React.Dispatch<React.SetStateAction<T>>;
    errors: Record<keyof T, string>;
    setErrors: React.Dispatch<React.SetStateAction<Record<keyof T, string>>>;
-   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+   handleChange: (
+      e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | IDateChangeEvent,
+   ) => void;
    initHandleSubmit: (e: React.FormEvent<HTMLFormElement>) => { isFormValid: boolean };
 }
 
@@ -33,7 +40,13 @@ export default function useForm<T>(
       return { isFormValid: true };
    }
 
-   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void {
+   function handleChange(
+      e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | IDateChangeEvent,
+   ): void {
+      if ('date' in e) {
+         setForm((prevState) => ({ ...prevState, [e.name]: e.date }));
+         return;
+      }
       const isESelect = e.target instanceof HTMLSelectElement;
       const selectElIsNumber = isESelect && StringHelper.isNumber(e.target.value);
       const { name, value, type } = e.target;
