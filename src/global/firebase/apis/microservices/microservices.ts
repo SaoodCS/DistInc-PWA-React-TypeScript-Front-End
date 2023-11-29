@@ -75,6 +75,10 @@ const microservices = {
       name: 'deleteCalculations',
       los: 1,
    },
+   setFcmToken: {
+      name: 'setFcmToken',
+      los: 1,
+   },
 };
 
 export default microservices;
