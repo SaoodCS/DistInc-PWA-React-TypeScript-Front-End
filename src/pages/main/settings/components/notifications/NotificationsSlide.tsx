@@ -17,12 +17,12 @@ import { ModalContext } from '../../../../../global/context/widget/modal/ModalCo
 import BoolHelper from '../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
-import useLocalStorage from '../../../../../global/hooks/useLocalStorage';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useSessionStorage from '../../../../../global/hooks/useSessionStorage';
 import NSettings from '../../namespace/NSettings';
 import NotifClass, { INotifScheduleFormInputs } from './class/NotifClass';
 import NotifScheduleForm from './notifScheduleForm/ScheduleNotifForm';
+import UpdateNotifSettingsModal from './updateNotifSettings/UpdateNotifSettingsModal';
 
 export default function NotificationsSlide(): JSX.Element {
    const [settingsCarousel] = useSessionStorage(NSettings.key.currentSlide, 1);
@@ -35,28 +35,20 @@ export default function NotificationsSlide(): JSX.Element {
    const { toggleBottomPanel, setBottomPanelContent, setBottomPanelHeading, setBottomPanelZIndex } =
       useContext(BottomPanelContext);
    const [notifPermission, setNotifPermission] = useState(Notification.permission);
-   const [requestedNotifPermission, setRequestedNotifPermission] = useLocalStorage(
-      'requestedNotifPermission',
-      false,
-   );
 
    const setFcmTokenInFirestore = NotifClass.useMutation.setFcmToken({});
-
-   const {
-      data: notifScheduleData,
-      isLoading,
-      isPaused,
-      error,
-   } = NotifClass.useQuery.getNotifSchedule({});
+   const { data: notifScheduleData } = NotifClass.useQuery.getNotifSchedule({});
 
    useEffect(() => {
       if (settingsCarousel === 1) {
          scrollToTop();
       }
-      Notification.requestPermission().then((permission) => {
-         setNotifPermission(permission);
-         if (requestedNotifPermission === false) {
-            setRequestedNotifPermission(true);
+   }, []);
+
+   function toggleNotifPermission(): void {
+      if (notifPermission === 'default') {
+         Notification.requestPermission().then((permission) => {
+            setNotifPermission(permission);
             if (permission === 'granted') {
                NotifClass.getFCMToken().then((token) => {
                   if (token) {
@@ -65,20 +57,13 @@ export default function NotificationsSlide(): JSX.Element {
                   }
                });
             }
-         }
-      });
-   }, []);
-
-   function toggleNotifPermission(): void {
-      setModalHeader('Notification Settings');
-      setModalContent(
-         <>
-            As you have already set your notification permissions, visit your device settings to
-            change them.
-         </>,
-      );
-      setModalZIndex(100);
-      toggleModal(true);
+         });
+      } else {
+         setModalHeader('Notification Settings');
+         setModalContent(<UpdateNotifSettingsModal setNotifPermission={setNotifPermission} />);
+         setModalZIndex(100);
+         toggleModal(true);
+      }
    }
 
    function handleScheduleNotif(): void {
@@ -136,10 +121,7 @@ export default function NotificationsSlide(): JSX.Element {
                   </IconAndNameWrapper>
                </ItemContentWrapper>
                <ItemSubElement>
-                  <HorizontalMenuDots
-                     onClick={() => {}}
-                     darktheme={BoolHelper.boolToStr(isDarkTheme)}
-                  />
+                  <HorizontalMenuDots darktheme={BoolHelper.boolToStr(isDarkTheme)} />
                </ItemSubElement>
             </ItemContainer>
          </MenuListWrapper>

@@ -165,4 +165,6 @@ export default class NotifClass {
          console.error(`Client/getFCMToken: An error occurred retrieving fcm token: ${error}`);
       }
    }
+
+   
 }
