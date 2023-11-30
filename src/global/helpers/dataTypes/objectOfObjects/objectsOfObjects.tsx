@@ -50,4 +50,11 @@ export default class ObjectOfObjects {
    static isEmpty<T extends Record<keyof T, T[keyof T]>>(obj: T): boolean {
       return Object.keys(obj).length === 0;
    }
+
+   // function that takes an object and takes a property name in that object, converts that property from string to Date, and returns the object:
+   static convertStrPropToDate<T>(obj: T, propName: keyof T) {
+      const newObj = { ...obj };
+      newObj[propName] = new Date(obj[propName] as string) as T[keyof T];
+      return newObj;
+   }
 }

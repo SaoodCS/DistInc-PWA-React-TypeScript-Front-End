@@ -38,6 +38,7 @@ export default defineConfig(({ mode }) => {
                enabled: true,
             },
             workbox: {
+               disableDevLogs: true,
                cleanupOutdatedCaches: true,
                skipWaiting: true,
                clientsClaim: true,

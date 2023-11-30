@@ -18,7 +18,7 @@ export default function NotifScheduleForm(props: INotifScheduleForm): JSX.Elemen
    const { isDarkTheme } = useThemeContext();
    const { apiError } = useApiErrorContext();
    const { form, errors, handleChange, initHandleSubmit } = useForm(
-      NotifClass.form.initialState,
+      inputValues ? inputValues : NotifClass.form.initialState,
       NotifClass.form.initialErrors,
       NotifClass.form.validate,
    );

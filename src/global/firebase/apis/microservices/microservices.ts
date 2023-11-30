@@ -80,8 +80,6 @@ const microservices = {
       los: 1,
    },
 
-   //TODO: create microservice for the following 3:
-
    getNotifSchedule: {
       name: 'getNotifSchedule',
       los: 1,

@@ -15,11 +15,13 @@ import useThemeContext from '../../../../../global/context/theme/hooks/useThemeC
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
 import BoolHelper from '../../../../../global/helpers/dataTypes/bool/BoolHelper';
+import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
+import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import useLocalStorage from '../../../../../global/hooks/useLocalStorage';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useSessionStorage from '../../../../../global/hooks/useSessionStorage';
 import NSettings from '../../namespace/NSettings';
-import NotifClass from './class/NotifClass';
+import NotifClass, { INotifScheduleFormInputs } from './class/NotifClass';
 import NotifScheduleForm from './notifScheduleForm/ScheduleNotifForm';
 
 export default function NotificationsSlide(): JSX.Element {
@@ -37,13 +39,15 @@ export default function NotificationsSlide(): JSX.Element {
       'requestedNotifPermission',
       false,
    );
+
    const setFcmTokenInFirestore = NotifClass.useMutation.setFcmToken({});
 
-   // const { data: notifScheduleData } = NotifClass.useQuery.getNotifSchedule({
-   //    onSettled: () => {
-   //       isPortableDevice ? toggleBottomPanel(false) : toggleModal(false);
-   //    },
-   // });
+   const {
+      data: notifScheduleData,
+      isLoading,
+      isPaused,
+      error,
+   } = NotifClass.useQuery.getNotifSchedule({});
 
    useEffect(() => {
       if (settingsCarousel === 1) {
@@ -78,19 +82,21 @@ export default function NotificationsSlide(): JSX.Element {
    }
 
    function handleScheduleNotif(): void {
+      let inputValues: INotifScheduleFormInputs | undefined = undefined;
+      if (MiscHelper.isNotFalsyOrEmpty(notifScheduleData)) {
+         inputValues = ObjectOfObjects.convertStrPropToDate(notifScheduleData, 'startDate');
+      } else {
+         inputValues = undefined;
+      }
       if (isPortableDevice) {
          toggleBottomPanel(true);
          setBottomPanelHeading('Schedule Notifications');
-         setBottomPanelContent(<NotifScheduleForm 
-            //inputValues={notifScheduleData} 
-            />);
+         setBottomPanelContent(<NotifScheduleForm inputValues={inputValues} />);
          setBottomPanelZIndex(100);
       } else {
          toggleModal(true);
          setModalHeader('Schedule Notification');
-         setModalContent(<NotifScheduleForm
-             //inputValues={notifScheduleData} 
-             />);
+         setModalContent(<NotifScheduleForm inputValues={inputValues} />);
          setModalZIndex(100);
       }
    }

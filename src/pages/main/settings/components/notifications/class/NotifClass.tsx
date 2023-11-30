@@ -15,7 +15,7 @@ import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutat
 export type IRecurrenceOptions = 'Daily' | 'Weekly' | 'Monthly' | 'Yearly';
 
 export interface INotifScheduleFormInputs {
-   startDate: Date;
+   startDate: Date | string;
    recurrence: IRecurrenceOptions;
 }
 
@@ -27,7 +27,7 @@ export default class NotifClass {
          placeholder: 'Start Date',
          type: 'date',
          isRequired: true,
-         validator: (value: Date): string | true => {
+         validator: (value: unknown): string | true => {
             if (value instanceof Date) {
                return true;
             }
@@ -47,7 +47,7 @@ export default class NotifClass {
             { value: 'Monthly', label: 'Monthly' },
             { value: 'Yearly', label: 'Yearly' },
          ],
-         validator: (value: string): string | true => {
+         validator: (value: unknown): string | true => {
             if (
                value === 'Daily' ||
                value === 'Weekly' ||
