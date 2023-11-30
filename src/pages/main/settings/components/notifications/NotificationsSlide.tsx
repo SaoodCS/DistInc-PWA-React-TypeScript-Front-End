@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { Power } from '@styled-icons/fluentui-system-filled/Power';
 import { Schedule } from '@styled-icons/material/Schedule';
+import { useQueryClient } from '@tanstack/react-query';
 import { useContext, useEffect, useState } from 'react';
 import { Switcher } from '../../../../../global/components/lib/button/switch/Style';
 import { HorizontalMenuDots } from '../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
@@ -14,6 +15,7 @@ import {
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
+import microservices from '../../../../../global/firebase/apis/microservices/microservices';
 import BoolHelper from '../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
@@ -39,6 +41,14 @@ export default function NotificationsSlide(): JSX.Element {
    const setFcmTokenInFirestore = NotifClass.useMutation.setFcmToken({});
    const { data: notifScheduleData } = NotifClass.useQuery.getNotifSchedule({});
 
+   const queryClient = useQueryClient();
+
+   const setNotifScheduleInFirestore = NotifClass.useMutation.setNotifSchedule({
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [microservices.getNotifSchedule.name] });
+      },
+   });
+
    useEffect(() => {
       if (settingsCarousel === 1) {
          scrollToTop();
@@ -52,8 +62,15 @@ export default function NotificationsSlide(): JSX.Element {
             if (permission === 'granted') {
                NotifClass.getFCMToken().then((token) => {
                   if (token) {
-                     console.log(token);
-                     setFcmTokenInFirestore.mutateAsync(token);
+                     const storedFcmToken = notifScheduleData?.fcmToken;
+                     console.log('storedFcmToken', storedFcmToken);
+                     console.log('token', token);
+                     if (storedFcmToken !== token) {
+                        setNotifScheduleInFirestore.mutateAsync({
+                           notifSchedule: notifScheduleData?.notifSchedule || undefined,
+                           fcmToken: token,
+                        });
+                     }
                   }
                });
             }
@@ -67,21 +84,34 @@ export default function NotificationsSlide(): JSX.Element {
    }
 
    function handleScheduleNotif(): void {
+      if (!notifScheduleData?.fcmToken) {
+         setModalHeader('Notification Settings');
+         setModalContent(
+            <>Please enable notifications on your device first before setting a reminder</>,
+         );
+         setModalZIndex(100);
+         toggleModal(true);
+         return;
+      }
+
       let inputValues: INotifScheduleFormInputs | undefined = undefined;
-      if (MiscHelper.isNotFalsyOrEmpty(notifScheduleData)) {
-         inputValues = ObjectOfObjects.convertStrPropToDate(notifScheduleData, 'startDate');
+      if (MiscHelper.isNotFalsyOrEmpty(notifScheduleData.notifSchedule)) {
+         inputValues = ObjectOfObjects.convertStrPropToDate(
+            notifScheduleData.notifSchedule,
+            'startDate',
+         );
       } else {
          inputValues = undefined;
       }
       if (isPortableDevice) {
          toggleBottomPanel(true);
-         setBottomPanelHeading('Schedule Notifications');
-         setBottomPanelContent(<NotifScheduleForm inputValues={inputValues} />);
+         setBottomPanelHeading('Set Reminder');
+         setBottomPanelContent(<NotifScheduleForm />);
          setBottomPanelZIndex(100);
       } else {
          toggleModal(true);
-         setModalHeader('Schedule Notification');
-         setModalContent(<NotifScheduleForm inputValues={inputValues} />);
+         setModalHeader('Set Reminder');
+         setModalContent(<NotifScheduleForm />);
          setModalZIndex(100);
       }
    }
@@ -117,7 +147,7 @@ export default function NotificationsSlide(): JSX.Element {
                <ItemContentWrapper>
                   <IconAndNameWrapper>
                      <Schedule />
-                     Schedule Notification
+                     Set Reminder
                   </IconAndNameWrapper>
                </ItemContentWrapper>
                <ItemSubElement>

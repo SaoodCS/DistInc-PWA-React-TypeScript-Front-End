@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { TextBtn } from '../../../../../../global/components/lib/button/textBtn/Style';
 import { TextColourizer } from '../../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { FlexColumnWrapper } from '../../../../../../global/components/lib/positionModifiers/flexColumnWrapper/FlexColumnWrapper';
@@ -5,6 +6,7 @@ import { FlexRowWrapper } from '../../../../../../global/components/lib/position
 import { VerticalSeperator } from '../../../../../../global/components/lib/positionModifiers/verticalSeperator/VerticalSeperator';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import NotifClass from '../class/NotifClass';
+import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 
 interface IUpdateNotifSettingsModal {
    setNotifPermission: React.Dispatch<React.SetStateAction<'default' | 'denied' | 'granted'>>;
@@ -13,7 +15,14 @@ interface IUpdateNotifSettingsModal {
 export default function UpdateNotifSettingsModal(props: IUpdateNotifSettingsModal): JSX.Element {
    const { setNotifPermission } = props;
    const { isDarkTheme } = useThemeContext();
-   const setFcmTokenInFirestore = NotifClass.useMutation.setFcmToken({});
+   const queryClient = useQueryClient();
+   const setNotifScheduleInFirestore = NotifClass.useMutation.setNotifSchedule({
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [microservices.getNotifSchedule.name] });
+      },
+   });
+   const { data: notifScheduleData } = NotifClass.useQuery.getNotifSchedule({});
+   console.log(notifScheduleData);
 
    function handleUpdateNotifSettings(): void {
       Notification.requestPermission().then((permission) => {
@@ -21,8 +30,15 @@ export default function UpdateNotifSettingsModal(props: IUpdateNotifSettingsModa
          if (permission === 'granted') {
             NotifClass.getFCMToken().then((token) => {
                if (token) {
-                  console.log(token);
-                  setFcmTokenInFirestore.mutateAsync(token);
+                  const storedFcmToken = notifScheduleData?.fcmToken;
+                  console.log('storedFcmToken', storedFcmToken);
+                  console.log('token', token);
+                  if (storedFcmToken !== token) {
+                     setNotifScheduleInFirestore.mutateAsync({
+                        notifSchedule: notifScheduleData?.notifSchedule || undefined,
+                        fcmToken: token,
+                     });
+                  }
                }
             });
          }

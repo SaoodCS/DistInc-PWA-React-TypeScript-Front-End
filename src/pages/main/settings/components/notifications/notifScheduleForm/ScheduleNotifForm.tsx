@@ -7,18 +7,14 @@ import useThemeContext from '../../../../../../global/context/theme/hooks/useThe
 import useApiErrorContext from '../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import useForm from '../../../../../../global/hooks/useForm';
-import NotifClass, { INotifScheduleFormInputs } from '../class/NotifClass';
+import NotifClass from '../class/NotifClass';
 
-interface INotifScheduleForm {
-   inputValues?: INotifScheduleFormInputs;
-}
-
-export default function NotifScheduleForm(props: INotifScheduleForm): JSX.Element {
-   const { inputValues } = props;
+export default function NotifScheduleForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const { apiError } = useApiErrorContext();
+   const { data: notifScheduleData } = NotifClass.useQuery.getNotifSchedule({});
    const { form, errors, handleChange, initHandleSubmit } = useForm(
-      inputValues ? inputValues : NotifClass.form.initialState,
+      NotifClass.form.setInitialState(notifScheduleData),
       NotifClass.form.initialErrors,
       NotifClass.form.validate,
    );
@@ -40,12 +36,20 @@ export default function NotifScheduleForm(props: INotifScheduleForm): JSX.Elemen
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
       if (!isFormValid) return;
-      await setNotifScheduleInFirestore.mutateAsync(form);
+      const fcmToken = notifScheduleData?.fcmToken as string;
+      await setNotifScheduleInFirestore.mutateAsync({
+         notifSchedule: form,
+         fcmToken,
+      });
    }
 
    async function handleDelete(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> {
       e.preventDefault();
-      await deleteNotifScheduleInFirestore.mutateAsync(form);
+      const fcmToken = notifScheduleData?.fcmToken as string;
+      await deleteNotifScheduleInFirestore.mutateAsync({
+         notifSchedule: form,
+         fcmToken,
+      });
    }
 
    return (
@@ -66,9 +70,9 @@ export default function NotifScheduleForm(props: INotifScheduleForm): JSX.Elemen
             />
          ))}
          <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>
-            {`${inputValues ? 'Update' : 'Set'} Schedule`}
+            {`${notifScheduleData?.notifSchedule ? 'Update' : 'Set'} Schedule`}
          </StaticButton>
-         <ConditionalRender condition={!!inputValues}>
+         <ConditionalRender condition={!!notifScheduleData?.notifSchedule}>
             <StaticButton
                isDarkTheme={isDarkTheme}
                type={'button'}

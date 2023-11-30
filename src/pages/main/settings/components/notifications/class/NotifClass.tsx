@@ -9,6 +9,8 @@ import { getToken } from 'firebase/messaging';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import { messaging } from '../../../../../../global/firebase/config/config';
+import MiscHelper from '../../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
+import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import FormHelper, { InputArray } from '../../../../../../global/helpers/react/form/FormHelper';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
 
@@ -17,6 +19,11 @@ export type IRecurrenceOptions = 'Daily' | 'Weekly' | 'Monthly' | 'Yearly';
 export interface INotifScheduleFormInputs {
    startDate: Date | string;
    recurrence: IRecurrenceOptions;
+}
+
+export interface INotifSettingFirestore {
+   notifSchedule?: INotifScheduleFormInputs;
+   fcmToken: string;
 }
 
 export default class NotifClass {
@@ -61,9 +68,17 @@ export default class NotifClass {
       },
    ];
 
-   private static initialState: INotifScheduleFormInputs = FormHelper.createInitialState(
-      NotifClass.inputs,
-   );
+   private static setInitialState(
+      notifScheduleData: INotifSettingFirestore | undefined,
+   ): INotifScheduleFormInputs {
+      if (
+         MiscHelper.isNotFalsyOrEmpty(notifScheduleData) &&
+         MiscHelper.isNotFalsyOrEmpty(notifScheduleData.notifSchedule)
+      ) {
+         return ObjectOfObjects.convertStrPropToDate(notifScheduleData.notifSchedule, 'startDate');
+      }
+      return FormHelper.createInitialState(NotifClass.inputs);
+   }
 
    private static initialErrors = FormHelper.createInitialErrors(NotifClass.inputs);
 
@@ -75,12 +90,12 @@ export default class NotifClass {
    }
 
    private static useNotifScheduleQuery(
-      options: UseQueryOptions<INotifScheduleFormInputs> = {},
-   ): UseQueryResult<INotifScheduleFormInputs, unknown> {
+      options: UseQueryOptions<INotifSettingFirestore> = {},
+   ): UseQueryResult<INotifSettingFirestore, unknown> {
       return useQuery({
          queryKey: [microservices.getNotifSchedule.name],
          queryFn: () =>
-            APIHelper.gatewayCall<INotifScheduleFormInputs>(
+            APIHelper.gatewayCall<INotifSettingFirestore>(
                undefined,
                'GET',
                microservices.getNotifSchedule.name,
@@ -90,11 +105,11 @@ export default class NotifClass {
    }
 
    private static useSetNotifScheduleMutation(
-      options: UseMutationOptions<void, unknown, INotifScheduleFormInputs>,
-   ): UseMutationResult<void, unknown, INotifScheduleFormInputs, void> {
+      options: UseMutationOptions<void, unknown, INotifSettingFirestore>,
+   ): UseMutationResult<void, unknown, INotifSettingFirestore, void> {
       return useCustomMutation(
-         async (formData: INotifScheduleFormInputs) => {
-            const body = APIHelper.createBody(formData);
+         async (formDataAndFcmToken: INotifSettingFirestore) => {
+            const body = APIHelper.createBody(formDataAndFcmToken);
             const method = 'POST';
             const microserviceName = microservices.setNotifSchedule.name;
             await APIHelper.gatewayCall(body, method, microserviceName);
@@ -106,11 +121,11 @@ export default class NotifClass {
    }
 
    private static useDelNotifScheduleMutation(
-      options: UseMutationOptions<void, unknown, INotifScheduleFormInputs>,
-   ): UseMutationResult<void, unknown, INotifScheduleFormInputs, void> {
+      options: UseMutationOptions<void, unknown, INotifSettingFirestore>,
+   ): UseMutationResult<void, unknown, INotifSettingFirestore, void> {
       return useCustomMutation(
-         async (formData: INotifScheduleFormInputs) => {
-            const body = APIHelper.createBody(formData);
+         async (formDataAndFcmToken: INotifSettingFirestore) => {
+            const body = APIHelper.createBody(formDataAndFcmToken);
             const method = 'POST';
             const microserviceName = microservices.delNotifSchedule.name;
             await APIHelper.gatewayCall(body, method, microserviceName);
@@ -139,7 +154,7 @@ export default class NotifClass {
 
    static form = {
       inputs: NotifClass.inputs,
-      initialState: NotifClass.initialState,
+      setInitialState: NotifClass.setInitialState,
       initialErrors: NotifClass.initialErrors,
       validate: NotifClass.validate,
    };
@@ -165,6 +180,4 @@ export default class NotifClass {
          console.error(`Client/getFCMToken: An error occurred retrieving fcm token: ${error}`);
       }
    }
-
-   
 }
