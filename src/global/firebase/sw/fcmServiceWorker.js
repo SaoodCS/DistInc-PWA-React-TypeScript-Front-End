@@ -16,9 +16,9 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage(function (payload) {
    console.log('Received background message ', payload);
    // The lines below are commented out to prevent the notification from duplicating as the onBackgroundMessage call above already sends a notification
-   // const notificationTitle = payload.notification.title;
-   // const notificationOptions = {
-   //    body: payload.notification.body,
-   // };
-   // self.registration.showNotification(notificationTitle, notificationOptions);
+   const notificationTitle = payload.notification.title;
+   const notificationOptions = {
+      body: payload.notification.body,
+   };
+   self.registration.showNotification(notificationTitle, notificationOptions);
 });

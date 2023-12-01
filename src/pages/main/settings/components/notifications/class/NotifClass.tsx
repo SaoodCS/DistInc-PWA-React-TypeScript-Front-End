@@ -5,7 +5,7 @@ import {
    UseQueryResult,
    useQuery,
 } from '@tanstack/react-query';
-import { getToken } from 'firebase/messaging';
+import { getToken, isSupported } from 'firebase/messaging';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import { messaging } from '../../../../../../global/firebase/config/config';
@@ -199,4 +199,6 @@ export default class NotifClass {
          console.error(`Client/getFCMToken: An error occurred retrieving fcm token: ${error}`);
       }
    }
+
+   
 }

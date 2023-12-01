@@ -17,12 +17,10 @@ import { BottomPanelContext } from '../../../../../global/context/widget/bottomP
 import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
 import microservices from '../../../../../global/firebase/apis/microservices/microservices';
 import BoolHelper from '../../../../../global/helpers/dataTypes/bool/BoolHelper';
-import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
-import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useSessionStorage from '../../../../../global/hooks/useSessionStorage';
 import NSettings from '../../namespace/NSettings';
-import NotifClass, { INotifScheduleFormInputs } from './class/NotifClass';
+import NotifClass from './class/NotifClass';
 import NotifScheduleForm from './notifScheduleForm/ScheduleNotifForm';
 import UpdateNotifSettingsModal from './updateNotifSettings/UpdateNotifSettingsModal';
 //TODO: need to handle the case of if I disable notifications on my device after it was previously enabled (check if notif permission is denied, then add a boolean to firestore which indicates that it's disabled, and delete the scheduler cloud function)
