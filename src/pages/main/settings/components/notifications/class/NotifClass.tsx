@@ -5,7 +5,7 @@ import {
    UseQueryResult,
    useQuery,
 } from '@tanstack/react-query';
-import { getToken, isSupported } from 'firebase/messaging';
+import { getToken } from 'firebase/messaging';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import { messaging } from '../../../../../../global/firebase/config/config';
@@ -190,15 +190,31 @@ export default class NotifClass {
 
    private static async getFCMToken(): Promise<string | void> {
       try {
-         const fcmToken = await getToken(messaging, {
-            vapidKey: import.meta.env.VITE_VAPID_KEY,
-            serviceWorkerRegistration: await navigator.serviceWorker.ready,
+         return NotifClass.getRegisteredFcmSw().then((serviceWorkerRegistration) => {
+            return Promise.resolve(
+               getToken(messaging, {
+                  vapidKey: import.meta.env.VITE_VAPID_KEY,
+                  serviceWorkerRegistration,
+               }),
+            );
          });
-         return fcmToken;
       } catch (error) {
          console.error(`Client/getFCMToken: An error occurred retrieving fcm token: ${error}`);
       }
    }
 
-   
+   static async getRegisteredFcmSw(): Promise<ServiceWorkerRegistration> {
+      if ('serviceWorker' in navigator && typeof window.navigator.serviceWorker !== 'undefined') {
+         const serviceWorker = await window.navigator.serviceWorker.getRegistration(
+            '/firebase-push-notification-scope',
+         );
+         if (serviceWorker) {
+            return serviceWorker;
+         }
+         return window.navigator.serviceWorker.register('/firebase-messaging-sw.js', {
+            scope: '/firebase-push-notification-scope',
+         });
+      }
+      throw new Error('Client/getOrRegisterFCMSw: The browser doesn`t support service worker.');
+   }
 }
