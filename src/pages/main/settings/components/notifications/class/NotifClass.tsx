@@ -169,7 +169,26 @@ export default class NotifClass {
       delNotifSchedule: NotifClass.useDelNotifScheduleMutation,
    };
 
-   static async getFCMToken(): Promise<string | void> {
+   static updateFcmToken(
+      notifScheduleData: INotifSettingFirestore | undefined,
+      setNotifScheduleInFirestore: UseMutationResult<void, unknown, INotifSettingFirestore, void>,
+   ) {
+      NotifClass.getFCMToken().then((token) => {
+         if (token) {
+            const storedFcmToken = notifScheduleData?.fcmToken;
+            console.log('storedFcmToken', storedFcmToken);
+            console.log('token', token);
+            if (storedFcmToken !== token) {
+               setNotifScheduleInFirestore.mutateAsync({
+                  notifSchedule: notifScheduleData?.notifSchedule || undefined,
+                  fcmToken: token,
+               });
+            }
+         }
+      });
+   }
+
+   private static async getFCMToken(): Promise<string | void> {
       try {
          const fcmToken = await getToken(messaging, {
             vapidKey: import.meta.env.VITE_VAPID_KEY,

@@ -25,6 +25,7 @@ import NSettings from '../../namespace/NSettings';
 import NotifClass, { INotifScheduleFormInputs } from './class/NotifClass';
 import NotifScheduleForm from './notifScheduleForm/ScheduleNotifForm';
 import UpdateNotifSettingsModal from './updateNotifSettings/UpdateNotifSettingsModal';
+//TODO: need to handle the case of if I disable notifications on my device after it was previously enabled (check if notif permission is denied, then add a boolean to firestore which indicates that it's disabled, and delete the scheduler cloud function)
 
 export default function NotificationsSlide(): JSX.Element {
    const [settingsCarousel] = useSessionStorage(NSettings.key.currentSlide, 1);
@@ -37,9 +38,13 @@ export default function NotificationsSlide(): JSX.Element {
    const { toggleBottomPanel, setBottomPanelContent, setBottomPanelHeading, setBottomPanelZIndex } =
       useContext(BottomPanelContext);
    const [notifPermission, setNotifPermission] = useState(Notification.permission);
-
-   const setFcmTokenInFirestore = NotifClass.useMutation.setFcmToken({});
-   const { data: notifScheduleData } = NotifClass.useQuery.getNotifSchedule({});
+   const { data: notifScheduleData } = NotifClass.useQuery.getNotifSchedule({
+      onSuccess: (data) => {
+         if (Notification.permission === 'granted') {
+            NotifClass.updateFcmToken(data, setNotifScheduleInFirestore);
+         }
+      },
+   });
 
    const queryClient = useQueryClient();
 
@@ -60,30 +65,18 @@ export default function NotificationsSlide(): JSX.Element {
          Notification.requestPermission().then((permission) => {
             setNotifPermission(permission);
             if (permission === 'granted') {
-               NotifClass.getFCMToken().then((token) => {
-                  if (token) {
-                     const storedFcmToken = notifScheduleData?.fcmToken;
-                     console.log('storedFcmToken', storedFcmToken);
-                     console.log('token', token);
-                     if (storedFcmToken !== token) {
-                        setNotifScheduleInFirestore.mutateAsync({
-                           notifSchedule: notifScheduleData?.notifSchedule || undefined,
-                           fcmToken: token,
-                        });
-                     }
-                  }
-               });
+               NotifClass.updateFcmToken(notifScheduleData, setNotifScheduleInFirestore);
             }
          });
       } else {
          setModalHeader('Notification Settings');
-         setModalContent(<UpdateNotifSettingsModal setNotifPermission={setNotifPermission} />);
+         setModalContent(<UpdateNotifSettingsModal />);
          setModalZIndex(100);
          toggleModal(true);
       }
    }
 
-   function handleScheduleNotif(): void {
+   function handleScheduleNotifForm(): void {
       if (!notifScheduleData?.fcmToken) {
          setModalHeader('Notification Settings');
          setModalContent(
@@ -143,7 +136,11 @@ export default function NotificationsSlide(): JSX.Element {
                   />
                </ItemSubElement>
             </ItemContainer>
-            <ItemContainer isDarkTheme={isDarkTheme} onClick={handleScheduleNotif} spaceRow={true}>
+            <ItemContainer
+               isDarkTheme={isDarkTheme}
+               onClick={handleScheduleNotifForm}
+               spaceRow={true}
+            >
                <ItemContentWrapper>
                   <IconAndNameWrapper>
                      <Schedule />
