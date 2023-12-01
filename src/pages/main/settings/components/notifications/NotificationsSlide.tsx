@@ -86,16 +86,6 @@ export default function NotificationsSlide(): JSX.Element {
          toggleModal(true);
          return;
       }
-
-      let inputValues: INotifScheduleFormInputs | undefined = undefined;
-      if (MiscHelper.isNotFalsyOrEmpty(notifScheduleData.notifSchedule)) {
-         inputValues = ObjectOfObjects.convertStrPropToDate(
-            notifScheduleData.notifSchedule,
-            'startDate',
-         );
-      } else {
-         inputValues = undefined;
-      }
       if (isPortableDevice) {
          toggleBottomPanel(true);
          setBottomPanelHeading('Set Reminder');
