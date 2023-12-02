@@ -22,10 +22,11 @@
       "build-prod": "node src/global/config/script/setRunningEnv.js .env.proddeployed deployed && npm run loadsw-prod && tsc && vite build --mode proddeployed",
       "deploy-dev": "npm run build-dev && firebase deploy --only hosting --project distinc-dev",
       "deploy-prod": "npm run build-prod && firebase deploy --only hosting --project distinc-9ad9d",
-      "start-dev-to-local": "node src/global/config/script/setRunningEnv.js .env.devlocal locally && npm run loadsw-dev && vite --mode devlocal --host",
-      "start-prod-to-local": "node src/global/config/script/setRunningEnv.js .env.prodlocal locally && npm run loadsw-prod && vite --mode prodlocal --host",
-      "start-dev-to-deployed": "node src/global/config/script/setRunningEnv.js .env.devdeployed locally && npm run loadsw-dev && vite --mode devdeployed --host",
-      "start-prod-to-deployed": "node src/global/config/script/setRunningEnv.js .env.proddeployed locally && npm run loadsw-prod && vite --mode proddeployed --host",
+      "delete-browser-cache": "powershell.exe -File src/global/config/script/delBrowserCache.ps1",
+      "start-dev-to-local": "npm run delete-browser-cache && node src/global/config/script/setRunningEnv.js .env.devlocal locally && npm run loadsw-dev && vite --mode devlocal --host",
+      "start-prod-to-local": "npm run delete-browser-cache && node src/global/config/script/setRunningEnv.js .env.prodlocal locally && npm run loadsw-prod && vite --mode prodlocal --host",
+      "start-dev-to-deployed": "npm run delete-browser-cache && node src/global/config/script/setRunningEnv.js .env.devdeployed locally && npm run loadsw-dev && vite --mode devdeployed --host",
+      "start-prod-to-deployed": "npm run delete-browser-cache && node src/global/config/script/setRunningEnv.js .env.proddeployed locally && npm run loadsw-prod && vite --mode proddeployed --host",
       "generate-pwa-assets": "pwa-assets-generator public/icons/logo-512x512.png"
    },
    "dependencies": {

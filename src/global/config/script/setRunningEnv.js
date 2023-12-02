@@ -12,3 +12,6 @@ envFile = envFile.replace(/^\s*[\r\n]/gm, '');
 envFile += `\nVITE_RUNNING=${envValue}`;
 fs.writeFile(filePath, envFile, 'utf-8');
 console.log('VITE_RUNNING env variable updated.');
+
+fs.removeSync('./dev-dist');
+console.log('old dev-dist folder removed.');
