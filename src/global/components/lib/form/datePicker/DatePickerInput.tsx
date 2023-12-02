@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import useThemeContext from '../../../../context/theme/hooks/useThemeContext';
-import { IDateChangeEvent } from '../../../../hooks/useForm';
+import type { IDateChangeEvent } from '../../../../hooks/useForm';
 import { ErrorLabel, InputContainer, InputLabel, LabelWrapper } from '../input/Style';
 import { DatePickerWrapper } from './Style';
 
@@ -19,9 +19,8 @@ interface IDatePickerInput {
    type: string;
 }
 
-export default function DatePickerInput(props: IDatePickerInput) {
-   const { placeholder, name, isRequired, value, error, handleChange, id, isDisabled, type } =
-      props;
+export default function DatePickerInput(props: IDatePickerInput): JSX.Element {
+   const { placeholder, name, isRequired, value, error, handleChange, id, isDisabled } = props;
 
    const [isActive, setIsActive] = useState(false);
    const { isDarkTheme } = useThemeContext();
@@ -32,7 +31,7 @@ export default function DatePickerInput(props: IDatePickerInput) {
       el.setAttribute('inputmode', 'none');
    }
 
-   function handleOnCalendarOpen() {
+   function handleOnCalendarOpen(): void {
       setIsActive(true);
    }
 

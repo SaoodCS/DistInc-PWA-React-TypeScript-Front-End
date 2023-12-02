@@ -1,17 +1,19 @@
-import {
+/* eslint-disable @typescript-eslint/no-floating-promises */
+import type {
    UseMutationOptions,
    UseMutationResult,
    UseQueryOptions,
    UseQueryResult,
-   useQuery,
 } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getToken } from 'firebase/messaging';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import { messaging } from '../../../../../../global/firebase/config/config';
 import MiscHelper from '../../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
-import FormHelper, { InputArray } from '../../../../../../global/helpers/react/form/FormHelper';
+import type { InputArray } from '../../../../../../global/helpers/react/form/FormHelper';
+import FormHelper from '../../../../../../global/helpers/react/form/FormHelper';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
 
 export type IRecurrenceOptions = 'Daily' | 'Weekly' | 'Monthly' | 'Yearly';
@@ -172,7 +174,7 @@ export default class NotifClass {
    static updateFcmToken(
       notifScheduleData: INotifSettingFirestore | undefined,
       setNotifScheduleInFirestore: UseMutationResult<void, unknown, INotifSettingFirestore, void>,
-   ) {
+   ): void {
       NotifClass.getFCMToken().then((token) => {
          if (token) {
             const storedFcmToken = notifScheduleData?.fcmToken;

@@ -1,4 +1,4 @@
-import { IDateChangeEvent } from '../../../../hooks/useForm';
+import type { IDateChangeEvent } from '../../../../hooks/useForm';
 import DatePickerInput from '../datePicker/DatePickerInput';
 import type { IDropDownOption } from '../dropDown/DropDownInput';
 import DropDownInput from '../dropDown/DropDownInput';

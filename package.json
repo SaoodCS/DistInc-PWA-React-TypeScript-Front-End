@@ -15,7 +15,7 @@
       "test": "vitest",
       "test-watch": "vitest --watch",
       "view-unused-exports": "npx unimported",
-      "del-sw-cache": "powershell.exe -File src/global/config/script/delBrowserCache.ps1",
+      "del-sw-cache": "powershell.exe -File src/global/config/script/delBrowserSwCache.ps1",
       "init-env-and-sw": "node src/global/config/script/initEnvAndSw.js",
       "build-dev": "npm run init-env-and-sw .env.devdeployed deployed && tsc && vite build --mode devdeployed",
       "build-prod": "npm run init-env-and-sw .env.proddeployed deployed && tsc && vite build --mode proddeployed",

@@ -52,7 +52,7 @@ export default class ObjectOfObjects {
    }
 
    // function that takes an object and takes a property name in that object, converts that property from string to Date, and returns the object:
-   static convertStrPropToDate<T>(obj: T, propName: keyof T) {
+   static convertStrPropToDate<T>(obj: T, propName: keyof T): T {
       const newObj = { ...obj };
       newObj[propName] = new Date(obj[propName] as string) as T[keyof T];
       return newObj;
