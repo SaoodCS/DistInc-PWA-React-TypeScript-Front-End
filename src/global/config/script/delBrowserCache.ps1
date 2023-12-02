@@ -1,5 +1,6 @@
 #Start-Process powershell.exe -ArgumentList "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser" -Verb RunAs -Wait
 #Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
 # Get the current user's profile folder name
 $windowsUserName = $env:USERNAME
 
@@ -13,7 +14,7 @@ $folderPath = "C:\Users\$windowsUserName\AppData\Local\Google\Chrome\User Data\$
 if (Test-Path $folderPath -PathType Container) {
     # Remove the folder and its contents
     Remove-Item -Path $folderPath -Recurse -Force
-    Write-Host "Deleted Browser Cache..."
+    Write-Host "Browser cache deleted..."
 } else {
-    Write-Host "Folder '$folderPath' not found."
+    Write-Host "delBrowserCache.ps1: Folder '$folderPath' not found."
 }
