@@ -6,7 +6,7 @@ import type {
    UseQueryResult,
 } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
-import { getToken } from 'firebase/messaging';
+import { getToken, onMessage } from 'firebase/messaging';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import { messaging } from '../../../../../../global/firebase/config/config';
@@ -193,7 +193,6 @@ export default class NotifClass {
    private static async getFCMToken(): Promise<string | void> {
       try {
          return NotifClass.getRegisteredFcmSw().then((serviceWorkerRegistration) => {
-            console.log('Registered firebaseMessagingSw: ', serviceWorkerRegistration);
             return Promise.resolve(
                getToken(messaging, {
                   vapidKey: import.meta.env.VITE_VAPID_KEY,
@@ -219,5 +218,19 @@ export default class NotifClass {
             scope: '/firebase-push-notification-scope',
          }),
       );
+   }
+
+   static foregroundMessageHandler() {
+      try {
+         onMessage(messaging, (payload) => {
+            new Notification(payload.notification?.title || '', {
+               body: payload.notification?.body || '',
+            });
+         });
+      } catch (error) {
+         console.log(
+            `Client/foregroundMessageHandler: An error occurred handling foreground message: ${error}`,
+         );
+      }
    }
 }
