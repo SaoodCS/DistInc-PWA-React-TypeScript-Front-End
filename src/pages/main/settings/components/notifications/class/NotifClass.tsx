@@ -193,6 +193,7 @@ export default class NotifClass {
    private static async getFCMToken(): Promise<string | void> {
       try {
          return NotifClass.getRegisteredFcmSw().then((serviceWorkerRegistration) => {
+            console.log('Registered firebaseMessagingSw: ', serviceWorkerRegistration);
             return Promise.resolve(
                getToken(messaging, {
                   vapidKey: import.meta.env.VITE_VAPID_KEY,
@@ -206,17 +207,17 @@ export default class NotifClass {
    }
 
    static async getRegisteredFcmSw(): Promise<ServiceWorkerRegistration> {
-      if ('serviceWorker' in navigator && typeof window.navigator.serviceWorker !== 'undefined') {
-         const serviceWorker = await window.navigator.serviceWorker.getRegistration(
-            '/firebase-push-notification-scope',
-         );
-         if (serviceWorker) {
-            return serviceWorker;
-         }
-         return window.navigator.serviceWorker.register('/firebase-messaging-sw.js', {
-            scope: '/firebase-push-notification-scope',
-         });
+      const registrations = await window.navigator.serviceWorker.getRegistrations();
+      const firebaseMessagingSw = registrations.find(
+         (registration) => registration.active?.scriptURL.includes('/firebase-messaging-sw.js'),
+      );
+      if (firebaseMessagingSw) {
+         return Promise.resolve(firebaseMessagingSw);
       }
-      throw new Error('Client/getOrRegisterFCMSw: The browser doesn`t support service worker.');
+      return Promise.resolve(
+         window.navigator.serviceWorker.register('/firebase-messaging-sw.js', {
+            scope: '/firebase-push-notification-scope',
+         }),
+      );
    }
 }
