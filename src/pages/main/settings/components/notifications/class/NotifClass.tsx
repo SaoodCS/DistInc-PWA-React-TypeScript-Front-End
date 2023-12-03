@@ -233,4 +233,15 @@ export default class NotifClass {
          );
       }
    }
+
+   static async sendPushMobile(header: string, body: string) {
+      if (!('serviceWorker' in navigator)) return;
+      const registration = await navigator.serviceWorker.ready;
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+         await registration.showNotification(header, {
+            body,
+         });
+      }
+   }
 }
