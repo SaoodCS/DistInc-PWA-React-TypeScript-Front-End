@@ -26,6 +26,7 @@ export interface INotifScheduleFormInputs {
 export interface INotifSettingFirestore {
    notifSchedule?: INotifScheduleFormInputs;
    fcmToken: string;
+   badgeCount: number;
 }
 
 export default class NotifClass {
@@ -110,8 +111,8 @@ export default class NotifClass {
       options: UseMutationOptions<void, unknown, INotifSettingFirestore>,
    ): UseMutationResult<void, unknown, INotifSettingFirestore, void> {
       return useCustomMutation(
-         async (formDataAndFcmToken: INotifSettingFirestore) => {
-            const body = APIHelper.createBody(formDataAndFcmToken);
+         async (formDataFcmTokenBadgeCount: INotifSettingFirestore) => {
+            const body = APIHelper.createBody(formDataFcmTokenBadgeCount);
             const method = 'POST';
             const microserviceName = microservices.setNotifSchedule.name;
             await APIHelper.gatewayCall(body, method, microserviceName);
@@ -184,10 +185,26 @@ export default class NotifClass {
                setNotifScheduleInFirestore.mutateAsync({
                   notifSchedule: notifScheduleData?.notifSchedule || undefined,
                   fcmToken: token,
+                  badgeCount: notifScheduleData?.badgeCount || 0,
                });
             }
          }
       });
+   }
+
+   static updateBadgeCount(
+      newBadgeCount: number,
+      notifScheduleData: INotifSettingFirestore | undefined,
+      setNotifScheduleInFirestore: UseMutationResult<void, unknown, INotifSettingFirestore, void>,
+   ) {
+      setNotifScheduleInFirestore.mutateAsync({
+         notifSchedule: notifScheduleData?.notifSchedule || undefined,
+         fcmToken: notifScheduleData?.fcmToken || '',
+         badgeCount: newBadgeCount,
+      });
+      if ('setAppBadge' in navigator) {
+         navigator.setAppBadge(newBadgeCount);
+      }
    }
 
    private static async getFCMToken(): Promise<string | void> {

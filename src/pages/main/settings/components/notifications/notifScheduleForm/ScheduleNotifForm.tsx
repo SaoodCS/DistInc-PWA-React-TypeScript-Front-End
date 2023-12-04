@@ -38,9 +38,11 @@ export default function NotifScheduleForm(): JSX.Element {
       const { isFormValid } = initHandleSubmit(e);
       if (!isFormValid) return;
       const fcmToken = notifScheduleData?.fcmToken as string;
+      const badgeCount = notifScheduleData?.badgeCount as number;
       await setNotifScheduleInFirestore.mutateAsync({
          notifSchedule: form,
          fcmToken,
+         badgeCount,
       });
    }
 
@@ -50,6 +52,7 @@ export default function NotifScheduleForm(): JSX.Element {
       await deleteNotifScheduleInFirestore.mutateAsync({
          notifSchedule: form,
          fcmToken,
+         badgeCount: 0,
       });
    }
 

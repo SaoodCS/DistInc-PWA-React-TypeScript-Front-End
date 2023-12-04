@@ -23,7 +23,6 @@ import NSettings from '../../namespace/NSettings';
 import NotifClass from './class/NotifClass';
 import NotifScheduleForm from './notifScheduleForm/ScheduleNotifForm';
 import UpdateNotifSettingsModal from './updateNotifSettings/UpdateNotifSettingsModal';
-//TODO: need to handle the case of if I disable notifications on my device after it was previously enabled (check if notif permission is denied, then add a boolean to firestore which indicates that it's disabled, and delete the scheduler cloud function)
 
 export default function NotificationsSlide(): JSX.Element {
    const [settingsCarousel] = useSessionStorage(NSettings.key.currentSlide, 1);
