@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
 import { useContext, useEffect } from 'react';
 import useCarousel from '../../../../global/components/lib/carousel/hooks/useCarousel';
@@ -10,12 +11,15 @@ import useFooterContext from '../../../../global/context/widget/footer/hooks/use
 import HeaderHooks from '../../../../global/context/widget/header/hooks/HeaderHooks';
 import useHeaderContext from '../../../../global/context/widget/header/hooks/useHeaderContext';
 import { ModalContext } from '../../../../global/context/widget/modal/ModalContext';
+import microservices from '../../../../global/firebase/apis/microservices/microservices';
 import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import BoolHelper from '../../../../global/helpers/dataTypes/bool/BoolHelper';
+import MiscHelper from '../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import useSessionStorage from '../../../../global/hooks/useSessionStorage';
 import IncomeClass from '../../details/components/Income/class/Class';
 import CurrentClass from '../../details/components/accounts/current/class/Class';
 import ExpensesClass from '../../details/components/expense/class/ExpensesClass';
+import NotifClass from '../../settings/components/notifications/class/NotifClass';
 import HelpRequirements from '../components/calcPreReqList/HelpRequirements';
 import DistributeForm from '../components/form/DistributerForm';
 import NDist from '../namespace/NDist';
@@ -60,9 +64,11 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
       toggleBottomPanel,
    } = useContext(BottomPanelContext);
 
+   const queryClient = useQueryClient();
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
    const { data: income } = IncomeClass.useQuery.getIncomes();
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
+   const { data: notifScheduleData } = NotifClass.useQuery.getNotifSchedule();
    const { data: calcDistData } = NDist.API.useQuery.getCalcDist({
       onSuccess: () => {
          if (isModalOpen || isBottomPanelOpen) {
@@ -72,6 +78,11 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
             if (firstDistObj) handleItemClick(firstDistObj, 'distSteps');
             scrollToSlide(2);
          }
+      },
+   });
+   const setNotifScheduleInFirestore = NotifClass.useMutation.setNotifSchedule({
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [microservices.getNotifSchedule.name] });
       },
    });
 
@@ -124,6 +135,18 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
          setSlide1Elements();
       }
    }, [slideName, currentAccounts, income, expenses, isPortableDevice]);
+
+   useEffect(() => {
+      if (MiscHelper.isNotFalsyOrEmpty(notifScheduleData)) {
+         if (notifScheduleData.badgeCount > 0) {
+            toggleModal(true);
+            setModalHeader('Distribution Reminder');
+            setModalContent(<DistributeForm />);
+            setModalZIndex(100);
+            NotifClass.updateBadgeCount(0, notifScheduleData, setNotifScheduleInFirestore);
+         }
+      }
+   }, [notifScheduleData?.badgeCount]);
 
    function handleItemClick(
       item: NDist.IAnalytics | NDist.IDistSteps | NDist.ISavingsAccHist,

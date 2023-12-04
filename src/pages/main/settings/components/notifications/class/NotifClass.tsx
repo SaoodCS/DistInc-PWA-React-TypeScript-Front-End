@@ -207,6 +207,13 @@ export default class NotifClass {
       }
    }
 
+   static getBadgeCount() {
+      if ('getAppBadge' in navigator) {
+         return navigator.getAppBadge;
+      }
+      return 0;
+   }
+
    private static async getFCMToken(): Promise<string | void> {
       try {
          return NotifClass.getRegisteredFcmSw().then((serviceWorkerRegistration) => {
