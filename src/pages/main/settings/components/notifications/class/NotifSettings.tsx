@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
+// TODO: organize / split this class
 import type {
    UseMutationOptions,
    UseMutationResult,
@@ -29,7 +30,7 @@ export interface INotifSettingFirestore {
    badgeCount: number;
 }
 
-export default class NotifClass {
+export default class NotifSettings {
    private static inputs: InputArray<INotifScheduleFormInputs> = [
       {
          name: 'nextDate',
@@ -80,15 +81,15 @@ export default class NotifClass {
       ) {
          return ObjectOfObjects.convertStrPropToDate(notifScheduleData.notifSchedule, 'nextDate');
       }
-      return FormHelper.createInitialState(NotifClass.inputs);
+      return FormHelper.createInitialState(NotifSettings.inputs);
    }
 
-   private static initialErrors = FormHelper.createInitialErrors(NotifClass.inputs);
+   private static initialErrors = FormHelper.createInitialErrors(NotifSettings.inputs);
 
    private static validate(
       formValues: INotifScheduleFormInputs,
    ): Record<keyof INotifScheduleFormInputs, string> {
-      const formValidation = FormHelper.validation(formValues, NotifClass.inputs);
+      const formValidation = FormHelper.validation(formValues, NotifSettings.inputs);
       return formValidation;
    }
 
@@ -139,44 +140,27 @@ export default class NotifClass {
       );
    }
 
-   private static useSetFcmTokenMutation(
-      options: UseMutationOptions<void, unknown, string>,
-   ): UseMutationResult<void, unknown, string, void> {
-      return useCustomMutation(
-         async (fcmToken: string) => {
-            const body = APIHelper.createBody({ fcmToken });
-            const method = 'POST';
-            const microserviceName = microservices.setFcmToken.name;
-            await APIHelper.gatewayCall(body, method, microserviceName);
-         },
-         {
-            ...options,
-         },
-      );
-   }
-
    static form = {
-      inputs: NotifClass.inputs,
-      setInitialState: NotifClass.setInitialState,
-      initialErrors: NotifClass.initialErrors,
-      validate: NotifClass.validate,
+      inputs: NotifSettings.inputs,
+      setInitialState: NotifSettings.setInitialState,
+      initialErrors: NotifSettings.initialErrors,
+      validate: NotifSettings.validate,
    };
 
    static useQuery = {
-      getNotifSchedule: NotifClass.useNotifScheduleQuery,
+      getNotifSchedule: NotifSettings.useNotifScheduleQuery,
    };
 
    static useMutation = {
-      setFcmToken: NotifClass.useSetFcmTokenMutation,
-      setNotifSchedule: NotifClass.useSetNotifScheduleMutation,
-      delNotifSchedule: NotifClass.useDelNotifScheduleMutation,
+      setNotifSchedule: NotifSettings.useSetNotifScheduleMutation,
+      delNotifSchedule: NotifSettings.useDelNotifScheduleMutation,
    };
 
    static updateFcmToken(
       notifScheduleData: INotifSettingFirestore | undefined,
       setNotifScheduleInFirestore: UseMutationResult<void, unknown, INotifSettingFirestore, void>,
    ): void {
-      NotifClass.getFCMToken().then((token) => {
+      NotifSettings.getFCMToken().then((token) => {
          if (token) {
             const storedFcmToken = notifScheduleData?.fcmToken;
             console.log('storedFcmToken', storedFcmToken);
@@ -207,16 +191,9 @@ export default class NotifClass {
       }
    }
 
-   static getBadgeCount() {
-      if ('getAppBadge' in navigator) {
-         return navigator.getAppBadge;
-      }
-      return 0;
-   }
-
    private static async getFCMToken(): Promise<string | void> {
       try {
-         return NotifClass.getRegisteredFcmSw().then((serviceWorkerRegistration) => {
+         return NotifSettings.getRegisteredFcmSw().then((serviceWorkerRegistration) => {
             return Promise.resolve(
                getToken(messaging, {
                   vapidKey: import.meta.env.VITE_VAPID_KEY,

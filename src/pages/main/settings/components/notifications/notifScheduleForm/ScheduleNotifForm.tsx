@@ -8,27 +8,27 @@ import useThemeContext from '../../../../../../global/context/theme/hooks/useThe
 import useApiErrorContext from '../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import useForm from '../../../../../../global/hooks/useForm';
-import NotifClass from '../class/NotifClass';
+import NotifSettings from '../class/NotifSettings';
 
 export default function NotifScheduleForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const { apiError } = useApiErrorContext();
-   const { data: notifScheduleData } = NotifClass.useQuery.getNotifSchedule({});
+   const { data: notifScheduleData } = NotifSettings.useQuery.getNotifSchedule({});
    const { form, errors, handleChange, initHandleSubmit } = useForm(
-      NotifClass.form.setInitialState(notifScheduleData),
-      NotifClass.form.initialErrors,
-      NotifClass.form.validate,
+      NotifSettings.form.setInitialState(notifScheduleData),
+      NotifSettings.form.initialErrors,
+      NotifSettings.form.validate,
    );
 
    const queryClient = useQueryClient();
 
-   const setNotifScheduleInFirestore = NotifClass.useMutation.setNotifSchedule({
+   const setNotifScheduleInFirestore = NotifSettings.useMutation.setNotifSchedule({
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: [microservices.getNotifSchedule.name] });
       },
    });
 
-   const deleteNotifScheduleInFirestore = NotifClass.useMutation.delNotifSchedule({
+   const deleteNotifScheduleInFirestore = NotifSettings.useMutation.delNotifSchedule({
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: [microservices.getNotifSchedule.name] });
       },
@@ -58,7 +58,7 @@ export default function NotifScheduleForm(): JSX.Element {
 
    return (
       <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
-         {NotifClass.form.inputs.map((input) => (
+         {NotifSettings.form.inputs.map((input) => (
             <InputCombination
                key={input.id}
                placeholder={input.placeholder}

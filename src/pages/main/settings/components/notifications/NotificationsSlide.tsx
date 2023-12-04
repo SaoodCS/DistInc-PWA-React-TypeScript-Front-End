@@ -20,7 +20,7 @@ import BoolHelper from '../../../../../global/helpers/dataTypes/bool/BoolHelper'
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useSessionStorage from '../../../../../global/hooks/useSessionStorage';
 import NSettings from '../../namespace/NSettings';
-import NotifClass from './class/NotifClass';
+import NotifSettings from './class/NotifSettings';
 import NotifScheduleForm from './notifScheduleForm/ScheduleNotifForm';
 import UpdateNotifSettingsModal from './updateNotifSettings/UpdateNotifSettingsModal';
 
@@ -35,17 +35,17 @@ export default function NotificationsSlide(): JSX.Element {
    const { toggleBottomPanel, setBottomPanelContent, setBottomPanelHeading, setBottomPanelZIndex } =
       useContext(BottomPanelContext);
    const [notifPermission, setNotifPermission] = useState(Notification.permission);
-   const { data: notifScheduleData } = NotifClass.useQuery.getNotifSchedule({
+   const { data: notifScheduleData } = NotifSettings.useQuery.getNotifSchedule({
       onSuccess: (data) => {
          if (Notification.permission === 'granted') {
-            NotifClass.updateFcmToken(data, setNotifScheduleInFirestore);
+            NotifSettings.updateFcmToken(data, setNotifScheduleInFirestore);
          }
       },
    });
 
    const queryClient = useQueryClient();
 
-   const setNotifScheduleInFirestore = NotifClass.useMutation.setNotifSchedule({
+   const setNotifScheduleInFirestore = NotifSettings.useMutation.setNotifSchedule({
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: [microservices.getNotifSchedule.name] });
       },
@@ -62,7 +62,7 @@ export default function NotificationsSlide(): JSX.Element {
          Notification.requestPermission().then((permission) => {
             setNotifPermission(permission);
             if (permission === 'granted') {
-               NotifClass.updateFcmToken(notifScheduleData, setNotifScheduleInFirestore);
+               NotifSettings.updateFcmToken(notifScheduleData, setNotifScheduleInFirestore);
             }
          });
       } else {

@@ -19,7 +19,7 @@ import useSessionStorage from '../../../../global/hooks/useSessionStorage';
 import IncomeClass from '../../details/components/Income/class/Class';
 import CurrentClass from '../../details/components/accounts/current/class/Class';
 import ExpensesClass from '../../details/components/expense/class/ExpensesClass';
-import NotifClass from '../../settings/components/notifications/class/NotifClass';
+import NotifSettings from '../../settings/components/notifications/class/NotifSettings';
 import HelpRequirements from '../components/calcPreReqList/HelpRequirements';
 import DistributeForm from '../components/form/DistributerForm';
 import NDist from '../namespace/NDist';
@@ -68,7 +68,7 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
    const { data: income } = IncomeClass.useQuery.getIncomes();
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
-   const { data: notifScheduleData } = NotifClass.useQuery.getNotifSchedule();
+   const { data: notifScheduleData } = NotifSettings.useQuery.getNotifSchedule();
    const { data: calcDistData } = NDist.API.useQuery.getCalcDist({
       onSuccess: () => {
          if (isModalOpen || isBottomPanelOpen) {
@@ -80,7 +80,7 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
          }
       },
    });
-   const setNotifScheduleInFirestore = NotifClass.useMutation.setNotifSchedule({
+   const setNotifScheduleInFirestore = NotifSettings.useMutation.setNotifSchedule({
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: [microservices.getNotifSchedule.name] });
       },
@@ -147,7 +147,7 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
       if (MiscHelper.isNotFalsyOrEmpty(notifScheduleData)) {
          if (notifScheduleData.badgeCount > 0) {
             rightElClick(true);
-            NotifClass.updateBadgeCount(0, notifScheduleData, setNotifScheduleInFirestore);
+            NotifSettings.updateBadgeCount(0, notifScheduleData, setNotifScheduleInFirestore);
          }
       }
 
