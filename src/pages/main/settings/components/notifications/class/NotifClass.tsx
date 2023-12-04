@@ -19,7 +19,7 @@ import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutat
 export type IRecurrenceOptions = 'Daily' | 'Weekly' | 'Monthly' | 'Yearly';
 
 export interface INotifScheduleFormInputs {
-   startDate: Date | string;
+   nextDate: Date | string;
    recurrence: IRecurrenceOptions;
 }
 
@@ -31,16 +31,16 @@ export interface INotifSettingFirestore {
 export default class NotifClass {
    private static inputs: InputArray<INotifScheduleFormInputs> = [
       {
-         name: 'startDate',
-         id: 'schedule-notif-start-date',
-         placeholder: 'Start Date',
+         name: 'nextDate',
+         id: 'schedule-notif-next-date',
+         placeholder: 'Date',
          type: 'date',
          isRequired: true,
          validator: (value: unknown): string | true => {
             if (value instanceof Date) {
                return true;
             }
-            return 'Start Date is required';
+            return 'Date is required';
          },
       },
       {
@@ -77,7 +77,7 @@ export default class NotifClass {
          MiscHelper.isNotFalsyOrEmpty(notifScheduleData) &&
          MiscHelper.isNotFalsyOrEmpty(notifScheduleData.notifSchedule)
       ) {
-         return ObjectOfObjects.convertStrPropToDate(notifScheduleData.notifSchedule, 'startDate');
+         return ObjectOfObjects.convertStrPropToDate(notifScheduleData.notifSchedule, 'nextDate');
       }
       return FormHelper.createInitialState(NotifClass.inputs);
    }
