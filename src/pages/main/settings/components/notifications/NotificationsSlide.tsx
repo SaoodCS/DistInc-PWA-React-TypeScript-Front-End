@@ -35,7 +35,7 @@ export default function NotificationsSlide(): JSX.Element {
    const { toggleBottomPanel, setBottomPanelContent, setBottomPanelHeading, setBottomPanelZIndex } =
       useContext(BottomPanelContext);
    const [notifPermission, setNotifPermission] = useState(Notification.permission);
-   const { data: notifScheduleData } = NotifSettings.useQuery.getNotifSchedule({
+   const { data: notifScheduleData } = NotifSettings.useQuery.getNotifSettings({
       onSuccess: (data) => {
          if (Notification.permission === 'granted') {
             NotifSettings.updateFcmToken(data, setNotifScheduleInFirestore);
@@ -45,9 +45,9 @@ export default function NotificationsSlide(): JSX.Element {
 
    const queryClient = useQueryClient();
 
-   const setNotifScheduleInFirestore = NotifSettings.useMutation.setNotifSchedule({
+   const setNotifScheduleInFirestore = NotifSettings.useMutation.setNotifSettings({
       onSuccess: () => {
-         queryClient.invalidateQueries({ queryKey: [microservices.getNotifSchedule.name] });
+         queryClient.invalidateQueries({ queryKey: [microservices.getNotifSettings.name] });
       },
    });
 

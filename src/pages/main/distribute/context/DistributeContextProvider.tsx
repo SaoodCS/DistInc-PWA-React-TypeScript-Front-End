@@ -68,7 +68,7 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
    const { data: income } = IncomeClass.useQuery.getIncomes();
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
-   const { data: notifScheduleData } = NotifSettings.useQuery.getNotifSchedule();
+   const { data: notifScheduleData } = NotifSettings.useQuery.getNotifSettings();
    const { data: calcDistData } = NDist.API.useQuery.getCalcDist({
       onSuccess: () => {
          if (isModalOpen || isBottomPanelOpen) {
@@ -80,9 +80,9 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
          }
       },
    });
-   const setNotifScheduleInFirestore = NotifSettings.useMutation.setNotifSchedule({
+   const setNotifScheduleInFirestore = NotifSettings.useMutation.setNotifSettings({
       onSuccess: () => {
-         queryClient.invalidateQueries({ queryKey: [microservices.getNotifSchedule.name] });
+         queryClient.invalidateQueries({ queryKey: [microservices.getNotifSettings.name] });
       },
    });
 

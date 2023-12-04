@@ -76,16 +76,16 @@ const microservices = {
       los: 1,
    },
 
-   getNotifSchedule: {
-      name: 'getNotifSchedule',
+   getNotifSettings: {
+      name: 'getNotifSettings',
       los: 1,
    },
-   setNotifSchedule: {
-      name: 'setNotifSchedule',
+   setNotifSettings: {
+      name: 'setNotifSettings',
       los: 1,
    },
-   delNotifSchedule: {
-      name: 'deleteNotifSchedule',
+   delNotifSettings: {
+      name: 'deleteNotifSettings',
       los: 1,
    },
 };

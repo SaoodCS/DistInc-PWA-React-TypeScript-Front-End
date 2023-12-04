@@ -93,29 +93,29 @@ export default class NotifSettings {
       return formValidation;
    }
 
-   private static useNotifScheduleQuery(
+   private static useNotifSettingsQuery(
       options: UseQueryOptions<INotifSettingFirestore> = {},
    ): UseQueryResult<INotifSettingFirestore, unknown> {
       return useQuery({
-         queryKey: [microservices.getNotifSchedule.name],
+         queryKey: [microservices.getNotifSettings.name],
          queryFn: () =>
             APIHelper.gatewayCall<INotifSettingFirestore>(
                undefined,
                'GET',
-               microservices.getNotifSchedule.name,
+               microservices.getNotifSettings.name,
             ),
          ...options,
       });
    }
 
-   private static useSetNotifScheduleMutation(
+   private static useSetNotifSettingsMutation(
       options: UseMutationOptions<void, unknown, INotifSettingFirestore>,
    ): UseMutationResult<void, unknown, INotifSettingFirestore, void> {
       return useCustomMutation(
          async (formDataFcmTokenBadgeCount: INotifSettingFirestore) => {
             const body = APIHelper.createBody(formDataFcmTokenBadgeCount);
             const method = 'POST';
-            const microserviceName = microservices.setNotifSchedule.name;
+            const microserviceName = microservices.setNotifSettings.name;
             await APIHelper.gatewayCall(body, method, microserviceName);
          },
          {
@@ -124,14 +124,14 @@ export default class NotifSettings {
       );
    }
 
-   private static useDelNotifScheduleMutation(
+   private static useDelNotifSettingsMutation(
       options: UseMutationOptions<void, unknown, INotifSettingFirestore>,
    ): UseMutationResult<void, unknown, INotifSettingFirestore, void> {
       return useCustomMutation(
          async (formDataAndFcmToken: INotifSettingFirestore) => {
             const body = APIHelper.createBody(formDataAndFcmToken);
             const method = 'POST';
-            const microserviceName = microservices.delNotifSchedule.name;
+            const microserviceName = microservices.delNotifSettings.name;
             await APIHelper.gatewayCall(body, method, microserviceName);
          },
          {
@@ -148,12 +148,12 @@ export default class NotifSettings {
    };
 
    static useQuery = {
-      getNotifSchedule: NotifSettings.useNotifScheduleQuery,
+      getNotifSettings: NotifSettings.useNotifSettingsQuery,
    };
 
    static useMutation = {
-      setNotifSchedule: NotifSettings.useSetNotifScheduleMutation,
-      delNotifSchedule: NotifSettings.useDelNotifScheduleMutation,
+      setNotifSettings: NotifSettings.useSetNotifSettingsMutation,
+      delNotifSettings: NotifSettings.useDelNotifSettingsMutation,
    };
 
    static updateFcmToken(

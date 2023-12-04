@@ -13,7 +13,7 @@ import NotifSettings from '../class/NotifSettings';
 export default function NotifScheduleForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const { apiError } = useApiErrorContext();
-   const { data: notifScheduleData } = NotifSettings.useQuery.getNotifSchedule({});
+   const { data: notifScheduleData } = NotifSettings.useQuery.getNotifSettings({});
    const { form, errors, handleChange, initHandleSubmit } = useForm(
       NotifSettings.form.setInitialState(notifScheduleData),
       NotifSettings.form.initialErrors,
@@ -22,15 +22,15 @@ export default function NotifScheduleForm(): JSX.Element {
 
    const queryClient = useQueryClient();
 
-   const setNotifScheduleInFirestore = NotifSettings.useMutation.setNotifSchedule({
+   const setNotifScheduleInFirestore = NotifSettings.useMutation.setNotifSettings({
       onSuccess: () => {
-         queryClient.invalidateQueries({ queryKey: [microservices.getNotifSchedule.name] });
+         queryClient.invalidateQueries({ queryKey: [microservices.getNotifSettings.name] });
       },
    });
 
-   const deleteNotifScheduleInFirestore = NotifSettings.useMutation.delNotifSchedule({
+   const deleteNotifScheduleInFirestore = NotifSettings.useMutation.delNotifSettings({
       onSuccess: () => {
-         queryClient.invalidateQueries({ queryKey: [microservices.getNotifSchedule.name] });
+         queryClient.invalidateQueries({ queryKey: [microservices.getNotifSettings.name] });
       },
    });
 
