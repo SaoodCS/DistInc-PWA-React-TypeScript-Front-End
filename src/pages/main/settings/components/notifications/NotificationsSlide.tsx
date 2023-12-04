@@ -20,7 +20,7 @@ import BoolHelper from '../../../../../global/helpers/dataTypes/bool/BoolHelper'
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useSessionStorage from '../../../../../global/hooks/useSessionStorage';
 import NSettings from '../../namespace/NSettings';
-import NotifSettings from './class/NotifSettings';
+import Notif from './namespace/Notif';
 import NotifScheduleForm from './notifScheduleForm/ScheduleNotifForm';
 import UpdateNotifSettingsModal from './updateNotifSettings/UpdateNotifSettingsModal';
 
@@ -35,17 +35,17 @@ export default function NotificationsSlide(): JSX.Element {
    const { toggleBottomPanel, setBottomPanelContent, setBottomPanelHeading, setBottomPanelZIndex } =
       useContext(BottomPanelContext);
    const [notifPermission, setNotifPermission] = useState(Notification.permission);
-   const { data: notifScheduleData } = NotifSettings.useQuery.getNotifSettings({
+   const { data: notifScheduleData } = Notif.DataStore.useQuery.getNotifSettings({
       onSuccess: (data) => {
          if (Notification.permission === 'granted') {
-            NotifSettings.updateFcmToken(data, setNotifScheduleInFirestore);
+            Notif.DataStore.updateFcmToken(data, setNotifScheduleInFirestore);
          }
       },
    });
 
    const queryClient = useQueryClient();
 
-   const setNotifScheduleInFirestore = NotifSettings.useMutation.setNotifSettings({
+   const setNotifScheduleInFirestore = Notif.DataStore.useMutation.setNotifSettings({
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: [microservices.getNotifSettings.name] });
       },
@@ -62,7 +62,7 @@ export default function NotificationsSlide(): JSX.Element {
          Notification.requestPermission().then((permission) => {
             setNotifPermission(permission);
             if (permission === 'granted') {
-               NotifSettings.updateFcmToken(notifScheduleData, setNotifScheduleInFirestore);
+               Notif.DataStore.updateFcmToken(notifScheduleData, setNotifScheduleInFirestore);
             }
          });
       } else {

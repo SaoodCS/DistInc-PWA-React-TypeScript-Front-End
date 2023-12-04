@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import useCarousel from '../../../../global/components/lib/carousel/hooks/useCarousel';
 import { AddIcon } from '../../../../global/components/lib/icons/add/AddIcon';
 import { QMarkIcon } from '../../../../global/components/lib/icons/qMark/QMark';
@@ -19,7 +19,7 @@ import useSessionStorage from '../../../../global/hooks/useSessionStorage';
 import IncomeClass from '../../details/components/Income/class/Class';
 import CurrentClass from '../../details/components/accounts/current/class/Class';
 import ExpensesClass from '../../details/components/expense/class/ExpensesClass';
-import NotifSettings from '../../settings/components/notifications/class/NotifSettings';
+import Notif from '../../settings/components/notifications/namespace/Notif';
 import HelpRequirements from '../components/calcPreReqList/HelpRequirements';
 import DistributeForm from '../components/form/DistributerForm';
 import NDist from '../namespace/NDist';
@@ -68,7 +68,7 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
    const { data: income } = IncomeClass.useQuery.getIncomes();
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
-   const { data: notifScheduleData } = NotifSettings.useQuery.getNotifSettings();
+   const { data: notifScheduleData } = Notif.DataStore.useQuery.getNotifSettings();
    const { data: calcDistData } = NDist.API.useQuery.getCalcDist({
       onSuccess: () => {
          if (isModalOpen || isBottomPanelOpen) {
@@ -80,8 +80,9 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
          }
       },
    });
-   const setNotifScheduleInFirestore = NotifSettings.useMutation.setNotifSettings({
+   const setNotifScheduleInFirestore = Notif.DataStore.useMutation.setNotifSettings({
       onSuccess: () => {
+         // eslint-disable-next-line @typescript-eslint/no-floating-promises
          queryClient.invalidateQueries({ queryKey: [microservices.getNotifSettings.name] });
       },
    });
@@ -147,7 +148,7 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
       if (MiscHelper.isNotFalsyOrEmpty(notifScheduleData)) {
          if (notifScheduleData.badgeCount > 0) {
             rightElClick(true);
-            NotifSettings.updateBadgeCount(0, notifScheduleData, setNotifScheduleInFirestore);
+            Notif.DataStore.updateBadgeCount(0, notifScheduleData, setNotifScheduleInFirestore);
          }
       }
 

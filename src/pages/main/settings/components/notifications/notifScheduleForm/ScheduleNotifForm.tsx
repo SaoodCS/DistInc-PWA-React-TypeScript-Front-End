@@ -8,27 +8,27 @@ import useThemeContext from '../../../../../../global/context/theme/hooks/useThe
 import useApiErrorContext from '../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import useForm from '../../../../../../global/hooks/useForm';
-import NotifSettings from '../class/NotifSettings';
+import Notif from '../namespace/Notif';
 
 export default function NotifScheduleForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const { apiError } = useApiErrorContext();
-   const { data: notifScheduleData } = NotifSettings.useQuery.getNotifSettings({});
+   const { data: notifScheduleData } = Notif.DataStore.useQuery.getNotifSettings();
    const { form, errors, handleChange, initHandleSubmit } = useForm(
-      NotifSettings.form.setInitialState(notifScheduleData),
-      NotifSettings.form.initialErrors,
-      NotifSettings.form.validate,
+      Notif.Schedule.form.setInitialState(notifScheduleData),
+      Notif.Schedule.form.initialErrors,
+      Notif.Schedule.form.validate,
    );
 
    const queryClient = useQueryClient();
 
-   const setNotifScheduleInFirestore = NotifSettings.useMutation.setNotifSettings({
+   const setNotifScheduleInFirestore = Notif.DataStore.useMutation.setNotifSettings({
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: [microservices.getNotifSettings.name] });
       },
    });
 
-   const deleteNotifScheduleInFirestore = NotifSettings.useMutation.delNotifSettings({
+   const deleteNotifScheduleInFirestore = Notif.DataStore.useMutation.delNotifSettings({
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: [microservices.getNotifSettings.name] });
       },
@@ -58,7 +58,7 @@ export default function NotifScheduleForm(): JSX.Element {
 
    return (
       <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
-         {NotifSettings.form.inputs.map((input) => (
+         {Notif.Schedule.form.inputs.map((input) => (
             <InputCombination
                key={input.id}
                placeholder={input.placeholder}
