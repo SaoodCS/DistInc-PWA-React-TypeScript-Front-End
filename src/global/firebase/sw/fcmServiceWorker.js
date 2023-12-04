@@ -15,10 +15,10 @@ const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(function (payload) {
    console.log('Received background message ', payload);
-   const notificationTitle = payload.notification.title;
+   const notificationTitle = payload.data.title;
    const badgeCountNo = Number(payload.data.badgeCount);
    const notificationOptions = {
-      body: payload.notification.body,
+      body: payload.data.body,
       data: { url: payload.data.onClickLink },
    };
    if ('setAppBadge' in navigator) {

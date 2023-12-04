@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import useCarousel from '../../../../global/components/lib/carousel/hooks/useCarousel';
 import { AddIcon } from '../../../../global/components/lib/icons/add/AddIcon';
 import { QMarkIcon } from '../../../../global/components/lib/icons/qMark/QMark';
@@ -86,6 +86,20 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
       },
    });
 
+   const rightElClick = (areAllPreReqMet: boolean): void => {
+      if (!isPortableDevice) {
+         toggleModal(true);
+         setModalHeader(areAllPreReqMet ? 'Distribute' : 'Requirements');
+         setModalContent(areAllPreReqMet ? <DistributeForm /> : <HelpRequirements />);
+         setModalZIndex(100);
+      } else {
+         toggleBottomPanel(true);
+         setBottomPanelHeading(areAllPreReqMet ? 'Distribute' : 'Requirements');
+         setBottomPanelContent(areAllPreReqMet ? <DistributeForm /> : <HelpRequirements />);
+         setBottomPanelZIndex(100);
+      }
+   };
+
    function setSlide2Elements(): void {
       setHandleBackBtnClick(() => scrollToSlide(1));
       setHandleFooterItemSecondClick(() => scrollToSlide(1));
@@ -103,22 +117,15 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
          expenses || {},
       );
       const darktheme = BoolHelper.boolToStr(isDarkTheme);
-      const rightElClick = (): void => {
-         if (!isPortableDevice) {
-            toggleModal(true);
-            setModalHeader(areAllPreReqMet ? 'Distribute' : 'Requirements');
-            setModalContent(areAllPreReqMet ? <DistributeForm /> : <HelpRequirements />);
-            setModalZIndex(100);
-         } else {
-            toggleBottomPanel(true);
-            setBottomPanelHeading(areAllPreReqMet ? 'Distribute' : 'Requirements');
-            setBottomPanelContent(areAllPreReqMet ? <DistributeForm /> : <HelpRequirements />);
-            setBottomPanelZIndex(100);
-         }
-      };
+
       if (areAllPreReqMet)
-         setHeaderRightElement(<AddIcon darktheme={darktheme} onClick={rightElClick} />);
-      else setHeaderRightElement(<QMarkIcon darktheme={darktheme} onClick={rightElClick} />);
+         setHeaderRightElement(
+            <AddIcon darktheme={darktheme} onClick={() => rightElClick(areAllPreReqMet)} />,
+         );
+      else
+         setHeaderRightElement(
+            <QMarkIcon darktheme={darktheme} onClick={() => rightElClick(areAllPreReqMet)} />,
+         );
    }
 
    useEffect(() => {
@@ -139,13 +146,12 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
    useEffect(() => {
       if (MiscHelper.isNotFalsyOrEmpty(notifScheduleData)) {
          if (notifScheduleData.badgeCount > 0) {
-            toggleModal(true);
-            setModalHeader('Distribution Reminder');
-            setModalContent(<DistributeForm />);
-            setModalZIndex(100);
+            rightElClick(true);
             NotifClass.updateBadgeCount(0, notifScheduleData, setNotifScheduleInFirestore);
          }
       }
+
+      // also run when the user returns to the app from the background:
    }, [notifScheduleData?.badgeCount]);
 
    function handleItemClick(
