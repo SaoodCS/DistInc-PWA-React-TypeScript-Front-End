@@ -6,6 +6,7 @@ import App from './App';
 import InstallAppModal from './global/components/app/modals/installAppModal/InstallAppModal';
 import GlobalUtils from './global/config/GlobalConfig';
 import AuthContextProvider from './global/context/auth/AuthContextProvider';
+import DeviceContextProvider from './global/context/device/DeviceContextProvider';
 import ThemeContextProvider from './global/context/theme/ThemeContextProvider';
 
 GlobalUtils.config.chartJSRegister;
@@ -15,12 +16,13 @@ function Root(): JSX.Element {
       <StrictMode>
          <QueryClientProvider client={GlobalUtils.config.queryClient}>
             <ThemeContextProvider>
-               <AuthContextProvider>
-                  <InstallAppModal />
-                  {/* <EnablePushNotifModal /> */}
-                  <App />
-                  <ReactQueryDevtools initialIsOpen={false} />
-               </AuthContextProvider>
+               <DeviceContextProvider>
+                  <AuthContextProvider>
+                     <InstallAppModal />
+                     <App />
+                     <ReactQueryDevtools initialIsOpen={false} />
+                  </AuthContextProvider>
+               </DeviceContextProvider>
             </ThemeContextProvider>
          </QueryClientProvider>
       </StrictMode>
