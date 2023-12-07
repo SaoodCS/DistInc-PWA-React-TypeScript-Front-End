@@ -15,7 +15,7 @@ export default function NotificationReminderModal(props: INotificationReminderMo
       <>
          <TextColourizer>You are due to distribute your income!</TextColourizer>
          <VerticalSeperator margBottomEm={1} />
-         <StyledLink to="main/distribute">
+         <StyledLink to="main/distribute" replace={true}>
             <FlexColumnWrapper alignItems="end">
                <TextBtn isDarkTheme={isDarkTheme} onClick={() => toggleModal(false)}>
                   Go to Distribute
