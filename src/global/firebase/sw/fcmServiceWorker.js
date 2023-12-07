@@ -46,38 +46,17 @@ self.addEventListener('notificationclick', function (event) {
    );
 });
 
-// clients.openWindow iOS Safari WebPush API Bugs:
-// Bug 1: if there is already an instance of the PWA running in the background, after clicking the notif it sometimes opens a new instance of an installed PWA and navigates to the url instead of opening the current instance of the PWA and navigating to the url
-// Bug 2: if there is alreadt an instance of the PWA running in the background, after clicking the notif it sometimes opens the current instance of the PWA but does not navigate to the url
-// The only case where it works as expected is if there is no instance of the PWA running in the background
-// Another bug found: when I install the PWA then run it in the background on Windows, after clicking the notif it opens a new instance of the PWA and navigates to the url instead of opening the current instance of the PWA and navigating to the url
+// Desktop Functionality:
+// Scenario 1: If the client receives a push notification whilst the app is in the foreground, the onMessage handler handles the notification rather than this service worker.
+// Scenario 2: If the client clicks on the push notification whilst the app is running in the background:
+// -- The running instance of the app is brought to the foreground, but the user is not navigated to the event.notification.data.url webpage.
+// Scenario 3: If the client clicks on the push notification whilst there is no running instance of the app in the background:
+// -- A new instance of the app is created and the user is successfully navigated to the event.notification.data.url webpage.
 
-// (Basically in short it always opens a new window with client.openWindow())
-
-//Why does this always open a new window when i click the notif even when there is already one open?
-
-// ChatGPT?:
-// self.addEventListener('notificationclick', function (event) {
-//    event.notification.close();
-//    event.waitUntil(
-//       clients.matchAll({ type: 'window' }).then(function (clientList) {
-//          let foundFocusedClient = false;
-
-//          for (let i = 0; i < clientList.length; i++) {
-//             const client = clientList[i];
-//             if ('focus' in client) {
-//                client.focus();
-//                foundFocusedClient = true;
-//                break;  // Break the loop if a focused client is found
-//             }
-//          }
-
-//          if (!foundFocusedClient) {
-//             const isIphone = /iphone|ipod|ipad/i.test(navigator.userAgent);
-//             if (!isIphone && clients.openWindow) {
-//                return clients.openWindow(event.notification.data.url);
-//             }
-//          }
-//       }),
-//    );
-// });
+// Mobile Functionality (iOS):
+// Scenario 1: If the client clicks a push notification whilst the app is in the foreground:
+// -- Nothing happens (the firebase onMessage handler is not yet compatible with Safari on iOS)
+// Sceanrio 2: If the client clicks on the push notification whilst the app is running in the background:
+// -- The running instance of the app is brought to the foreground, but the user is not navigated to the event.notification.data.url webpage.
+// Scenario 3: If the client clicks on the push notification whilst there is no running instance of the app in the background:
+// -- A new instance of the app is created but the user is not navigated to the event.notification.data.url webpage.
