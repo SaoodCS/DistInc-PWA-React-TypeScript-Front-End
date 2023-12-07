@@ -20,4 +20,7 @@ export default class Device {
          return false;
       }
    }
+   static isSystemDarkTheme = (): boolean => window.matchMedia(`(prefers-color-scheme: dark)`).matches;
+   
+
 }

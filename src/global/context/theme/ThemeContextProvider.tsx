@@ -5,6 +5,7 @@ import SplashScreen from '../../components/lib/splashScreen/SplashScreen';
 import MyCSS from '../../css/MyCSS';
 import Color from '../../css/colors';
 import { GlobalTheme } from '../../css/theme';
+import Device from '../../helpers/pwa/deviceHelper';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { ThemeContext } from './ThemeContext';
 
@@ -14,16 +15,11 @@ interface IThemeContextProvider {
 
 export default function ThemeContextProvider(props: IThemeContextProvider): JSX.Element {
    const { children } = props;
-   const [isDarkTheme, setIsDarkTheme] = useLocalStorage(
-      `isDarkTheme`,
-      window.matchMedia(`(prefers-color-scheme: dark)`).matches,
-   );
+   const [isDarkTheme, setIsDarkTheme] = useLocalStorage(`isDarkTheme`, Device.isSystemDarkTheme());
    const [isPortableDevice, setIsPortableDevice] = useState<boolean>(
       window.innerWidth < MyCSS.PortableBp.asNum,
    );
-   const [showSplashScreen, setShowSplashScreen] = useState(
-      window.matchMedia(`(display-mode: standalone)`).matches,
-   );
+   const [showSplashScreen, setShowSplashScreen] = useState(Device.isPwa());
 
    useEffect(() => {
       let timer: NodeJS.Timeout | null = null;
