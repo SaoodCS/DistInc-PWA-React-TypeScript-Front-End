@@ -157,19 +157,19 @@ export namespace Notif {
       };
 
       export function updateFcmToken(
-         notifScheduleData: ISettings | undefined,
-         setNotifScheduleInFirestore: UseMutationResult<void, unknown, ISettings, void>,
+         notifSettingsData: ISettings | undefined,
+         setNotifSettingsInFirestore: UseMutationResult<void, unknown, ISettings, void>,
       ): void {
          Notif.FcmHelper.getToken().then((token) => {
             if (token) {
-               const storedFcmToken = notifScheduleData?.fcmToken;
+               const storedFcmToken = notifSettingsData?.fcmToken;
                // console.log('storedFcmToken', storedFcmToken);
                // console.log('token', token);
                if (storedFcmToken !== token) {
-                  setNotifScheduleInFirestore.mutateAsync({
-                     notifSchedule: notifScheduleData?.notifSchedule || undefined,
+                  setNotifSettingsInFirestore.mutateAsync({
+                     notifSchedule: notifSettingsData?.notifSchedule || undefined,
                      fcmToken: token,
-                     badgeCount: notifScheduleData?.badgeCount || 0,
+                     badgeCount: notifSettingsData?.badgeCount || 0,
                   });
                }
             }
@@ -178,12 +178,12 @@ export namespace Notif {
 
       export function updateBadgeCount(
          newBadgeCount: number,
-         notifScheduleData: ISettings | undefined,
-         setNotifScheduleInFirestore: UseMutationResult<void, unknown, ISettings, void>,
+         notifSettingsData: ISettings | undefined,
+         setNotifSettingsInFirestore: UseMutationResult<void, unknown, ISettings, void>,
       ): void {
-         setNotifScheduleInFirestore.mutateAsync({
-            notifSchedule: notifScheduleData?.notifSchedule || undefined,
-            fcmToken: notifScheduleData?.fcmToken || '',
+         setNotifSettingsInFirestore.mutateAsync({
+            notifSchedule: notifSettingsData?.notifSchedule || undefined,
+            fcmToken: notifSettingsData?.fcmToken || '',
             badgeCount: newBadgeCount,
          });
          if ('setAppBadge' in navigator) {

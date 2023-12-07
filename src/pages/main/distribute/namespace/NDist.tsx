@@ -143,6 +143,17 @@ export namespace NDist {
          }
          return false;
       }
+
+      static hasToday(calcDistData: NDist.ISchema): boolean {
+         if (ObjectOfObjects.isEmpty(calcDistData)) return false;
+         const today = DateHelper.toDDMMYYYY(new Date());
+         const { analytics } = calcDistData;
+         if (!MiscHelper.isNotFalsyOrEmpty(analytics)) return false;
+         for (const analyticsObj of analytics) {
+            if (analyticsObj.timestamp === today) return true;
+         }
+         return false;
+      }
    }
 
    export namespace Carousel {

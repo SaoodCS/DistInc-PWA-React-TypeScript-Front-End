@@ -22,7 +22,7 @@ export default function NotifScheduleForm(): JSX.Element {
 
    const queryClient = useQueryClient();
 
-   const setNotifScheduleInFirestore = Notif.DataStore.useMutation.setNotifSettings({
+   const setNotifSettingsInFirestore = Notif.DataStore.useMutation.setNotifSettings({
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: [microservices.getNotifSettings.name] });
       },
@@ -39,7 +39,7 @@ export default function NotifScheduleForm(): JSX.Element {
       if (!isFormValid) return;
       const fcmToken = notifScheduleData?.fcmToken as string;
       const badgeCount = notifScheduleData?.badgeCount as number;
-      await setNotifScheduleInFirestore.mutateAsync({
+      await setNotifSettingsInFirestore.mutateAsync({
          notifSchedule: form,
          fcmToken,
          badgeCount,

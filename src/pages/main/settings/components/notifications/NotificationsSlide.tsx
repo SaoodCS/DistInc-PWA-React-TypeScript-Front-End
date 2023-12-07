@@ -38,14 +38,14 @@ export default function NotificationsSlide(): JSX.Element {
    const { data: notifScheduleData } = Notif.DataStore.useQuery.getNotifSettings({
       onSuccess: (data) => {
          if (Notification.permission === 'granted') {
-            Notif.DataStore.updateFcmToken(data, setNotifScheduleInFirestore);
+            Notif.DataStore.updateFcmToken(data, setNotifSettingsInFirestore);
          }
       },
    });
 
    const queryClient = useQueryClient();
 
-   const setNotifScheduleInFirestore = Notif.DataStore.useMutation.setNotifSettings({
+   const setNotifSettingsInFirestore = Notif.DataStore.useMutation.setNotifSettings({
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: [microservices.getNotifSettings.name] });
       },
@@ -62,7 +62,7 @@ export default function NotificationsSlide(): JSX.Element {
          Notification.requestPermission().then((permission) => {
             setNotifPermission(permission);
             if (permission === 'granted') {
-               Notif.DataStore.updateFcmToken(notifScheduleData, setNotifScheduleInFirestore);
+               Notif.DataStore.updateFcmToken(notifScheduleData, setNotifSettingsInFirestore);
             }
          });
       } else {

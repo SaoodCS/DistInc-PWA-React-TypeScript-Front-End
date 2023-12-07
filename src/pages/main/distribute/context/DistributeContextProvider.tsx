@@ -70,11 +70,11 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
    const { data: notifScheduleData } = Notif.DataStore.useQuery.getNotifSettings();
    const { data: calcDistData } = NDist.API.useQuery.getCalcDist({
-      onSuccess: () => {
+      onSuccess: (data) => {
          if (isModalOpen || isBottomPanelOpen) {
             toggleModal(false);
             toggleBottomPanel(false);
-            const firstDistObj = calcDistData?.distSteps[0];
+            const firstDistObj = data.distSteps[0];
             if (firstDistObj) handleItemClick(firstDistObj, 'distSteps');
             scrollToSlide(2);
          }
@@ -143,17 +143,6 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
          setSlide1Elements();
       }
    }, [slideName, currentAccounts, income, expenses, isPortableDevice]);
-
-   useEffect(() => {
-      if (MiscHelper.isNotFalsyOrEmpty(notifScheduleData)) {
-         if (notifScheduleData.badgeCount > 0) {
-            rightElClick(true);
-            Notif.DataStore.updateBadgeCount(0, notifScheduleData, setNotifScheduleInFirestore);
-         }
-      }
-
-      // also run when the user returns to the app from the background:
-   }, [notifScheduleData?.badgeCount]);
 
    function handleItemClick(
       item: NDist.IAnalytics | NDist.IDistSteps | NDist.ISavingsAccHist,
