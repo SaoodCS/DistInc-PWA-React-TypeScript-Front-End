@@ -8,6 +8,7 @@ import {
 } from '../../global/components/app/layout/header/Header';
 import Sidebar from '../../global/components/app/layout/sidebar/Sidebar';
 import ConditionalRender from '../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
+import NotificationContextProvider from '../../global/context/notification/NotificationContextProvider';
 import useThemeContext from '../../global/context/theme/hooks/useThemeContext';
 import useHeaderContext from '../../global/context/widget/header/hooks/useHeaderContext';
 import BoolHelper from '../../global/helpers/dataTypes/bool/BoolHelper';
@@ -18,27 +19,29 @@ export default function MainLayout(): JSX.Element {
 
    return (
       <>
-         <Header isDarkTheme={isDarkTheme}>
-            <ConditionalRender condition={showBackBtn}>
-               <StyledBackArr
-                  onClick={handleBackBtnClick}
-                  darktheme={BoolHelper.boolToStr(isDarkTheme)}
-               />
+         <NotificationContextProvider>
+            <Header isDarkTheme={isDarkTheme}>
+               <ConditionalRender condition={showBackBtn}>
+                  <StyledBackArr
+                     onClick={handleBackBtnClick}
+                     darktheme={BoolHelper.boolToStr(isDarkTheme)}
+                  />
+               </ConditionalRender>
+               {headerTitle}
+               <HeaderRightElWrapper isDarkTheme={isDarkTheme}>
+                  {headerRightElement}
+               </HeaderRightElWrapper>
+            </Header>
+            <Body isDarkTheme={isDarkTheme}>
+               <Outlet />
+            </Body>
+            <ConditionalRender condition={!isPortableDevice}>
+               <Sidebar />
             </ConditionalRender>
-            {headerTitle}
-            <HeaderRightElWrapper isDarkTheme={isDarkTheme}>
-               {headerRightElement}
-            </HeaderRightElWrapper>
-         </Header>
-         <Body isDarkTheme={isDarkTheme}>
-            <Outlet />
-         </Body>
-         <ConditionalRender condition={!isPortableDevice}>
-            <Sidebar />
-         </ConditionalRender>
-         <ConditionalRender condition={isPortableDevice}>
-            <Footer />
-         </ConditionalRender>
+            <ConditionalRender condition={isPortableDevice}>
+               <Footer />
+            </ConditionalRender>
+         </NotificationContextProvider>
       </>
    );
 }

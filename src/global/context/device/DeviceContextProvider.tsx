@@ -13,9 +13,7 @@ export default function DeviceContextProvider(props: IDeviceContextProvider): JS
       const handleVisibilityChange = () => {
          setIsInForeground(!document.hidden);
       };
-
       window.addEventListener('visibilitychange', handleVisibilityChange);
-
       return () => {
          window.removeEventListener('visibilitychange', handleVisibilityChange);
       };
