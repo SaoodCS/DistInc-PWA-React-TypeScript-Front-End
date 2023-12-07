@@ -41,15 +41,7 @@ export default function NotifContextProvider(props: INotifContextProvider): JSX.
 
    useEffect(() => {
       if (isInForeground) {
-         refetch().then((res) => {
-            if (res.data && res.data.badgeCount > 0) {
-               setModalHeader('Reminder');
-               setModalContent(<NotificationReminderModal toggleModal={toggleModal} />);
-               setModalZIndex(100);
-               toggleModal(true);
-               Notif.DataStore.updateBadgeCount(0, res.data, setNotifSettingsInFirestore);
-            }
-         });
+         handleBadgeAction();
       }
    }, [isInForeground]);
 

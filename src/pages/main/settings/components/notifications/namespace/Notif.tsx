@@ -195,6 +195,7 @@ export namespace Notif {
    export namespace FcmHelper {
       export function onForegroundListener(options?: { postNotifFunc?: Function }): void {
          try {
+            // Note: this onMessage listener is not yet supported in iOS PWA
             onMessage(messaging, (payload) => {
                new Notification(payload.data?.title || 'New Notification', {
                   body: payload.data?.body || '',
