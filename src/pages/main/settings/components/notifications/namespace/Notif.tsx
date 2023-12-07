@@ -6,7 +6,7 @@ import type {
    UseQueryResult,
 } from '@tanstack/react-query';
 import { useQuery as useReactQuery } from '@tanstack/react-query';
-import { getToken as getFcmToken, onMessage } from 'firebase/messaging';
+import { MessagePayload, getToken as getFcmToken, onMessage } from 'firebase/messaging';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import { messaging } from '../../../../../../global/firebase/config/config';
@@ -193,12 +193,15 @@ export namespace Notif {
    }
 
    export namespace FcmHelper {
-      export function onForegroundListener(): void {
+      export function onForegroundListener(options?: { postNotifFunc?: Function }): void {
          try {
             onMessage(messaging, (payload) => {
-               new Notification(payload.notification?.title || '', {
-                  body: payload.notification?.body || '',
+               new Notification(payload.data?.title || 'New Notification', {
+                  body: payload.data?.body || '',
                });
+               if (options && options.postNotifFunc) {
+                  options.postNotifFunc();
+               }
             });
          } catch (error) {
             console.error(
