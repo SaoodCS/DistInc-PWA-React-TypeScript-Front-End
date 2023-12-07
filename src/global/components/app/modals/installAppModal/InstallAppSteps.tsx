@@ -6,7 +6,12 @@ import { TextIndenter } from '../../../lib/font/textIndenter/TextIndenter';
 import { VerticalSeperator } from '../../../lib/positionModifiers/verticalSeperator/VerticalSeperator';
 import ConditionalRender from '../../../lib/renderModifiers/conditionalRender/ConditionalRender';
 
-export default function InstallAppSteps(): JSX.Element {
+interface IInstallAppSteps {
+   title?: string;
+}
+
+export default function InstallAppSteps(props: IInstallAppSteps): JSX.Element {
+   const { title } = props;
    const iPhoneInstallSteps = [
       'Tap the share button',
       'Tap "Add to Home Screen"',
@@ -30,6 +35,12 @@ export default function InstallAppSteps(): JSX.Element {
 
    return (
       <>
+         <ConditionalRender condition={!!title}>
+            <TextColourizer bold>
+               {title}
+               <VerticalSeperator />
+            </TextColourizer>
+         </ConditionalRender>
          <ConditionalRender condition={Device.isIphone()}>
             {iPhoneInstallSteps.map((step, index) => (
                <Fragment key={step}>

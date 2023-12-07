@@ -11,7 +11,6 @@ import {
    ItemSubElement,
    MenuListWrapper,
 } from '../../../global/components/lib/menuList/Style';
-import { VerticalSeperator } from '../../../global/components/lib/positionModifiers/verticalSeperator/VerticalSeperator';
 import ConditionalRender from '../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
 import FooterHooks from '../../../global/context/widget/footer/hooks/FooterHooks';
@@ -67,13 +66,7 @@ export default function Settings(): JSX.Element {
          const supportsFcm = await Device.hasFCMSupport();
          if (item.name === 'Notifications' && !supportsFcm) {
             setModalHeader('Notifications');
-            setModalContent(
-               <>
-                  To Manage your notifications, please install the app:
-                  <VerticalSeperator />
-                  <InstallAppSteps />
-               </>,
-            );
+            setModalContent(<InstallAppSteps title="Install app to manage notifications" />);
             setModalZIndex(100);
             toggleModal(true);
             return;

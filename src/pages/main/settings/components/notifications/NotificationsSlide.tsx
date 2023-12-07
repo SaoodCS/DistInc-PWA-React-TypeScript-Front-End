@@ -74,11 +74,9 @@ export default function NotificationsSlide(): JSX.Element {
    }
 
    function handleScheduleNotifForm(): void {
-      if (!notifScheduleData?.fcmToken) {
+      if (!notifScheduleData?.fcmToken || notifPermission !== 'granted') {
          setModalHeader('Notification Settings');
-         setModalContent(
-            <>Please enable notifications on your device first before setting a reminder</>,
-         );
+         setModalContent(<>Please enable notifications on your device first</>);
          setModalZIndex(100);
          toggleModal(true);
          return;
