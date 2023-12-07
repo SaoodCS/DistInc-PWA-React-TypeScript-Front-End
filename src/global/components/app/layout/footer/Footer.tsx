@@ -20,6 +20,7 @@ export default function Footer(): JSX.Element {
                key={item.name}
                to={item.name}
                onClick={() => isActive(item.name) && handleFooterItemSecondClick(item.name)}
+               replace = {true}
             >
                <FooterItem key={item.name} isActive={isActive(item.name)} isDarkTheme={isDarkTheme}>
                   {item.icon}
