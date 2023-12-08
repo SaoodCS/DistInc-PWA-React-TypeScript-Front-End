@@ -3,7 +3,7 @@
 /// <reference types="vite/client" />
 import react from '@vitejs/plugin-react';
 import fs from 'fs';
-import type { ServerOptions } from 'vite';
+import type { ESBuildOptions, ServerOptions } from 'vite';
 import { defineConfig, loadEnv } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
@@ -11,6 +11,7 @@ const oneDayInSeconds = 86400;
 
 export default defineConfig(({ mode }) => {
    const env = loadEnv(mode, process.cwd(), '');
+
    const runningVar = env.VITE_RUNNING as 'locally' | 'deployed';
    const isRunningLocally = runningVar === 'locally';
    const localUrlPattern = /^https?.*/;
@@ -26,6 +27,15 @@ export default defineConfig(({ mode }) => {
          };
       }
       return undefined;
+   };
+
+   const buildOptions = (): ESBuildOptions => {
+      if (!mode.includes('dev')) {
+         return {
+            drop: ['console', 'debugger'],
+         };
+      }
+      return {};
    };
 
    return {
@@ -88,6 +98,8 @@ export default defineConfig(({ mode }) => {
             },
          }),
       ],
+      esbuild: buildOptions(),
+
       test: {
          globals: true,
          environment: 'jsdom',
