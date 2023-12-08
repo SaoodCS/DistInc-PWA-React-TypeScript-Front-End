@@ -6,7 +6,11 @@ import type {
    UseQueryResult,
 } from '@tanstack/react-query';
 import { useQuery as useReactQuery } from '@tanstack/react-query';
-import { MessagePayload, getToken as getFcmToken, onMessage } from 'firebase/messaging';
+import {
+   getToken as getFcmToken,
+   isSupported as isFcmSupported,
+   onMessage,
+} from 'firebase/messaging';
 import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import { messaging } from '../../../../../../global/firebase/config/config';
@@ -193,6 +197,16 @@ export namespace Notif {
    }
 
    export namespace FcmHelper {
+      export async function isSupported(): Promise<boolean> {
+         try {
+            const isSupportedResult = await isFcmSupported();
+            return isSupportedResult;
+         } catch (error) {
+            console.error(`Client/FcmHelper.isSupported: An error occurred: ${error}`);
+            return false;
+         }
+      }
+
       export function onForegroundListener(options?: { postNotifFunc?: Function }): void {
          try {
             // Note: this onMessage listener is not yet supported in iOS PWA

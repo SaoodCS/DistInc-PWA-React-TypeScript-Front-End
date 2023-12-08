@@ -24,6 +24,7 @@ import Device from '../../../global/helpers/pwa/deviceHelper';
 import useSessionStorage from '../../../global/hooks/useSessionStorage';
 import AccountSlide from './components/account/AccountSlide';
 import NotificationsSlide from './components/notifications/NotificationsSlide';
+import Notif from './components/notifications/namespace/Notif';
 import NSettings from './namespace/NSettings';
 
 export default function Settings(): JSX.Element {
@@ -63,7 +64,7 @@ export default function Settings(): JSX.Element {
 
    async function handleItemClick(item: NSettings.ISettingsOptions): Promise<void> {
       if (item.hasSlide) {
-         const supportsFcm = await Device.hasFCMSupport();
+         const supportsFcm = await Notif.FcmHelper.isSupported();
          if (item.name === 'Notifications' && !supportsFcm) {
             setModalHeader('Notifications');
             setModalContent(<InstallAppSteps title="Install app to manage notifications" />);
