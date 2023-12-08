@@ -1,5 +1,4 @@
 /* eslint-disable unused-imports/no-unused-vars */
-// TODO: need to test this if i were to pass custom functions when using this too
 import type {
    MutationFunction,
    UseMutationOptions,
