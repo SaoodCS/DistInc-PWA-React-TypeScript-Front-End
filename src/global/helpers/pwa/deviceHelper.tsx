@@ -9,5 +9,6 @@ export default class Device {
    static isUsingBrowser = (): boolean => window.matchMedia('(display-mode: browser)').matches;
    static isOnline = (): boolean => window.navigator.onLine;
    static hasPushNotifSupport = (): boolean => 'PushManager' in window;
-   static isSystemDarkTheme = (): boolean => window.matchMedia(`(prefers-color-scheme: dark)`).matches;
+   static isSystemDarkTheme = (): boolean =>
+      window.matchMedia(`(prefers-color-scheme: dark)`).matches;
 }

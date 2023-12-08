@@ -206,7 +206,9 @@ export namespace Notif {
          }
       }
 
-      export function onForegroundListener(options?: { postNotifFunc?: Function }): void {
+      export function onForegroundListener(options?: {
+         postNotifFunc?: () => Promise<void> | (() => void);
+      }): void {
          try {
             // Note: this onMessage listener is not yet supported in iOS PWA
             onMessage(messaging, (payload) => {

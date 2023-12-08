@@ -20,7 +20,6 @@ import useHeaderContext from '../../../global/context/widget/header/hooks/useHea
 import { ModalContext } from '../../../global/context/widget/modal/ModalContext';
 import { auth } from '../../../global/firebase/config/config';
 import StringHelper from '../../../global/helpers/dataTypes/string/StringHelper';
-import Device from '../../../global/helpers/pwa/deviceHelper';
 import useSessionStorage from '../../../global/hooks/useSessionStorage';
 import AccountSlide from './components/account/AccountSlide';
 import NotificationsSlide from './components/notifications/NotificationsSlide';

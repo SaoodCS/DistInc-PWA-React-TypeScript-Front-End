@@ -7,7 +7,7 @@ export default function useURLState<T extends string>({
    key: string;
    defaultValue?: T;
 }): [T, (value: T) => void] {
-   const [searchParams, setSearchParams] = useSearchParams();
+   const [searchParams] = useSearchParams();
    const navigate = useNavigate();
 
    const setter = (value: T): void => {

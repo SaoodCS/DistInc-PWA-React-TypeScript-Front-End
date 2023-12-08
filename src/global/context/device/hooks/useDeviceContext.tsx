@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import { DeviceContext, IDeviceContext } from '../DeviceContext';
+import type { IDeviceContext } from '../DeviceContext';
+import { DeviceContext } from '../DeviceContext';
 
 export default function useDeviceContext(): IDeviceContext {
    const { isInForeground } = useContext(DeviceContext);

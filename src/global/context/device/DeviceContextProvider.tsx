@@ -1,4 +1,5 @@
-import { ReactNode, useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 import { DeviceContext } from './DeviceContext';
 
 interface IDeviceContextProvider {
@@ -10,7 +11,7 @@ export default function DeviceContextProvider(props: IDeviceContextProvider): JS
    const [isInForeground, setIsInForeground] = useState(true);
 
    useEffect(() => {
-      const handleVisibilityChange = () => {
+      const handleVisibilityChange = (): void => {
          setIsInForeground(!document.hidden);
       };
       window.addEventListener('visibilitychange', handleVisibilityChange);
