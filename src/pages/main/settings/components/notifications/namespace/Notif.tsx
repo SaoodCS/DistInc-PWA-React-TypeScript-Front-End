@@ -226,30 +226,36 @@ export namespace Notif {
       }
 
       export async function registerServiceWorker(): Promise<ServiceWorkerRegistration> {
-         const registrations = await window.navigator.serviceWorker.getRegistrations();
-         const firebaseMessagingSw = registrations.find(
-            (registration) => registration.active?.scriptURL.includes('/firebase-messaging-sw.js'),
-         );
-         if (firebaseMessagingSw) {
-            return Promise.resolve(firebaseMessagingSw);
-         }
-         return Promise.resolve(
-            window.navigator.serviceWorker.register('/firebase-messaging-sw.js', {
+         try {
+            const registrations = await window.navigator.serviceWorker.getRegistrations();
+            const firebaseMessagingSw = registrations.find(
+               (registration) =>
+                  registration.active?.scriptURL.includes('/firebase-messaging-sw.js'),
+            );
+            if (firebaseMessagingSw) {
+               return firebaseMessagingSw;
+            }
+            const sw = await window.navigator.serviceWorker.register('/firebase-messaging-sw.js', {
                scope: '/firebase-push-notification-scope',
-            }),
-         );
+            });
+            await sw.update();
+            return sw;
+         } catch (error) {
+            console.error(
+               `Client/registerServiceWorker: An error occurred registering service worker: ${error}`,
+            );
+            return Promise.reject(error);
+         }
       }
 
       export async function getToken(): Promise<string | void> {
          try {
-            return Notif.FcmHelper.registerServiceWorker().then((serviceWorkerRegistration) => {
-               return Promise.resolve(
-                  getFcmToken(messaging, {
-                     vapidKey: import.meta.env.VITE_VAPID_KEY,
-                     serviceWorkerRegistration,
-                  }),
-               );
+            const registeredWorker = await registerServiceWorker();
+            const token = await getFcmToken(messaging, {
+               vapidKey: import.meta.env.VITE_VAPID_KEY,
+               serviceWorkerRegistration: registeredWorker,
             });
+            return token;
          } catch (error) {
             console.error(`Client/getFCMToken: An error occurred retrieving fcm token: ${error}`);
          }
