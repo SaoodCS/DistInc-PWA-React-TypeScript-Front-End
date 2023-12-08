@@ -24,8 +24,8 @@ export const StyledSelect = styled.select.attrs<IStyledSelectAttr>(
    border: none;
    font-size: 1em;
    width: 100%;
+   cursor: pointer;
    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-
    color: ${({ isDisabled, isDarkTheme }) =>
       isDisabled && Color.setRgbOpacity(isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt, 0.6)};
 
@@ -67,6 +67,7 @@ export const DropDownLabelWrapper = styled(LabelWrapper)`
    height: fit-content;
    align-items: end;
    position: relative;
+   z-index: -1;
 `;
 
 export const StyledOption = styled.option<{ isDarkTheme: boolean }>`
