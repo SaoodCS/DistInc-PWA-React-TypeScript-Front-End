@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useContext, useEffect, useState } from 'react';
 import { Switcher } from '../../../../../global/components/lib/button/switch/Style';
 import { HorizontalMenuDots } from '../../../../../global/components/lib/icons/menu/HorizontalMenuDots';
+import Loader from '../../../../../global/components/lib/loader/fullScreen/Loader';
 import {
    IconAndNameWrapper,
    ItemContainer,
@@ -17,6 +18,7 @@ import { BottomPanelContext } from '../../../../../global/context/widget/bottomP
 import { ModalContext } from '../../../../../global/context/widget/modal/ModalContext';
 import microservices from '../../../../../global/firebase/apis/microservices/microservices';
 import BoolHelper from '../../../../../global/helpers/dataTypes/bool/BoolHelper';
+import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useSessionStorage from '../../../../../global/hooks/useSessionStorage';
 import NSettings from '../../namespace/NSettings';
@@ -35,7 +37,11 @@ export default function NotificationsSlide(): JSX.Element {
    const { toggleBottomPanel, setBottomPanelContent, setBottomPanelHeading, setBottomPanelZIndex } =
       useContext(BottomPanelContext);
    const [notifPermission, setNotifPermission] = useState(Notification.permission);
-   const { data: notifScheduleData } = Notif.DataStore.useQuery.getNotifSettings({
+   const {
+      data: notifScheduleData,
+      isLoading,
+      isPaused,
+   } = Notif.DataStore.useQuery.getNotifSettings({
       onSuccess: (data) => {
          if (Notification.permission === 'granted') {
             Notif.DataStore.updateFcmToken(data, setNotifSettingsInFirestore);
@@ -61,7 +67,7 @@ export default function NotificationsSlide(): JSX.Element {
       if (notifPermission === 'default') {
          Notification.requestPermission().then((permission) => {
             setNotifPermission(permission);
-            if (permission === 'granted') {
+            if (permission === 'granted' && MiscHelper.isNotFalsyOrEmpty(notifScheduleData)) {
                Notif.DataStore.updateFcmToken(notifScheduleData, setNotifSettingsInFirestore);
             }
          });
@@ -71,6 +77,10 @@ export default function NotificationsSlide(): JSX.Element {
          setModalZIndex(100);
          toggleModal(true);
       }
+   }
+
+   if (isLoading && !isPaused) {
+      return <Loader isDisplayed />;
    }
 
    function handleScheduleNotifForm(): void {

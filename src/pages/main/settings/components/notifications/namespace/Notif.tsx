@@ -160,10 +160,10 @@ export namespace Notif {
          },
       };
 
-      export function updateFcmToken(
-         notifSettingsData: ISettings | undefined,
+      export async function updateFcmToken(
+         notifSettingsData: ISettings,
          setNotifSettingsInFirestore: UseMutationResult<void, unknown, ISettings, void>,
-      ): void {
+      ): Promise<void> {
          Notif.FcmHelper.getToken().then((token) => {
             if (token) {
                const storedFcmToken = notifSettingsData?.fcmToken;
@@ -171,9 +171,9 @@ export namespace Notif {
                // console.log('token', token);
                if (storedFcmToken !== token) {
                   setNotifSettingsInFirestore.mutateAsync({
-                     notifSchedule: notifSettingsData?.notifSchedule || undefined,
+                     notifSchedule: notifSettingsData.notifSchedule,
                      fcmToken: token,
-                     badgeCount: notifSettingsData?.badgeCount || 0,
+                     badgeCount: notifSettingsData.badgeCount || 0,
                   });
                }
             }
