@@ -63,14 +63,13 @@ export default function NotificationsSlide(): JSX.Element {
       }
    }, []);
 
-   function toggleNotifPermission(): void {
+   async function toggleNotifPermission(): Promise<void> {
       if (notifPermission === 'default') {
-         Notification.requestPermission().then((permission) => {
-            setNotifPermission(permission);
-            if (permission === 'granted' && MiscHelper.isNotFalsyOrEmpty(notifScheduleData)) {
-               Notif.DataStore.updateFcmToken(notifScheduleData, setNotifSettingsInFirestore);
-            }
-         });
+         const permission = await Notification.requestPermission();
+         setNotifPermission(permission);
+         if (permission === 'granted' && MiscHelper.isNotFalsyOrEmpty(notifScheduleData)) {
+            await Notif.DataStore.updateFcmToken(notifScheduleData, setNotifSettingsInFirestore);
+         }
       } else {
          setModalHeader('Notification Settings');
          setModalContent(<UpdateNotifSettingsModal />);

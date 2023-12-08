@@ -164,20 +164,19 @@ export namespace Notif {
          notifSettingsData: ISettings,
          setNotifSettingsInFirestore: UseMutationResult<void, unknown, ISettings, void>,
       ): Promise<void> {
-         Notif.FcmHelper.getToken().then((token) => {
-            if (token) {
-               const storedFcmToken = notifSettingsData?.fcmToken;
-               // console.log('storedFcmToken', storedFcmToken);
-               // console.log('token', token);
-               if (storedFcmToken !== token) {
-                  setNotifSettingsInFirestore.mutateAsync({
-                     notifSchedule: notifSettingsData.notifSchedule,
-                     fcmToken: token,
-                     badgeCount: notifSettingsData.badgeCount || 0,
-                  });
-               }
+         const token = await Notif.FcmHelper.getToken();
+         if (token) {
+            const storedFcmToken = notifSettingsData?.fcmToken;
+            // console.log('storedFcmToken', storedFcmToken);
+            // console.log('token', token);
+            if (storedFcmToken !== token) {
+               setNotifSettingsInFirestore.mutateAsync({
+                  notifSchedule: notifSettingsData.notifSchedule,
+                  fcmToken: token,
+                  badgeCount: notifSettingsData.badgeCount || 0,
+               });
             }
-         });
+         }
       }
 
       export function updateBadgeCount(
@@ -228,18 +227,21 @@ export namespace Notif {
       export async function registerServiceWorker(): Promise<ServiceWorkerRegistration> {
          try {
             const registrations = await window.navigator.serviceWorker.getRegistrations();
-            const firebaseMessagingSw = registrations.find(
+            const fcmSwReg = registrations.find(
                (registration) =>
                   registration.active?.scriptURL.includes('/firebase-messaging-sw.js'),
             );
-            if (firebaseMessagingSw) {
-               return firebaseMessagingSw;
+            if (fcmSwReg) {
+               return fcmSwReg;
             }
-            const sw = await window.navigator.serviceWorker.register('/firebase-messaging-sw.js', {
-               scope: '/firebase-push-notification-scope',
-            });
-            await sw.update();
-            return sw;
+            const newFcmSwReg = await window.navigator.serviceWorker.register(
+               '/firebase-messaging-sw.js',
+               {
+                  scope: '/firebase-push-notification-scope',
+               },
+            );
+            await newFcmSwReg.update();
+            return newFcmSwReg;
          } catch (error) {
             console.error(
                `Client/registerServiceWorker: An error occurred registering service worker: ${error}`,
