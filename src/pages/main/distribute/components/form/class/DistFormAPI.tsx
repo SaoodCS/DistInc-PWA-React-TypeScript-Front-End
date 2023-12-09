@@ -23,10 +23,13 @@ export default class DistFormAndAPI {
 
    private inputs(): InputArray<{ [x: number]: number }> {
       const mappedCurrentAccounts = this.currentAccounts.map((currentAccount) => {
+         const isSalaryAndExpenses = currentAccount.accountType === 'Salary & Expenses';
+         const defaultPlaceholder = `${currentAccount.accountName} Leftover`;
+         const salaryExpPlaceholder = `${defaultPlaceholder} (Before Monthly Wage)`;
          return {
             name: currentAccount.id,
             id: `leftovers-${currentAccount.accountName}`,
-            placeholder: `${currentAccount.accountName} Leftover (Before Monthly Wage)`,
+            placeholder: isSalaryAndExpenses ? salaryExpPlaceholder : defaultPlaceholder,
             type: 'number',
             isRequired: true,
             validator: (value: number): string | true => {
