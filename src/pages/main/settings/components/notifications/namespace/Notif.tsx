@@ -200,7 +200,7 @@ export namespace Notif {
          newBadgeCount: number,
          notifSettingsData: ISettings,
          setNotifSettingsInFirestore: UseMutationResult<void, unknown, ISettings, void>,
-      ) {
+      ): Promise<void> {
          const token = await Notif.FcmHelper.getToken();
          if (token && notifSettingsData.fcmToken !== token) {
             setNotifSettingsInFirestore.mutateAsync({
