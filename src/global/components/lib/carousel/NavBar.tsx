@@ -31,17 +31,22 @@ export const NavBarHeading = styled.button<{ isActive: boolean; isDarkTheme: boo
    border-bottom: ${({ isActive, isDarkTheme }) =>
       isActive
          ? isDarkTheme
-            ? `1.5px solid ${Color.darkThm.accent}`
-            : `1.5px solid ${Color.lightThm.accent}`
+            ? `1.75px solid ${Color.darkThm.accent}`
+            : `1.75px solid ${Color.lightThm.accent}`
          : 'none'};
-   transition: border-bottom 0.2s ease-in-out;
+   transition: all 0.2s ease-in-out;
    box-sizing: border-box;
+
    cursor: pointer;
+   color: ${({ isActive, isDarkTheme }) => {
+      const color = isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt;
+      return isActive ? color : Color.setRgbOpacity(color, 0.6);
+   }};
 
    ${({ isDarkTheme }) => {
       const changeToColor = Color.setRgbOpacity(
          isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt,
-         0.7,
+         1,
       );
       const desktop = MyCSS.Clickables.desktop.changeColorOnHover(changeToColor, 'color');
       const mobile = MyCSS.Clickables.portable.changeColorOnClick(changeToColor, 'color', 'revert');
