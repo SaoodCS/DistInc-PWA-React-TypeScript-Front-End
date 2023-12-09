@@ -19,7 +19,7 @@ messaging.onBackgroundMessage(function (payload) {
    const badgeCountNo = Number(payload.data.badgeCount);
    const notificationOptions = {
       body: payload.data.body,
-      data: { url: payload.data.onClickLink },
+      data: { url: `${self.location.origin}${payload.data.onClickSubRoute}` },
    };
    if ('setAppBadge' in navigator) {
       navigator.setAppBadge(badgeCountNo).catch((error) => {
