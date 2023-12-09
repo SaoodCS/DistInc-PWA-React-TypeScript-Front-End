@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { CardLoadingPlaceholder } from '../../../../../global/components/lib/dashboardCards/placeholder/CardLoadingPlaceholder';
 import FetchError from '../../../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import { CurrencyOnCardTxt } from '../../../../../global/components/lib/font/currencyOnCardText/CurrencyOnCardTxt';
@@ -11,22 +12,21 @@ import Color from '../../../../../global/css/colors';
 import ArrayOfObjects from '../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import NumberHelper from '../../../../../global/helpers/dataTypes/number/NumberHelper';
-import NDist from '../../../distribute/namespace/NDist';
-import { CardLoadingPlaceholder } from '../../../../../global/components/lib/dashboardCards/placeholder/CardLoadingPlaceholder';
+import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
+import IncomeClass from '../../../details/components/Income/class/Class';
 
 export default function TotalIncome(): JSX.Element {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
-   const { data: calcDistData, isLoading, isPaused, error } = NDist.API.useQuery.getCalcDist();
-   const [latestTotalIncome, setLatestTotalIncome] = useState<number>(0);
+   const { data: incomeData, isLoading, isPaused, error } = IncomeClass.useQuery.getIncomes();
+   const [totalIncome, setTotalIncome] = useState<number>(0);
 
    useEffect(() => {
-      const analytics = calcDistData?.analytics;
-      if (MiscHelper.isNotFalsyOrEmpty(analytics)) {
-         const orderedAnalytics = ArrayOfObjects.sortByDateStr(analytics, 'timestamp', true);
-         const latestAnalytics = orderedAnalytics[0];
-         setLatestTotalIncome(latestAnalytics.totalIncomes);
+      if (MiscHelper.isNotFalsyOrEmpty(incomeData)) {
+         const incomeDataAsArr = ObjectOfObjects.convertToArrayOfObj(incomeData);
+         const total = ArrayOfObjects.calcSumOfKeyValue(incomeDataAsArr, 'incomeValue');
+         setTotalIncome(total);
       }
-   }, [calcDistData]);
+   }, [incomeData]);
 
    if (isLoading && !isPaused && isPortableDevice) {
       return <CardLoadingPlaceholder isDarkTheme={isDarkTheme} />;
@@ -38,7 +38,7 @@ export default function TotalIncome(): JSX.Element {
          </FlexCenterer>
       );
    }
-   if (error || !calcDistData) {
+   if (error || !incomeData) {
       return (
          <FlexCenterer height="90%" width="100%">
             <FetchError iconHeightEm={2} />
@@ -61,7 +61,7 @@ export default function TotalIncome(): JSX.Element {
          </TextColourizer>
 
          <TextColourizer padding="0em 0em 0em 0.2em">
-            <ConditionalRender condition={latestTotalIncome !== 0}>
+            <ConditionalRender condition={totalIncome !== 0}>
                <CurrencyOnCardTxt
                   isDarkTheme={isDarkTheme}
                   color={Color.setRgbOpacity(
@@ -69,10 +69,10 @@ export default function TotalIncome(): JSX.Element {
                      0.8,
                   )}
                >
-                  {NumberHelper.asCurrencyStr(latestTotalIncome, true)}
+                  {NumberHelper.asCurrencyStr(totalIncome, true)}
                </CurrencyOnCardTxt>
             </ConditionalRender>
-            <ConditionalRender condition={latestTotalIncome === 0}>
+            <ConditionalRender condition={totalIncome === 0}>
                <TextColourizer color={'darkgrey'} fontSize="0.85em">
                   No Data to Display
                </TextColourizer>

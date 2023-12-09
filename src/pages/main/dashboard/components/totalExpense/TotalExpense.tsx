@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { CardLoadingPlaceholder } from '../../../../../global/components/lib/dashboardCards/placeholder/CardLoadingPlaceholder';
 import FetchError from '../../../../../global/components/lib/fetch/fetchError/FetchError';
 import OfflineFetch from '../../../../../global/components/lib/fetch/offlineFetch/offlineFetch';
 import { CurrencyOnCardTxt } from '../../../../../global/components/lib/font/currencyOnCardText/CurrencyOnCardTxt';
@@ -11,22 +12,21 @@ import Color from '../../../../../global/css/colors';
 import ArrayOfObjects from '../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import NumberHelper from '../../../../../global/helpers/dataTypes/number/NumberHelper';
-import NDist from '../../../distribute/namespace/NDist';
-import { CardLoadingPlaceholder } from '../../../../../global/components/lib/dashboardCards/placeholder/CardLoadingPlaceholder';
+import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
+import ExpensesClass from '../../../details/components/expense/class/ExpensesClass';
 
 export default function TotalExpense(): JSX.Element {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
-   const { data: calcDistData, isLoading, isPaused, error } = NDist.API.useQuery.getCalcDist();
+   const { data: expenseData, isLoading, isPaused, error } = ExpensesClass.useQuery.getExpenses();
    const [latestTotalExpense, setLatestTotalExpense] = useState<number>(0);
 
    useEffect(() => {
-      const analytics = calcDistData?.analytics;
-      if (MiscHelper.isNotFalsyOrEmpty(analytics)) {
-         const orderedAnalytics = ArrayOfObjects.sortByDateStr(analytics, 'timestamp', true);
-         const latestAnalytics = orderedAnalytics[0];
-         setLatestTotalExpense(latestAnalytics.totalExpenses);
+      if (MiscHelper.isNotFalsyOrEmpty(expenseData)) {
+         const expenseDataAsArr = ObjectOfObjects.convertToArrayOfObj(expenseData);
+         const total = ArrayOfObjects.calcSumOfKeyValue(expenseDataAsArr, 'expenseValue');
+         setLatestTotalExpense(total);
       }
-   }, [calcDistData]);
+   }, [expenseData]);
 
    if (isLoading && !isPaused && isPortableDevice) {
       return <CardLoadingPlaceholder isDarkTheme={isDarkTheme} />;
@@ -38,7 +38,7 @@ export default function TotalExpense(): JSX.Element {
          </FlexCenterer>
       );
    }
-   if (error || !calcDistData) {
+   if (error || !expenseData) {
       return (
          <FlexCenterer height="90%" width="100%">
             <FetchError iconHeightEm={2} />

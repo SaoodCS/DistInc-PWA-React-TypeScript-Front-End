@@ -88,4 +88,17 @@ export default class ArrayOfObjects {
       }
       return sortedArr;
    }
+
+   static calcSumOfKeyValue<T>(arr: T[], key: keyof T): number {
+      let sum = 0;
+      for (let i = 0; i < arr.length; i++) {
+         const keyValue = arr[i][key];
+         const keyValueAsNumber = Number(keyValue);
+         if (isNaN(keyValueAsNumber)) {
+            throw new Error('Value is not a number');
+         }
+         sum += keyValueAsNumber;
+      }
+      return sum;
+   }
 }
