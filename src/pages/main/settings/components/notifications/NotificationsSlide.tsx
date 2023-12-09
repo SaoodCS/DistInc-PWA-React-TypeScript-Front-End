@@ -41,13 +41,7 @@ export default function NotificationsSlide(): JSX.Element {
       data: notifScheduleData,
       isLoading,
       isPaused,
-   } = Notif.DataStore.useQuery.getNotifSettings({
-      onSuccess: (data) => {
-         if (Notification.permission === 'granted') {
-            Notif.DataStore.updateFcmToken(data, setNotifSettingsInFirestore);
-         }
-      },
-   });
+   } = Notif.DataStore.useQuery.getNotifSettings();
 
    const queryClient = useQueryClient();
 

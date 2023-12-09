@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { useQueryClient } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
 import { useContext, useEffect } from 'react';
@@ -21,7 +22,6 @@ export default function NotifContextProvider(props: INotifContextProvider): JSX.
    const queryClient = useQueryClient();
    const setNotifSettingsInFirestore = Notif.DataStore.useMutation.setNotifSettings({
       onSuccess: () => {
-         // eslint-disable-next-line @typescript-eslint/no-floating-promises
          queryClient.invalidateQueries({ queryKey: [microservices.getNotifSettings.name] });
       },
    });
@@ -32,7 +32,15 @@ export default function NotifContextProvider(props: INotifContextProvider): JSX.
          setModalContent(<NotificationReminderModal toggleModal={toggleModal} />);
          setModalZIndex(100);
          toggleModal(true);
-         Notif.DataStore.updateBadgeCount(0, notifSettingsData, setNotifSettingsInFirestore);
+         const isSupported = await Notif.FcmHelper.isSupported();
+         const isGranted = Notification.permission === 'granted';
+         if (isSupported && isGranted) {
+            Notif.DataStore.updateBadgeCountAndFcmToken(
+               0,
+               notifSettingsData,
+               setNotifSettingsInFirestore,
+            );
+         }
       }
    }
 
@@ -42,7 +50,6 @@ export default function NotifContextProvider(props: INotifContextProvider): JSX.
 
    useEffect(() => {
       if (isInForeground) {
-         // eslint-disable-next-line @typescript-eslint/no-floating-promises
          handleBadgeAction();
       }
    }, [isInForeground]);

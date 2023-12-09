@@ -166,7 +166,7 @@ export namespace Notif {
       ): Promise<void> {
          const token = await Notif.FcmHelper.getToken();
          if (token) {
-            const storedFcmToken = notifSettingsData?.fcmToken;
+            const storedFcmToken = notifSettingsData.fcmToken;
             // console.log('storedFcmToken', storedFcmToken);
             // console.log('token', token);
             if (storedFcmToken !== token) {
@@ -181,14 +181,40 @@ export namespace Notif {
 
       export function updateBadgeCount(
          newBadgeCount: number,
-         notifSettingsData: ISettings | undefined,
+         notifSettingsData: ISettings,
          setNotifSettingsInFirestore: UseMutationResult<void, unknown, ISettings, void>,
       ): void {
-         setNotifSettingsInFirestore.mutateAsync({
-            notifSchedule: notifSettingsData?.notifSchedule || undefined,
-            fcmToken: notifSettingsData?.fcmToken || '',
-            badgeCount: newBadgeCount,
-         });
+         if (notifSettingsData.badgeCount !== newBadgeCount) {
+            setNotifSettingsInFirestore.mutateAsync({
+               notifSchedule: notifSettingsData?.notifSchedule || undefined,
+               fcmToken: notifSettingsData?.fcmToken || '',
+               badgeCount: newBadgeCount,
+            });
+         }
+         if ('setAppBadge' in navigator) {
+            navigator.setAppBadge(newBadgeCount);
+         }
+      }
+
+      export async function updateBadgeCountAndFcmToken(
+         newBadgeCount: number,
+         notifSettingsData: ISettings,
+         setNotifSettingsInFirestore: UseMutationResult<void, unknown, ISettings, void>,
+      ) {
+         const token = await Notif.FcmHelper.getToken();
+         if (token && notifSettingsData.fcmToken !== token) {
+            setNotifSettingsInFirestore.mutateAsync({
+               notifSchedule: notifSettingsData.notifSchedule,
+               fcmToken: token,
+               badgeCount: newBadgeCount,
+            });
+         } else if (notifSettingsData.badgeCount !== newBadgeCount) {
+            setNotifSettingsInFirestore.mutateAsync({
+               notifSchedule: notifSettingsData.notifSchedule,
+               fcmToken: notifSettingsData.fcmToken,
+               badgeCount: newBadgeCount,
+            });
+         }
          if ('setAppBadge' in navigator) {
             navigator.setAppBadge(newBadgeCount);
          }
