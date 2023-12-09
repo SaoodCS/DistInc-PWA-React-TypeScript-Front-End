@@ -67,7 +67,6 @@ export const DropDownLabelWrapper = styled(LabelWrapper)`
    height: fit-content;
    align-items: end;
    position: relative;
-   z-index: -1;
 `;
 
 export const StyledOption = styled.option<{ isDarkTheme: boolean }>`

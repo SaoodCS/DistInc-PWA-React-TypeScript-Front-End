@@ -41,7 +41,7 @@ export default function DropDownInput(props: IDropDownInput): JSX.Element {
 
    return (
       <InputContainer>
-         <DropDownLabelWrapper htmlFor={id || name.toString()}>
+         <DropDownLabelWrapper>
             <InputLabel
                focusedInput={isActive}
                isRequired={isRequired || false}
