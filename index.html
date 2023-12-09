@@ -4,10 +4,18 @@
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
       <meta name="description" content="Distribute your income with ease" />
-      <meta name="theme-color"/>
+      <meta name="theme-color" />
       <title>DistInc</title>
       <link rel="icon" href="/icons/logo-192x192.png" type="image/x-icon" />
-       <!-- <meta name="apple-mobile-web-app-capable" content="yes"  /> -->
+      <!-- If user visits the firebase hosting default domains, redirect them to the custom domain -->
+      <script>
+         if (
+            window.location.hostname === 'distinc-9ad9d.firebaseapp.com' ||
+            window.location.hostname === 'distinc-9ad9d.web.app'
+         ) {
+            window.location.replace('https://distinc.co.uk');
+         }
+      </script>
    </head>
    <body>
       <div id="root"></div>
