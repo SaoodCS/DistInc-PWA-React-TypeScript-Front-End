@@ -74,7 +74,7 @@ export default function AccountsSlide(): JSX.Element {
          setVerticalPos('bottom');
          setHorizontalPos('center');
          setToastZIndex(1);
-         toggleToast();
+         toggleToast(true);
          return;
       }
 

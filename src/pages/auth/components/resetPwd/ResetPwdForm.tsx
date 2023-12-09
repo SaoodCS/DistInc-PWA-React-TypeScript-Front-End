@@ -29,7 +29,7 @@ export default function ResetPwdForm(): JSX.Element {
          onSuccess: () => {
             setToastMessage('Email sent successfully. Check your inbox!');
             setToastZIndex(1);
-            toggleToast();
+            toggleToast(true);
          },
       },
    );

@@ -4,7 +4,7 @@ import type { THorizontalPos, TVerticalPos } from '../../../components/lib/toast
 
 interface IToastContext {
    isToastDisplayed: boolean;
-   toggleToast: () => void;
+   toggleToast: (show: boolean) => void;
    setToastMessage: Dispatch<SetStateAction<string>>;
    setWidth: Dispatch<SetStateAction<string>>;
    setVerticalPos: Dispatch<SetStateAction<TVerticalPos>>;

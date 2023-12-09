@@ -24,12 +24,9 @@ export default function ToastContextProvider(props: IToastContextProvider): JSX.
       setToastZIndex(undefined);
    }
 
-   function toggleToast(): void {
-      if (isToastDisplayed) {
-         setIsToastDisplayed(false);
-      } else {
-         setIsToastDisplayed(true);
-      }
+   function toggleToast(show: boolean): void {
+      if (show) setIsToastDisplayed(true);
+      else setIsToastDisplayed(true);
    }
 
    return (

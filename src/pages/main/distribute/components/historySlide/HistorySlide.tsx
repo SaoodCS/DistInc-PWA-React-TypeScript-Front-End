@@ -104,7 +104,7 @@ export default function HistorySlide(): JSX.Element {
          setVerticalPos('bottom');
          setHorizontalPos('center');
          setToastZIndex(1);
-         toggleToast();
+         toggleToast(true);
          return;
       }
       await refetch();
