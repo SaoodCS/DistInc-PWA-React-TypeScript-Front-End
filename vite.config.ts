@@ -20,6 +20,7 @@ export default defineConfig(({ mode }) => {
    const server = (): ServerOptions | undefined => {
       if (isRunningLocally) {
          return {
+            // Certificate expiration: Feb 2026 (Readme file explains how to generate a new certificate when this one expires)
             https: {
                key: fs.readFileSync('./.cert/key.pem'),
                cert: fs.readFileSync('./.cert/cert.pem'),
