@@ -39,8 +39,12 @@ export default function PopupMenu(props: IPopupMenu): JSX.Element {
          if (popupMenuWrapperRef.current) {
             const isOutsideClick = !popupMenuWrapperRef.current.contains(event.target as Node);
             const isInnerClick = !isOutsideClick;
-            if (isOutsideClick || (isInnerClick && closeOnInnerClick)) {
+            if (isOutsideClick) {
                onClose();
+            }
+            if (isInnerClick && closeOnInnerClick) {
+               onClose();
+               (event.target as HTMLElement).click();
             }
          }
       }
