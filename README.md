@@ -12,11 +12,11 @@
 </a>
 <br>
 <a href="https://github.com/SaoodCS/Distinc-Data-Microservice" target="_blank">
-   Distinc Date Microservice
+   Distinc Data Microservice
 </a>
 <br>
 <a href="https://github.com/SaoodCS/DistInc-User-Microservice" target="_blank">
-   Distinc Date Microservice
+   Distinc User Microservice
 </a>
 <br>
 <a href="https://github.com/SaoodCS/Distinc-Notification-Microservice" target="_blank">
