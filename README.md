@@ -23,11 +23,10 @@ Distinc is a responsive and progressive web application designed to adapt its UI
 
 ### Mobile Screenshot Examples
 
-| Dashboard | Distribute |
-|:---------:|:----------:|
-| <img src="resources/readme/screenshots/mobile/dashboard.png" width="200"> | <img src="resources/readme/screenshots/mobile/distribute.png" width="200"> |
-| **Settings** | **Details** |
-| <img src="resources/readme/screenshots/mobile/settings.png" width="200"> | <img src="resources/readme/screenshots/mobile/details.png" width="200"> |
+<img src="resources/readme/screenshots/mobile/dashboard.png" width="30%"> 
+<img src="resources/readme/screenshots/mobile/distribute.png" width="30%">
+<img src="resources/readme/screenshots/mobile/settings.png" width="30%"> 
+<img src="resources/readme/screenshots/mobile/details.png" width="30%"> |
 
 ### Desktop Screenshot Examples
 
@@ -35,4 +34,3 @@ Distinc is a responsive and progressive web application designed to adapt its UI
 <img src="resources/readme/screenshots/desktop/distribute.png">
 <img src="resources/readme/screenshots/desktop/settings.png">
 <img src="resources/readme/screenshots/desktop/details.png">
-
