@@ -16,7 +16,7 @@ Distinc is a responsive and progressive web application designed to adapt its UI
 <!-- TODO: Add the proper link to this video once I've made it and uploaded it to YouTube -->
 
 <a href="https://www.youtube.com/" target="_blank">
-    <img src="resources/readme/thumbnails/youtubeplaybtn.png" alt="Distinc Demo Video">
+    <img src="resources/readme/thumbnails/youtubeplaybtn.png" alt="Distinc Demo Video" width = "70%">
 </a>
 
 ## Screenshots
