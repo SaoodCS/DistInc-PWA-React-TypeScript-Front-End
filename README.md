@@ -25,12 +25,12 @@ Distinc is a responsive and progressive web application designed to adapt its UI
 
 <table border="0">
 <tr>
-<td width="40%"><img src="resources/readme/screenshots/mobile/dashboard.png"></td>
-<td width="40%"><img src="resources/readme/screenshots/mobile/distribute.png"></td>
+<td ><img src="resources/readme/screenshots/mobile/dashboard.png" ></td>
+<td><img src="resources/readme/screenshots/mobile/distribute.png" ></td>
 </tr>
 <tr>
-<td width="40%"><img src="resources/readme/screenshots/mobile/settings.png"></td>
-<td width="40%"><img src="resources/readme/screenshots/mobile/details.png"></td>
+<td><img src="resources/readme/screenshots/mobile/settings.png" ></td>
+<td><img src="resources/readme/screenshots/mobile/details.png" ></td>
 </tr>
 </table>
 
