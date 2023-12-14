@@ -1,8 +1,9 @@
 # Distinc Web Application
 
-[Click Here To Visit The Live Web App](www.distinc.co.uk 'Click Here To Visit The Live Web App')
-
-[Click Here To See The Demo Video](www.youtube.com 'Click Here To See The Demo Video')
+<a href="www.distinc.co.uk" target="_blank">
+   Click Here To Visit The Live Web App 
+</a>
+<br>
 
 ## About
 
