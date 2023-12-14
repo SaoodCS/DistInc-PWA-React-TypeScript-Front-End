@@ -5,6 +5,25 @@
 </a>
 <br>
 
+## Back-End Repositories
+
+<a href="https://github.com/SaoodCS/DistInc-API-Gateway" target="_blank">
+   Distinc API Gateway
+</a>
+<br>
+<a href="https://github.com/SaoodCS/Distinc-Data-Microservice" target="_blank">
+   Distinc Date Microservice
+</a>
+<br>
+<a href="https://github.com/SaoodCS/DistInc-User-Microservice" target="_blank">
+   Distinc Date Microservice
+</a>
+<br>
+<a href="https://github.com/SaoodCS/Distinc-Notification-Microservice" target="_blank">
+   Distinc Notification Microservice
+</a>
+<br>
+
 ## About
 
 Distinc serves as a comprehensive financial management tool, enabling users to effortlessly track expenses, monitor balances across multiple bank accounts, set account-specific targets, and calculate monthly income distribution among accounts.
