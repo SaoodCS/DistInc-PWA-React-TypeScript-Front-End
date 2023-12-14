@@ -43,7 +43,7 @@ export default function Authentication(): JSX.Element {
       const email = import.meta.env.VITE_TEST_USER_EMAIL;
       const password = import.meta.env.VITE_TEST_USER_PASSWORD;
       if (!email || !password) {
-         console.error('Test user credentials not found in .env file');
+         console.error('Client/handleLoginTestUser: Test user credentials not found in .env file');
          return;
       }
       await loginUser.mutateAsync({
