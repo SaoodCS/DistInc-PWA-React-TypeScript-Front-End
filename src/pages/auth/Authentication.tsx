@@ -1,11 +1,17 @@
 import { Github } from '@styled-icons/bootstrap/Github';
 import { LinkedinWithCircle } from '@styled-icons/entypo-social/LinkedinWithCircle';
 import { MailWithCircle } from '@styled-icons/entypo-social/MailWithCircle';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import Logo from '../../global/components/app/logo/Logo';
+import { TextBtn } from '../../global/components/lib/button/textBtn/Style';
 import { CarouselContainer, CarouselSlide } from '../../global/components/lib/carousel/Carousel';
 import useCarousel from '../../global/components/lib/carousel/hooks/useCarousel';
+import { FlexCenterer } from '../../global/components/lib/positionModifiers/centerers/FlexCenterer';
 import useThemeContext from '../../global/context/theme/hooks/useThemeContext';
 import Color from '../../global/css/colors';
+import { auth } from '../../global/firebase/config/config';
+import { useCustomMutation } from '../../global/hooks/useCustomMutation';
+import type { ILoginInputs } from './components/login/Class';
 import LoginForm from './components/login/LoginForm';
 import RegisterForm from './components/registration/RegisterForm';
 import {
@@ -26,6 +32,25 @@ export default function Authentication(): JSX.Element {
    const detailsColor = isDarkTheme
       ? Color.setRgbOpacity(Color.lightThm.inactive, 0.8)
       : Color.darkThm.inactive;
+   const loginUser = useCustomMutation(async (formData: ILoginInputs) => {
+      await signInWithEmailAndPassword(auth, formData.email, formData.password);
+   });
+
+   async function handleLoginTestUser(
+      e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+   ): Promise<void> {
+      e.preventDefault();
+      const email = import.meta.env.VITE_TEST_USER_EMAIL;
+      const password = import.meta.env.VITE_TEST_USER_PASSWORD;
+      if (!email || !password) {
+         console.error('Test user credentials not found in .env file');
+         return;
+      }
+      await loginUser.mutateAsync({
+         email,
+         password,
+      });
+   }
 
    function handleClick(to: 'github' | 'linkedin' | 'email'): void {
       window.open(
@@ -74,6 +99,15 @@ export default function Authentication(): JSX.Element {
                <LoginForm />
             </CarouselSlide>
          </CarouselContainer>
+         <FlexCenterer height={'0em'} position="relative" width="20em">
+            <TextBtn
+               isDarkTheme={isDarkTheme}
+               style={{ marginTop: '1%', fontSize: '0.8em' }}
+               onClick={(e) => handleLoginTestUser(e)}
+            >
+               Login as Test User
+            </TextBtn>
+         </FlexCenterer>
          <ContactFooterWrapper>
             <ContactFooterTitle isDarkTheme={isDarkTheme}>Contact Me</ContactFooterTitle>
             <ContactIconsWrapper isDarkTheme={isDarkTheme}>
