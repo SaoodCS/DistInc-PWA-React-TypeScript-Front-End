@@ -1,13 +1,13 @@
 # Distinc Web Application
 
-<a href="www.distinc.co.uk" target="_blank">
+<a href="https://www.distinc.co.uk" target="_blank">
    Click Here To Visit The Live Web App 
 </a>
 <br>
 
 ## Back-End Repositories
 
-<a href="•	https://github.com/SaoodCS/DistInc-API-Gateway?tab=readme-ov-file#distinc-api-gateway" target="_blank">
+<a href="https://github.com/SaoodCS/DistInc-API-Gateway?tab=readme-ov-file#distinc-api-gateway" target="_blank">
    Distinc API Gateway
 </a>
 <br>
