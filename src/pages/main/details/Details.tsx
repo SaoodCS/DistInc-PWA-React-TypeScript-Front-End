@@ -10,6 +10,7 @@ import useCarousel from '../../../global/components/lib/carousel/hooks/useCarous
 import { AddIcon } from '../../../global/components/lib/icons/add/AddIcon';
 import { FilterIcon } from '../../../global/components/lib/icons/filter/FilterIcon';
 import useThemeContext from '../../../global/context/theme/hooks/useThemeContext';
+import FooterHooks from '../../../global/context/widget/footer/hooks/FooterHooks';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
 import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 import { PopupMenuContext } from '../../../global/context/widget/popupMenu/PopupMenuContext';
@@ -22,7 +23,10 @@ import NDetails from './namespace/NDetails';
 
 export default function Details(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Details');
+   FooterHooks.useOnMount.setHandleFooterItemSecondClick(() => {});
    HeaderHooks.useOnUnMount.resetHeaderRightEl();
+   FooterHooks.useOnUnMount.resetFooterItemSecondClick();
+
    const { setHeaderRightElement } = useHeaderContext();
    const { containerRef, scrollToSlide, currentSlide } = useCarousel(
       1,

@@ -26,4 +26,13 @@ export default class FooterHooks {
          }, []);
       },
    };
+
+   static useOnMount = {
+      setHandleFooterItemSecondClick: (handleFooterItemSecondClick: () => void) => {
+         const { setHandleFooterItemSecondClick } = FooterHooks.useFooterContext();
+         useEffect(() => {
+            setHandleFooterItemSecondClick(handleFooterItemSecondClick);
+         }, []);
+      },
+   };
 }

@@ -29,4 +29,18 @@ export default class JSXHelper {
       const clickY = event.pageY;
       return { x: clickX, y: clickY };
    }
+
+   static scrollToTop(elementId: string): void {
+      const element = document.getElementById(`${elementId}`);
+      if (element) {
+         element.scrollTop = 0;
+      }
+   }
+
+   static scrollToLeft(elementId: string): void {
+      const element = document.getElementById(`${elementId}`);
+      if (element) {
+         element.scrollLeft = 0;
+      }
+   }
 }
