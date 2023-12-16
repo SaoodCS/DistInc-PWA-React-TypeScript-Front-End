@@ -33,14 +33,14 @@ export default class JSXHelper {
    static scrollToTop(elementId: string): void {
       const element = document.getElementById(`${elementId}`);
       if (element) {
-         element.scrollTop = 0;
+         element.scrollTo({ top: 0, behavior: 'smooth' });
       }
    }
 
    static scrollToLeft(elementId: string): void {
       const element = document.getElementById(`${elementId}`);
       if (element) {
-         element.scrollLeft = 0;
+         element.scrollTo({ left: 0, behavior: 'smooth' });
       }
    }
 }
