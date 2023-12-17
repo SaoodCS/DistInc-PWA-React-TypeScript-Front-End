@@ -13,7 +13,6 @@ import useThemeContext from '../../../global/context/theme/hooks/useThemeContext
 import FooterHooks from '../../../global/context/widget/footer/hooks/FooterHooks';
 import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks';
 import { ToastContext } from '../../../global/context/widget/toast/ToastContext';
-import JSXHelper from '../../../global/helpers/dataTypes/jsx/jsxHelper';
 import Device from '../../../global/helpers/pwa/deviceHelper';
 import IncomeClass from '../details/components/Income/class/Class';
 import SavingsClass from '../details/components/accounts/savings/class/Class';
@@ -26,11 +25,13 @@ import TotalExpense from './components/totalExpense/TotalExpense';
 import TotalIncome from './components/totalIncome/TotalIncome';
 import TotalSavings from './components/totalSavings/TotalSavings';
 import TrackedSavings from './components/trackedSavings/TrackedSavings';
+import useScrollSaver from '../../../global/hooks/useScrollSaver';
 
 export default function Dashboard(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Dashboard');
-   FooterHooks.useOnMount.setHandleFooterItemSecondClick(() => JSXHelper.scrollToTop('parent'));
+   FooterHooks.useOnMount.setHandleFooterItemSecondClick(() => scrollToTop(true));
    FooterHooks.useOnUnMount.resetFooterItemSecondClick();
+   const { containerRef, handleOnScroll, scrollToTop } = useScrollSaver('dashboard');
    const { isDarkTheme, isPortableDevice } = useThemeContext();
    const {
       setHorizontalPos,
@@ -85,7 +86,12 @@ export default function Dashboard(): JSX.Element {
 
    return (
       <PullToRefresh onRefresh={handleOnRefresh} isDarkTheme={isDarkTheme}>
-         <ScrnResponsiveFlexWrap padding={'0.25em'} id={'parent'}>
+         <ScrnResponsiveFlexWrap
+            padding={'0.25em'}
+            id={'parent'}
+            ref={containerRef}
+            onScroll={handleOnScroll}
+         >
             {/**/}
             <CardHolder>
                <CardHolderRow>

@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 interface IUseScrollSaverReturned {
    containerRef: React.RefObject<HTMLDivElement>;
    handleOnScroll: () => void;
-   scrollToTop: () => void;
+   scrollToTop: (smooth?: boolean) => void;
    scrollSaverStyle: React.CSSProperties;
 }
 
@@ -26,10 +26,17 @@ export default function useScrollSaver(storageId: string): IUseScrollSaverReturn
       }
    }
 
-   function scrollToTop(): void {
+   function scrollToTop(smooth?: boolean): void {
       sessionStorage.setItem(`${storageId}.scrollPos`, '0');
       if (containerRef.current) {
-         containerRef.current.scrollTop = 0;
+         if (smooth) {
+            containerRef.current.scrollTo({
+               top: 0,
+               behavior: 'smooth',
+            });
+         } else {
+            containerRef.current.scrollTop = 0;
+         }
       }
    }
 
