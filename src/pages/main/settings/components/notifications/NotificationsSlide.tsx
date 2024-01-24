@@ -61,7 +61,7 @@ export default function NotificationsSlide(): JSX.Element {
       if (notifPermission === 'default') {
          const permission = await Notification.requestPermission();
          setNotifPermission(permission);
-         if (permission === 'granted' && MiscHelper.isNotFalsyOrEmpty(notifScheduleData)) {
+         if (permission === 'granted') {
             await Notif.DataStore.updateFcmToken(notifScheduleData, setNotifSettingsInFirestore);
          }
       } else {
