@@ -6,7 +6,7 @@ import {
 } from '../../../../../../global/components/lib/popupMenu/Style';
 import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
-import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
+import type BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
 import useURLState from '../../../../../../global/hooks/useURLState';
 import NTotalExpense from '../namespace/NTotalExpense';
 

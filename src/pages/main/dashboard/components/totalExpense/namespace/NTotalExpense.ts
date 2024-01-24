@@ -1,6 +1,6 @@
 import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import MiscHelper from '../../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
-import { IExpenseFormInputs } from '../../../../details/components/expense/class/ExpensesClass';
+import type { IExpenseFormInputs } from '../../../../details/components/expense/class/ExpensesClass';
 
 namespace NTotalExpense {
    export const getTotal = {
