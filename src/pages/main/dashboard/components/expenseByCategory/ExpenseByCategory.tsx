@@ -84,7 +84,7 @@ export default function ExpenseByCategory(): JSX.Element {
 
    function setTitle(): string {
       const expenseByStr = expenseBy.includes('expense') ? expenseBy.slice(7) : expenseBy;
-      return `Expense By ${expenseByStr.charAt(0).toUpperCase()}${expenseByStr.slice(1)}`;
+      return `Expense: ${expenseByStr.charAt(0).toUpperCase()}${expenseByStr.slice(1)}`;
    }
 
    return (
