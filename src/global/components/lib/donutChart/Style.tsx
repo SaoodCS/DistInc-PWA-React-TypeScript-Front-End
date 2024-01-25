@@ -11,9 +11,12 @@ export const KeyIndicator = styled.div<{ color: string }>`
    margin-right: 0.5em;
 `;
 
-export const KeyIndicatorAndTextWrapper = styled.div`
-   padding-top: 0.25em;
-   padding-bottom: 0.25em;
+export const KeyIndicatorAndTextWrapper = styled.div<{ noOfItems: number }>`
+   padding-top: ${({ noOfItems }) => (noOfItems < 5 ? '0.25em' : '0.125em')};
+   padding-bottom: ${({ noOfItems }) => (noOfItems < 5 ? '0.25em' : '0.125em')};
+   & > * {
+      font-size: ${({ noOfItems }) => (noOfItems < 5 ? '0.9em' : '0.8em')};
+   }
 `;
 
 export const DonutChartTitle = styled.div`

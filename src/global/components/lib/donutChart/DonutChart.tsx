@@ -8,7 +8,6 @@ import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalR
 import {
    DonutChartAndKeysWrapper,
    DonutChartKeysWrapper,
-   DonutChartTitle,
    DonutChartWrapper,
    KeyIndicator,
    KeyIndicatorAndTextWrapper,
@@ -20,10 +19,11 @@ interface IDonutChart {
    data: ChartData<'doughnut', number[], string>;
    title: string;
    showPlaceholder: boolean;
+   popupMenu?: JSX.Element;
 }
 
 export default function DonutChart(props: IDonutChart): JSX.Element {
-   const { options, data, title, showPlaceholder } = props;
+   const { options, data, title, showPlaceholder, popupMenu } = props;
    const { isDarkTheme } = useThemeContext();
    const backgroundColors = data.datasets![0].backgroundColor! as string[];
    const labels = data.labels!;
@@ -41,11 +41,18 @@ export default function DonutChart(props: IDonutChart): JSX.Element {
                   <Doughnut data={data} options={options} />
                </DonutChartWrapper>
                <DonutChartKeysWrapper isDarkTheme={isDarkTheme}>
-                  <DonutChartTitle>{title}</DonutChartTitle>
+                  <FlexRowWrapper
+                     alignItems="center"
+                     justifyContent="center"
+                     padding="0em 0em 0.5em 0em"
+                  >
+                     {title}
+                     {popupMenu}
+                  </FlexRowWrapper>
                   {labels.map((label, index) => (
-                     <KeyIndicatorAndTextWrapper key={label}>
+                     <KeyIndicatorAndTextWrapper key={label} noOfItems={labels.length}>
                         <KeyIndicator color={backgroundColors[index]} />
-                        <TextColourizer fontSize="0.9em">{label}</TextColourizer>
+                        <TextColourizer>{label}</TextColourizer>
                      </KeyIndicatorAndTextWrapper>
                   ))}
                </DonutChartKeysWrapper>
