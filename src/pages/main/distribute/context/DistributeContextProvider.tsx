@@ -68,8 +68,8 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
          if (isModalOpen || isBottomPanelOpen) {
             toggleModal(false);
             toggleBottomPanel(false);
-            const firstDistObj = data.distSteps[0];
-            if (firstDistObj) handleItemClick(firstDistObj, 'distSteps');
+            const lastDistObj = data.distSteps[data.distSteps.length - 1];
+            if (lastDistObj) handleItemClick(lastDistObj, 'distSteps');
             scrollToSlide(2);
          }
       },
