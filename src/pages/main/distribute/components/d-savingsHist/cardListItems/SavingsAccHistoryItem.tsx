@@ -58,7 +58,7 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
       <>
          {savingsAccHistory.map((savingsHistObj) => (
             <CardListItem
-               key={`${savingsHistObj.timestamp}.${savingsHistObj.id}`}
+               key={`${savingsHistObj.timestamp}.${savingsHistObj.id}.${savingsHistObj.balance}`}
                onClick={() => handleItemClick(savingsHistObj, 'savingsAccHistory')}
                isDarkTheme={isDarkTheme}
                width={!isPortableDevice ? '20em' : undefined}
