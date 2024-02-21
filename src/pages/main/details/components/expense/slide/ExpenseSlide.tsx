@@ -92,6 +92,7 @@ export default function ExpenseSlide(): JSX.Element {
          paused: isDarkTheme ? Color.darkThm.error : Color.lightThm.error,
          paymentType: isDarkTheme ? Color.darkThm.success : Color.lightThm.success,
          amount: isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning,
+         frequency: isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive,
       };
       return Color.setRgbOpacity(mapper[tag], 0.4);
    }
@@ -166,6 +167,7 @@ export default function ExpenseSlide(): JSX.Element {
                            </Tag>
                         </ConditionalRender>
                         <Tag bgColor={tagColor('type')}>{expenseTypeLabel(item.expenseType)}</Tag>
+                        <Tag bgColor={tagColor('frequency')}>{item.frequency}</Tag>
                         <Tag bgColor={tagColor('paymentType')}>{item.paymentType}</Tag>
                         <ConditionalRender condition={BoolHelper.strToBool(item.paused)}>
                            <Tag bgColor={tagColor('paused')}>Paused</Tag>

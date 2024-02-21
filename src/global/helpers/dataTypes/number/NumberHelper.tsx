@@ -33,4 +33,8 @@ export default class NumberHelper {
       if (completedAsPerc >= 100 && capAt100) return 100;
       return completedAsPerc;
    }
+
+   static makeZeroIfNegative(value: number): number {
+      return value < 0 ? 0 : value;
+   }
 }

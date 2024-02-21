@@ -17,6 +17,7 @@ export interface IExpenseFormInputs {
    expenseType: string;
    paused: 'true' | 'false';
    paymentType: string;
+   frequency: 'Monthly' | 'Yearly';
    id: number;
 }
 
@@ -42,6 +43,17 @@ export default class ExpensesClass {
          },
       },
       {
+         name: 'expenseValue',
+         id: 'expense-value',
+         placeholder: 'Expense Value',
+         type: 'number',
+         isRequired: true,
+         validator: (value: number): string | true => {
+            if (typeof value !== 'number') return 'Expense value must be a number';
+            return true;
+         },
+      },
+      {
          name: 'expenseType',
          id: 'expense-type',
          placeholder: 'Expense Type',
@@ -58,14 +70,21 @@ export default class ExpensesClass {
             return true;
          },
       },
+
       {
-         name: 'expenseValue',
-         id: 'expense-value',
-         placeholder: 'Expense Value',
-         type: 'number',
+         name: 'frequency',
+         id: 'expense-frequency',
+         placeholder: 'Frequency',
+         type: 'string',
          isRequired: true,
-         validator: (value: number): string | true => {
-            if (typeof value !== 'number') return 'Expense value must be a number';
+         isDropDown: true,
+         dropDownOptions: [
+            { value: 'Monthly', label: 'Monthly' },
+            { value: 'Yearly', label: 'Yearly' },
+         ],
+
+         validator: (value: string): string | true => {
+            if (!value) return 'Please choose your expense frequency';
             return true;
          },
       },

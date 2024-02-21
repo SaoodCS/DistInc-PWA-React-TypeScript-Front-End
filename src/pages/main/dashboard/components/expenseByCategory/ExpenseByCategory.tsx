@@ -59,7 +59,7 @@ export default function ExpenseByCategory(): JSX.Element {
       togglePM(true);
       setPMContent(<SelectExpenseByPopupMenu />);
       setClickEvent(e);
-      setPMHeightPx(3 * 35);
+      setPMHeightPx(5 * 35);
       setPMWidthPx(200);
       setCloseOnInnerClick(true);
    }

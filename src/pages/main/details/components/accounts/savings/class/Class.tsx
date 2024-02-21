@@ -20,6 +20,7 @@ export interface ISavingsFormInputs {
    targetToReach: OptionalNumberInput;
    currentBalance: OptionalNumberInput;
    isTracked: 'true' | 'false';
+   coversYearlyExpenses: 'true' | 'false';
    id: number;
 }
 
@@ -58,6 +59,25 @@ export default class SavingsClass {
          validator: (value: string): string | true => {
             if (value !== 'true' && value !== 'false') {
                return 'Please choose if you want to track this account';
+            }
+            return true;
+         },
+      },
+
+      {
+         name: 'coversYearlyExpenses',
+         id: 'covers-yearly-expenses',
+         placeholder: 'Covers Yearly Expenses?',
+         type: 'string',
+         isRequired: true,
+         isDropDown: true,
+         dropDownOptions: [
+            { value: 'true', label: 'Yes' },
+            { value: 'false', label: 'No' },
+         ],
+         validator: (value: string): string | true => {
+            if (value !== 'true' && value !== 'false') {
+               return 'Please choose if you would like to cover yearly expenses with this account';
             }
             return true;
          },

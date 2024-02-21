@@ -35,6 +35,18 @@ export default function SelectExpenseByPopupMenu(): JSX.Element {
                <Check />
             </ConditionalRender>
          </PMItemContainer>
+         <PMItemContainer isDarkTheme={isDarkTheme} onClick={() => setExpenseBy('Yearly')}>
+            <PMItemTitle>Yearly</PMItemTitle>
+            <ConditionalRender condition={expenseBy === 'Yearly'}>
+               <Check />
+            </ConditionalRender>
+         </PMItemContainer>
+         <PMItemContainer isDarkTheme={isDarkTheme} onClick={() => setExpenseBy('Monthly')}>
+            <PMItemTitle>Monthly</PMItemTitle>
+            <ConditionalRender condition={expenseBy === 'Monthly'}>
+               <Check />
+            </ConditionalRender>
+         </PMItemContainer>
       </PMItemsListWrapper>
    );
 }

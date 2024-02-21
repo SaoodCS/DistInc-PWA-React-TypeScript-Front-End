@@ -15,8 +15,15 @@ export default function ExcludePausedExpensePopupMenu(): JSX.Element {
    const [isPausedExcluded, setIsPausedExcluded] = useURLState<BoolHelper.IAsString>({
       key: NTotalExpense.key.isPausedExcluded,
    });
+   const [totalYearlyOrMonthly, setTotalYearlyOrMonthly] =
+      useURLState<NTotalExpense.ITotalYearlyOrMonthly>({
+         key: NTotalExpense.key.totalYearlyOrMonthly,
+      });
    return (
       <PMItemsListWrapper isDarkTheme={isDarkTheme}>
+         <PMItemContainer isDarkTheme={isDarkTheme} isHeadingItem>
+            <PMItemTitle>Paused</PMItemTitle>
+         </PMItemContainer>
          <PMItemContainer isDarkTheme={isDarkTheme} onClick={() => setIsPausedExcluded('true')}>
             <PMItemTitle>Exclude Paused</PMItemTitle>
             <ConditionalRender condition={isPausedExcluded === 'true'}>
@@ -26,6 +33,36 @@ export default function ExcludePausedExpensePopupMenu(): JSX.Element {
          <PMItemContainer isDarkTheme={isDarkTheme} onClick={() => setIsPausedExcluded('false')}>
             <PMItemTitle>Include Paused</PMItemTitle>
             <ConditionalRender condition={isPausedExcluded !== 'true'}>
+               <Check />
+            </ConditionalRender>
+         </PMItemContainer>
+
+         <PMItemContainer isDarkTheme={isDarkTheme} isHeadingItem>
+            <PMItemTitle>Frequency</PMItemTitle>
+         </PMItemContainer>
+         <PMItemContainer isDarkTheme={isDarkTheme} onClick={() => setTotalYearlyOrMonthly('All')}>
+            <PMItemTitle>Yearly & Monthly</PMItemTitle>
+            <ConditionalRender
+               condition={totalYearlyOrMonthly !== 'Monthly' && totalYearlyOrMonthly !== 'Yearly'}
+            >
+               <Check />
+            </ConditionalRender>
+         </PMItemContainer>
+         <PMItemContainer
+            isDarkTheme={isDarkTheme}
+            onClick={() => setTotalYearlyOrMonthly('Monthly')}
+         >
+            <PMItemTitle>Monthly Only</PMItemTitle>
+            <ConditionalRender condition={totalYearlyOrMonthly === 'Monthly'}>
+               <Check />
+            </ConditionalRender>
+         </PMItemContainer>
+         <PMItemContainer
+            isDarkTheme={isDarkTheme}
+            onClick={() => setTotalYearlyOrMonthly('Yearly')}
+         >
+            <PMItemTitle>Yearly Only</PMItemTitle>
+            <ConditionalRender condition={totalYearlyOrMonthly === 'Yearly'}>
                <Check />
             </ConditionalRender>
          </PMItemContainer>

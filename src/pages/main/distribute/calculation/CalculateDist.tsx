@@ -30,16 +30,27 @@ export default class CalculateDist {
       const savingsAccArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
       const incomeArr = ObjectOfObjects.convertToArrayOfObj(incomes);
       const expenseArr = ObjectOfObjects.convertToArrayOfObj(expenses);
+      const monthlyExpenseArr = ArrayOfObjects.filterOut(expenseArr, 'frequency', 'Yearly');
+      const yearlyExpenseArr = ArrayOfObjects.filterOut(expenseArr, 'frequency', 'Monthly');
       const currentAcc = CalculateDist.formatCurrentAccounts(currentAccounts, leftovers);
 
       // Calculate Total Incomes & Expenses:
       const totalIncome = ArrayOfObjects.sumKeyValues(incomeArr, 'incomeValue');
       const totalExpenses = ArrayOfObjects.sumKeyValues(expenseArr, 'expenseValue');
+      const totalMonthlyExpenses = ArrayOfObjects.sumKeyValues(monthlyExpenseArr, 'expenseValue');
+      const totalYearlyExpenses = ArrayOfObjects.sumKeyValues(yearlyExpenseArr, 'expenseValue');
 
       // Calculate Prev Month Analytics:
+      const initialSalaryExpBalancePrevMonth = totalExpenses + currentAcc.salaryExp.minCushion; // Note: this is actually from this month rather than prev month, because I haven't implemented storing the data: total expenses from prev month and minCushion from prev month
+      const salaryExpLeftoverNow = currentAcc.salaryExp.leftover;
+      const spendingsLeftoverNow = currentAcc.spendings.leftover;
+      const totalExpensesSpending = initialSalaryExpBalancePrevMonth - salaryExpLeftoverNow;
+      const initialSpendingsAccBalancePrevMonth = totalIncome - totalMonthlyExpenses; // Note: this is actually from this month rather than prev month, because I haven't implemented storing the data: total Income from prev month and total monthly expenses from prev month
+      const totalDisposableSpending = initialSpendingsAccBalancePrevMonth - spendingsLeftoverNow;
+      const totalSpendings = totalDisposableSpending + totalExpensesSpending;
       const prevMonth = {
-         totalSpendings: totalIncome - currentAcc.spendings.leftover,
-         totalDisposableSpending: totalIncome - currentAcc.spendings.leftover - totalExpenses,
+         totalSpendings,
+         totalDisposableSpending,
          totalSavings: currentAcc.spendings.leftover,
       };
 
@@ -48,6 +59,8 @@ export default class CalculateDist {
          currentAcc,
          totalIncome,
          totalExpenses,
+         totalMonthlyExpenses,
+         totalYearlyExpenses,
          savingsAccArr,
       );
 
@@ -97,28 +110,63 @@ export default class CalculateDist {
       currentAcc: IFormattedCurrentAcc,
       totalIncome: number,
       totalExpense: number,
+      totalMonthlyExpenses: number,
+      totalYearlyExpenses: number,
       savingsAccArr: ISavingsFormInputs[],
    ): ICalcTransfers {
       let salaryExpToTransferLeftoversAcc: number = 0;
       let salaryExpToSpendingAcc: number = 0;
+      let yearlyExpCovererToSalaryExpAcc: number = 0;
+      const salaryExpStartingBalance = totalIncome + currentAcc.salaryExp.leftover; //A0
+      const salaryExpRequiredBalance = totalExpense + currentAcc.salaryExp.minCushion; //A1
+
       const stepsList: string[] = [];
       const savingsAccountTransfers: ISavingsAccountTransfers = [];
 
       const isLeftoverLessThanMinCushion =
          currentAcc.salaryExp.leftover < currentAcc.salaryExp.minCushion;
 
+      if (!isLeftoverLessThanMinCushion) {
+         salaryExpToTransferLeftoversAcc = NumberHelper.makeZeroIfNegative(
+            currentAcc.salaryExp.leftover - currentAcc.salaryExp.minCushion - totalYearlyExpenses,
+         );
+
+         const salaryExpBalanceAfterLeftoverTransfer =
+            salaryExpStartingBalance - salaryExpToTransferLeftoversAcc;
+         salaryExpToSpendingAcc = totalIncome - totalMonthlyExpenses;
+         yearlyExpCovererToSalaryExpAcc =
+            salaryExpRequiredBalance -
+            (salaryExpBalanceAfterLeftoverTransfer - salaryExpToSpendingAcc);
+      }
+
       if (isLeftoverLessThanMinCushion) {
          salaryExpToTransferLeftoversAcc = currentAcc.salaryExp.leftover;
-         salaryExpToSpendingAcc = totalIncome - totalExpense - currentAcc.salaryExp.minCushion;
+         const salaryExpBalanceAfterLeftoverTransfer =
+            salaryExpStartingBalance - salaryExpToTransferLeftoversAcc;
+         salaryExpToSpendingAcc =
+            totalIncome - totalMonthlyExpenses - currentAcc.salaryExp.minCushion;
+         yearlyExpCovererToSalaryExpAcc =
+            salaryExpRequiredBalance -
+            (salaryExpBalanceAfterLeftoverTransfer - salaryExpToSpendingAcc);
       }
-      if (!isLeftoverLessThanMinCushion) {
-         salaryExpToTransferLeftoversAcc =
-            currentAcc.salaryExp.leftover - currentAcc.salaryExp.minCushion;
-         salaryExpToSpendingAcc = totalIncome - totalExpense;
-      }
+
       if (!currentAcc.salaryExp.hasTransferLeftoversTo) {
          salaryExpToSpendingAcc = salaryExpToSpendingAcc + salaryExpToTransferLeftoversAcc;
       }
+
+      const coversYearExpAcc = ArrayOfObjects.getObjectsWithKeyValuePair(
+         savingsAccArr,
+         'coversYearlyExpenses',
+         'true',
+      );
+
+      const coversYearlyExpAccToSalaryExpMsg = `Leftover amount to transfer from ${
+         coversYearExpAcc?.[0]?.accountName || savingsAccArr[0].accountName
+      } to ${currentAcc.salaryExp.accountName}: ${NumberHelper.asCurrencyStr(
+         yearlyExpCovererToSalaryExpAcc,
+      )}`;
+
+      stepsList.push(coversYearlyExpAccToSalaryExpMsg);
 
       const salaryExpToSpendingAccMsg = `Leftover amount to transfer from ${
          currentAcc.salaryExp.accountName
@@ -173,7 +221,7 @@ export default class CalculateDist {
 
       for (let i = 0; i < expenseArr.length; i++) {
          const expense = expenseArr[i];
-         if (expense.paused === 'true') continue; //skip expense if paused
+         if (expense.paused === 'true' || expense.frequency === 'Yearly') continue; //skip expense if paused
          const isExpenseTypeSavingsTransfer = expense.expenseType.includes('Savings');
          const isPaymentTypeManual = expense.paymentType === 'Manual';
 

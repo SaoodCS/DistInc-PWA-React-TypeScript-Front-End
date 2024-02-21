@@ -5,7 +5,7 @@ import type { IExpenseFormInputs } from '../../../../details/components/expense/
 
 export namespace ExpenseChart {
    export namespace Selector {
-      export type IExpenseBy = keyof IExpenseFormInputs | 'unpaused';
+      export type IExpenseBy = keyof IExpenseFormInputs | 'unpaused' | 'Yearly' | 'Monthly';
 
       export const key = 'expenseBy';
       type IGetLabelsAndValues = { expenseLabels: string[]; expenseValues: number[] };
@@ -49,6 +49,26 @@ export namespace ExpenseChart {
          };
       }
 
+      function getYearlyAndValues(expenses: IExpenseFormInputs[]): IGetLabelsAndValues {
+         const yearlyExpenses = ArrayOfObjects.filterOut(expenses, 'frequency', 'Monthly');
+         const expenseLabels = yearlyExpenses.map((expense) => expense.expenseName);
+         const expenseValues = yearlyExpenses.map((expense) => expense.expenseValue);
+         return {
+            expenseLabels,
+            expenseValues,
+         };
+      }
+
+      function getMonthlyAndValues(expenses: IExpenseFormInputs[]): IGetLabelsAndValues {
+         const monthlyExpenses = ArrayOfObjects.filterOut(expenses, 'frequency', 'Yearly');
+         const expenseLabels = monthlyExpenses.map((expense) => expense.expenseName);
+         const expenseValues = monthlyExpenses.map((expense) => expense.expenseValue);
+         return {
+            expenseLabels,
+            expenseValues,
+         };
+      }
+
       export function getLabelsAndValues(
          expenses: IExpenseFormInputs[],
          expenseBy: IExpenseBy,
@@ -59,6 +79,10 @@ export namespace ExpenseChart {
             return getNamesAndValues(expenses);
          } else if (expenseBy === 'unpaused') {
             return getUnpausedAndValues(expenses);
+         } else if (expenseBy === 'Yearly') {
+            return getYearlyAndValues(expenses);
+         } else if (expenseBy === 'Monthly') {
+            return getMonthlyAndValues(expenses);
          }
          throw new Error('Invalid expenseBy value');
       }

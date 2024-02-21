@@ -26,8 +26,15 @@ export default function TotalExpense(): JSX.Element {
    const { data: expenseData, isLoading, isPaused, error } = ExpensesClass.useQuery.getExpenses();
    const [totalExpense, setTotalExpense] = useState<number>(0);
    const [totalUnpausedExpense, setTotalUnpausedExpense] = useState<number>(0);
+   const [totalYearlyExpense, setTotalYearlyExpense] = useState<number>(0);
+   const [totalMonthlyExpense, setTotalMonthlyExpense] = useState<number>(0);
+   const [totalYearlyUnpaused, setTotalYearlyUnpaused] = useState<number>(0);
+   const [totalMonthlyUnpaused, setTotalMonthlyUnpaused] = useState<number>(0);
    const [isPausedExcluded] = useURLState<BoolHelper.IAsString>({
       key: NTotalExpense.key.isPausedExcluded,
+   });
+   const [totalYearlyOrMonthly] = useURLState<NTotalExpense.ITotalYearlyOrMonthly>({
+      key: NTotalExpense.key.totalYearlyOrMonthly,
    });
    const {
       setPMContent,
@@ -43,6 +50,10 @@ export default function TotalExpense(): JSX.Element {
          const expenseDataAsArr = ObjectOfObjects.convertToArrayOfObj(expenseData);
          setTotalExpense(NTotalExpense.getTotal.all(expenseDataAsArr));
          setTotalUnpausedExpense(NTotalExpense.getTotal.unpaused(expenseDataAsArr));
+         setTotalYearlyExpense(NTotalExpense.getTotal.yearly(expenseDataAsArr));
+         setTotalMonthlyExpense(NTotalExpense.getTotal.monthly(expenseDataAsArr));
+         setTotalYearlyUnpaused(NTotalExpense.getTotal.yearlyUnpaused(expenseDataAsArr));
+         setTotalMonthlyUnpaused(NTotalExpense.getTotal.monthlyUnpaused(expenseDataAsArr));
       }
    }, [expenseData]);
 
@@ -50,14 +61,29 @@ export default function TotalExpense(): JSX.Element {
       togglePM(true);
       setPMContent(<ExcludePausedExpensePopupMenu />);
       setClickEvent(e);
-      setPMHeightPx(2 * 35);
+      setPMHeightPx(7 * 35);
       setPMWidthPx(200);
       setCloseOnInnerClick(true);
    }
 
    function displayExpenseAmount(): string {
-      const amount = BoolHelper.strToBool(isPausedExcluded) ? totalUnpausedExpense : totalExpense;
-      return NumberHelper.asCurrencyStr(amount, true);
+      const pausedIsExcluded = BoolHelper.strToBool(isPausedExcluded);
+      const frequencyIsYearly = totalYearlyOrMonthly === 'Yearly';
+      const frequencyIsMonthly = totalYearlyOrMonthly === 'Monthly';
+      const frequencyIsAll = !frequencyIsYearly && !frequencyIsMonthly;
+      if (pausedIsExcluded && frequencyIsYearly)
+         return NumberHelper.asCurrencyStr(totalYearlyUnpaused, true);
+      if (pausedIsExcluded && frequencyIsMonthly)
+         return NumberHelper.asCurrencyStr(totalMonthlyUnpaused, true);
+      if (pausedIsExcluded && frequencyIsAll)
+         return NumberHelper.asCurrencyStr(totalUnpausedExpense, true);
+      if (!pausedIsExcluded && frequencyIsYearly)
+         return NumberHelper.asCurrencyStr(totalYearlyExpense, true);
+      if (!pausedIsExcluded && frequencyIsMonthly)
+         return NumberHelper.asCurrencyStr(totalMonthlyExpense, true);
+      if (!pausedIsExcluded && frequencyIsAll)
+         return NumberHelper.asCurrencyStr(totalExpense, true);
+      return NumberHelper.asCurrencyStr(totalExpense, true);
    }
 
    if (isLoading && !isPaused && isPortableDevice) {
