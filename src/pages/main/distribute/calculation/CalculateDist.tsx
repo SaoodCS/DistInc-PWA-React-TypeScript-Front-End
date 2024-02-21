@@ -41,18 +41,12 @@ export default class CalculateDist {
       const totalYearlyExpenses = ArrayOfObjects.sumKeyValues(yearlyExpenseArr, 'expenseValue');
 
       // Calculate Prev Month Analytics:
-      const initialSalaryExpBalancePrevMonth = totalExpenses + currentAcc.salaryExp.minCushion; // Note: this is actually from this month rather than prev month, because I haven't implemented storing the data: total expenses from prev month and minCushion from prev month
-      const salaryExpLeftoverNow = currentAcc.salaryExp.leftover;
-      const spendingsLeftoverNow = currentAcc.spendings.leftover;
-      const totalExpensesSpending = initialSalaryExpBalancePrevMonth - salaryExpLeftoverNow;
-      const initialSpendingsAccBalancePrevMonth = totalIncome - totalMonthlyExpenses; // Note: this is actually from this month rather than prev month, because I haven't implemented storing the data: total Income from prev month and total monthly expenses from prev month
-      const totalDisposableSpending = initialSpendingsAccBalancePrevMonth - spendingsLeftoverNow;
-      const totalSpendings = totalDisposableSpending + totalExpensesSpending;
-      const prevMonth = {
-         totalSpendings,
-         totalDisposableSpending,
-         totalSavings: currentAcc.spendings.leftover,
-      };
+      const prevMonth = CalculateDist.calcPrevMonthAnaltics(
+         currentAcc,
+         totalIncome,
+         totalExpenses,
+         totalMonthlyExpenses,
+      );
 
       // Calculate Current Account Transfers:
       const currentAccTransfers = CalculateDist.calcCurrentAccTransfers(
@@ -102,6 +96,26 @@ export default class CalculateDist {
          distSteps: [distSteps],
          savingsAccHistory: savingsAccHistory,
          analytics: [analytics],
+      };
+   }
+
+   private static calcPrevMonthAnaltics(
+      currentAcc: IFormattedCurrentAcc,
+      totalIncome: number,
+      totalExpenses: number,
+      totalMonthlyExpenses: number,
+   ): NDist.ISchema['analytics'][0]['prevMonth'] {
+      const initialSalaryExpBalancePrevMonth = totalExpenses + currentAcc.salaryExp.minCushion; // Note: this is actually from this month rather than prev month, because I haven't implemented storing the data: total expenses from prev month and minCushion from prev month
+      const salaryExpLeftoverNow = currentAcc.salaryExp.leftover;
+      const spendingsLeftoverNow = currentAcc.spendings.leftover;
+      const totalExpensesSpending = initialSalaryExpBalancePrevMonth - salaryExpLeftoverNow;
+      const initialSpendingsAccBalancePrevMonth = totalIncome - totalMonthlyExpenses; // Note: this is actually from this month rather than prev month, because I haven't implemented storing the data: total Income from prev month and total monthly expenses from prev month
+      const totalDisposableSpending = initialSpendingsAccBalancePrevMonth - spendingsLeftoverNow;
+      const totalSpendings = totalDisposableSpending + totalExpensesSpending;
+      return {
+         totalSpendings,
+         totalDisposableSpending,
+         totalSavings: currentAcc.spendings.leftover,
       };
    }
 

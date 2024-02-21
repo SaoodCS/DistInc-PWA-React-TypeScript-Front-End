@@ -40,12 +40,6 @@ export namespace NDist {
       timestamp: string;
    }
 
-   // export interface ISchema {
-   //    distributer: IDistSteps[];
-   //    savingsAccHistory: ISavingsAccHist[];
-   //    analytics: IAnalytics[];
-   // }
-
    export interface ISchema {
       distSteps: IDistSteps[];
       savingsAccHistory: ISavingsAccHist[];
