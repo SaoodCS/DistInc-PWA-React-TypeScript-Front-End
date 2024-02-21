@@ -16,7 +16,7 @@ export interface IExpenseFormInputs {
    expenseValue: number;
    expenseType: string;
    paused: 'true' | 'false';
-   paymentType: string;
+   hasDistInstruction: 'true' | 'false';
    frequency: 'Monthly' | 'Yearly';
    id: number;
 }
@@ -107,18 +107,20 @@ export default class ExpensesClass {
          },
       },
       {
-         name: 'paymentType',
-         id: 'payment-type',
-         placeholder: 'Payment Type',
+         name: 'hasDistInstruction',
+         id: 'has-dist-instruction',
+         placeholder: "Has it's own instruction step?",
          type: 'string',
          isRequired: true,
          isDropDown: true,
          dropDownOptions: [
-            { value: 'Automated', label: 'Automated' },
-            { value: 'Manual', label: 'Manual' },
+            { value: 'true', label: 'Yes' }, // true i.e. manual before
+            { value: 'false', label: 'No' }, // false i.e. automatic before
          ],
          validator: (value: string): string | true => {
-            if (!value) return 'Please choose your payment type';
+            if (value !== 'true' && value !== 'false') {
+               return "Select if this expense has it's own instruction when distributing";
+            }
             return true;
          },
       },

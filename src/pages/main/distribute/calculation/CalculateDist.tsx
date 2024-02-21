@@ -17,6 +17,8 @@ import type {
 } from '../../details/components/expense/class/ExpensesClass';
 import type NDist from '../namespace/NDist';
 
+//TODO: if may be worth only passing through totalActiveExpenses rather than totalExpenses (as well as totalActiveMonthly / totalActiveYearly i.e. expenses that are unpaused)
+
 export default class CalculateDist {
    // -- MAIN FUNCTION -- //
    static calculate(
@@ -219,9 +221,9 @@ export default class CalculateDist {
 
       for (let i = 0; i < expenseArr.length; i++) {
          const expense = expenseArr[i];
-         if (expense.paused === 'true' || expense.frequency === 'Yearly') continue; //skip expense if paused
+         if (expense.paused === 'true' || expense.frequency === 'Yearly') continue; // Skip expense if paused or yearly expense. Note: I haven't implemented logic for yearly expenses instructions to appear once a year (As this would require me to add yet another "field" date or something - therefore, I am disabling the ability for the user to set hasDistInstructions to true for yearly expenses)
          const isExpenseTypeSavingsTransfer = expense.expenseType.includes('Savings');
-         const isPaymentTypeManual = expense.paymentType === 'Manual';
+         const hasDistInstruction = expense.hasDistInstruction === 'true';
 
          if (isExpenseTypeSavingsTransfer) {
             const savingsAccId = Number(expense.expenseType.split(':')[1]);
@@ -238,20 +240,21 @@ export default class CalculateDist {
                };
                savingsAccountTransfers.push(savingsAccHistoryObj);
             }
-            if (isPaymentTypeManual) {
+            if (hasDistInstruction) {
                const msg = CalculateDist.createMsg({
                   amount: expense.expenseValue,
                   fromAccount: currentAcc.salaryExp.accountName,
-                  transfer: { transferToAccount: savingsAcc.accountName, manualExpense: true },
+                  transfer: { transferToAccount: savingsAcc.accountName },
+                  expenseName: expense.expenseName,
                });
                stepsList.push(msg);
             }
          }
-         if (!isExpenseTypeSavingsTransfer && isPaymentTypeManual) {
+         if (!isExpenseTypeSavingsTransfer && hasDistInstruction) {
             const msg = CalculateDist.createMsg({
                amount: expense.expenseValue,
                fromAccount: currentAcc.salaryExp.accountName,
-               manualExpenseName: expense.expenseName,
+               expenseName: expense.expenseName,
             });
             stepsList.push(msg);
          }
@@ -337,19 +340,15 @@ export default class CalculateDist {
 
    // -- CREATE MSGS -- //
    static createMsg(details: ICreateMsgs): string {
-      const { amount, fromAccount, transfer, manualExpenseName } = details;
+      const { amount, fromAccount, transfer, expenseName } = details;
       if (transfer) {
-         const { transferToAccount, leftover, manualExpense } = transfer;
-         const msgStart = leftover
-            ? 'Leftover amount'
-            : manualExpense
-            ? 'Manual Expense: Amount'
-            : 'Amount';
+         const { transferToAccount, leftover } = transfer;
+         const msgStart = leftover ? 'Leftover amount' : 'Amount';
          return `${msgStart} to transfer from ${fromAccount} to ${transferToAccount}: ${NumberHelper.asCurrencyStr(
             amount,
          )}`;
       }
-      return `Manual Expense: Make Payment from ${fromAccount} for expense: ${manualExpenseName}: ${NumberHelper.asCurrencyStr(
+      return `Make Payment from ${fromAccount} for expense: ${expenseName}: ${NumberHelper.asCurrencyStr(
          amount,
       )}`;
    }
@@ -361,9 +360,8 @@ interface ICreateMsgs {
    transfer?: {
       transferToAccount: string;
       leftover?: boolean;
-      manualExpense?: boolean;
    };
-   manualExpenseName?: string;
+   expenseName?: string;
 }
 
 interface IFormattedCurrentAcc {

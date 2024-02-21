@@ -90,7 +90,7 @@ export default function ExpenseSlide(): JSX.Element {
          expense: isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt,
          type: isDarkTheme ? Color.darkThm.accent : Color.lightThm.accent,
          paused: isDarkTheme ? Color.darkThm.error : Color.lightThm.error,
-         paymentType: isDarkTheme ? Color.darkThm.success : Color.lightThm.success,
+         hasDistInstruction: isDarkTheme ? Color.darkThm.success : Color.lightThm.success,
          amount: isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning,
          frequency: isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive,
       };
@@ -168,7 +168,12 @@ export default function ExpenseSlide(): JSX.Element {
                         </ConditionalRender>
                         <Tag bgColor={tagColor('type')}>{expenseTypeLabel(item.expenseType)}</Tag>
                         <Tag bgColor={tagColor('frequency')}>{item.frequency}</Tag>
-                        <Tag bgColor={tagColor('paymentType')}>{item.paymentType}</Tag>
+                        <ConditionalRender
+                           condition={BoolHelper.strToBool(item.hasDistInstruction)}
+                        >
+                           <Tag bgColor={tagColor('hasDistInstruction')}>Instruction</Tag>
+                        </ConditionalRender>
+
                         <ConditionalRender condition={BoolHelper.strToBool(item.paused)}>
                            <Tag bgColor={tagColor('paused')}>Paused</Tag>
                         </ConditionalRender>

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { StaticButton } from '../../../../../../global/components/lib/button/staticButton/Style';
 import type { IDropDownOption } from '../../../../../../global/components/lib/form/dropDown/DropDownInput';
 import { StyledForm } from '../../../../../../global/components/lib/form/form/Style';
@@ -22,11 +23,17 @@ export default function ExpenseForm(props: IExpenseForm): JSX.Element {
    const { inputValues } = props;
    const { isDarkTheme } = useThemeContext();
    const { apiError } = useApiErrorContext();
-   const { form, errors, handleChange, initHandleSubmit } = useForm(
+   const { form, setForm, errors, handleChange, initHandleSubmit } = useForm(
       inputValues ? inputValues : ExpensesClass.form.initialState,
       ExpensesClass.form.initialErrors,
       ExpensesClass.form.validate,
    );
+
+   useEffect(() => {
+      if (form.frequency === 'Yearly') {
+         setForm((prevState) => ({ ...prevState, hasDistInstruction: 'false' }));
+      }
+   }, [form.frequency, form.expenseType]);
 
    const queryClient = useQueryClient();
    const { data: savingsAccData } = SavingsClass.useQuery.getSavingsAccounts();
@@ -77,21 +84,25 @@ export default function ExpenseForm(props: IExpenseForm): JSX.Element {
 
    return (
       <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
-         {ExpensesClass.form.inputs.map((input) => (
-            <InputCombination
-               key={input.id}
-               placeholder={input.placeholder}
-               name={input.name}
-               isRequired={input.isRequired}
-               autoComplete={input.autoComplete}
-               handleChange={handleChange}
-               error={errors[input.name]}
-               id={input.id}
-               type={input.type}
-               value={form[input.name]}
-               dropDownOptions={dropDownOptions(input)}
-            />
-         ))}
+         {ExpensesClass.form.inputs
+            .filter((input) =>
+               form.frequency === 'Yearly' ? input.name !== 'hasDistInstruction' : input,
+            )
+            .map((input) => (
+               <InputCombination
+                  key={input.id}
+                  placeholder={input.placeholder}
+                  name={input.name}
+                  isRequired={input.isRequired}
+                  autoComplete={input.autoComplete}
+                  handleChange={handleChange}
+                  error={errors[input.name]}
+                  id={input.id}
+                  type={input.type}
+                  value={form[input.name]}
+                  dropDownOptions={dropDownOptions(input)}
+               />
+            ))}
          <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>
             {`${inputValues ? 'Update' : 'Add'} Expense`}
          </StaticButton>
