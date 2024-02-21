@@ -17,7 +17,7 @@ import type {
 } from '../../details/components/expense/class/ExpensesClass';
 import type NDist from '../namespace/NDist';
 
-//TODO: if may be worth only passing through totalActiveExpenses rather than totalExpenses (as well as totalActiveMonthly / totalActiveYearly i.e. expenses that are unpaused)
+//TODO: if may be worth only passing through totalActiveExpenses rather than totalExpenses (as well as totalActiveMonthly / totalActiveYearly i.e. expenses that are not paused)
 
 export default class CalculateDist {
    // -- MAIN FUNCTION -- //
@@ -29,34 +29,39 @@ export default class CalculateDist {
       leftovers: { [id: number]: number },
    ): NDist.ISchema {
       // Initial Setup:
+      const currentAcc = CalculateDist.formatCurrentAccounts(currentAccounts, leftovers);
       const savingsAccArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
       const incomeArr = ObjectOfObjects.convertToArrayOfObj(incomes);
       const expenseArr = ObjectOfObjects.convertToArrayOfObj(expenses);
       const monthlyExpenseArr = ArrayOfObjects.filterOut(expenseArr, 'frequency', 'Yearly');
       const yearlyExpenseArr = ArrayOfObjects.filterOut(expenseArr, 'frequency', 'Monthly');
-      const currentAcc = CalculateDist.formatCurrentAccounts(currentAccounts, leftovers);
-
+      const activeExpArr = ArrayOfObjects.filterOut(expenseArr, 'paused', 'false');
+      const activeMonthlyExpArr = ArrayOfObjects.filterOut(monthlyExpenseArr, 'paused', 'false');
+      const activeYearlyExpArr = ArrayOfObjects.filterOut(yearlyExpenseArr, 'paused', 'false');
       // Calculate Total Incomes & Expenses:
       const totalIncome = ArrayOfObjects.sumKeyValues(incomeArr, 'incomeValue');
-      const totalExpenses = ArrayOfObjects.sumKeyValues(expenseArr, 'expenseValue');
-      const totalMonthlyExpenses = ArrayOfObjects.sumKeyValues(monthlyExpenseArr, 'expenseValue');
-      const totalYearlyExpenses = ArrayOfObjects.sumKeyValues(yearlyExpenseArr, 'expenseValue');
+      // const totalExpenses = ArrayOfObjects.sumKeyValues(expenseArr, 'expenseValue');
+      // const totalMonthlyExpenses = ArrayOfObjects.sumKeyValues(monthlyExpenseArr, 'expenseValue');
+      // const totalYearlyExpenses = ArrayOfObjects.sumKeyValues(yearlyExpenseArr, 'expenseValue');
+      const totalActiveExp = ArrayOfObjects.sumKeyValues(activeExpArr, 'expenseValue');
+      const totalActiveMonthExp = ArrayOfObjects.sumKeyValues(activeMonthlyExpArr, 'expenseValue');
+      const totalActiveYearlyExp = ArrayOfObjects.sumKeyValues(activeYearlyExpArr, 'expenseValue');
 
       // Calculate Prev Month Analytics:
       const prevMonth = CalculateDist.calcPrevMonthAnaltics(
          currentAcc,
          totalIncome,
-         totalExpenses,
-         totalMonthlyExpenses,
+         totalActiveExp, // totalExpenses,
+         totalActiveMonthExp, // totalMonthlyExpenses,
       );
 
       // Calculate Current Account Transfers:
       const currentAccTransfers = CalculateDist.calcCurrentAccTransfers(
          currentAcc,
          totalIncome,
-         totalExpenses,
-         totalMonthlyExpenses,
-         totalYearlyExpenses,
+         totalActiveExp, // totalExpenses,
+         totalActiveMonthExp, // totalMonthlyExpenses,
+         totalActiveYearlyExp, // totalYearlyExpenses,
          savingsAccArr,
       );
 
@@ -89,7 +94,7 @@ export default class CalculateDist {
       // Create Analytics Obj:
       const analytics = {
          totalIncomes: totalIncome,
-         totalExpenses: totalExpenses,
+         totalExpenses: totalActiveExp, // totalExpenses,
          prevMonth: prevMonth,
          timestamp: DateHelper.toDDMMYYYY(new Date()),
       };
@@ -221,7 +226,7 @@ export default class CalculateDist {
 
       for (let i = 0; i < expenseArr.length; i++) {
          const expense = expenseArr[i];
-         if (expense.paused === 'true' || expense.frequency === 'Yearly') continue; // Skip expense if paused or yearly expense. Note: I haven't implemented logic for yearly expenses instructions to appear once a year (As this would require me to add yet another "field" date or something - therefore, I am disabling the ability for the user to set hasDistInstructions to true for yearly expenses)
+         if (expense.paused === 'true' || expense.frequency === 'Yearly') continue; // Skip expense if paused or yearly expense. Note: I haven't implemented logic for yearly expense transfers nor yearly expenses instructions to appear once a year (As this would require me to add yet another "field" date or something - therefore, I am disabling the ability for the user to set hasDistInstructions to true for yearly expenses)
          const isExpenseTypeSavingsTransfer = expense.expenseType.includes('Savings');
          const hasDistInstruction = expense.hasDistInstruction === 'true';
 
