@@ -23,7 +23,7 @@ export default function ExpenseByCategory(): JSX.Element {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
    const [expenseBy] = useURLState<ExpenseChart.Selector.IExpenseBy>({
       key: ExpenseChart.Selector.key,
-      defaultValue: 'expenseType',
+      defaultValue: 'unpaused',
    });
    const {
       setPMContent,
