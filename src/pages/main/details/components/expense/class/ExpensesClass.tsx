@@ -54,6 +54,23 @@ export default class ExpensesClass {
          },
       },
       {
+         name: 'frequency',
+         id: 'expense-frequency',
+         placeholder: 'Frequency',
+         type: 'string',
+         isRequired: true,
+         isDropDown: true,
+         dropDownOptions: [
+            { value: 'Monthly', label: 'Monthly' },
+            { value: 'Yearly', label: 'Yearly' },
+         ],
+
+         validator: (value: string): string | true => {
+            if (!value) return 'Please choose your expense frequency';
+            return true;
+         },
+      },
+      {
          name: 'expenseType',
          id: 'expense-type',
          placeholder: 'Expense Type',
@@ -71,23 +88,6 @@ export default class ExpensesClass {
          },
       },
 
-      {
-         name: 'frequency',
-         id: 'expense-frequency',
-         placeholder: 'Frequency',
-         type: 'string',
-         isRequired: true,
-         isDropDown: true,
-         dropDownOptions: [
-            { value: 'Monthly', label: 'Monthly' },
-            { value: 'Yearly', label: 'Yearly' },
-         ],
-
-         validator: (value: string): string | true => {
-            if (!value) return 'Please choose your expense frequency';
-            return true;
-         },
-      },
       {
          name: 'paused',
          id: 'expense-paused',

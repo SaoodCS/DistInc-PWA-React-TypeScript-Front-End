@@ -31,7 +31,8 @@ export default function ExpenseForm(props: IExpenseForm): JSX.Element {
 
    useEffect(() => {
       if (form.frequency === 'Yearly') {
-         setForm((prevState) => ({ ...prevState, hasDistInstruction: 'false' }));
+         const expenseType = form.expenseType?.includes('Savings Transfer') ? '' : form.expenseType;
+         setForm((prevState) => ({ ...prevState, hasDistInstruction: 'false', expenseType }));
       }
    }, [form.frequency, form.expenseType]);
 
@@ -65,7 +66,7 @@ export default function ExpenseForm(props: IExpenseForm): JSX.Element {
       input: (typeof ExpensesClass.form.inputs)[0],
    ): IDropDownOption[] | undefined {
       if (!input.isDropDown) return undefined;
-      if (input.name === 'expenseType') {
+      if (input.name === 'expenseType' && form.frequency !== 'Yearly') {
          if (!MiscHelper.isNotFalsyOrEmpty(savingsAccData)) return input.dropDownOptions;
          const dropDownOptions: IDropDownOption[] = [];
          Object.entries(savingsAccData).forEach(([id, savingsAccount]) => {
