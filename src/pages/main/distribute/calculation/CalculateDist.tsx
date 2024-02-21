@@ -99,6 +99,7 @@ export default class CalculateDist {
       };
    }
 
+   // -- CALC PREV MONTH ANALYTICS -- //
    private static calcPrevMonthAnaltics(
       currentAcc: IFormattedCurrentAcc,
       totalIncome: number,
@@ -128,91 +129,74 @@ export default class CalculateDist {
       totalYearlyExpenses: number,
       savingsAccArr: ISavingsFormInputs[],
    ): ICalcTransfers {
-      let salaryExpToTransferLeftoversAcc: number = 0;
-      let salaryExpToSpendingAcc: number = 0;
-      let yearlyExpCovererToSalaryExpAcc: number = 0;
-      const salaryExpStartingBalance = totalIncome + currentAcc.salaryExp.leftover; //A0
-      const salaryExpRequiredBalance = totalExpense + currentAcc.salaryExp.minCushion; //A1
-
-      const stepsList: string[] = [];
-      const savingsAccountTransfers: ISavingsAccountTransfers = [];
-
-      const isLeftoverLessThanMinCushion =
-         currentAcc.salaryExp.leftover < currentAcc.salaryExp.minCushion;
-
-      if (!isLeftoverLessThanMinCushion) {
-         salaryExpToTransferLeftoversAcc = NumberHelper.makeZeroIfNegative(
-            currentAcc.salaryExp.leftover - currentAcc.salaryExp.minCushion - totalYearlyExpenses,
-         );
-
-         const salaryExpBalanceAfterLeftoverTransfer =
-            salaryExpStartingBalance - salaryExpToTransferLeftoversAcc;
-         salaryExpToSpendingAcc = totalIncome - totalMonthlyExpenses;
-         yearlyExpCovererToSalaryExpAcc =
-            salaryExpRequiredBalance -
-            (salaryExpBalanceAfterLeftoverTransfer - salaryExpToSpendingAcc);
-      }
-
-      if (isLeftoverLessThanMinCushion) {
-         salaryExpToTransferLeftoversAcc = currentAcc.salaryExp.leftover;
-         const salaryExpBalanceAfterLeftoverTransfer =
-            salaryExpStartingBalance - salaryExpToTransferLeftoversAcc;
-         salaryExpToSpendingAcc =
-            totalIncome - totalMonthlyExpenses - currentAcc.salaryExp.minCushion;
-         yearlyExpCovererToSalaryExpAcc =
-            salaryExpRequiredBalance -
-            (salaryExpBalanceAfterLeftoverTransfer - salaryExpToSpendingAcc);
-      }
-
-      if (!currentAcc.salaryExp.hasTransferLeftoversTo) {
-         salaryExpToSpendingAcc = salaryExpToSpendingAcc + salaryExpToTransferLeftoversAcc;
-      }
-
-      const coversYearExpAcc = ArrayOfObjects.getObjectsWithKeyValuePair(
+      // SE = salary & expenses account
+      // SP = spending account
+      // SA = savings account
+      // TL = transfer leftovers account
+      // YEC = yearly expenses coverer account
+      const SE = currentAcc.salaryExp;
+      const SP = currentAcc.spendings;
+      const YEC = ArrayOfObjects.getObjectsWithKeyValuePair(
          savingsAccArr,
          'coversYearlyExpenses',
          'true',
       );
-
-      const coversYearlyExpAccToSalaryExpMsg = `Leftover amount to transfer from ${
-         coversYearExpAcc?.[0]?.accountName || savingsAccArr[0].accountName
-      } to ${currentAcc.salaryExp.accountName}: ${NumberHelper.asCurrencyStr(
-         yearlyExpCovererToSalaryExpAcc,
-      )}`;
-
-      stepsList.push(coversYearlyExpAccToSalaryExpMsg);
-
-      const salaryExpToSpendingAccMsg = `Leftover amount to transfer from ${
-         currentAcc.salaryExp.accountName
-      } to ${currentAcc.spendings.accountName}: ${NumberHelper.asCurrencyStr(
-         salaryExpToSpendingAcc,
-      )}`;
-
-      stepsList.push(salaryExpToSpendingAccMsg);
+      let SE_TO_TL: number = 0;
+      let SE_TO_SP: number = 0;
+      let YEC_TO_SE: number = 0;
+      const SE_startingBalance = totalIncome + SE.leftover;
+      const SE_requiredBalance = totalExpense + SE.minCushion;
+      const stepsList: string[] = [];
+      const savingsAccountTransfers: ISavingsAccountTransfers = [];
+      const isLeftoverLessThanMinCushion = SE.leftover < SE.minCushion;
+      if (!isLeftoverLessThanMinCushion) {
+         SE_TO_TL = NumberHelper.makeZeroIfNeg(SE.leftover - SE.minCushion - totalYearlyExpenses);
+         const SE_newBalance = SE_startingBalance - SE_TO_TL;
+         SE_TO_SP = totalIncome - totalMonthlyExpenses;
+         YEC_TO_SE = SE_requiredBalance - (SE_newBalance - SE_TO_SP);
+      }
+      if (isLeftoverLessThanMinCushion) {
+         SE_TO_TL = SE.leftover;
+         const SE_newBalance = SE_startingBalance - SE_TO_TL;
+         SE_TO_SP = totalIncome - totalMonthlyExpenses - SE.minCushion;
+         YEC_TO_SE = SE_requiredBalance - (SE_newBalance - SE_TO_SP);
+      }
+      if (!SE.hasTransferLeftoversTo) {
+         SE_TO_SP = SE_TO_SP + SE_TO_TL;
+      }
+      const YEC_TO_SE_msg = CalculateDist.createMsg({
+         amount: YEC_TO_SE,
+         fromAccount: YEC?.[0]?.accountName || savingsAccArr[0].accountName,
+         transfer: { transferToAccount: SE.accountName },
+      });
+      const SE_TO_SP_msg = CalculateDist.createMsg({
+         amount: SE_TO_SP,
+         fromAccount: SE.accountName,
+         transfer: { transferToAccount: SP.accountName },
+      });
+      stepsList.push(YEC_TO_SE_msg);
+      stepsList.push(SE_TO_SP_msg);
 
       const currentAccArr = ObjectOfObjects.convertToArrayOfObj(currentAcc);
-
       for (let i = 0; i < currentAccArr.length; i++) {
-         const acc = currentAccArr[i];
-         if (!acc.hasTransferLeftoversTo) continue;
-         const savingsAccToTransferTo = ArrayOfObjects.getObjWithKeyValuePair(
+         const CA = currentAccArr[i];
+         if (!CA.hasTransferLeftoversTo) continue;
+         const TL = ArrayOfObjects.getObjWithKeyValuePair(
             savingsAccArr,
             'id',
-            acc.transferLeftoversTo,
+            CA.transferLeftoversTo,
          );
-         const transferLeftoverToAccName = savingsAccToTransferTo.accountName;
-         const amountToTransfer =
-            acc.accountType === 'Salary & Expenses'
-               ? salaryExpToTransferLeftoversAcc
-               : acc.leftover;
-         const leftoverToTransferToMsg = `Leftover amount to transfer from ${
-            acc.accountName
-         } to ${transferLeftoverToAccName}: ${NumberHelper.asCurrencyStr(amountToTransfer)}`;
-         stepsList.push(leftoverToTransferToMsg);
-
-         if (savingsAccToTransferTo.isTracked === 'true') {
+         const TL_accountName = TL.accountName;
+         const amountToTransfer = CA.accountType === 'Salary & Expenses' ? SE_TO_TL : CA.leftover;
+         const CA_TO_TL_msg = CalculateDist.createMsg({
+            amount: amountToTransfer,
+            fromAccount: CA.accountName,
+            transfer: { transferToAccount: TL_accountName, leftover: true },
+         });
+         stepsList.push(CA_TO_TL_msg);
+         if (TL.isTracked === 'true') {
             const savingsAccHistoryObj = {
-               id: savingsAccToTransferTo.id,
+               id: TL.id,
                amountToTransfer: amountToTransfer,
             };
             savingsAccountTransfers.push(savingsAccHistoryObj);
@@ -255,21 +239,21 @@ export default class CalculateDist {
                savingsAccountTransfers.push(savingsAccHistoryObj);
             }
             if (isPaymentTypeManual) {
-               stepsList.push(
-                  `Manual Expense: Amount to transfer from ${currentAcc.salaryExp.accountName} to ${
-                     savingsAcc.accountName
-                  }: ${NumberHelper.asCurrencyStr(expense.expenseValue)}`,
-               );
+               const msg = CalculateDist.createMsg({
+                  amount: expense.expenseValue,
+                  fromAccount: currentAcc.salaryExp.accountName,
+                  transfer: { transferToAccount: savingsAcc.accountName, manualExpense: true },
+               });
+               stepsList.push(msg);
             }
          }
          if (!isExpenseTypeSavingsTransfer && isPaymentTypeManual) {
-            stepsList.push(
-               `Manual Expense: Make Payment from ${
-                  currentAcc.salaryExp.accountName
-               } for expense: ${expense.expenseName}: ${NumberHelper.asCurrencyStr(
-                  expense.expenseValue,
-               )}`,
-            );
+            const msg = CalculateDist.createMsg({
+               amount: expense.expenseValue,
+               fromAccount: currentAcc.salaryExp.accountName,
+               manualExpenseName: expense.expenseName,
+            });
+            stepsList.push(msg);
          }
       }
       return {
@@ -350,9 +334,37 @@ export default class CalculateDist {
 
       return currentAcc;
    }
+
+   // -- CREATE MSGS -- //
+   static createMsg(details: ICreateMsgs): string {
+      const { amount, fromAccount, transfer, manualExpenseName } = details;
+      if (transfer) {
+         const { transferToAccount, leftover, manualExpense } = transfer;
+         const msgStart = leftover
+            ? 'Leftover amount'
+            : manualExpense
+            ? 'Manual Expense: Amount'
+            : 'Amount';
+         return `${msgStart} to transfer from ${fromAccount} to ${transferToAccount}: ${NumberHelper.asCurrencyStr(
+            amount,
+         )}`;
+      }
+      return `Manual Expense: Make Payment from ${fromAccount} for expense: ${manualExpenseName}: ${NumberHelper.asCurrencyStr(
+         amount,
+      )}`;
+   }
 }
 
-// -- PRIVATE TYPES -- //
+interface ICreateMsgs {
+   amount: number;
+   fromAccount: string;
+   transfer?: {
+      transferToAccount: string;
+      leftover?: boolean;
+      manualExpense?: boolean;
+   };
+   manualExpenseName?: string;
+}
 
 interface IFormattedCurrentAcc {
    [key: string]: ICurrentFormInputs & {

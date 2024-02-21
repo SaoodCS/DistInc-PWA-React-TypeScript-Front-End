@@ -34,7 +34,7 @@ export default class NumberHelper {
       return completedAsPerc;
    }
 
-   static makeZeroIfNegative(value: number): number {
+   static makeZeroIfNeg(value: number): number {
       return value < 0 ? 0 : value;
    }
 }
