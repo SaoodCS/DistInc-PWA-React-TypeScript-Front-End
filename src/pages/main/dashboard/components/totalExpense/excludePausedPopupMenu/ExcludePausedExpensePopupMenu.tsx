@@ -14,10 +14,12 @@ export default function ExcludePausedExpensePopupMenu(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const [isPausedExcluded, setIsPausedExcluded] = useURLState<BoolHelper.IAsString>({
       key: NTotalExpense.key.isPausedExcluded,
+      defaultValue: 'false',
    });
    const [totalYearlyOrMonthly, setTotalYearlyOrMonthly] =
       useURLState<NTotalExpense.ITotalYearlyOrMonthly>({
          key: NTotalExpense.key.totalYearlyOrMonthly,
+         defaultValue: 'All',
       });
    return (
       <PMItemsListWrapper isDarkTheme={isDarkTheme}>

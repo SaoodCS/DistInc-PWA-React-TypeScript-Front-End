@@ -32,9 +32,11 @@ export default function TotalExpense(): JSX.Element {
    const [totalMonthlyUnpaused, setTotalMonthlyUnpaused] = useState<number>(0);
    const [isPausedExcluded] = useURLState<BoolHelper.IAsString>({
       key: NTotalExpense.key.isPausedExcluded,
+      defaultValue: 'false',
    });
    const [totalYearlyOrMonthly] = useURLState<NTotalExpense.ITotalYearlyOrMonthly>({
       key: NTotalExpense.key.totalYearlyOrMonthly,
+      defaultValue: 'All',
    });
    const {
       setPMContent,
@@ -63,7 +65,7 @@ export default function TotalExpense(): JSX.Element {
       setClickEvent(e);
       setPMHeightPx(7 * 35);
       setPMWidthPx(200);
-      setCloseOnInnerClick(true);
+      setCloseOnInnerClick(false);
    }
 
    function displayExpenseAmount(): string {
@@ -104,6 +106,12 @@ export default function TotalExpense(): JSX.Element {
       );
    }
 
+   function setSubheading(): string {
+      const pausedText = isPausedExcluded === 'true' ? 'Unpaused' : 'All';
+      const yearlyOrMonthlyText = totalYearlyOrMonthly;
+      return `${pausedText} | ${yearlyOrMonthlyText}`;
+   }
+
    return (
       <FlexColumnWrapper
          padding={'0em 1em 0em 1em'}
@@ -111,7 +119,7 @@ export default function TotalExpense(): JSX.Element {
          width="100%"
          justifyContent="center"
       >
-         <FlexRowWrapper padding="0em 0em 1em 0em" alignItems="center">
+         <FlexRowWrapper padding="0em 0em 0em 0em" alignItems="center">
             <TextColourizer
                color={Color.setRgbOpacity(
                   isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt,
@@ -127,6 +135,17 @@ export default function TotalExpense(): JSX.Element {
                zindex="1"
                padding="0em 0em 0em 0.25em"
             />
+         </FlexRowWrapper>
+         <FlexRowWrapper padding={'0.2em 0em 0.2em 0em'}>
+            <TextColourizer
+               color={Color.setRgbOpacity(
+                  isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt,
+                  0.5,
+               )}
+               fontSize="0.75em"
+            >
+               {setSubheading()}
+            </TextColourizer>
          </FlexRowWrapper>
 
          <TextColourizer padding="0em 0em 0em 0.2em">
