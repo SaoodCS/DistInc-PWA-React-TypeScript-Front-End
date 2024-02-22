@@ -1,5 +1,13 @@
 import styled from 'styled-components';
 import Color from '../../../css/colors';
+import MyCSS from '../../../css/MyCSS';
+
+export const KeysWrapper = styled.div`
+   max-height: 65%;
+   overflow-y: scroll;
+   border: 1px solid ${Color.darkThm.border};
+   ${MyCSS.Scrollbar.solidStyle};
+`;
 
 export const KeyIndicator = styled.div<{ color: string }>`
    display: inline-block;

@@ -11,19 +11,22 @@ import {
    DonutChartWrapper,
    KeyIndicator,
    KeyIndicatorAndTextWrapper,
+   KeysWrapper,
 } from './Style';
 import { DonutChartNoDataPlaceholder } from './placeholder/NoDataPlaceholder';
+import Color from '../../../css/colors';
 
 interface IDonutChart {
    options: _DeepPartialObject<ChartOptions<'doughnut'>>;
    data: ChartData<'doughnut', number[], string>;
    title: string;
+   subTitle?: string;
    showPlaceholder: boolean;
    popupMenu?: JSX.Element;
 }
 
 export default function DonutChart(props: IDonutChart): JSX.Element {
-   const { options, data, title, showPlaceholder, popupMenu } = props;
+   const { options, data, title, showPlaceholder, popupMenu, subTitle } = props;
    const { isDarkTheme } = useThemeContext();
    const backgroundColors = data.datasets![0].backgroundColor! as string[];
    const labels = data.labels!;
@@ -35,26 +38,38 @@ export default function DonutChart(props: IDonutChart): JSX.Element {
                {title}
             </FlexRowWrapper>
          </ConditionalRender>
+
          <DonutChartAndKeysWrapper>
             <ConditionalRender condition={!showPlaceholder}>
-               <DonutChartWrapper>
+               <DonutChartWrapper style={{}}>
                   <Doughnut data={data} options={options} />
                </DonutChartWrapper>
                <DonutChartKeysWrapper isDarkTheme={isDarkTheme}>
                   <FlexRowWrapper
                      alignItems="center"
-                     justifyContent="center"
-                     padding="0em 0em 0.5em 0em"
+                     //justifyContent="center"
+                     padding="0em 0em 0.25em 0em"
+                     style={{}}
                   >
                      {title}
                      {popupMenu}
                   </FlexRowWrapper>
-                  {labels.map((label, index) => (
-                     <KeyIndicatorAndTextWrapper key={label} noOfItems={labels.length}>
-                        <KeyIndicator color={backgroundColors[index]} />
-                        <TextColourizer>{label}</TextColourizer>
-                     </KeyIndicatorAndTextWrapper>
-                  ))}
+                  <TextColourizer
+                     fontSize="0.75em"
+                     padding="0em 0em 0.5em 0em"
+                     color={Color.setRgbOpacity(Color.darkThm.txt, 0.5)}
+                  >
+                     {subTitle}
+                  </TextColourizer>
+
+                  <KeysWrapper>
+                     {labels.map((label, index) => (
+                        <KeyIndicatorAndTextWrapper key={label} noOfItems={labels.length}>
+                           <KeyIndicator color={backgroundColors[index]} />
+                           <TextColourizer>{label}</TextColourizer>
+                        </KeyIndicatorAndTextWrapper>
+                     ))}
+                  </KeysWrapper>
                </DonutChartKeysWrapper>
             </ConditionalRender>
             <ConditionalRender condition={showPlaceholder}>

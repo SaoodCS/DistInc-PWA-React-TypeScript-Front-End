@@ -118,6 +118,28 @@ export namespace MyCSS {
          ::-webkit-scrollbar-thumb:hover {
             background-color: #ffffff;
          }
+         ::-webkit-scrollbar-corner {
+            background-color: transparent;
+         }
+      `;
+
+      static solidStyle = css`
+         ::-webkit-scrollbar {
+            width: 0.25em;
+            border-radius: 10em;
+            border: none;
+         }
+         ::-webkit-scrollbar-thumb {
+            background-color: #ffffff62;
+            border-radius: 8px;
+         }
+         ::-webkit-scrollbar-thumb:hover {
+            background-color: #ffffff;
+         }
+         ::-webkit-scrollbar-corner {
+            background-color: transparent;
+         }
+         -webkit-overflow-scrolling: touch;
       `;
    }
 

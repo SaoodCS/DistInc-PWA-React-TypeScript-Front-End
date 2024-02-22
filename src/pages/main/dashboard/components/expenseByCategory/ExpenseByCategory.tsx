@@ -82,15 +82,16 @@ export default function ExpenseByCategory(): JSX.Element {
       );
    }
 
-   function setTitle(): string {
+   function setSubTitle(): string {
       const expenseByStr = expenseBy.includes('expense') ? expenseBy.slice(7) : expenseBy;
-      return `Expense: ${expenseByStr.charAt(0).toUpperCase()}${expenseByStr.slice(1)}`;
+      return `${expenseByStr.charAt(0).toUpperCase()}${expenseByStr.slice(1)}`;
    }
 
    return (
       <>
          <DonutChart
-            title={setTitle()}
+            title={'Expense:'}
+            subTitle={setSubTitle()}
             data={data}
             options={options}
             showPlaceholder={!MiscHelper.isNotFalsyOrEmpty(expenseData)}
