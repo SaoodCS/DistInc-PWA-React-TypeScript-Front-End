@@ -143,7 +143,7 @@ export default class CalculateDist {
       // YEC = yearly expenses coverer account
       const SE = currentAcc.salaryExp;
       const SP = currentAcc.spendings;
-      const YEC = ArrayOfObjects.getObjectsWithKeyValuePair(
+      const YEC = ArrayOfObjects.getObjWithKeyValuePair(
          savingsAccArr,
          'coversYearlyExpenses',
          'true',
@@ -173,7 +173,7 @@ export default class CalculateDist {
       }
       const YEC_TO_SE_msg = CalculateDist.createMsg({
          amount: YEC_TO_SE,
-         fromAccount: YEC?.[0]?.accountName || savingsAccArr[0].accountName,
+         fromAccount: YEC.accountName,
          transfer: { transferToAccount: SE.accountName },
       });
       const SE_TO_SP_msg = CalculateDist.createMsg({
