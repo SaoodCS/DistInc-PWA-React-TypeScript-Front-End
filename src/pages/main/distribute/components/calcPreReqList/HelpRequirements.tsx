@@ -49,10 +49,8 @@ export default function HelpRequirements(): JSX.Element {
                {!isReqMet('income') && <ErrorMsg>At least 1 Income</ErrorMsg>}
             </ListItem>
             <ListItem>
-               <ListItem>
-                  {isReqMet('expense') && <SuccessMsg>At least 1 Expense</SuccessMsg>}
-                  {!isReqMet('expense') && <ErrorMsg>At least 1 Expense</ErrorMsg>}
-               </ListItem>
+               {isReqMet('expense') && <SuccessMsg>At least 1 Expense</SuccessMsg>}
+               {!isReqMet('expense') && <ErrorMsg>At least 1 Expense</ErrorMsg>}
             </ListItem>
          </BulletList>
       </>
