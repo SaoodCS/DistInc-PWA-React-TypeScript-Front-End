@@ -52,7 +52,9 @@ export default function SavingsAccountListItem(props: ISavingsAccountListItem): 
          target: isDarkTheme ? Color.darkThm.error : Color.lightThm.error,
          tracked: isDarkTheme ? Color.darkThm.success : Color.lightThm.success,
          amount: isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning,
-         coversYearlyExpenses: isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive,
+         coversYearlyExpenses: isDarkTheme
+            ? Color.darkThm.coversYearlyExp
+            : Color.lightThm.coversYearlyExp,
       };
       return Color.setRgbOpacity(mapper[tag], 0.4);
    }

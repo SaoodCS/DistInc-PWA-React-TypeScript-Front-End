@@ -13,6 +13,7 @@ export default class Color {
       boxShadow: '0px 0px 10px rgba(0,0,0, 0.25)',
       inactive: 'rgb(227, 232, 239)',
       dialog: 'rgb(255, 255, 255)',
+      coversYearlyExp: 'rgb(100, 65, 156)',
    };
 
    static darkThm = {
@@ -28,6 +29,7 @@ export default class Color {
       txtShadowHeaders: '1px 1px 1px rgba(255, 255, 255, 0.3)',
       boxShadow: '0px 0px 10px rgba(10,10,10, 1)',
       inactive: 'rgb(32, 42, 58)',
+      coversYearlyExp: 'rgb(144, 94, 224)',
       dialog: 'rgb(9, 9, 11)',
    };
 

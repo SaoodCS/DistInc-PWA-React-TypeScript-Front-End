@@ -49,7 +49,6 @@ export default function DonutChart(props: IDonutChart): JSX.Element {
                      alignItems="center"
                      //justifyContent="center"
                      padding="0em 0em 0.25em 0em"
-                     style={{}}
                   >
                      {title}
                      {popupMenu}
@@ -57,7 +56,10 @@ export default function DonutChart(props: IDonutChart): JSX.Element {
                   <TextColourizer
                      fontSize="0.75em"
                      padding="0em 0em 0.5em 0em"
-                     color={Color.setRgbOpacity(Color.darkThm.txt, 0.5)}
+                     color={Color.setRgbOpacity(
+                        isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt,
+                        0.5,
+                     )}
                   >
                      {subTitle}
                   </TextColourizer>

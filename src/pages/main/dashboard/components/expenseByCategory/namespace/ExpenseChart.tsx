@@ -96,14 +96,15 @@ export namespace ExpenseChart {
          Color.setRgbOpacity(isDarkTheme ? Color.darkThm.success : Color.lightThm.success, 0.6),
          Color.setRgbOpacity(isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning, 0.6),
          Color.setRgbOpacity(isDarkTheme ? Color.darkThm.error : Color.lightThm.error, 0.6),
-         Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive, 0.6),
+         //Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive, 0.6),
          // TODO: set for light mode too
-         'rgba(105, 243, 255, 0.6)',
-         'rgba(161, 72, 161, 0.6)',
-         'rgba(255, 255, 255, 0.6)',
-         'rgba(125, 79, 46, 0.6)',
-         'rgba(38, 38, 117, 0.6)',
-         'rgba(47, 91, 71, 0.6)',
+         isDarkTheme ? 'rgba(136, 136, 136, 0.6)' : 'rgba(141, 127, 127, 0.6)',
+         isDarkTheme ? 'rgba(105, 243, 255, 0.6)' : 'rgba(29, 174, 188, 0.6)',
+         isDarkTheme ? 'rgba(161, 72, 161, 0.6)' : 'rgba(160, 36, 160, 0.6)',
+         isDarkTheme ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)',
+         isDarkTheme ? 'rgba(125, 79, 46, 0.6)' : 'rgba(128, 65, 20, 0.6)',
+         isDarkTheme ? 'rgba(38, 38, 117, 0.6)' : 'rgba(16, 16, 109, 0.6)',
+         isDarkTheme ? 'rgba(47, 91, 71, 0.6)' : 'rgba(20, 87, 57, 0.6)',
       ];
    }
 
@@ -113,14 +114,15 @@ export namespace ExpenseChart {
          Color.setRgbOpacity(isDarkTheme ? Color.darkThm.success : Color.lightThm.success, 0.9),
          Color.setRgbOpacity(isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning, 0.9),
          Color.setRgbOpacity(isDarkTheme ? Color.darkThm.error : Color.lightThm.error, 0.9),
-         Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive, 0.9),
+         //Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive, 0.9),
          // TODO: set for light mode too
-         'rgba(105, 243, 255, 0.9)',
-         'rgba(161, 72, 161, 0.9)',
-         'rgba(255, 255, 255, 0.9)',
-         'rgba(125, 79, 46, 0.9)',
-         'rgba(38, 38, 117, 0.6)',
-         'rgba(47, 91, 71, 0.9)',
+         isDarkTheme ? 'rgba(136, 136, 136, 0.9)' : 'rgba(141, 127, 127, 0.9)',
+         isDarkTheme ? 'rgba(105, 243, 255, 0.9)' : 'rgba(29, 174, 188, 0.9)',
+         isDarkTheme ? 'rgba(161, 72, 161, 0.9)' : 'rgba(160, 36, 160, 0.9)',
+         isDarkTheme ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.8)',
+         isDarkTheme ? 'rgba(125, 79, 46, 0.9)' : 'rgba(128, 65, 20, 0.9)',
+         isDarkTheme ? 'rgba(38, 38, 117, 0.9)' : 'rgba(16, 16, 109, 0.9)',
+         isDarkTheme ? 'rgba(47, 91, 71, 0.9)' : 'rgba(20, 87, 57, 0.9)',
       ];
    }
 }
