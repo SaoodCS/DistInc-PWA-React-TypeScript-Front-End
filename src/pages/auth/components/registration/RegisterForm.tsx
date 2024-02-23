@@ -13,6 +13,8 @@ import type { ICurrentFormInputs } from '../../../main/details/components/accoun
 import CurrentClass from '../../../main/details/components/accounts/current/class/Class';
 import type { IRegInputs } from './Class';
 import RegClass from './Class';
+import type { ISavingsFormInputs } from '../../../main/details/components/accounts/savings/class/Class';
+import SavingsClass from '../../../main/details/components/accounts/savings/class/Class';
 
 export default function RegisterForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
@@ -25,6 +27,7 @@ export default function RegisterForm(): JSX.Element {
    } = useForm(RegClass.initialState, RegClass.initialErrors, RegClass.validate);
 
    const setCurrentAccountInFirestore = CurrentClass.useMutation.setCurrentAccount({});
+   const setSavingsAccountInFirestore = SavingsClass.useMutation.setSavingsAccount({});
 
    const registerUser = useCustomMutation(async (formData: IRegInputs) => {
       const body = APIHelper.createBody(formData);
@@ -44,6 +47,14 @@ export default function RegisterForm(): JSX.Element {
          accountType: 'Spending',
          transferLeftoversTo: '',
       } as ICurrentFormInputs);
+      await setSavingsAccountInFirestore.mutateAsync({
+         accountName: 'Savings Default',
+         coversYearlyExpenses: 'true',
+         currentBalance: 0,
+         isTracked: 'false',
+         targetToReach: 0,
+      } as ISavingsFormInputs);
+
       await sendEmailVerification(signInUser.user);
    });
 
