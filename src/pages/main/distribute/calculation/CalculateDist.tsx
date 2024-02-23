@@ -35,9 +35,9 @@ export default class CalculateDist {
       const expenseArr = ObjectOfObjects.convertToArrayOfObj(expenses);
       const monthlyExpenseArr = ArrayOfObjects.filterOut(expenseArr, 'frequency', 'Yearly');
       const yearlyExpenseArr = ArrayOfObjects.filterOut(expenseArr, 'frequency', 'Monthly');
-      const activeExpArr = ArrayOfObjects.filterOut(expenseArr, 'paused', 'false');
-      const activeMonthlyExpArr = ArrayOfObjects.filterOut(monthlyExpenseArr, 'paused', 'false');
-      const activeYearlyExpArr = ArrayOfObjects.filterOut(yearlyExpenseArr, 'paused', 'false');
+      const activeExpArr = ArrayOfObjects.filterOut(expenseArr, 'paused', 'true');
+      const activeMonthlyExpArr = ArrayOfObjects.filterOut(monthlyExpenseArr, 'paused', 'true');
+      const activeYearlyExpArr = ArrayOfObjects.filterOut(yearlyExpenseArr, 'paused', 'true');
       // Calculate Total Incomes & Expenses:
       const totalIncome = ArrayOfObjects.sumKeyValues(incomeArr, 'incomeValue');
       // const totalExpenses = ArrayOfObjects.sumKeyValues(expenseArr, 'expenseValue');
