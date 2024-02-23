@@ -2,22 +2,22 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { StaticButton } from '../../../../../../../global/components/lib/button/staticButton/Style';
+import { TextColourizer } from '../../../../../../../global/components/lib/font/textColorizer/TextColourizer';
+import type { IDropDownOption } from '../../../../../../../global/components/lib/form/dropDown/DropDownInput';
 import { StyledForm } from '../../../../../../../global/components/lib/form/form/Style';
 import InputCombination from '../../../../../../../global/components/lib/form/inputCombination/InputCombination';
 import ConditionalRender from '../../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
+import Color from '../../../../../../../global/css/colors';
 import microservices from '../../../../../../../global/firebase/apis/microservices/microservices';
+import ArrayOfObjects from '../../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import MiscHelper from '../../../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import ObjectOfObjects from '../../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import type { InputArray } from '../../../../../../../global/helpers/react/form/FormHelper';
 import useForm from '../../../../../../../global/hooks/useForm';
 import type { ISavingsFormInputs } from '../class/Class';
 import SavingsClass, { YearlyExpSavingsAccForm } from '../class/Class';
-import type { IDropDownOption } from '../../../../../../../global/components/lib/form/dropDown/DropDownInput';
-import ArrayOfObjects from '../../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
-import { TextColourizer } from '../../../../../../../global/components/lib/font/textColorizer/TextColourizer';
-import Color from '../../../../../../../global/css/colors';
 
 interface ISavingsFormComponent {
    inputValues?: ISavingsFormInputs;
@@ -138,48 +138,36 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
          await setSavingAccountInFirestore.mutateAsync(form);
          return;
       }
-      if (isNewAccountForm && !savingsAccountsExist) {
-         await setSavingAccountInFirestore.mutateAsync(form);
-         return;
-      }
       if (isNewAccountForm && savingsAccountsExist) {
          if (!changedToCoverYearlyExpenses) {
             await setSavingAccountInFirestore.mutateAsync(form);
             return;
          }
-         if (changedToCoverYearlyExpenses) {
-            const savingsAccAsArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
-            const accCoveringYearlyExp = ArrayOfObjects.getObjWithKeyValuePair(
-               savingsAccAsArr,
-               'coversYearlyExpenses',
-               'true',
-            );
-            await Promise.all([
-               setSavingAccountInFirestore.mutateAsync({
-                  ...accCoveringYearlyExp,
-                  coversYearlyExpenses: 'false',
-               }),
-               setSavingAccountInFirestore.mutateAsync(form),
-            ]);
-            return;
-         }
+         const savingsAccAsArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
+         const accCoveringYearlyExp = ArrayOfObjects.getObjWithKeyValuePair(
+            savingsAccAsArr,
+            'coversYearlyExpenses',
+            'true',
+         );
+         await Promise.all([
+            setSavingAccountInFirestore.mutateAsync({
+               ...accCoveringYearlyExp,
+               coversYearlyExpenses: 'false',
+            }),
+            setSavingAccountInFirestore.mutateAsync(form),
+         ]);
+         return;
       }
       if (isUpdateAccountForm) {
          const savingsAccAsArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
-         if (savingsAccAsArr.length === 1) {
-            await setSavingAccountInFirestore.mutateAsync(form);
-            return;
-         }
          const coversYearlyExpensesHasNotChanged =
             form?.coversYearlyExpenses === inputValues?.coversYearlyExpenses;
-
-         if (coversYearlyExpensesHasNotChanged) {
+         if (savingsAccAsArr.length === 1 || coversYearlyExpensesHasNotChanged) {
             await setSavingAccountInFirestore.mutateAsync(form);
             return;
          }
 
          if (!isCoveringYearlyExpenses && changedToCoverYearlyExpenses) {
-            const savingsAccAsArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
             const accCoveringYearlyExp = ArrayOfObjects.getObjWithKeyValuePair(
                savingsAccAsArr,
                'coversYearlyExpenses',
@@ -195,14 +183,11 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
             return;
          }
          if (isCoveringYearlyExpenses && changedToNotCoverYearlyExpenses) {
-            const { isFormValid } = changeYearlyExpInitHandleSubmit(
-               e as unknown as React.FormEvent<HTMLFormElement>,
-            );
+            const { isFormValid } = changeYearlyExpInitHandleSubmit(e);
             if (!isFormValid) return;
             const accToCoverYearlyExpensesId = changeYearlyExpForm.selectedAccName;
-            const savingsAccountArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
             const accToCoverYearlyExpenses = ArrayOfObjects.getObjWithKeyValuePair(
-               savingsAccountArr,
+               savingsAccAsArr,
                'id',
                accToCoverYearlyExpensesId,
             );
@@ -213,10 +198,8 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
                }),
                setSavingAccountInFirestore.mutateAsync(form),
             ]);
-            // return;
          }
       }
-      //  await setSavingAccountInFirestore.mutateAsync(form);
    }
 
    async function handleDelete(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> {
