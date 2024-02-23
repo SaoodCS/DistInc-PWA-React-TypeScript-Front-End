@@ -1,3 +1,5 @@
+import ObjectHelper from '../objectHelper/ObjectHelper';
+
 /* eslint-disable no-plusplus */
 export default class ObjectOfObjects {
    // When using this function, pass through the type/interface of the object you expect to be returned in the angular brackets
@@ -31,11 +33,12 @@ export default class ObjectOfObjects {
    }
 
    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-   static addPropsToAll<T extends Record<string, any>>(
+   static addPropsToAll<T extends Record<string, any>, ReturnType>(
       obj: T,
       props: { [key: string]: unknown },
-   ): T {
-      const newObj = { ...obj } as { [key: string]: T[keyof T] };
+   ): ReturnType {
+      const objDeepCopy = ObjectHelper.deepCopy(obj);
+      const newObj = { ...objDeepCopy } as { [key: string]: T[keyof T] };
       Object.keys(newObj).forEach((key) => {
          const objKey = key as keyof typeof newObj;
          Object.keys(props).forEach((prop) => {
@@ -43,7 +46,7 @@ export default class ObjectOfObjects {
             newObj[objKey][propKey] = props[propKey];
          });
       });
-      return newObj as T;
+      return newObj as ReturnType;
    }
 
    // create an isEmpty function that doesn't lead to the error "Index signature for type 'string' is missing in type 'ICalcSchema'.":
@@ -54,6 +57,7 @@ export default class ObjectOfObjects {
    // function that takes an object and takes a property name in that object, converts that property from string to Date, and returns the object:
    static convertStrPropToDate<T>(obj: T, propName: keyof T): T {
       const newObj = { ...obj };
+      // const newObj = ObjectHelper.deepCopy(obj);
       newObj[propName] = new Date(obj[propName] as string) as T[keyof T];
       return newObj;
    }

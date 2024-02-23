@@ -17,12 +17,21 @@ import Device from '../../../../../global/helpers/pwa/deviceHelper';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
 import useURLState from '../../../../../global/hooks/useURLState';
 import { NDetails } from '../../namespace/NDetails';
-import type { ICurrentAccountFirebase, ICurrentFormInputs } from './current/class/Class';
+import type { ICurrentFormInputs } from './current/class/Class';
 import CurrentClass from './current/class/Class';
 import CurrentAccountListItem from './current/listItem/CurrentAccountListItem';
-import type { ISavingsAccountFirebase, ISavingsFormInputs } from './savings/class/Class';
+import type { ISavingsFormInputs } from './savings/class/Class';
 import SavingsClass from './savings/class/Class';
 import SavingsAccountListItem from './savings/listItem/SavingsAccountListItem';
+
+interface ISavingsAccWithFilterProps extends ISavingsFormInputs {
+   accountType: string;
+   category: string;
+}
+
+interface ICurrentAccWithFilterProps extends ICurrentFormInputs {
+   category: string;
+}
 
 export default function AccountsSlide(): JSX.Element {
    const [sortAccountBy] = useURLState({ key: NDetails.keys.searchParams.sort.accounts });
@@ -81,11 +90,11 @@ export default function AccountsSlide(): JSX.Element {
       await Promise.all([refetchSavings(), refetchCurrent()]);
    }
 
-   function sortData(): (ISavingsFormInputs | ICurrentFormInputs)[] {
-      let savingsWithFilterProps: ISavingsAccountFirebase = {};
-      let currentWithFilterProps: ICurrentAccountFirebase = {};
+   function sortData(): (ISavingsAccWithFilterProps | ICurrentAccWithFilterProps)[] {
+      let savingsWithFilterProps: { [id: string]: ISavingsAccWithFilterProps } = {};
+      let currentWithFilterProps: { [id: string]: ICurrentAccWithFilterProps } = {};
       let savingsAndCurrentConcat: {
-         [x: string]: ICurrentFormInputs | ISavingsFormInputs;
+         [x: string]: ICurrentAccWithFilterProps | ISavingsAccWithFilterProps;
       } = {};
       if (MiscHelper.isNotFalsyOrEmpty(savingsData)) {
          savingsWithFilterProps = ObjectOfObjects.addPropsToAll(savingsData, {
@@ -115,6 +124,18 @@ export default function AccountsSlide(): JSX.Element {
       return sortedData;
    }
 
+   function savingsAccNoFilterProps(item: ISavingsAccWithFilterProps): ISavingsFormInputs {
+      // eslint-disable-next-line unused-imports/no-unused-vars
+      const { accountType, category, ...rest } = item;
+      return rest;
+   }
+
+   function currentAccNoFilterProps(item: ICurrentAccWithFilterProps): ICurrentFormInputs {
+      // eslint-disable-next-line unused-imports/no-unused-vars
+      const { category, ...rest } = item;
+      return rest;
+   }
+
    if ((isLoadingSavings && !isPausedSavings) || (isLoadingCurrent && !isPausedCurrent)) {
       if (!isPortableDevice) return <Loader isDisplayed />;
       return <FlatListWrapper>{JSXHelper.repeatJSX(<FlatListPlaceholder />, 7)}</FlatListWrapper>;
@@ -131,8 +152,12 @@ export default function AccountsSlide(): JSX.Element {
          >
             {sortData().map((item) => (
                <Fragment key={item.id}>
-                  {CurrentClass.isType.currentItem(item) && <CurrentAccountListItem item={item} />}
-                  {SavingsClass.isType.savingsItem(item) && <SavingsAccountListItem item={item} />}
+                  {CurrentClass.isType.currentItem(item) && (
+                     <CurrentAccountListItem item={currentAccNoFilterProps(item)} />
+                  )}
+                  {SavingsClass.isType.savingsItem(item) && (
+                     <SavingsAccountListItem item={savingsAccNoFilterProps(item)} />
+                  )}
                </Fragment>
             ))}
          </FlatListWrapper>

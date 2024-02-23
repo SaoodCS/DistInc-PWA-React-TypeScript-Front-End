@@ -15,6 +15,7 @@ import type { IRegInputs } from './Class';
 import RegClass from './Class';
 import type { ISavingsFormInputs } from '../../../main/details/components/accounts/savings/class/Class';
 import SavingsClass from '../../../main/details/components/accounts/savings/class/Class';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function RegisterForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
@@ -25,9 +26,20 @@ export default function RegisterForm(): JSX.Element {
       handleChange,
       initHandleSubmit,
    } = useForm(RegClass.initialState, RegClass.initialErrors, RegClass.validate);
+   const queryClient = useQueryClient();
 
-   const setCurrentAccountInFirestore = CurrentClass.useMutation.setCurrentAccount({});
-   const setSavingsAccountInFirestore = SavingsClass.useMutation.setSavingsAccount({});
+   const setCurrentAccountInFirestore = CurrentClass.useMutation.setCurrentAccount({
+      onSuccess: () => {
+         // eslint-disable-next-line @typescript-eslint/no-floating-promises
+         queryClient.invalidateQueries({ queryKey: [microservices.getCurrentAccount.name] });
+      },
+   });
+   const setSavingsAccountInFirestore = SavingsClass.useMutation.setSavingsAccount({
+      onSuccess: () => {
+         // eslint-disable-next-line @typescript-eslint/no-floating-promises
+         queryClient.invalidateQueries({ queryKey: [microservices.getSavingsAccount.name] });
+      },
+   });
 
    const registerUser = useCustomMutation(async (formData: IRegInputs) => {
       const body = APIHelper.createBody(formData);
@@ -35,26 +47,27 @@ export default function RegisterForm(): JSX.Element {
       const microserviceName = microservices.registerUser.name;
       await APIHelper.gatewayCall(body, method, microserviceName);
       const signInUser = await signInWithEmailAndPassword(auth, formData.email, formData.password);
-      await setCurrentAccountInFirestore.mutateAsync({
-         accountName: 'Salary And Expenses',
-         minCushion: 0,
-         accountType: 'Salary & Expenses',
-         transferLeftoversTo: '',
-      } as ICurrentFormInputs);
-      await setCurrentAccountInFirestore.mutateAsync({
-         accountName: 'Spendings',
-         minCushion: 0,
-         accountType: 'Spending',
-         transferLeftoversTo: '',
-      } as ICurrentFormInputs);
-      await setSavingsAccountInFirestore.mutateAsync({
-         accountName: 'Savings Default',
-         coversYearlyExpenses: 'true',
-         currentBalance: 0,
-         isTracked: 'false',
-         targetToReach: 0,
-      } as ISavingsFormInputs);
-
+      await Promise.all([
+         setCurrentAccountInFirestore.mutateAsync({
+            accountName: 'Salary And Expenses',
+            minCushion: 0,
+            accountType: 'Salary & Expenses',
+            transferLeftoversTo: '',
+         } as ICurrentFormInputs),
+         setCurrentAccountInFirestore.mutateAsync({
+            accountName: 'Spendings',
+            minCushion: 0,
+            accountType: 'Spending',
+            transferLeftoversTo: '',
+         } as ICurrentFormInputs),
+         setSavingsAccountInFirestore.mutateAsync({
+            accountName: 'Savings Default',
+            coversYearlyExpenses: 'true',
+            currentBalance: 0,
+            isTracked: 'false',
+            targetToReach: 0,
+         } as ISavingsFormInputs),
+      ]);
       await sendEmailVerification(signInUser.user);
    });
 

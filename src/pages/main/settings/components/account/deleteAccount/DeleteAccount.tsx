@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { InlineTxtBtn } from '../../../../../../global/components/lib/button/inlineTextBtn/Style';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
@@ -9,6 +10,7 @@ import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutat
 export default function DeleteAccount(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const { apiError } = useApiErrorContext();
+   const queryClient = useQueryClient();
    const deleteAccount = useCustomMutation(
       async (email: string) => {
          const body = APIHelper.createBody({ email });
@@ -18,6 +20,8 @@ export default function DeleteAccount(): JSX.Element {
       },
       {
          onSuccess: async () => {
+            sessionStorage.clear();
+            queryClient.clear();
             await auth.signOut();
          },
          onError: () => {

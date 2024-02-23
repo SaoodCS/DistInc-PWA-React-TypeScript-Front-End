@@ -57,11 +57,8 @@ export default function ResetAccount(): JSX.Element {
             console.error(apiError);
          },
          onSuccess: async () => {
-            queryClient.invalidateQueries({ queryKey: [microservices.getSavingsAccount.name] });
-            queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
-            queryClient.invalidateQueries({ queryKey: [microservices.getCurrentAccount.name] });
-            queryClient.invalidateQueries({ queryKey: [microservices.getExpenses.name] });
-            queryClient.invalidateQueries({ queryKey: [microservices.getIncomes.name] });
+            sessionStorage.clear();
+            queryClient.clear();
             if (!isPortableDevice) {
                setShowSuccessMsg(true);
                return;

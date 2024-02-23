@@ -173,7 +173,7 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
                'coversYearlyExpenses',
                'true',
             );
-            Promise.all([
+            await Promise.all([
                setSavingAccountInFirestore.mutateAsync({
                   ...accCoveringYearlyExp,
                   coversYearlyExpenses: 'false',
@@ -204,13 +204,14 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
 
    async function handleDelete(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> {
       e.preventDefault();
+
       if (MiscHelper.isNotFalsyOrEmpty(savingsAccounts)) {
          const savingsAccountArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
-         if (savingsAccountArr.length === 1) {
+         const isCoveringYearlyExpenses = inputValues?.coversYearlyExpenses === 'true';
+         if (savingsAccountArr.length === 1 || !isCoveringYearlyExpenses) {
             await delSavingAccountInFirestore.mutateAsync(form);
             return;
          }
-         const isCoveringYearlyExpenses = inputValues?.coversYearlyExpenses === 'true';
          if (isCoveringYearlyExpenses) {
             if (!displayYearlyExpForm) setDisplayYearlyExpForm(true);
             const { isFormValid } = changeYearlyExpInitHandleSubmit(
