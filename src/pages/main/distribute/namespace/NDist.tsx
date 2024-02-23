@@ -11,6 +11,7 @@ import type { ICurrentAccountFirebase } from '../../details/components/accounts/
 import type { IExpensesFirebase } from '../../details/components/expense/class/ExpensesClass';
 import CalculateDist from '../calculation/CalculateDist';
 import DistFormAndAPI from '../components/form/class/DistFormAPI';
+import type { ISavingsAccountFirebase } from '../../details/components/accounts/savings/class/Class';
 
 // export interface IDistMsgs {
 //    timestamp: string;
@@ -54,9 +55,10 @@ export namespace NDist {
    }
 
    export namespace Calc {
-      export type IPreReqs = 'salaryExp' | 'spending' | 'income' | 'expense';
+      export type IPreReqs = 'salaryExp' | 'spending' | 'income' | 'expense' | 'savings';
       export function checkPreReqsMet(
          currentAccounts: ICurrentAccountFirebase,
+         savingsAccounts: ISavingsAccountFirebase,
          income: IIncomeFirebase,
          expenses: IExpensesFirebase,
       ): { name: IPreReqs; isValid: boolean }[] {
@@ -67,6 +69,7 @@ export namespace NDist {
          const spendings = ObjectOfObjects.findObjFromUniqueVal(currentAccounts, 'Spending');
          const incomeExists = MiscHelper.isNotFalsyOrEmpty(income);
          const expensesExists = MiscHelper.isNotFalsyOrEmpty(expenses);
+         const savingsExists = MiscHelper.isNotFalsyOrEmpty(savingsAccounts);
          return [
             {
                name: 'salaryExp',
@@ -75,6 +78,10 @@ export namespace NDist {
             {
                name: 'spending',
                isValid: spendings ? true : false,
+            },
+            {
+               name: 'savings',
+               isValid: savingsExists,
             },
             {
                name: 'income',
@@ -89,13 +96,13 @@ export namespace NDist {
 
       export function areAllPreReqMet(
          currentAccounts: ICurrentAccountFirebase,
+         savingsAccounts: ISavingsAccountFirebase,
          income: IIncomeFirebase,
          expenses: IExpensesFirebase,
       ): boolean {
-         const reqCheck = checkPreReqsMet(currentAccounts, income, expenses);
+         const reqCheck = checkPreReqsMet(currentAccounts, savingsAccounts, income, expenses);
          return ArrayOfObjects.doAllObjectsHaveKeyValuePair(reqCheck, 'isValid', true);
       }
-
       export const run = CalculateDist.calculate;
    }
 

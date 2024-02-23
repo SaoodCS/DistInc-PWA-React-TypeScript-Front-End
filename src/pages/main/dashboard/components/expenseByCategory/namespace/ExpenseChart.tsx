@@ -97,6 +97,13 @@ export namespace ExpenseChart {
          Color.setRgbOpacity(isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning, 0.6),
          Color.setRgbOpacity(isDarkTheme ? Color.darkThm.error : Color.lightThm.error, 0.6),
          Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive, 0.6),
+         // TODO: set for light mode too
+         'rgba(105, 243, 255, 0.6)',
+         'rgba(161, 72, 161, 0.6)',
+         'rgba(255, 255, 255, 0.6)',
+         'rgba(125, 79, 46, 0.6)',
+         'rgba(38, 38, 117, 0.6)',
+         'rgba(47, 91, 71, 0.6)',
       ];
    }
 
@@ -107,6 +114,13 @@ export namespace ExpenseChart {
          Color.setRgbOpacity(isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning, 0.9),
          Color.setRgbOpacity(isDarkTheme ? Color.darkThm.error : Color.lightThm.error, 0.9),
          Color.setRgbOpacity(isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive, 0.9),
+         // TODO: set for light mode too
+         'rgba(105, 243, 255, 0.9)',
+         'rgba(161, 72, 161, 0.9)',
+         'rgba(255, 255, 255, 0.9)',
+         'rgba(125, 79, 46, 0.9)',
+         'rgba(38, 38, 117, 0.6)',
+         'rgba(47, 91, 71, 0.9)',
       ];
    }
 }

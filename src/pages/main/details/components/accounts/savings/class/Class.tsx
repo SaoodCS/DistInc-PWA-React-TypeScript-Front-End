@@ -210,3 +210,46 @@ export default class SavingsClass {
       return ObjectOfObjects.findObjFromUniqueVal(savingsAccounts, savingsAccountId) || undefined;
    }
 }
+
+export interface IYearlyExpSavingsAccForm {
+   selectedAccName: string;
+   id: number;
+}
+
+export class YearlyExpSavingsAccForm {
+   private static inputs: InputArray<IYearlyExpSavingsAccForm> = [
+      {
+         name: 'selectedAccName',
+         id: 'selected-acc-name',
+         placeholder: 'Change account that covers yearly expenses to:',
+         type: 'string',
+         isRequired: true,
+         isDropDown: true,
+         dropDownOptions: [],
+         validator: (value: string): string | true => {
+            if (!value) return 'Please select the account to cover yearly expenses';
+            return true;
+         },
+      },
+   ];
+
+   private static initialState: IYearlyExpSavingsAccForm = FormHelper.createInitialState(
+      YearlyExpSavingsAccForm.inputs,
+   );
+
+   private static initialErrors = FormHelper.createInitialErrors(YearlyExpSavingsAccForm.inputs);
+
+   private static validate(
+      formValues: IYearlyExpSavingsAccForm,
+   ): Record<keyof IYearlyExpSavingsAccForm, string> {
+      const formValidation = FormHelper.validation(formValues, YearlyExpSavingsAccForm.inputs);
+      return formValidation;
+   }
+
+   static form = {
+      inputs: YearlyExpSavingsAccForm.inputs,
+      initialState: YearlyExpSavingsAccForm.initialState,
+      initialErrors: YearlyExpSavingsAccForm.initialErrors,
+      validate: YearlyExpSavingsAccForm.validate,
+   };
+}

@@ -5,17 +5,20 @@ import { BulletList, ListItem } from '../../../../../global/components/lib/list/
 import ArrayOfObjects from '../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import IncomeClass from '../../../details/components/Income/class/Class';
 import CurrentClass from '../../../details/components/accounts/current/class/Class';
+import SavingsClass from '../../../details/components/accounts/savings/class/Class';
 import ExpensesClass from '../../../details/components/expense/class/ExpensesClass';
 import NDist from '../../namespace/NDist';
 
 export default function HelpRequirements(): JSX.Element {
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
+   const { data: savingsAccounts } = SavingsClass.useQuery.getSavingsAccounts();
    const { data: income } = IncomeClass.useQuery.getIncomes();
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
 
    function isReqMet(requirement: NDist.Calc.IPreReqs): boolean {
       const reqCheck = NDist.Calc.checkPreReqsMet(
          currentAccounts || {},
+         savingsAccounts || {},
          income || {},
          expenses || {},
       );
@@ -36,6 +39,10 @@ export default function HelpRequirements(): JSX.Element {
             <ListItem>
                {isReqMet('salaryExp') && <SuccessMsg>Spendings Current Account</SuccessMsg>}
                {!isReqMet('salaryExp') && <ErrorMsg>Spendings Current Account</ErrorMsg>}
+            </ListItem>
+            <ListItem>
+               {isReqMet('savings') && <SuccessMsg>At least 1 Savings Account</SuccessMsg>}
+               {!isReqMet('savings') && <ErrorMsg>At least 1 Savings Account</ErrorMsg>}
             </ListItem>
             <ListItem>
                {isReqMet('income') && <SuccessMsg>At least 1 Income</SuccessMsg>}

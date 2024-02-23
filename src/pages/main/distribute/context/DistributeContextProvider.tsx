@@ -20,6 +20,7 @@ import HelpRequirements from '../components/calcPreReqList/HelpRequirements';
 import DistributeForm from '../components/form/DistributerForm';
 import NDist from '../namespace/NDist';
 import { DistributeContext } from './DistributeContext';
+import SavingsClass from '../../details/components/accounts/savings/class/Class';
 
 interface IDistributeContextProvider {
    children: ReactNode;
@@ -61,6 +62,7 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
    } = useContext(BottomPanelContext);
 
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
+   const { data: savingsAccounts } = SavingsClass.useQuery.getSavingsAccounts();
    const { data: income } = IncomeClass.useQuery.getIncomes();
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
    NDist.API.useQuery.getCalcDist({
@@ -102,6 +104,7 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
       setDistStepsCompleted(0);
       const areAllPreReqMet = NDist.Calc.areAllPreReqMet(
          currentAccounts || {},
+         savingsAccounts || {},
          income || {},
          expenses || {},
       );

@@ -89,7 +89,7 @@ export default function SavingsAccountListItem(props: ISavingsAccountListItem): 
                      <Tag bgColor={tagColor('tracked')}>Tracked</Tag>
                   </ConditionalRender>
                   <ConditionalRender condition={item.coversYearlyExpenses === 'true'}>
-                     <Tag bgColor={tagColor('coversYearlyExpenses')}>Tracked</Tag>
+                     <Tag bgColor={tagColor('coversYearlyExpenses')}>Covers Yearly Expenses</Tag>
                   </ConditionalRender>
                </SecondRowTagsWrapper>
             </FlatListItem>
