@@ -13,6 +13,8 @@ import { auth } from '../../../../../../global/firebase/config/config';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
 import type { ICurrentFormInputs } from '../../../../details/components/accounts/current/class/Class';
 import CurrentClass from '../../../../details/components/accounts/current/class/Class';
+import type { ISavingsFormInputs } from '../../../../details/components/accounts/savings/class/Class';
+import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
 
 export default function ResetAccount(): JSX.Element {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
@@ -21,6 +23,7 @@ export default function ResetAccount(): JSX.Element {
    const { toggleModal, setModalContent, setModalHeader, setModalZIndex } =
       useContext(ModalContext);
    const setCurrentAccountInFirestore = CurrentClass.useMutation.setCurrentAccount({});
+   const setSavingsAccountInFirestore = SavingsClass.useMutation.setSavingsAccount({});
    const queryClient = useQueryClient();
 
    const resetAccount = useCustomMutation(
@@ -41,6 +44,13 @@ export default function ResetAccount(): JSX.Element {
             accountType: 'Spending',
             transferLeftoversTo: '',
          } as ICurrentFormInputs);
+         await setSavingsAccountInFirestore.mutateAsync({
+            accountName: 'Savings Default',
+            coversYearlyExpenses: 'true',
+            currentBalance: 0,
+            isTracked: 'false',
+            targetToReach: 0,
+         } as ISavingsFormInputs);
       },
       {
          onError: () => {
