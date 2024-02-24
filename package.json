@@ -24,7 +24,10 @@
       "start-prod-to-local": "npm run init-env-and-sw .env.prodlocal locally && vite --mode prodlocal --host",
       "start-dev-to-deployed": "npm run init-env-and-sw .env.devdeployed locally && vite --mode devdeployed --host",
       "start-prod-to-deployed": "npm run init-env-and-sw .env.proddeployed locally && vite --mode proddeployed --host",
-      "generate-pwa-assets": "pwa-assets-generator public/icons/logo-512x512.png"
+      "generate-pwa-assets": "pwa-assets-generator public/icons/logo-512x512.png",
+      "git-prune-remote": "git remote update origin --prune",
+      "git-prune-local": "npx git-removed-branches --prune --force",
+      "git-sync": "git pull && npm run git-prune-remote && npm run git-prune-local"
    },
    "dependencies": {
       "@tanstack/react-query": "^4.33.0",
