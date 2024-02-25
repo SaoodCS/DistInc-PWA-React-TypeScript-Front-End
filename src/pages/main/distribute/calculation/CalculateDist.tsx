@@ -17,11 +17,10 @@ import type {
 } from '../../details/components/expense/class/ExpensesClass';
 import type NDist from '../namespace/NDist';
 
-//TODO: if may be worth only passing through totalActiveExpenses rather than totalExpenses (as well as totalActiveMonthly / totalActiveYearly i.e. expenses that are not paused)
-
 export default class CalculateDist {
    // -- MAIN FUNCTION -- //
    static calculate(
+      distDate: Date,
       savingsAccounts: ISavingsAccountFirebase,
       currentAccounts: ICurrentAccountFirebase,
       incomes: IIncomeFirebase,
@@ -78,6 +77,7 @@ export default class CalculateDist {
          ...expensesTransfers.savingsAccountTransfers,
       ];
       const savingsAccHistory = CalculateDist.updateSavingsAccHistory(
+         distDate,
          savingsAccountTransfers,
          savingsAccArr,
       );
@@ -87,7 +87,7 @@ export default class CalculateDist {
 
       // Create distSteps Obj:
       const distSteps = {
-         timestamp: DateHelper.toDDMMYYYY(new Date()),
+         timestamp: DateHelper.toDDMMYYYY(distDate),
          list: stepsList,
       };
 
@@ -96,7 +96,7 @@ export default class CalculateDist {
          totalIncomes: totalIncome,
          totalExpenses: totalActiveExp, // totalExpenses,
          prevMonth: prevMonth,
-         timestamp: DateHelper.toDDMMYYYY(new Date()),
+         timestamp: DateHelper.toDDMMYYYY(distDate),
       };
 
       return {
@@ -272,6 +272,7 @@ export default class CalculateDist {
 
    // -- CALC BALANCES AND UPDATE SAVINGSACC HISTORY -- //
    private static updateSavingsAccHistory(
+      distDate: Date,
       savingsAccountTransfers: ISavingsAccountTransfers,
       savingsAccArr: ISavingsFormInputs[],
    ): NDist.ISavingsAccHist[] {
@@ -297,7 +298,7 @@ export default class CalculateDist {
          const savingsAccHistoryObj = {
             id: savingsAcc.id,
             balance: newBalance,
-            timestamp: DateHelper.toDDMMYYYY(new Date()),
+            timestamp: DateHelper.toDDMMYYYY(distDate), // was new Date()
          };
          savingsAccHistory.push(savingsAccHistoryObj);
       });

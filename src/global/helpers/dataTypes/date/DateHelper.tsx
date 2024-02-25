@@ -43,4 +43,16 @@ export default class DateHelper {
       const monthWord = dateConv.toLocaleString('default', { month: 'short' });
       return monthWord;
    }
+
+   static getNextMonthName(ddmmyyyy: string): string {
+      const [day, month, year] = ddmmyyyy.split('/');
+      const monthNumber = parseInt(month, 10);
+      const dateConv = new Date(Number(year), monthNumber, Number(day));
+      const monthWord = dateConv.toLocaleString('default', { month: 'short' });
+      return monthWord;
+   }
+
+   static getFirstOfNextMonth = (): Date => {
+      return new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1);
+   };
 }

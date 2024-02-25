@@ -1,16 +1,19 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
+import { Warning } from '@styled-icons/entypo/Warning';
 import { useQueryClient } from '@tanstack/react-query';
-import { useContext, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { StaticButton } from '../../../../../global/components/lib/button/staticButton/Style';
 import { TextColourizer } from '../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import { StyledForm } from '../../../../../global/components/lib/form/form/Style';
 import InputCombination from '../../../../../global/components/lib/form/inputCombination/InputCombination';
+import { FlexColumnWrapper } from '../../../../../global/components/lib/positionModifiers/flexColumnWrapper/FlexColumnWrapper';
+import { FlexRowWrapper } from '../../../../../global/components/lib/positionModifiers/flexRowWrapper/Style';
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import useApiErrorContext from '../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
-import { BannerContext } from '../../../../../global/context/widget/banner/BannerContext';
 import Color from '../../../../../global/css/colors';
 import microservices from '../../../../../global/firebase/apis/microservices/microservices';
+import DateHelper from '../../../../../global/helpers/dataTypes/date/DateHelper';
 import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import useForm from '../../../../../global/hooks/useForm';
 import IncomeClass from '../../../details/components/Income/class/Class';
@@ -20,16 +23,15 @@ import ExpensesClass from '../../../details/components/expense/class/ExpensesCla
 import NDist from '../../namespace/NDist';
 
 export default function DistributeForm(): JSX.Element {
-   const { isDarkTheme, isPortableDevice } = useThemeContext();
+   const { isDarkTheme } = useThemeContext();
    const { apiError } = useApiErrorContext();
-   const { toggleBanner, setBannerMessage, setBannerZIndex, setHandleBannerClick, setBannerType } =
-      useContext(BannerContext);
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
    const { data: savingsAccount } = SavingsClass.useQuery.getSavingsAccounts();
    const { data: incomes } = IncomeClass.useQuery.getIncomes();
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
    const { data: calcDistData } = NDist.API.useQuery.getCalcDist();
-
+   const [showOverwriteMsg, setShowOverwriteMsg] = useState(false);
+   const [showLateDateMsg, setShowLateDateMsg] = useState(false);
    const currentAccAsArr = ObjectOfObjects.convertToArrayOfObj(
       currentAccounts ? currentAccounts : {},
    );
@@ -39,17 +41,15 @@ export default function DistributeForm(): JSX.Element {
       dist.form.initialErrors,
       dist.form.validate,
    );
-   const isCurrentMonthDistributed = calcDistData && NDist.Data.hasCurrentMonth(calcDistData);
 
    useEffect(() => {
-      if (isCurrentMonthDistributed && isPortableDevice) {
-         toggleBanner(true);
-         setBannerMessage(`Continuing overwrites current month as it's already distributed.`);
-         setBannerType('warning');
-         setHandleBannerClick(() => null);
-         setBannerZIndex(99999);
+      if (calcDistData) {
+         const currentMonthIsDistributed = NDist.Data.hasCurrentMonth(calcDistData);
+         const endOfMonth = new Date().getDate() > 20;
+         setShowOverwriteMsg(currentMonthIsDistributed && !endOfMonth);
+         setShowLateDateMsg(endOfMonth);
       }
-   }, []);
+   }, [calcDistData]);
 
    const queryClient = useQueryClient();
    const setCalcDistInFirestore = NDist.API.useMutation.setCalcDist({
@@ -62,7 +62,9 @@ export default function DistributeForm(): JSX.Element {
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
       if (!isFormValid) return;
+      const distDate = showLateDateMsg ? DateHelper.getFirstOfNextMonth() : new Date();
       const newCalculatedDist = NDist.Calc.run(
+         distDate,
          savingsAccount || {},
          currentAccounts || {},
          incomes || {},
@@ -72,15 +74,38 @@ export default function DistributeForm(): JSX.Element {
       await setCalcDistInFirestore.mutateAsync(newCalculatedDist);
    }
 
+   function messageToDisplay(): string {
+      const overWriteMsg =
+         'Continuing overwrites current month because it has already been distributed.';
+      const lateDateMsg = `You are distributing your income on a late date of ${DateHelper.getMonthName(
+         DateHelper.toDDMMYYYY(new Date()),
+      )}. In order for your dashboard & analytics to be accurate, we will set the distribution date to the 1st of ${DateHelper.getNextMonthName(
+         DateHelper.toDDMMYYYY(new Date()),
+      )}.`;
+
+      return showOverwriteMsg ? overWriteMsg : lateDateMsg;
+   }
+
    return (
       <>
-         <ConditionalRender condition={!!isCurrentMonthDistributed && !isPortableDevice}>
-            <TextColourizer
+         <ConditionalRender condition={showOverwriteMsg || showLateDateMsg}>
+            <FlexRowWrapper
+               padding="1.5em 1em 0em 1em"
                color={isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning}
-               fontSize="0.85em"
             >
-               Continuing overwrites current month because it has already been distributed.
-            </TextColourizer>
+               <FlexColumnWrapper padding="0 0.5em 0 0">
+                  <Warning
+                     size={'1.5em'}
+                     color={isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning}
+                  />
+               </FlexColumnWrapper>
+               <TextColourizer
+                  color={isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning}
+                  fontSize="0.80em"
+               >
+                  {messageToDisplay()}
+               </TextColourizer>
+            </FlexRowWrapper>
          </ConditionalRender>
          <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
             {currentAccounts &&

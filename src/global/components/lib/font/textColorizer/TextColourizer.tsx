@@ -7,6 +7,8 @@ export const TextColourizer = styled.span<{
    padding?: string;
    textAlign?: string;
    thickening?: { color: string; amount: number };
+   italics?: boolean;
+   cursive?: boolean;
 }>`
    font-size: ${({ fontSize }) => (fontSize ? fontSize : '1em')};
    color: ${({ color }) => color};
@@ -17,4 +19,7 @@ export const TextColourizer = styled.span<{
       thickening
          ? `${thickening.amount}px ${thickening.amount}px ${thickening.amount}px ${thickening.color}`
          : 'none'};
+
+   font-style: ${({ italics }) => (italics ? 'italic' : 'normal')};
+   font-family: ${({ cursive }) => (cursive ? 'cursive' : 'sans-serif')};
 `;
