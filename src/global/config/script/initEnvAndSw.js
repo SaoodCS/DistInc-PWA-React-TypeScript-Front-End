@@ -30,5 +30,10 @@ fs.writeFile(envFileName, envFile, 'utf-8');
 console.log('VITE_RUNNING env variable updated...');
 
 // Remove the old "dev-dist" folder from the root folder:
-fs.removeSync('./dev-dist');
-console.log('Old dev-dist folder deleted...');
+if (runningEnvValue === 'locally') {
+   fs.removeSync('./dev-dist');
+   console.log('Old dev-dist folder deleted...');
+} else if (runningEnvValue === 'deployed') {
+   fs.removeSync('./dist');
+   console.log('Old dist folder deleted...');
+}
