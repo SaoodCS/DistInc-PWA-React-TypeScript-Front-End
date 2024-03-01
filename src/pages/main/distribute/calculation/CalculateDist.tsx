@@ -92,9 +92,10 @@ export default class CalculateDist {
       };
 
       // Create Analytics Obj:
+      const SalaryExpAmtAtBegOfMonth = totalActiveExp + currentAcc.salaryExp.minCushion;
       const analytics = {
          totalIncomes: totalIncome,
-         totalExpenses: totalActiveExp, // totalExpenses,
+         totalExpenses: SalaryExpAmtAtBegOfMonth - currentAcc.salaryExp.leftover,
          prevMonth: prevMonth,
          timestamp: DateHelper.toDDMMYYYY(distDate),
       };
