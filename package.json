@@ -28,7 +28,7 @@
       "git-prune-remote": "git remote update origin --prune",
       "git-prune-local": "npx git-removed-branches --prune --force",
       "git-pull-all": "powershell -ExecutionPolicy Bypass -File .\\src\\global\\config\\script\\gitPullAll.ps1",
-      "git-sync": "git pull && npm run git-prune-remote && npm run git-prune-local"
+      "git-sync": "npm run git-pull-all && npm run git-prune-remote && npm run git-prune-local && npm install"
    },
    "dependencies": {
       "@tanstack/react-query": "^4.33.0",
