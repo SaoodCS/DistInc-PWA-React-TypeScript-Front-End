@@ -31,7 +31,7 @@
       "git-sync": "npm run git-pull-all && npm run git-prune-remote && npm run git-prune-local && npm install"
    },
    "engines": {
-      "node": "20"
+      "node": "20.12.2"
     },
 
    "dependencies": {
