@@ -8,6 +8,10 @@ import GlobalUtils from './global/config/GlobalConfig';
 import AuthContextProvider from './global/context/auth/AuthContextProvider';
 import DeviceContextProvider from './global/context/device/DeviceContextProvider';
 import ThemeContextProvider from './global/context/theme/ThemeContextProvider';
+// eslint-disable-next-line import/no-unresolved
+import { registerSW } from 'virtual:pwa-register';
+
+registerSW({ immediate: true });
 
 GlobalUtils.config.chartJSRegister;
 

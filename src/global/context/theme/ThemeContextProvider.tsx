@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import ConditionalRender from '../../components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import SplashScreen from '../../components/lib/splashScreen/SplashScreen';
 import MyCSS from '../../css/MyCSS';
 import Color from '../../css/colors';
@@ -8,6 +7,7 @@ import { GlobalTheme } from '../../css/theme';
 import Device from '../../helpers/pwa/deviceHelper';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { ThemeContext } from './ThemeContext';
+import { SplashToAppTransitioner } from '../../components/lib/splashToAppTransitioner/SplashToAppTransitioner';
 
 interface IThemeContextProvider {
    children: ReactNode;
@@ -24,7 +24,7 @@ export default function ThemeContextProvider(props: IThemeContextProvider): JSX.
    useEffect(() => {
       let timer: NodeJS.Timeout | null = null;
       if (showSplashScreen) {
-         timer = setTimeout(() => setShowSplashScreen(false), 1750);
+         timer = setTimeout(() => setShowSplashScreen(false), 2000);
       }
       const handleResize = (): void =>
          setIsPortableDevice(window.innerWidth < MyCSS.PortableBp.asNum);
@@ -55,10 +55,10 @@ export default function ThemeContextProvider(props: IThemeContextProvider): JSX.
       <>
          <ThemeContext.Provider value={contextMemo}>
             <SplashScreen isDisplayed={showSplashScreen} />
-            <ConditionalRender condition={!showSplashScreen}>
+            <SplashToAppTransitioner isSplashScreenDisplayed={showSplashScreen}>
                <GlobalTheme darkTheme={isDarkTheme} />
                {children}
-            </ConditionalRender>
+            </SplashToAppTransitioner>
          </ThemeContext.Provider>
       </>
    );
