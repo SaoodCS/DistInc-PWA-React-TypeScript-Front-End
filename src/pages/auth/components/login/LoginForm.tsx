@@ -68,28 +68,3 @@ export default function LoginForm(): JSX.Element {
       </StyledForm>
    );
 }
-
-// const loginMutationInstance = useMutation(loginMutation, {
-//    onMutate: () => {
-//       setShowLoader(true);
-//    },
-//    onSettled: (data, error) => {
-//       setShowLoader(false);
-//       if (error) setApiError(APIHelper.handleError(error));
-//       if (data) console.log(data);
-//    },
-// });
-
-// // useMutation instead to sign user in:
-
-// async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
-//    const { isFormValid } = initHandleSubmit(e);
-//    if (!isFormValid) return;
-//    try {
-//       //setShowLoader(true);
-//       await loginMutationInstance.mutateAsync(loginForm);
-//       //setShowLoader(false);
-//    } catch (e: unknown) {
-//       setApiError(APIHelper.handleError(e));
-//    }
-// }
