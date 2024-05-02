@@ -1,51 +1,51 @@
-import { useEffect, useState } from 'react';
+import { useLayoutEffect } from 'react';
 import useThemeContext from '../../../context/theme/hooks/useThemeContext';
 import Color from '../../../css/colors';
 import Logo from '../../app/logo/Logo';
-import Fader from '../animation/fader/Fader';
-import { OpaqueOverlay } from '../overlay/opaqueOverlay/Style';
-import { CenterWrapper } from '../positionModifiers/centerers/CenterWrapper';
-import ConditionalRender from '../renderModifiers/conditionalRender/ConditionalRender';
-import { SplashScreenFooter } from './Style';
+import { SplashScreenFooter, SplashScreenWrapper } from './Style';
+import NumberHelper from '../../../helpers/dataTypes/number/NumberHelper';
+import ExitAnimatePresence from '../animation/exitAnimatePresence/ExitAnimatePresence';
+import { SimpleAnimator } from '../animation/simpleAnimator/SimpleAnimator';
+import { FlexColumnWrapper } from '../positionModifiers/flexColumnWrapper/FlexColumnWrapper';
 
 interface ISplashScreen {
+   durationSecs: number;
    isDisplayed: boolean;
+   onClose: () => void;
 }
 
 export default function SplashScreen(props: ISplashScreen): JSX.Element {
-   const { isDisplayed } = props;
-   const [renderSplashScreen, setRenderSplashScreen] = useState(isDisplayed);
+   const { isDisplayed, durationSecs, onClose } = props;
    const { isDarkTheme } = useThemeContext();
 
-   useEffect(() => {
-      let timeoutId: NodeJS.Timeout | undefined = undefined;
-      if (!isDisplayed) {
-         timeoutId = setTimeout(() => {
-            setRenderSplashScreen(false);
-         }, 1750);
-      } else {
-         setRenderSplashScreen(true);
-      }
-      return () => {
-         clearTimeout(timeoutId);
-      };
+   useLayoutEffect(() => {
+      if (!isDisplayed) return;
+      const timer = setTimeout(() => {
+         onClose();
+      }, NumberHelper.secsToMs(durationSecs));
+      return () => clearTimeout(timer);
    }, [isDisplayed]);
 
    return (
-      <ConditionalRender condition={renderSplashScreen}>
-         <Fader fadeInCondition={isDisplayed}>
-            <OpaqueOverlay isDarkTheme={isDarkTheme}>
-               <CenterWrapper centerOfScreen>
+      <ExitAnimatePresence exitWhen={!isDisplayed}>
+         <SimpleAnimator key="splash-screen" animateType={['fade']} duration={0.3}>
+            <SplashScreenWrapper color={isDarkTheme ? Color.darkThm.bg : Color.lightThm.bg}>
+               <FlexColumnWrapper
+                  justifyContent="center"
+                  alignItems="center"
+                  height="100dvh"
+                  width="100dvw"
+               >
                   <Logo
                      size={'200px'}
                      bgColor={isDarkTheme ? Color.darkThm.bg : Color.lightThm.bg}
                      cardColor={isDarkTheme ? Color.lightThm.inactive : Color.darkThm.inactive}
                      detailsColor={isDarkTheme ? Color.darkThm.bg : Color.lightThm.bg}
                   />
-               </CenterWrapper>
+               </FlexColumnWrapper>
                <SplashScreenFooter>DistInc v0.1.0</SplashScreenFooter>
-            </OpaqueOverlay>
-         </Fader>
-      </ConditionalRender>
+            </SplashScreenWrapper>
+         </SimpleAnimator>
+      </ExitAnimatePresence>
    );
 }

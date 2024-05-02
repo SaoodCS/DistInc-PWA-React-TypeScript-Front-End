@@ -1,5 +1,15 @@
 import styled from 'styled-components';
 
+export const SplashScreenWrapper = styled.div`
+   position: fixed;
+   overflow: hidden;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   z-index: 9999;
+`;
+
 export const SplashScreenFooter = styled.div`
    position: fixed;
    bottom: 0px;

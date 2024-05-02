@@ -10,6 +10,7 @@ import DeviceContextProvider from './global/context/device/DeviceContextProvider
 import ThemeContextProvider from './global/context/theme/ThemeContextProvider';
 // eslint-disable-next-line import/no-unresolved
 import { registerSW } from 'virtual:pwa-register';
+import SplashScreenContextProvider from './global/context/widget/splashScreen/SplashScreenContextProvider';
 
 registerSW({ immediate: true });
 
@@ -20,13 +21,15 @@ function Root(): JSX.Element {
       <StrictMode>
          <QueryClientProvider client={GlobalUtils.config.queryClient}>
             <ThemeContextProvider>
-               <DeviceContextProvider>
-                  <AuthContextProvider>
-                     <InstallAppModal />
-                     <App />
-                     <ReactQueryDevtools initialIsOpen={false} />
-                  </AuthContextProvider>
-               </DeviceContextProvider>
+               <SplashScreenContextProvider>
+                  <DeviceContextProvider>
+                     <AuthContextProvider>
+                        <InstallAppModal />
+                        <App />
+                        <ReactQueryDevtools initialIsOpen={false} />
+                     </AuthContextProvider>
+                  </DeviceContextProvider>
+               </SplashScreenContextProvider>
             </ThemeContextProvider>
          </QueryClientProvider>
       </StrictMode>
