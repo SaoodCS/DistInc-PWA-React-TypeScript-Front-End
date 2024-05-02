@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import SplashScreen from '../../../components/lib/splashScreen/SplashScreen';
 import { SPLASHSCRN_DEFAULT_DURATION_SECS, SplashScreenContext } from './SplashScreenContext';
 import { SimpleAnimator } from '../../../components/lib/animation/simpleAnimator/SimpleAnimator';
+import Device from '../../../helpers/pwa/deviceHelper';
 
 interface ISplashScreenContextProvider {
    children: ReactNode;
@@ -13,7 +14,7 @@ export default function SplashScreenContextProvider(
 ): JSX.Element {
    const { children } = props;
    const [splashDurationSecs, setSplashDurationSecs] = useState(SPLASHSCRN_DEFAULT_DURATION_SECS);
-   const [isSplashScreenDisplayed, setIsSplashScreenDisplayed] = useState(true);
+   const [isSplashScreenDisplayed, setIsSplashScreenDisplayed] = useState(Device.isPwa());
    const [splashScreenContent, setSplashScreenContent] = useState<JSX.Element | undefined>(
       undefined,
    );
