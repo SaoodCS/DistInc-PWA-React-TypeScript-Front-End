@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => {
    const server = (): ServerOptions | undefined => {
       if (isRunningLocally) {
          return {
-            // Certificate expiration: Feb 2026 (Readme file explains how to generate a new certificate when this one expires)
+            // Certificate expiration: Feb 2026 (comments at the bottom of this file explain how to generate a new certificate when this one expires)
             https: {
                key: fs.readFileSync('./.cert/key.pem'),
                cert: fs.readFileSync('./.cert/cert.pem'),
@@ -114,7 +114,7 @@ export default defineConfig(({ mode }) => {
 // - Develop and test browser caching locally
 // - Test FCM notifications locally
 
-// How to generate an SSL certificate using mkcert:
+// How to generate / update an SSL certificate using mkcert:
 // 1. install mkcert by running 'choco install mkcert' in terminal (if not already installed)
 // 2. run 'mkcert -install' in terminal (if not already installed)
 // 3. delete the .cert file in the root of the project (if it exists)
