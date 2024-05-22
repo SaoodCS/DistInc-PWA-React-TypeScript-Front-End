@@ -50,7 +50,7 @@ export const PopupMenuWrapper = styled.div<{
    background-color: ${({ isDarkTheme }) =>
       isDarkTheme
          ? Color.setRgbOpacity(Color.darkThm.grey, 1)
-         : Color.setRgbOpacity(Color.darkThm.grey, 0.08)};
+         : Color.setRgbOpacity(Color.lightThm.grey, 1)};
    box-shadow: ${({ isDarkTheme }) =>
       !isDarkTheme && `0px 0px 10px ${Color.setRgbOpacity(Color.darkThm.txt, 0.1)}`};
 
