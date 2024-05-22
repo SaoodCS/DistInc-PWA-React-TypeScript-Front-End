@@ -38,14 +38,8 @@ export default function TotalExpense(): JSX.Element {
       key: NTotalExpense.key.totalYearlyOrMonthly,
       defaultValue: 'All',
    });
-   const {
-      setPMContent,
-      setPMHeightPx,
-      togglePM,
-      setPMWidthPx,
-      setClickEvent,
-      setCloseOnInnerClick,
-   } = useContext(PopupMenuContext);
+   const { setPMContent, togglePM, setPMWidthPx, setClickEvent, setCloseOnInnerClick } =
+      useContext(PopupMenuContext);
 
    useEffect(() => {
       if (MiscHelper.isNotFalsyOrEmpty(expenseData)) {
@@ -63,7 +57,6 @@ export default function TotalExpense(): JSX.Element {
       togglePM(true);
       setPMContent(<ExcludePausedExpensePopupMenu />);
       setClickEvent(e);
-      setPMHeightPx(7 * 35);
       setPMWidthPx(200);
       setCloseOnInnerClick(false);
    }

@@ -23,14 +23,8 @@ interface IAnalyticsItems {
 export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
    const { analytics } = props;
    const { handleItemClick } = useContext(DistributeContext);
-   const {
-      setPMContent,
-      setPMHeightPx,
-      togglePM,
-      setPMWidthPx,
-      setClickEvent,
-      setCloseOnInnerClick,
-   } = useContext(PopupMenuContext);
+   const { setPMContent, togglePM, setPMWidthPx, setClickEvent, setCloseOnInnerClick } =
+      useContext(PopupMenuContext);
    const { isDarkTheme, isPortableDevice } = useThemeContext();
 
    function handleMenuDotsClick(
@@ -43,7 +37,6 @@ export default function AnalyticsItems(props: IAnalyticsItems): JSX.Element {
          <AnalyticsPopupMenu analyticsItem={analyticsItem} handleItemClick={handleItemClick} />,
       );
       setClickEvent(e);
-      setPMHeightPx(62);
       setPMWidthPx(120);
       setCloseOnInnerClick(true);
    }

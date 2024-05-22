@@ -8,17 +8,32 @@ interface IPopupMenu {
    openerPosition: { x: number; y: number };
    isOpen: boolean;
    widthPx: number;
-   heightPx: number;
    content: JSX.Element;
    onClose: () => void;
    closeOnInnerClick?: boolean;
 }
 
 export default function PopupMenu(props: IPopupMenu): JSX.Element {
-   const { openerPosition, content, isOpen, widthPx, heightPx, onClose, closeOnInnerClick } = props;
+   const { openerPosition, content, isOpen, widthPx, onClose, closeOnInnerClick } = props;
    const [renderMenu, setRenderMenu] = useState(false);
    const popupMenuWrapperRef = useRef<HTMLDivElement>(null);
    const { isDarkTheme } = useThemeContext();
+   const [heightPx, setHeightPx] = useState(popupMenuWrapperRef.current?.clientHeight ?? 0);
+
+   useEffect(() => {
+      if (renderMenu) {
+         const resizeObserver = new ResizeObserver((entries) => {
+            const element = entries[0].target as HTMLDivElement;
+            setHeightPx(element.clientHeight);
+         });
+         if (popupMenuWrapperRef.current) {
+            resizeObserver.observe(popupMenuWrapperRef.current);
+         }
+         return () => {
+            resizeObserver.disconnect();
+         };
+      }
+   }, [popupMenuWrapperRef, renderMenu]);
 
    useEffect(() => {
       let timeoutId: NodeJS.Timeout | undefined = undefined;
@@ -78,7 +93,7 @@ export default function PopupMenu(props: IPopupMenu): JSX.Element {
 
    return (
       <ConditionalRender condition={renderMenu}>
-         <TransparentOverlay zIndex={99} />
+         <TransparentOverlay zIndex={999} />
          <PopupMenuWrapper
             ref={popupMenuWrapperRef}
             topPx={setTopPos(openerPosition.y).num}
@@ -88,7 +103,6 @@ export default function PopupMenu(props: IPopupMenu): JSX.Element {
                setLeftPos(openerPosition.x).worded
             }`}
             widthPx={widthPx}
-            heightPx={heightPx}
             isDarkTheme={isDarkTheme}
          >
             {content}

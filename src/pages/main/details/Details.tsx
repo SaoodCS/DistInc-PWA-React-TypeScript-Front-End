@@ -15,7 +15,6 @@ import HeaderHooks from '../../../global/context/widget/header/hooks/HeaderHooks
 import useHeaderContext from '../../../global/context/widget/header/hooks/useHeaderContext';
 import { PopupMenuContext } from '../../../global/context/widget/popupMenu/PopupMenuContext';
 import Color from '../../../global/css/colors';
-import ArrayOfObjects from '../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import BoolHelper from '../../../global/helpers/dataTypes/bool/BoolHelper';
 import FiltererContextMenu from './components/contextMenu/FiltererContextMenu';
 import NewFormContextMenu from './components/contextMenu/NewFormContextMenu';
@@ -36,14 +35,8 @@ export default function Details(): JSX.Element {
    const carouselBorderRight: CSSProperties = {
       borderRight: `1px solid ${isDarkTheme ? Color.darkThm.border : Color.lightThm.border}`,
    };
-   const {
-      setPMContent,
-      setPMHeightPx,
-      togglePM,
-      setPMWidthPx,
-      setClickEvent,
-      setCloseOnInnerClick,
-   } = useContext(PopupMenuContext);
+   const { setPMContent, togglePM, setPMWidthPx, setClickEvent, setCloseOnInnerClick } =
+      useContext(PopupMenuContext);
 
    useEffect(() => {
       setHeaderRightElement(
@@ -54,7 +47,6 @@ export default function Details(): JSX.Element {
                   togglePM(true);
                   setPMContent(<NewFormContextMenu />);
                   setClickEvent(e);
-                  setPMHeightPx(100);
                   setPMWidthPx(200);
                   setCloseOnInnerClick(true);
                }}
@@ -66,10 +58,6 @@ export default function Details(): JSX.Element {
                   setPMContent(<FiltererContextMenu currentSlide={currentSlide} />);
                   setClickEvent(e);
                   setPMWidthPx(200);
-                  setPMHeightPx(
-                     ArrayOfObjects.getObjWithKeyValuePair(NDetails.slides, 'slideNo', currentSlide)
-                        .sortDataOptions[0].menuHeight,
-                  );
                }}
             />
          </>,

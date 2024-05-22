@@ -31,14 +31,8 @@ export default function SpendingsAnalytics(): JSX.Element {
    const [expensesSpendingsValues, setExpensesSpendingsValues] = useState<number[]>([0]);
    const [latestSpendingsPercChange, setLatestSpendingsPercChange] = useState<number>(0);
    const [filterOutState] = useURLState({ key: SpendingsChart.filtererKey });
-   const {
-      setPMContent,
-      setPMHeightPx,
-      togglePM,
-      setPMWidthPx,
-      setClickEvent,
-      setCloseOnInnerClick,
-   } = useContext(PopupMenuContext);
+   const { setPMContent, togglePM, setPMWidthPx, setClickEvent, setCloseOnInnerClick } =
+      useContext(PopupMenuContext);
 
    useEffect(() => {
       const analytics = calcDistData?.analytics;
@@ -98,7 +92,6 @@ export default function SpendingsAnalytics(): JSX.Element {
       togglePM(true);
       setPMContent(<FilterSpendingsPopupMenu />);
       setClickEvent(e);
-      setPMHeightPx(100);
       setPMWidthPx(200);
       setCloseOnInnerClick(false);
    }

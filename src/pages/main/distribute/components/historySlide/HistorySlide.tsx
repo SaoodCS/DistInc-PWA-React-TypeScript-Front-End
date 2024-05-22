@@ -42,14 +42,8 @@ export default function HistorySlide(): JSX.Element {
       scrollSaverStyle,
    } = useScrollSaver(NDist.Carousel.key.historySlideScrollSaver);
 
-   const {
-      setPMContent,
-      setPMHeightPx,
-      togglePM,
-      setPMWidthPx,
-      setClickEvent,
-      setCloseOnInnerClick,
-   } = useContext(PopupMenuContext);
+   const { setPMContent, togglePM, setPMWidthPx, setClickEvent, setCloseOnInnerClick } =
+      useContext(PopupMenuContext);
 
    const {
       setHorizontalPos,
@@ -83,7 +77,6 @@ export default function HistorySlide(): JSX.Element {
       togglePM(true);
       setPMContent(<MonthPopupMenu monthYear={monthYear} />);
       setClickEvent(e);
-      setPMHeightPx(30);
       setPMWidthPx(200);
       setCloseOnInnerClick(true);
    }
@@ -92,7 +85,6 @@ export default function HistorySlide(): JSX.Element {
       togglePM(true);
       setPMContent(<FilterHistoryPopupMenu />);
       setClickEvent(e);
-      setPMHeightPx(100);
       setPMWidthPx(200);
       setCloseOnInnerClick(false);
    }

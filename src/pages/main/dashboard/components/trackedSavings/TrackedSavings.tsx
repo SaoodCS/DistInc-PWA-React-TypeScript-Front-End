@@ -42,14 +42,8 @@ export default function TrackedSavings(): JSX.Element {
    const [selectedSavingsAcc, setSelectedSavingsAcc] = useURLState({
       key: TrackedSavingsChart.currentlySelectedKey,
    });
-   const {
-      setPMContent,
-      setPMHeightPx,
-      togglePM,
-      setPMWidthPx,
-      setClickEvent,
-      setCloseOnInnerClick,
-   } = useContext(PopupMenuContext);
+   const { setPMContent, togglePM, setPMWidthPx, setClickEvent, setCloseOnInnerClick } =
+      useContext(PopupMenuContext);
 
    useEffect(() => {
       if (MiscHelper.isNotFalsyOrEmpty(savingsAcc)) {
@@ -70,7 +64,6 @@ export default function TrackedSavings(): JSX.Element {
       togglePM(true);
       setPMContent(<SelectTrackedSavingsPopupMenu />);
       setClickEvent(e);
-      setPMHeightPx((trackedSavingsAccounts?.length || 0) * 35);
       setPMWidthPx(200);
       setCloseOnInnerClick(false);
    }

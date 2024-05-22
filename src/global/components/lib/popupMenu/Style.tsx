@@ -1,7 +1,7 @@
 import type { Keyframes } from 'styled-components';
 import styled, { keyframes } from 'styled-components';
-import MyCSS from '../../../css/MyCSS';
 import Color from '../../../css/colors';
+import MyCSS from '../../../css/MyCSS';
 
 export type TButtonPos = 'top left' | 'top right' | 'bottom left' | 'bottom right';
 
@@ -37,22 +37,20 @@ export const PopupMenuWrapper = styled.div<{
    isOpen: boolean;
    clickPos: TButtonPos;
    widthPx: number;
-   heightPx: number;
    isDarkTheme: boolean;
 }>`
+   z-index: 999;
    position: fixed;
    top: ${({ topPx }) => topPx}px;
    left: ${({ leftPx }) => leftPx}px;
-   height: ${({ heightPx }) => heightPx}px;
    width: ${({ widthPx }) => widthPx}px;
-   z-index: 100;
    border-radius: 10px;
-   backdrop-filter: blur(100px);
+   backdrop-filter: blur(200px);
    color: ${({ isDarkTheme }) => (isDarkTheme ? Color.darkThm.txt : Color.lightThm.txt)};
    background-color: ${({ isDarkTheme }) =>
       isDarkTheme
-         ? Color.setRgbOpacity(Color.darkThm.dialog, 1)
-         : Color.setRgbOpacity(Color.darkThm.dialog, 0.08)};
+         ? Color.setRgbOpacity(Color.darkThm.grey, 1)
+         : Color.setRgbOpacity(Color.darkThm.grey, 0.08)};
    box-shadow: ${({ isDarkTheme }) =>
       !isDarkTheme && `0px 0px 10px ${Color.setRgbOpacity(Color.darkThm.txt, 0.1)}`};
 

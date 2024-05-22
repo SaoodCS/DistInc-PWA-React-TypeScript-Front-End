@@ -23,14 +23,8 @@ interface IDistStepsItems {
 export default function DistStepsItems(props: IDistStepsItems): JSX.Element {
    const { distSteps } = props;
    const { handleItemClick } = useContext(DistributeContext);
-   const {
-      setPMContent,
-      setPMHeightPx,
-      togglePM,
-      setPMWidthPx,
-      setClickEvent,
-      setCloseOnInnerClick,
-   } = useContext(PopupMenuContext);
+   const { setPMContent, togglePM, setPMWidthPx, setClickEvent, setCloseOnInnerClick } =
+      useContext(PopupMenuContext);
    const { isDarkTheme, isPortableDevice } = useThemeContext();
 
    function handleMenuDotsClick(
@@ -43,7 +37,6 @@ export default function DistStepsItems(props: IDistStepsItems): JSX.Element {
          <DistStepsPopupMenu distStepsItem={distStepsItem} handleItemClick={handleItemClick} />,
       );
       setClickEvent(e);
-      setPMHeightPx(62);
       setPMWidthPx(120);
       setCloseOnInnerClick(true);
    }

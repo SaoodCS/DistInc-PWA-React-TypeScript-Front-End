@@ -27,14 +27,8 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
    const { handleItemClick } = useContext(DistributeContext);
    const { isDarkTheme, isPortableDevice } = useThemeContext();
    const { data: savingsAccounts } = SavingsClass.useQuery.getSavingsAccounts();
-   const {
-      setPMContent,
-      setPMHeightPx,
-      togglePM,
-      setPMWidthPx,
-      setClickEvent,
-      setCloseOnInnerClick,
-   } = useContext(PopupMenuContext);
+   const { setPMContent, togglePM, setPMWidthPx, setClickEvent, setCloseOnInnerClick } =
+      useContext(PopupMenuContext);
 
    function handleMenuDotsClick(
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
@@ -49,7 +43,6 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
          />,
       );
       setClickEvent(e);
-      setPMHeightPx(146);
       setPMWidthPx(200);
       setCloseOnInnerClick(true);
    }

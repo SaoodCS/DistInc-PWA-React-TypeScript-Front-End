@@ -1,6 +1,7 @@
 export default class Color {
    static lightThm = {
       bg: 'rgb(255, 255, 255)',
+      grey: 'rgb(52, 56, 69)',
       accent: 'rgb(37, 99, 235)',
       border: 'rgba(2,8,23, 0.1)',
       txt: 'rgb(2,8,23)',
@@ -18,6 +19,7 @@ export default class Color {
 
    static darkThm = {
       bg: 'rgb(2,8,23)',
+      grey: 'rgb(52, 56, 69)',
       accent: 'rgb(59,130,246)',
       border: 'rgba(255, 255, 255, 0.1)',
       txt: 'rgb(255, 255, 255)',
