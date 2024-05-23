@@ -1,19 +1,19 @@
 if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
     Write-Host 'choco is not installed. Installing choco...'
     Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-    Write-Host 'choco has been installed. PLEASE RESTART THE CMD OR CODE EDITOR and run this script again.'
+    Write-Host 'choco has been installed. PLEASE RESTART THE CMD OR CODE EDITOR and run this script again.' -ForegroundColor Cyan
     exit
 }
 if (-not (Get-Command mkcert -ErrorAction SilentlyContinue)) {
     Write-Host 'mkcert is not installed. Installing mkcert using choco...'
     choco install mkcert -y
-    Write-Host 'mkcert has been installed. PLEASE RESTART THE CMD OR CODE EDITOR and run this script again.'
+    Write-Host 'mkcert has been installed. PLEASE RESTART THE CMD OR CODE EDITOR and run this script again.' -ForegroundColor Cyan
     exit
 }
 if (-not (Get-Command openssl -ErrorAction SilentlyContinue)) {
     Write-Host 'OpenSSL is not installed. Installing OpenSSL using choco...'
     choco install openssl -y
-    Write-Host 'openssl has been installed. PLEASE RESTART THE CMD OR CODE EDITOR and run this script again.'
+    Write-Host 'openssl has been installed. PLEASE RESTART THE CMD OR CODE EDITOR and run this script again.' -ForegroundColor Cyan
     exit
 }
 Write-Host 'Installing the mkcert root certificate...'
@@ -43,7 +43,7 @@ if (Test-Path -Path .\.cert\cert.pem) {
         catch {
             Write-Host "Error: $_"
             if ($_ -match 'openssl is not recognized') {
-                Write-Host 'PLEASE RESTART THE CMD OR CODE EDITOR.'
+                Write-Host 'PLEASE RESTART THE CMD OR CODE EDITOR AND RUN THE SCRIPT AGAIN.' -ForegroundColor Red
             }
             exit
         }
@@ -75,7 +75,7 @@ if (Test-Path -Path .\.cert\cert.pem) {
             catch {
                 Write-Host "Error: $_"
                 if ($_ -match 'openssl is not recognized') {
-                    Write-Host 'PLEASE RESTART THE CMD OR CODE EDITOR.'
+                    Write-Host 'PLEASE RESTART THE CMD OR CODE EDITOR AND RUN THE SCRIPT AGAIN.' -ForegroundColor Red
                 }
                 exit
             }
@@ -85,7 +85,7 @@ if (Test-Path -Path .\.cert\cert.pem) {
         Write-Host 'The domains in the existing certificate are: ' $domains
         Write-Host 'the current IP address for this machine is: ' $ipAddress
         if ($domains -match $ipAddress) {
-            Write-Host 'The existing active certificates include the current IP address and it has not expired, so exiting script...'
+            Write-Host 'The existing active certificates include the current IP address and it has not expired, so exiting script.' -ForegroundColor Green
             exit
         }
         else {
@@ -107,4 +107,5 @@ if (!(Test-Path -Path .\.cert)) {
 Write-Host 'Running the mkcert command to generate the certificate(s)...'
 $mkcertCommand = "mkcert -key-file .\.cert\key.pem -cert-file .\.cert\cert.pem localhost $ipAddress"
 Invoke-Expression $mkcertCommand
+Write-Host 'The certificate(s) have been generated successfully.' -ForegroundColor Green
 

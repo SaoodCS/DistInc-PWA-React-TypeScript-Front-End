@@ -5,6 +5,7 @@
    "type": "module",
    "scripts": {
       "setup-project": "npm run git-sync && npm run setup-os-env && npm run update-cert",
+      "setup-os-env": "npm run config-node-and-firebase-cli",
       "dev": "vite",
       "preview": "vite preview",
       "build": "tsc && vite build",
@@ -27,7 +28,6 @@
       "start-dev-to-deployed": "npm run update-cert && nvm use 20.12.2 && npm run init-env-and-sw .env.devdeployed locally && vite --mode devdeployed --host",
       "start-prod-to-deployed": "npm run update-cert && nvm use 20.12.2 && npm run init-env-and-sw .env.proddeployed locally && vite --mode proddeployed --host",
       "generate-pwa-assets": "pwa-assets-generator public/icons/logo-512x512.png",
-      "setup-os-env": "npm run config-node-and-firebase-cli",
       "config-node-and-firebase-cli": "powershell -ExecutionPolicy Bypass -File .\\src\\global\\config\\script\\configNodeAndFirebaseCli.ps1",
       "git-prune-remote": "git remote update origin --prune",
       "git-prune-local": "npx git-removed-branches --prune --force",
