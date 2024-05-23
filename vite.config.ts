@@ -20,7 +20,6 @@ export default defineConfig(({ mode }) => {
    const server = (): ServerOptions | undefined => {
       if (isRunningLocally) {
          return {
-            // Certificate expiration: Feb 2026 (comments at the bottom of this file explain how to generate a new certificate when this one expires)
             https: {
                key: fs.readFileSync('./.cert/key.pem'),
                cert: fs.readFileSync('./.cert/cert.pem'),
@@ -108,19 +107,3 @@ export default defineConfig(({ mode }) => {
       },
    };
 });
-
-// --- LOCAL HTTPS SERVER CONFIG --- //
-// The localHttpsServerConfig is used so that you can run the app locally with https and a trusted SSL certificate. This is needed so that you can:
-// - Develop and test browser caching locally
-// - Test FCM notifications locally
-
-// How to generate / update an SSL certificate using mkcert:
-// 1. install mkcert by running 'choco install mkcert' in terminal (if not already installed)
-// 2. run 'mkcert -install' in terminal (if not already installed)
-// 3. delete the .cert file in the root of the project (if it exists)
-// 4. run 'mkdir .cert' in terminal in the root of the project
-// 5. run the dev server (e.g. 'npm run dev') in terminal in the root of the project
-// 6. make note of the domain names (e.g. localhost & 192.168.1.81)
-// 7. run 'mkcert -key-file .\.cert\key.pem -cert-file .\.cert\cert.pem [replace-with-domain-name-one] [replace-with-domain-name-two]' in terminal in the root of the project (this generates a certificate for localhost and your local IP address)
-// 8. Note down when the certificate in available till (i.e. the comment above which starts with "Certificate expiration")
-// --- When the certificate expires, run steps 3 and 4 again to generate a new certificate
