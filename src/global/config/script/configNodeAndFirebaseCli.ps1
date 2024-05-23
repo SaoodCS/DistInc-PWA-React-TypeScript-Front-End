@@ -17,7 +17,7 @@ nvm install 20.12.2
 Write-Host 'Using node version 20.12.2...'
 nvm use 20.12.2
 
-Write-Host 'Installing firebase-tools version 13.7.2 if not already installed...'
-npm install -g firebase-tools@13.7.2
+Write-Host 'Installing the latest firebase-tools version if not already installed...'
+npm install -g firebase-tools@latest
 
 Write-Host 'Env setup is complete' -ForegroundColor Green
