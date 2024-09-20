@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import MyCSS from '../../css/MyCSS';
-import Color from '../../css/colors';
 import { GlobalTheme } from '../../css/theme';
 import Device from '../../helpers/pwa/deviceHelper';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { ThemeContext } from './ThemeContext';
+import Color from '../../css/colors';
 
 interface IThemeContextProvider {
    children: ReactNode;
@@ -27,11 +27,8 @@ export default function ThemeContextProvider(props: IThemeContextProvider): JSX.
       };
    }, []);
 
-   useEffect(() => {
-      const metaThemeColor = document.querySelector(`meta[name=theme-color]`);
-      if (metaThemeColor) {
-         metaThemeColor.setAttribute(`content`, isDarkTheme ? Color.darkThm.bg : Color.lightThm.bg);
-      }
+   useLayoutEffect(() => {
+      document.body.style.backgroundColor = isDarkTheme ? Color.darkThm.bg : Color.lightThm.bg;
    }, [isDarkTheme]);
 
    const contextMemo = useMemo(

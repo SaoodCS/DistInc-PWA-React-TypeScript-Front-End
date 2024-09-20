@@ -40,13 +40,13 @@ export default defineConfig(({ mode }) => {
 
    return {
       server: server(),
+      esbuild: buildOptions(),
+      test: { globals: true, environment: 'jsdom', setupFiles: ['./src/setupTests.ts'] },
       plugins: [
          react(),
          VitePWA({
             registerType: 'autoUpdate',
-            devOptions: {
-               enabled: true,
-            },
+            devOptions: { enabled: true },
             workbox: {
                disableDevLogs: true,
                cleanupOutdatedCaches: true,
@@ -76,9 +76,8 @@ export default defineConfig(({ mode }) => {
             manifest: {
                name: 'DistInc',
                short_name: 'DistInc',
-               description: 'Distribute your income with ease',
+               categories: ['finance', 'lifestyle', 'personalization', 'productivity', 'utilities'],
                display: 'standalone',
-               orientation: 'natural',
                start_url: '/?application=true',
                scope: '/',
                icons: [
@@ -95,15 +94,11 @@ export default defineConfig(({ mode }) => {
                      purpose: 'maskable',
                   },
                ],
+               screenshots: [
+                  // https://developer.mozilla.org/en-US/docs/Web/Manifest/screenshots
+               ],
             },
          }),
       ],
-      esbuild: buildOptions(),
-
-      test: {
-         globals: true,
-         environment: 'jsdom',
-         setupFiles: ['./src/setupTests.ts'],
-      },
    };
 });
