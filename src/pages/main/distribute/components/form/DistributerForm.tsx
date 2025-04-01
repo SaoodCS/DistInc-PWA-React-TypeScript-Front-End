@@ -21,12 +21,14 @@ import CurrentClass from '../../../details/components/accounts/current/class/Cla
 import SavingsClass from '../../../details/components/accounts/savings/class/Class';
 import ExpensesClass from '../../../details/components/expense/class/ExpensesClass';
 import NDist from '../../namespace/NDist';
+import CreditClass from '../../../details/components/accounts/credit/class/Class';
 
 export default function DistributeForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
    const { apiError } = useApiErrorContext();
    const { data: currentAccounts } = CurrentClass.useQuery.getCurrentAccounts();
    const { data: savingsAccount } = SavingsClass.useQuery.getSavingsAccounts();
+   const { data: creditAccounts } = CreditClass.useQuery.getCreditAccounts();
    const { data: incomes } = IncomeClass.useQuery.getIncomes();
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
    const { data: calcDistData } = NDist.API.useQuery.getCalcDist();
@@ -35,7 +37,8 @@ export default function DistributeForm(): JSX.Element {
    const currentAccAsArr = ObjectOfObjects.convertToArrayOfObj(
       currentAccounts ? currentAccounts : {},
    );
-   const dist = new NDist.FormBuilder(currentAccAsArr);
+   const creditAccAsArr = ObjectOfObjects.convertToArrayOfObj(creditAccounts ? creditAccounts : {});
+   const dist = new NDist.FormBuilder(currentAccAsArr, creditAccAsArr);
    const { form, errors, handleChange, initHandleSubmit } = useForm(
       dist.form.initialState,
       dist.form.initialErrors,
@@ -67,6 +70,7 @@ export default function DistributeForm(): JSX.Element {
          distDate,
          savingsAccount || {},
          currentAccounts || {},
+         creditAccounts || {},
          incomes || {},
          expenses || {},
          form,

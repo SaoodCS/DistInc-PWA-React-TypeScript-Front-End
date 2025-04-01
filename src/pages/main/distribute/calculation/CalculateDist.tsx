@@ -4,6 +4,10 @@ import NumberHelper from '../../../../global/helpers/dataTypes/number/NumberHelp
 import ObjectOfObjects from '../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import type { IIncomeFirebase } from '../../details/components/Income/class/Class';
 import type {
+   ICreditAccountFirebase,
+   ICreditFormInputs,
+} from '../../details/components/accounts/credit/class/Class';
+import type {
    ICurrentAccountFirebase,
    ICurrentFormInputs,
 } from '../../details/components/accounts/current/class/Class';
@@ -23,12 +27,13 @@ export default class CalculateDist {
       distDate: Date,
       savingsAccounts: ISavingsAccountFirebase,
       currentAccounts: ICurrentAccountFirebase,
+      creditAccounts: ICreditAccountFirebase,
       incomes: IIncomeFirebase,
       expenses: IExpensesFirebase,
-      leftovers: { [id: number]: number },
+      distForm: { [id: number]: number }, // contains current account leftovers and credit account balances
    ): NDist.ISchema {
-      // Initial Setup:
-      const currentAcc = CalculateDist.formatCurrentAccounts(currentAccounts, leftovers);
+      const currentAcc = CalculateDist.formatCurrentAccounts(currentAccounts, distForm);
+      const creditAccArr = CalculateDist.formatCreditAccounts(creditAccounts, distForm);
       const savingsAccArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
       const incomeArr = ObjectOfObjects.convertToArrayOfObj(incomes);
       const expenseArr = ObjectOfObjects.convertToArrayOfObj(expenses);
@@ -310,11 +315,11 @@ export default class CalculateDist {
    // -- FORMAT CURRENT ACCOUNTS -- //
    private static formatCurrentAccounts(
       currentAccounts: ICurrentAccountFirebase,
-      leftovers: { [id: number]: number },
+      distForm: { [id: number]: number },
    ): IFormattedCurrentAcc {
       const currentAccArr = ObjectOfObjects.convertToArrayOfObj(currentAccounts);
       const currentAccWithLeftovers = currentAccArr.map((acc) => {
-         const leftover = leftovers[acc.id];
+         const leftover = distForm[acc.id];
          const hasTransferLeftoversTo = acc.transferLeftoversTo !== '';
          return {
             ...acc,
@@ -343,6 +348,23 @@ export default class CalculateDist {
       };
 
       return currentAcc;
+   }
+
+   // -- FORMAT CREDIT ACCOUNTS -- //
+   private static formatCreditAccounts(
+      creditAccounts: ICreditAccountFirebase,
+      distForm: { [id: number]: number },
+   ): (ICreditFormInputs & {
+      balance: number;
+   })[] {
+      const creditAccArr = ObjectOfObjects.convertToArrayOfObj(creditAccounts);
+      return creditAccArr.map((acc) => {
+         const balance = distForm[acc.id];
+         return {
+            ...acc,
+            balance,
+         };
+      });
    }
 
    // -- CREATE MSGS -- //

@@ -12,14 +12,17 @@ import FormHelper from '../../../../../../global/helpers/react/form/FormHelper';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
 import type { ICurrentFormInputs } from '../../../../details/components/accounts/current/class/Class';
 import type NDist from '../../../namespace/NDist';
+import type { ICreditFormInputs } from '../../../../details/components/accounts/credit/class/Class';
 
 export default class DistFormAndAPI {
    // -- FORM -- //
-   constructor(currentAccounts: ICurrentFormInputs[]) {
+   constructor(currentAccounts: ICurrentFormInputs[], creditAccounts: ICreditFormInputs[]) {
       this.currentAccounts = currentAccounts;
+      this.creditAccounts = creditAccounts;
    }
 
    private currentAccounts: ICurrentFormInputs[];
+   private creditAccounts: ICreditFormInputs[];
 
    private inputs(): InputArray<{ [x: number]: number }> {
       const mappedCurrentAccounts = this.currentAccounts.map((currentAccount) => {
@@ -39,7 +42,21 @@ export default class DistFormAndAPI {
             },
          };
       });
-      return mappedCurrentAccounts;
+      const mappedCreditAccounts = this.creditAccounts.map((creditAccount) => {
+         return {
+            name: creditAccount.id,
+            id: `balance-${creditAccount.accountName}`,
+            placeholder: `${creditAccount.accountName} Latest Statement Balance`,
+            type: 'number',
+            isRequired: true,
+            validator: (value: number): string | true => {
+               if (typeof value !== 'number') return 'Credit statement balance is required';
+               if (value < 0) return 'Credit statement balance cannot be negative';
+               return true;
+            },
+         };
+      });
+      return [...mappedCurrentAccounts, ...mappedCreditAccounts];
    }
 
    private initialState(): { [x: number]: number } {
