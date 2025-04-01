@@ -23,6 +23,9 @@ import CurrentAccountListItem from './current/listItem/CurrentAccountListItem';
 import type { ISavingsFormInputs } from './savings/class/Class';
 import SavingsClass from './savings/class/Class';
 import SavingsAccountListItem from './savings/listItem/SavingsAccountListItem';
+import type { ICreditFormInputs } from './credit/class/Class';
+import CreditClass from './credit/class/Class';
+import CreditAccountListItem from './credit/listItem/CreditAccountListItem';
 
 interface ISavingsAccWithFilterProps extends ISavingsFormInputs {
    accountType: string;
@@ -30,6 +33,11 @@ interface ISavingsAccWithFilterProps extends ISavingsFormInputs {
 }
 
 interface ICurrentAccWithFilterProps extends ICurrentFormInputs {
+   category: string;
+}
+
+interface ICreditAccWithFilterProps extends ICreditFormInputs {
+   accountType: string;
    category: string;
 }
 
@@ -76,6 +84,18 @@ export default function AccountsSlide(): JSX.Element {
       },
    });
 
+   const {
+      isLoading: isLoadingCredit,
+      error: errorCredit,
+      isPaused: isPausedCredit,
+      refetch: refetchCredit,
+      data: creditData,
+   } = CreditClass.useQuery.getCreditAccounts({
+      onSettled: () => {
+         isPortableDevice ? toggleBottomPanel(false) : toggleModal(false);
+      },
+   });
+
    async function handleOnRefresh(): Promise<void> {
       if (!Device.isOnline()) {
          setToastMessage('No network connection.');
@@ -87,14 +107,22 @@ export default function AccountsSlide(): JSX.Element {
          return;
       }
 
-      await Promise.all([refetchSavings(), refetchCurrent()]);
+      await Promise.all([refetchSavings(), refetchCurrent(), refetchCredit()]);
    }
 
-   function sortData(): (ISavingsAccWithFilterProps | ICurrentAccWithFilterProps)[] {
+   function sortData(): (
+      | ISavingsAccWithFilterProps
+      | ICurrentAccWithFilterProps
+      | ICreditAccWithFilterProps
+   )[] {
       let savingsWithFilterProps: { [id: string]: ISavingsAccWithFilterProps } = {};
       let currentWithFilterProps: { [id: string]: ICurrentAccWithFilterProps } = {};
-      let savingsAndCurrentConcat: {
-         [x: string]: ICurrentAccWithFilterProps | ISavingsAccWithFilterProps;
+      let creditWithFilterProps: { [id: string]: ICreditAccWithFilterProps } = {};
+      let accountsConcat: {
+         [x: string]:
+            | ICurrentAccWithFilterProps
+            | ISavingsAccWithFilterProps
+            | ICreditAccWithFilterProps;
       } = {};
       if (MiscHelper.isNotFalsyOrEmpty(savingsData)) {
          savingsWithFilterProps = ObjectOfObjects.addPropsToAll(savingsData, {
@@ -107,13 +135,22 @@ export default function AccountsSlide(): JSX.Element {
             category: 'Current',
          });
       }
+      if (MiscHelper.isNotFalsyOrEmpty(creditData)) {
+         creditWithFilterProps = ObjectOfObjects.addPropsToAll(creditData, {
+            accountType: 'Credit',
+            category: 'Credit',
+         });
+      }
       if (MiscHelper.isNotFalsyOrEmpty(savingsWithFilterProps)) {
-         savingsAndCurrentConcat = { ...savingsWithFilterProps };
+         accountsConcat = { ...savingsWithFilterProps };
       }
       if (MiscHelper.isNotFalsyOrEmpty(currentWithFilterProps)) {
-         savingsAndCurrentConcat = { ...savingsAndCurrentConcat, ...currentWithFilterProps };
+         accountsConcat = { ...accountsConcat, ...currentWithFilterProps };
       }
-      const dataAsArr = ObjectOfObjects.convertToArrayOfObj(savingsAndCurrentConcat);
+      if (MiscHelper.isNotFalsyOrEmpty(creditWithFilterProps)) {
+         accountsConcat = { ...accountsConcat, ...creditWithFilterProps };
+      }
+      const dataAsArr = ObjectOfObjects.convertToArrayOfObj(accountsConcat);
       if (!sortAccountBy) return dataAsArr;
       const desc = orderAccount?.includes('desc');
       const sortedData = ArrayOfObjects.sort(
@@ -136,12 +173,22 @@ export default function AccountsSlide(): JSX.Element {
       return rest;
    }
 
-   if ((isLoadingSavings && !isPausedSavings) || (isLoadingCurrent && !isPausedCurrent)) {
+   function creditAccNoFilterProps(item: ICreditAccWithFilterProps): ICreditFormInputs {
+      // eslint-disable-next-line unused-imports/no-unused-vars
+      const { accountType, category, ...rest } = item;
+      return rest;
+   }
+
+   if (
+      (isLoadingSavings && !isPausedSavings) ||
+      (isLoadingCurrent && !isPausedCurrent) ||
+      (isLoadingCredit && !isPausedCredit)
+   ) {
       if (!isPortableDevice) return <Loader isDisplayed />;
       return <FlatListWrapper>{JSXHelper.repeatJSX(<FlatListPlaceholder />, 7)}</FlatListWrapper>;
    }
    if (isPausedSavings || isPausedCurrent) return <OfflineFetch />;
-   if (errorSavings || errorCurrent) return <FetchError />;
+   if (errorSavings || errorCurrent || errorCredit) return <FetchError />;
 
    return (
       <PullToRefresh onRefresh={handleOnRefresh} isDarkTheme={isDarkTheme}>
@@ -157,6 +204,9 @@ export default function AccountsSlide(): JSX.Element {
                   )}
                   {SavingsClass.isType.savingsItem(item) && (
                      <SavingsAccountListItem item={savingsAccNoFilterProps(item)} />
+                  )}
+                  {CreditClass.isType.creditItem(item) && (
+                     <CreditAccountListItem item={creditAccNoFilterProps(item)} />
                   )}
                </Fragment>
             ))}
