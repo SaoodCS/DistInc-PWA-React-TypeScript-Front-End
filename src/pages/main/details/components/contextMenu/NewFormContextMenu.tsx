@@ -13,6 +13,7 @@ import { ModalContext } from '../../../../../global/context/widget/modal/ModalCo
 import IncomeForm from '../Income/form/IncomeForm';
 import SavingsForm from '../accounts/savings/form/SavingsForm';
 import ExpenseForm from '../expense/form/ExpenseForm';
+import CreditForm from '../accounts/credit/form/CreditForm';
 
 export default function NewFormContextMenu(): JSX.Element {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
@@ -22,11 +23,12 @@ export default function NewFormContextMenu(): JSX.Element {
    const { toggleModal, setModalContent, setModalZIndex, setModalHeader } =
       useContext(ModalContext);
 
-   function handleClick(name: 'Savings' | 'Income' | 'Expense'): void {
+   function handleClick(name: 'Savings' | 'Income' | 'Expense' | 'Credit'): void {
       if (isPortableDevice) {
          toggleBottomPanel(true);
          setBottomPanelHeading(`New ${name}`);
          if (name === 'Savings') setBottomPanelContent(<SavingsForm />);
+         if (name === 'Credit') setBottomPanelContent(<CreditForm />);
          if (name === 'Income') setBottomPanelContent(<IncomeForm />);
          if (name === 'Expense') setBottomPanelContent(<ExpenseForm />);
          setBottomPanelZIndex(2);
@@ -34,6 +36,7 @@ export default function NewFormContextMenu(): JSX.Element {
          toggleModal(true);
          setModalHeader(`New ${name}`);
          if (name === 'Savings') setModalContent(<SavingsForm />);
+         if (name === 'Credit') setBottomPanelContent(<CreditForm />);
          if (name === 'Income') setModalContent(<IncomeForm />);
          if (name === 'Expense') setModalContent(<ExpenseForm />);
          setModalZIndex(2);
@@ -45,6 +48,10 @@ export default function NewFormContextMenu(): JSX.Element {
          <PMItemsListWrapper isDarkTheme={isDarkTheme}>
             <PMItemContainer onClick={() => handleClick('Savings')} isDarkTheme={isDarkTheme}>
                <PMItemTitle> New Savings Account</PMItemTitle>
+               <Savings />
+            </PMItemContainer>
+            <PMItemContainer onClick={() => handleClick('Credit')} isDarkTheme={isDarkTheme}>
+               <PMItemTitle> New Credit Card Account</PMItemTitle>
                <Savings />
             </PMItemContainer>
             <PMItemContainer onClick={() => handleClick('Income')} isDarkTheme={isDarkTheme}>

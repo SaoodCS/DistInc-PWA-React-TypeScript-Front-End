@@ -39,6 +39,18 @@ const microservices = {
       name: 'deleteCurrentAccount',
       los: 1,
    },
+   setCreditAccount: {
+      name: 'setCreditAccount',
+      los: 1,
+   },
+   getCreditAccount: {
+      name: 'getCreditAccount',
+      los: 1,
+   },
+   deleteCreditAccount: {
+      name: 'deleteCreditAccount',
+      los: 1,
+   },
    setExpense: {
       name: 'setExpense',
       los: 1,
