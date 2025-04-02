@@ -93,6 +93,7 @@ export default function ExpenseSlide(): JSX.Element {
          hasDistInstruction: isDarkTheme ? Color.darkThm.success : Color.lightThm.success,
          amount: isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning,
          frequency: isDarkTheme ? Color.darkThm.inactive : Color.lightThm.inactive,
+         payMethod: isDarkTheme ? Color.darkThm.coversYearlyExp : Color.lightThm.coversYearlyExp,
       };
       return Color.setRgbOpacity(mapper[tag], 0.4);
    }
@@ -172,6 +173,9 @@ export default function ExpenseSlide(): JSX.Element {
                            condition={BoolHelper.strToBool(item.hasDistInstruction)}
                         >
                            <Tag bgColor={tagColor('hasDistInstruction')}>Instruction</Tag>
+                        </ConditionalRender>
+                        <ConditionalRender condition={!!item.paymentMethod}>
+                           <Tag bgColor={tagColor('payMethod')}>{item.paymentMethod}</Tag>
                         </ConditionalRender>
 
                         <ConditionalRender condition={BoolHelper.strToBool(item.paused)}>

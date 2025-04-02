@@ -15,6 +15,7 @@ export interface IExpenseFormInputs {
    expenseName: string;
    expenseValue: number;
    expenseType: string;
+   paymentMethod: 'Direct Debit' | 'CPA' | 'Cash' | '';
    paused: 'true' | 'false';
    hasDistInstruction: 'true' | 'false';
    frequency: 'Monthly' | 'Yearly';
@@ -54,6 +55,23 @@ export default class ExpensesClass {
          },
       },
       {
+         name: 'expenseType',
+         id: 'expense-type',
+         placeholder: 'Expense Type',
+         type: 'string',
+         isRequired: true,
+         isDropDown: true,
+         dropDownOptions: [
+            { value: 'Subscription', label: 'Subscription' },
+            { value: 'Household', label: 'Household' },
+         ],
+
+         validator: (value: string): string | true => {
+            if (!value) return 'Please choose your expense type';
+            return true;
+         },
+      },
+      {
          name: 'frequency',
          id: 'expense-frequency',
          placeholder: 'Frequency',
@@ -71,23 +89,42 @@ export default class ExpensesClass {
          },
       },
       {
-         name: 'expenseType',
-         id: 'expense-type',
-         placeholder: 'Expense Type',
+         name: 'hasDistInstruction',
+         id: 'has-dist-instruction',
+         placeholder: "Has it's own instruction step?",
          type: 'string',
          isRequired: true,
          isDropDown: true,
          dropDownOptions: [
-            { value: 'Subscription', label: 'Subscription' },
-            { value: 'Household', label: 'Household' },
+            { value: 'true', label: 'Yes' }, // true i.e. manual before
+            { value: 'false', label: 'No' }, // false i.e. automatic before
          ],
-
          validator: (value: string): string | true => {
-            if (!value) return 'Please choose your expense type';
+            if (value !== 'true' && value !== 'false') {
+               return "Select if this expense has it's own instruction when distributing";
+            }
             return true;
          },
       },
-
+      {
+         name: 'paymentMethod',
+         id: 'expense-payment-method',
+         placeholder: 'Payment Method',
+         type: 'string',
+         isRequired: false,
+         isDropDown: true,
+         dropDownOptions: [
+            { value: 'Direct Debit', label: 'Direct Debit' },
+            { value: 'CPA', label: 'CPA' },
+            { value: 'Cash', label: 'Cash' },
+         ],
+         validator: (value: string): string | true => {
+            if (value && value !== 'Direct Debit' && value !== 'CPA' && value !== 'Cash') {
+               return 'Select the payment method of this expense';
+            }
+            return true;
+         },
+      },
       {
          name: 'paused',
          id: 'expense-paused',
@@ -102,24 +139,6 @@ export default class ExpensesClass {
          validator: (value: string): string | true => {
             if (value !== 'true' && value !== 'false') {
                return 'Please choose if you want to pause this expense';
-            }
-            return true;
-         },
-      },
-      {
-         name: 'hasDistInstruction',
-         id: 'has-dist-instruction',
-         placeholder: "Has it's own instruction step?",
-         type: 'string',
-         isRequired: true,
-         isDropDown: true,
-         dropDownOptions: [
-            { value: 'true', label: 'Yes' }, // true i.e. manual before
-            { value: 'false', label: 'No' }, // false i.e. automatic before
-         ],
-         validator: (value: string): string | true => {
-            if (value !== 'true' && value !== 'false') {
-               return "Select if this expense has it's own instruction when distributing";
             }
             return true;
          },
