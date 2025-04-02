@@ -37,4 +37,11 @@ export default class NumberHelper {
    static makeZeroIfNeg(value: number): number {
       return value < 0 ? 0 : value;
    }
+
+   static isPositive(value: number): boolean {
+      return value >= 0;
+   }
+   static isNegative(value: number): boolean {
+      return value <= 0;
+   }
 }

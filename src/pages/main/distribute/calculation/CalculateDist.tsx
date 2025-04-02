@@ -196,7 +196,8 @@ export default class CalculateDist {
       let SE_newBalance = SE_startingBalance - SE_TO_CRAs_accounts_total_balance;
       const savingsAccountTransfers: ISavingsAccountTransfers = [];
 
-      SE_TO_TL = SE.leftover;
+      SE_TO_TL = SE.leftover - SE.minCushion;
+      SE_TO_TL = NumberHelper.isPositive(SE_TO_TL) ? SE_TO_TL : 0;
       SE_newBalance = SE_newBalance - SE_TO_TL;
       SE_TO_SP = totalIncome - totalMonthlyExpenses;
       SE_newBalance = SE_newBalance - SE_TO_SP;
