@@ -165,6 +165,8 @@ export default class CalculateDist {
       //
       //
       // -- S A L A R Y  &  E X P E N S E S  C U R R E N T  A C C O U N T  T R A N S F E R S -- //
+      const SE_startingBalance = totalIncome + SE.leftover;
+      const SE_requiredBalance = totalExpense + SE.minCushion;
 
       // Paying off credit cards that are set to be paid by salary expenses account
       const SE_TO_CRAs_accounts = ArrayOfObjects.filterIn(
@@ -191,12 +193,11 @@ export default class CalculateDist {
       let SE_TO_TL: number = 0;
       let SE_TO_SP: number = 0;
       let YEC_TO_SE: number = 0;
-      const SE_startingBalance = totalIncome + SE.leftover - SE_TO_CRAs_accounts_total_balance;
-      const SE_requiredBalance = totalExpense + SE.minCushion;
+      let SE_newBalance = SE_startingBalance - SE_TO_CRAs_accounts_total_balance;
       const savingsAccountTransfers: ISavingsAccountTransfers = [];
 
       SE_TO_TL = SE.leftover;
-      let SE_newBalance = SE_startingBalance - SE_TO_TL;
+      SE_newBalance = SE_newBalance - SE_TO_TL;
       SE_TO_SP = totalIncome - totalMonthlyExpenses;
       SE_newBalance = SE_newBalance - SE_TO_SP;
       YEC_TO_SE = SE_requiredBalance - SE_newBalance;
