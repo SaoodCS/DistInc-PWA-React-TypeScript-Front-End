@@ -102,6 +102,7 @@ export default function ExpenseForm(props: IExpenseForm): JSX.Element {
                   type={input.type}
                   value={form[input.name]}
                   dropDownOptions={dropDownOptions(input)}
+                  isDisabled={input.name === 'hasDistInstruction'} // temporarily disabling this as it's not integrated into calculations properly yet
                />
             ))}
          <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>

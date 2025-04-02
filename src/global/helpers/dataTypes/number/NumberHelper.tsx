@@ -22,6 +22,10 @@ export default class NumberHelper {
       return Number(value.toFixed(decimalPlaces));
    }
 
+   static toPositive(value: number): number {
+      return Math.abs(value);
+   }
+
    static calcPercentageChange(prev: number, curr: number): number {
       const diff = curr - prev;
       const percentageChange = ((diff / prev) * 100).toFixed(2);

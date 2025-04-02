@@ -165,16 +165,21 @@ export default class CalculateDist {
       //
       //
       // -- S A L A R Y  &  E X P E N S E S  C U R R E N T  A C C O U N T  T R A N S F E R S -- //
+
       const SE_startingBalance = totalIncome + SE.leftover;
       const SE_requiredBalance = totalExpense + SE.minCushion;
-
-      // Paying off credit cards that are set to be paid by salary expenses account
       const SE_TO_CRAs_accounts = ArrayOfObjects.filterIn(
          creditAccArr,
          'payBalanceFromAccName',
          'Salary And Expenses',
       );
       const stepsList: string[] = [];
+      let SE_TO_TL: number = 0;
+      let SE_TO_SP: number = 0;
+      let YEC_TO_SE: number = 0;
+
+      // Paying off credit cards that are set to be paid by salary expenses account
+      const SE_TO_CRA_Msgs: string[] = [];
       let SE_TO_CRAs_accounts_total_balance: number = 0;
       for (let i = 0; i < SE_TO_CRAs_accounts.length; i++) {
          const credAcc = SE_TO_CRAs_accounts[i];
@@ -186,27 +191,50 @@ export default class CalculateDist {
                transferToAccount: credAcc.accountName,
             },
          });
-         stepsList.push(SE_TO_CRA_Msg);
+         SE_TO_CRA_Msgs.push(SE_TO_CRA_Msg);
       }
-
-      // The rest of the salary and expenses account transfers
-      let SE_TO_TL: number = 0;
-      let SE_TO_SP: number = 0;
-      let YEC_TO_SE: number = 0;
-      let SE_newBalance = SE_startingBalance - SE_TO_CRAs_accounts_total_balance;
-      const savingsAccountTransfers: ISavingsAccountTransfers = [];
 
       SE_TO_TL = SE.leftover - SE.minCushion;
       SE_TO_TL = NumberHelper.isPositive(SE_TO_TL) ? SE_TO_TL : 0;
-      SE_newBalance = SE_newBalance - SE_TO_TL;
       SE_TO_SP = totalIncome - totalMonthlyExpenses;
-      SE_newBalance = SE_newBalance - SE_TO_SP;
-      YEC_TO_SE = SE_requiredBalance - SE_newBalance;
+      // If the Salary & Expenses balance isn't high enough to cover all the transfers leaving the account, then firstly transfer the amount required to break even from the yearly cost cover account
+      const SE_outgoings_total = SE_TO_CRAs_accounts_total_balance + SE_TO_TL + SE_TO_SP;
+      const YEC_TO_SE_INITIAL = NumberHelper.isPositive(SE_outgoings_total)
+         ? 0
+         : NumberHelper.toPositive(SE_outgoings_total);
+      const YEC_TO_SE_INITIAL_msg = CalculateDist.createMsg({
+         amount: YEC_TO_SE_INITIAL,
+         fromAccount: YEC.accountName,
+         transfer: { transferToAccount: SE.accountName },
+      });
 
+      stepsList.push(YEC_TO_SE_INITIAL_msg);
+      let SE_newBalance = SE_startingBalance + YEC_TO_SE_INITIAL;
+      stepsList.push(...SE_TO_CRA_Msgs);
+      SE_newBalance = SE_newBalance - SE_TO_CRAs_accounts_total_balance;
+
+      // The rest of the salary and expenses account transfers
       if (!SE.hasTransferLeftoversTo) {
          SE_TO_SP = SE_TO_SP + SE_TO_TL;
+         const SE_TO_SP_msg = CalculateDist.createMsg({
+            amount: SE_TO_SP,
+            fromAccount: SE.accountName,
+            transfer: { transferToAccount: SP.accountName },
+         });
+         stepsList.push(SE_TO_SP_msg);
+         SE_newBalance = SE_newBalance - SE_TO_SP;
       }
+
+      const savingsAccountTransfers: ISavingsAccountTransfers = [];
       if (SE.hasTransferLeftoversTo) {
+         const SE_TO_SP_msg = CalculateDist.createMsg({
+            amount: SE_TO_SP,
+            fromAccount: SE.accountName,
+            transfer: { transferToAccount: SP.accountName },
+         });
+         stepsList.push(SE_TO_SP_msg);
+         SE_newBalance = SE_newBalance - SE_TO_SP;
+
          const TL = ArrayOfObjects.getObjWithKeyValuePair(
             savingsAccArr,
             'id',
@@ -221,6 +249,8 @@ export default class CalculateDist {
             },
          });
          stepsList.push(SE_TO_TL_msg);
+         SE_newBalance = SE_newBalance - SE_TO_TL;
+
          if (TL.isTracked === 'true') {
             const savingsAccHistoryObj = {
                id: TL.id,
@@ -229,25 +259,21 @@ export default class CalculateDist {
             savingsAccountTransfers.push(savingsAccHistoryObj);
          }
       }
+
+      YEC_TO_SE = SE_requiredBalance - SE_newBalance;
       const YEC_TO_SE_msg = CalculateDist.createMsg({
          amount: YEC_TO_SE,
          fromAccount: YEC.accountName,
          transfer: { transferToAccount: SE.accountName },
       });
-      const SE_TO_SP_msg = CalculateDist.createMsg({
-         amount: SE_TO_SP,
-         fromAccount: SE.accountName,
-         transfer: { transferToAccount: SP.accountName },
-      });
       stepsList.push(YEC_TO_SE_msg);
-      stepsList.push(SE_TO_SP_msg);
 
       //
       //
       //
       // -- S P E N D I N G S  A C C O U N T  T R A N S F E R S  (EXCEPT SE_TO_SP) -- //
 
-      //// Paying off credit cards that are set to be paid by spendings account
+      // Paying off credit cards that are set to be paid by spendings account
       const SP_TO_CRAs_accounts = ArrayOfObjects.filterIn(
          creditAccArr,
          'payBalanceFromAccName',
@@ -284,6 +310,7 @@ export default class CalculateDist {
             },
          });
          stepsList.push(SP_TO_TL_msg);
+
          if (TL.isTracked === 'true') {
             const savingsAccHistoryObj = {
                id: TL.id,
