@@ -135,12 +135,14 @@ export namespace NDist {
 
       static hasCurrentMonth(calcDistData: NDist.ISchema): boolean {
          if (ObjectOfObjects.isEmpty(calcDistData)) return false;
-         const currentMonth = DateHelper.toDDMMYYYY(new Date()).split('/')[1];
+         const [, currentMonth, currentYear] = DateHelper.toDDMMYYYY(new Date()).split('/');
          const { analytics } = calcDistData;
          if (!MiscHelper.isNotFalsyOrEmpty(analytics)) return false;
          for (const analyticsObj of analytics) {
-            const analyticsObjMonth = analyticsObj.timestamp.split('/')[1];
-            if (analyticsObjMonth === currentMonth) return true;
+            const [, analyticsObjMonth, analyticsObjYear] = analyticsObj.timestamp.split('/');
+            if (analyticsObjMonth === currentMonth && analyticsObjYear === currentYear) {
+               return true;
+            }
          }
          return false;
       }
