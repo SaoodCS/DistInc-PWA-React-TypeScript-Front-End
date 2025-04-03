@@ -68,6 +68,7 @@ export default class CalculateDist {
          currentAcc,
          creditAccArr,
          savingsAccArr,
+         expenseArr,
          totalIncome,
          totalActiveExp, // totalExpenses,
          totalActiveMonthExp, // totalMonthlyExpenses,
@@ -143,6 +144,7 @@ export default class CalculateDist {
       currentAcc: IFormattedCurrentAcc,
       creditAccArr: IFormattedCreditAcc[],
       savingsAccArr: ISavingsFormInputs[],
+      expensesArr: IExpenseFormInputs[],
       totalIncome: number,
       totalExpense: number,
       totalMonthlyExpenses: number,
@@ -173,35 +175,63 @@ export default class CalculateDist {
          'payBalanceFromAccName',
          'Salary And Expenses',
       );
+      const SE_TO_SAs_expenses = ArrayOfObjects.filterOut(
+         expensesArr,
+         'hasDistInstruction',
+         'true',
+      );
+
       const stepsList: string[] = [];
       let SE_TO_TL: number = 0;
       let SE_TO_SP: number = 0;
       let YEC_TO_SE: number = 0;
 
       // Paying off credit cards that are set to be paid by salary expenses account
-      const SE_TO_CRA_Msgs: string[] = [];
-      let SE_TO_CRAs_accounts_total_balance: number = 0;
+      const SE_TO_CRA_msgs: string[] = [];
+      let SE_TO_CRAs_total_balance: number = 0;
       for (let i = 0; i < SE_TO_CRAs_accounts.length; i++) {
          const credAcc = SE_TO_CRAs_accounts[i];
-         SE_TO_CRAs_accounts_total_balance = SE_TO_CRAs_accounts_total_balance + credAcc.balance;
-         const SE_TO_CRA_Msg = CalculateDist.createMsg({
+         SE_TO_CRAs_total_balance = SE_TO_CRAs_total_balance + credAcc.balance;
+         const SE_TO_CRA_msg = CalculateDist.createMsg({
             amount: credAcc.balance,
             fromAccount: SE.accountName,
             transfer: {
                transferToAccount: credAcc.accountName,
             },
          });
-         SE_TO_CRA_Msgs.push(SE_TO_CRA_Msg);
+         SE_TO_CRA_msgs.push(SE_TO_CRA_msg);
+      }
+
+      // Manual monthly savings transfer expenses
+      const SE_TO_SAs_msgs: string[] = [];
+      let SE_TO_SAs_total: number = 0;
+      for (let i = 0; i < SE_TO_SAs_expenses.length; i++) {
+         const expense = SE_TO_SAs_expenses[i];
+         SE_TO_SAs_total = SE_TO_SAs_total + expense.expenseValue;
+         const savingsAccId = Number(expense.expenseType.split(':')[1]);
+         const savingsAcc = ArrayOfObjects.getObjWithKeyValuePair(
+            savingsAccArr,
+            'id',
+            savingsAccId,
+         );
+         const SE_TO_SA_msg = CalculateDist.createMsg({
+            amount: expense.expenseValue,
+            fromAccount: SE.accountName,
+            transfer: { transferToAccount: savingsAcc.accountName },
+            expenseName: expense.expenseName,
+         });
+         SE_TO_SAs_msgs.push(SE_TO_SA_msg);
       }
 
       SE_TO_TL = SE.leftover - SE.minCushion;
       SE_TO_TL = NumberHelper.isPositive(SE_TO_TL) ? SE_TO_TL : 0;
       SE_TO_SP = totalIncome - totalMonthlyExpenses;
       // If the Salary & Expenses balance isn't high enough to cover all the transfers leaving the account, then firstly transfer the amount required to break even from the yearly cost cover account
-      const SE_outgoings_total = SE_TO_CRAs_accounts_total_balance + SE_TO_TL + SE_TO_SP;
-      const YEC_TO_SE_INITIAL = NumberHelper.isPositive(SE_outgoings_total)
+      const SE_outgoings_total = SE_TO_CRAs_total_balance + SE_TO_SAs_total + SE_TO_TL + SE_TO_SP;
+      const SE_balance_shortfall = SE_startingBalance - SE_outgoings_total;
+      const YEC_TO_SE_INITIAL = NumberHelper.isPositive(SE_balance_shortfall)
          ? 0
-         : NumberHelper.toPositive(SE_outgoings_total);
+         : NumberHelper.toPositive(SE_balance_shortfall);
       const YEC_TO_SE_INITIAL_msg = CalculateDist.createMsg({
          amount: YEC_TO_SE_INITIAL,
          fromAccount: YEC.accountName,
@@ -210,31 +240,23 @@ export default class CalculateDist {
 
       stepsList.push(YEC_TO_SE_INITIAL_msg);
       let SE_newBalance = SE_startingBalance + YEC_TO_SE_INITIAL;
-      stepsList.push(...SE_TO_CRA_Msgs);
-      SE_newBalance = SE_newBalance - SE_TO_CRAs_accounts_total_balance;
+      stepsList.push(...SE_TO_CRA_msgs);
+      SE_newBalance = SE_newBalance - SE_TO_CRAs_total_balance;
+      stepsList.push(...SE_TO_SAs_msgs);
+      SE_newBalance = SE_newBalance - SE_TO_SAs_total;
 
       // The rest of the salary and expenses account transfers
-      if (!SE.hasTransferLeftoversTo) {
-         SE_TO_SP = SE_TO_SP + SE_TO_TL;
-         const SE_TO_SP_msg = CalculateDist.createMsg({
-            amount: SE_TO_SP,
-            fromAccount: SE.accountName,
-            transfer: { transferToAccount: SP.accountName },
-         });
-         stepsList.push(SE_TO_SP_msg);
-         SE_newBalance = SE_newBalance - SE_TO_SP;
-      }
+      SE_TO_SP = SE.hasTransferLeftoversTo ? SE_TO_SP : SE_TO_SP + SE_TO_TL;
+      const SE_TO_SP_msg = CalculateDist.createMsg({
+         amount: SE_TO_SP,
+         fromAccount: SE.accountName,
+         transfer: { transferToAccount: SP.accountName },
+      });
+      stepsList.push(SE_TO_SP_msg);
+      SE_newBalance = SE_newBalance - SE_TO_SP;
 
       const savingsAccountTransfers: ISavingsAccountTransfers = [];
       if (SE.hasTransferLeftoversTo) {
-         const SE_TO_SP_msg = CalculateDist.createMsg({
-            amount: SE_TO_SP,
-            fromAccount: SE.accountName,
-            transfer: { transferToAccount: SP.accountName },
-         });
-         stepsList.push(SE_TO_SP_msg);
-         SE_newBalance = SE_newBalance - SE_TO_SP;
-
          const TL = ArrayOfObjects.getObjWithKeyValuePair(
             savingsAccArr,
             'id',
