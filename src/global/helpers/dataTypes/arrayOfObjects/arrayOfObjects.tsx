@@ -33,6 +33,13 @@ export default class ArrayOfObjects {
       return arr.filter((obj) => obj[key] === value) as T[];
    }
 
+   static getObjectsWithKeyWhichIncludesValue<T>(arr: T[], key: keyof T, value: string): T[] {
+      return arr.filter((obj) => {
+         const val = obj[key];
+         return typeof val === 'string' && val.includes(value);
+      });
+   }
+
    static sumKeyValues<T>(arr: T[], key: keyof T): number {
       return arr.reduce((acc, curr) => acc + Number(curr[key]), 0);
    }

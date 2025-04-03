@@ -46,11 +46,7 @@ export default class CalculateDist {
       const activeExpArr = ArrayOfObjects.filterOut(expenseArr, 'paused', 'true');
       const activeMonthlyExpArr = ArrayOfObjects.filterOut(monthlyExpenseArr, 'paused', 'true');
       const activeYearlyExpArr = ArrayOfObjects.filterOut(yearlyExpenseArr, 'paused', 'true');
-      // Calculate Total Incomes & Expenses:
       const totalIncome = ArrayOfObjects.sumKeyValues(incomeArr, 'incomeValue');
-      // const totalExpenses = ArrayOfObjects.sumKeyValues(expenseArr, 'expenseValue');
-      // const totalMonthlyExpenses = ArrayOfObjects.sumKeyValues(monthlyExpenseArr, 'expenseValue');
-      // const totalYearlyExpenses = ArrayOfObjects.sumKeyValues(yearlyExpenseArr, 'expenseValue');
       const totalActiveExp = ArrayOfObjects.sumKeyValues(activeExpArr, 'expenseValue');
       const totalActiveMonthExp = ArrayOfObjects.sumKeyValues(activeMonthlyExpArr, 'expenseValue');
       const totalActiveYearlyExp = ArrayOfObjects.sumKeyValues(activeYearlyExpArr, 'expenseValue');
@@ -59,42 +55,28 @@ export default class CalculateDist {
       const prevMonth = CalculateDist.calcPrevMonthAnaltics(
          currentAcc,
          totalIncome,
-         totalActiveExp, // totalExpenses,
-         totalActiveMonthExp, // totalMonthlyExpenses,
+         totalActiveExp,
+         totalActiveMonthExp,
       );
 
       // Calculate Current Account Transfers:
-      const currentAccTransfers = CalculateDist.calcCurrentAccTransfers(
+      const { stepsList, trackedSavingsAccountTransfers } = CalculateDist.calcTransfers(
          currentAcc,
          creditAccArr,
          savingsAccArr,
-         expenseArr,
+         activeExpArr,
          totalIncome,
-         totalActiveExp, // totalExpenses,
-         totalActiveMonthExp, // totalMonthlyExpenses,
-         totalActiveYearlyExp, // totalYearlyExpenses,
-      );
-
-      // Calculate Expenses Transfers:
-      const expensesTransfers = CalculateDist.calcExpensesTransfers(
-         expenseArr,
-         savingsAccArr,
-         currentAcc,
+         totalActiveExp,
+         totalActiveMonthExp,
+         totalActiveYearlyExp,
       );
 
       // Create Savings Account History Array:
-      const savingsAccountTransfers = [
-         ...currentAccTransfers.savingsAccountTransfers,
-         ...expensesTransfers.savingsAccountTransfers,
-      ];
       const savingsAccHistory = CalculateDist.updateSavingsAccHistory(
          distDate,
-         savingsAccountTransfers,
+         trackedSavingsAccountTransfers,
          savingsAccArr,
       );
-
-      // Create stepsList Array
-      const stepsList = [...currentAccTransfers.stepsList, ...expensesTransfers.stepsList];
 
       // Create distSteps Obj:
       const distSteps = {
@@ -117,7 +99,8 @@ export default class CalculateDist {
          analytics: [analytics],
       };
    }
-
+   //----------------------------------------------------------------------------
+   //----------------------------------------------------------------------------
    // -- CALC PREV MONTH ANALYTICS -- //
    private static calcPrevMonthAnaltics(
       currentAcc: IFormattedCurrentAcc,
@@ -138,18 +121,19 @@ export default class CalculateDist {
          totalSavings: currentAcc.spendings.leftover,
       };
    }
-
+   //----------------------------------------------------------------------------
+   //----------------------------------------------------------------------------
    // -- CALC TRANSFERS FUNC: CURRENTACC TRANSFERS -- //
-   private static calcCurrentAccTransfers(
+   private static calcTransfers(
       currentAcc: IFormattedCurrentAcc,
       creditAccArr: IFormattedCreditAcc[],
       savingsAccArr: ISavingsFormInputs[],
-      expensesArr: IExpenseFormInputs[],
+      activeExpensesArr: IExpenseFormInputs[],
       totalIncome: number,
       totalExpense: number,
       totalMonthlyExpenses: number,
       totalYearlyExpenses: number,
-   ): ICalcTransfers {
+   ): { stepsList: string[]; trackedSavingsAccountTransfers: ISavingsAccountTransfers } {
       // SE = salary & expenses account
       // SP = spending account
       // SA = savings account
@@ -164,10 +148,7 @@ export default class CalculateDist {
          'true',
       );
       //
-      //
-      //
       // -- S A L A R Y  &  E X P E N S E S  C U R R E N T  A C C O U N T  T R A N S F E R S -- //
-
       const SE_startingBalance = totalIncome + SE.leftover;
       const SE_requiredBalance = totalExpense + SE.minCushion;
       const SE_TO_CRAs_accounts = ArrayOfObjects.filterIn(
@@ -175,13 +156,14 @@ export default class CalculateDist {
          'payBalanceFromAccName',
          'Salary And Expenses',
       );
-      const SE_TO_SAs_expenses = ArrayOfObjects.filterOut(
-         expensesArr,
-         'hasDistInstruction',
-         'true',
+      const SE_TO_SAs_expenses = ArrayOfObjects.getObjectsWithKeyWhichIncludesValue(
+         activeExpensesArr,
+         'expenseType',
+         'Saving',
       );
 
       const stepsList: string[] = [];
+      const trackedSavingsAccountTransfers: ISavingsAccountTransfers = [];
       let SE_TO_TL: number = 0;
       let SE_TO_SP: number = 0;
       let YEC_TO_SE: number = 0;
@@ -195,39 +177,46 @@ export default class CalculateDist {
          const SE_TO_CRA_msg = CalculateDist.createMsg({
             amount: credAcc.balance,
             fromAccount: SE.accountName,
-            transfer: {
-               transferToAccount: credAcc.accountName,
-            },
+            transfer: { transferToAccount: credAcc.accountName },
          });
          SE_TO_CRA_msgs.push(SE_TO_CRA_msg);
       }
 
       // Manual monthly savings transfer expenses
       const SE_TO_SAs_msgs: string[] = [];
-      let SE_TO_SAs_total: number = 0;
+      let SE_TO_SAs_manual_total: number = 0;
       for (let i = 0; i < SE_TO_SAs_expenses.length; i++) {
          const expense = SE_TO_SAs_expenses[i];
-         SE_TO_SAs_total = SE_TO_SAs_total + expense.expenseValue;
          const savingsAccId = Number(expense.expenseType.split(':')[1]);
          const savingsAcc = ArrayOfObjects.getObjWithKeyValuePair(
             savingsAccArr,
             'id',
             savingsAccId,
          );
-         const SE_TO_SA_msg = CalculateDist.createMsg({
-            amount: expense.expenseValue,
-            fromAccount: SE.accountName,
-            transfer: { transferToAccount: savingsAcc.accountName },
-            expenseName: expense.expenseName,
+         const SE_TO_SA_isManualStep = expense.hasDistInstruction === 'true';
+         if (SE_TO_SA_isManualStep) {
+            SE_TO_SAs_manual_total = SE_TO_SAs_manual_total + expense.expenseValue;
+            const SE_TO_SA_msg = CalculateDist.createMsg({
+               amount: expense.expenseValue,
+               fromAccount: SE.accountName,
+               transfer: { transferToAccount: savingsAcc.accountName },
+               expenseName: expense.expenseName,
+            });
+            SE_TO_SAs_msgs.push(SE_TO_SA_msg);
+         }
+         if (savingsAcc.isTracked !== 'true') continue;
+         trackedSavingsAccountTransfers.push({
+            id: savingsAcc.id,
+            amountToTransfer: expense.expenseValue,
          });
-         SE_TO_SAs_msgs.push(SE_TO_SA_msg);
       }
 
       SE_TO_TL = SE.leftover - SE.minCushion;
       SE_TO_TL = NumberHelper.isPositive(SE_TO_TL) ? SE_TO_TL : 0;
       SE_TO_SP = totalIncome - totalMonthlyExpenses;
       // If the Salary & Expenses balance isn't high enough to cover all the transfers leaving the account, then firstly transfer the amount required to break even from the yearly cost cover account
-      const SE_outgoings_total = SE_TO_CRAs_total_balance + SE_TO_SAs_total + SE_TO_TL + SE_TO_SP;
+      const SE_outgoings_total =
+         SE_TO_CRAs_total_balance + SE_TO_SAs_manual_total + SE_TO_TL + SE_TO_SP;
       const SE_balance_shortfall = SE_startingBalance - SE_outgoings_total;
       const YEC_TO_SE_INITIAL = NumberHelper.isPositive(SE_balance_shortfall)
          ? 0
@@ -243,7 +232,7 @@ export default class CalculateDist {
       stepsList.push(...SE_TO_CRA_msgs);
       SE_newBalance = SE_newBalance - SE_TO_CRAs_total_balance;
       stepsList.push(...SE_TO_SAs_msgs);
-      SE_newBalance = SE_newBalance - SE_TO_SAs_total;
+      SE_newBalance = SE_newBalance - SE_TO_SAs_manual_total;
 
       // The rest of the salary and expenses account transfers
       SE_TO_SP = SE.hasTransferLeftoversTo ? SE_TO_SP : SE_TO_SP + SE_TO_TL;
@@ -255,7 +244,6 @@ export default class CalculateDist {
       stepsList.push(SE_TO_SP_msg);
       SE_newBalance = SE_newBalance - SE_TO_SP;
 
-      const savingsAccountTransfers: ISavingsAccountTransfers = [];
       if (SE.hasTransferLeftoversTo) {
          const TL = ArrayOfObjects.getObjWithKeyValuePair(
             savingsAccArr,
@@ -265,20 +253,13 @@ export default class CalculateDist {
          const SE_TO_TL_msg = CalculateDist.createMsg({
             amount: SE_TO_TL,
             fromAccount: SE.accountName,
-            transfer: {
-               transferToAccount: TL.accountName,
-               leftover: true,
-            },
+            transfer: { transferToAccount: TL.accountName, leftover: true },
          });
          stepsList.push(SE_TO_TL_msg);
          SE_newBalance = SE_newBalance - SE_TO_TL;
 
          if (TL.isTracked === 'true') {
-            const savingsAccHistoryObj = {
-               id: TL.id,
-               amountToTransfer: SE_TO_TL,
-            };
-            savingsAccountTransfers.push(savingsAccHistoryObj);
+            trackedSavingsAccountTransfers.push({ id: TL.id, amountToTransfer: SE_TO_TL });
          }
       }
 
@@ -289,12 +270,9 @@ export default class CalculateDist {
          transfer: { transferToAccount: SE.accountName },
       });
       stepsList.push(YEC_TO_SE_msg);
-
-      //
       //
       //
       // -- S P E N D I N G S  A C C O U N T  T R A N S F E R S  (EXCEPT SE_TO_SP) -- //
-
       // Paying off credit cards that are set to be paid by spendings account
       const SP_TO_CRAs_accounts = ArrayOfObjects.filterIn(
          creditAccArr,
@@ -308,9 +286,7 @@ export default class CalculateDist {
          const SP_TO_CRA_msg = CalculateDist.createMsg({
             amount: credAcc.balance,
             fromAccount: SP.accountName,
-            transfer: {
-               transferToAccount: credAcc.accountName,
-            },
+            transfer: { transferToAccount: credAcc.accountName },
          });
          stepsList.push(SP_TO_CRA_msg);
       }
@@ -326,87 +302,23 @@ export default class CalculateDist {
          const SP_TO_TL_msg = CalculateDist.createMsg({
             amount: SP_TO_TL,
             fromAccount: SP.accountName,
-            transfer: {
-               transferToAccount: TL.accountName,
-               leftover: true,
-            },
+            transfer: { transferToAccount: TL.accountName, leftover: true },
          });
          stepsList.push(SP_TO_TL_msg);
 
          if (TL.isTracked === 'true') {
-            const savingsAccHistoryObj = {
-               id: TL.id,
-               amountToTransfer: SP_TO_TL,
-            };
-            savingsAccountTransfers.push(savingsAccHistoryObj);
+            trackedSavingsAccountTransfers.push({ id: TL.id, amountToTransfer: SP_TO_TL });
          }
       }
-
       //
       //
-      //
-
       return {
          stepsList,
-         savingsAccountTransfers,
+         trackedSavingsAccountTransfers,
       };
    }
-
-   // -- CALC TRANSFERS FUNC: EXPENSES TRANSFERS -- //
-   private static calcExpensesTransfers(
-      expenseArr: IExpenseFormInputs[],
-      savingsAccArr: ISavingsFormInputs[],
-      currentAcc: IFormattedCurrentAcc,
-   ): ICalcTransfers {
-      const stepsList: string[] = [];
-      const savingsAccountTransfers: ISavingsAccountTransfers = [];
-
-      for (let i = 0; i < expenseArr.length; i++) {
-         const expense = expenseArr[i];
-         if (expense.paused === 'true' || expense.frequency === 'Yearly') continue; // Skip expense if paused or yearly expense. Note: I haven't implemented logic for yearly expense transfers nor yearly expenses instructions to appear once a year (As this would require me to add yet another "field" date or something - therefore, I am disabling the ability for the user to set hasDistInstructions to true for yearly expenses)
-         const isExpenseTypeSavingsTransfer = expense.expenseType.includes('Savings');
-         const hasDistInstruction = expense.hasDistInstruction === 'true';
-
-         if (isExpenseTypeSavingsTransfer) {
-            const savingsAccId = Number(expense.expenseType.split(':')[1]);
-            const savingsAcc = ArrayOfObjects.getObjWithKeyValuePair(
-               savingsAccArr,
-               'id',
-               savingsAccId,
-            );
-            if (savingsAcc.isTracked === 'true') {
-               const amountToTransfer = expense.expenseValue;
-               const savingsAccHistoryObj = {
-                  id: savingsAcc.id,
-                  amountToTransfer: amountToTransfer,
-               };
-               savingsAccountTransfers.push(savingsAccHistoryObj);
-            }
-            if (hasDistInstruction) {
-               const msg = CalculateDist.createMsg({
-                  amount: expense.expenseValue,
-                  fromAccount: currentAcc.salaryExp.accountName,
-                  transfer: { transferToAccount: savingsAcc.accountName },
-                  expenseName: expense.expenseName,
-               });
-               stepsList.push(msg);
-            }
-         }
-         if (!isExpenseTypeSavingsTransfer && hasDistInstruction) {
-            const msg = CalculateDist.createMsg({
-               amount: expense.expenseValue,
-               fromAccount: currentAcc.salaryExp.accountName,
-               expenseName: expense.expenseName,
-            });
-            stepsList.push(msg);
-         }
-      }
-      return {
-         stepsList,
-         savingsAccountTransfers,
-      };
-   }
-
+   //----------------------------------------------------------------------------
+   //----------------------------------------------------------------------------
    // -- CALC BALANCES AND UPDATE SAVINGSACC HISTORY -- //
    private static updateSavingsAccHistory(
       distDate: Date,
@@ -442,7 +354,16 @@ export default class CalculateDist {
 
       return savingsAccHistory;
    }
-
+   //----------------------------------------------------------------------------
+   //----------------------------------------------------------------------------
+   //----------------------------------------------------------------------------
+   //----------------------------------------------------------------------------
+   //----------------------------------------------------------------------------
+   //----------------------------------------------------------------------------
+   //----------------------------------------------------------------------------
+   //----------------------------------------------------------------------------
+   //----------------------------------------------------------------------------
+   //----------------------------------------------------------------------------
    // -- FORMAT CURRENT ACCOUNTS -- //
    private static formatCurrentAccounts(
       currentAccounts: ICurrentAccountFirebase,
@@ -458,7 +379,6 @@ export default class CalculateDist {
             hasTransferLeftoversTo,
          };
       });
-
       const salaryExp: ICurrentFormInputs & {
          leftover: number;
          hasTransferLeftoversTo: boolean;
@@ -467,7 +387,6 @@ export default class CalculateDist {
          'accountType',
          'Salary & Expenses',
       );
-
       const spendings: ICurrentFormInputs & {
          leftover: number;
          hasTransferLeftoversTo: boolean;
@@ -477,7 +396,6 @@ export default class CalculateDist {
          salaryExp: salaryExp,
          spendings,
       };
-
       return currentAcc;
    }
 
@@ -546,8 +464,3 @@ type ISavingsAccountTransfers = {
    id: number;
    amountToTransfer: number;
 }[];
-
-type ICalcTransfers = {
-   stepsList: string[];
-   savingsAccountTransfers: ISavingsAccountTransfers;
-};
