@@ -317,6 +317,7 @@ export default class CalculateDist {
       savingsAccArr: ISavingsFormInputs[],
    ): NDist.ISavingsAccHist[] {
       const savingsAccHistory: NDist.ISavingsAccHist[] = [];
+      // Sum up amounts that have been transferred into same savings account
       const savingsAccHistoryObjArr = savingsAccountTransfers.reduce(
          (acc, curr) => {
             const doesExistInArray = acc.find((item) => item.id === curr.id);
@@ -331,7 +332,7 @@ export default class CalculateDist {
          },
          [] as { id: number; amountToTransfer: number }[],
       );
-
+      // Sum the total amount transferred into savings account with it's currentBalance to get it's new balance
       savingsAccHistoryObjArr.forEach((item) => {
          const savingsAcc = ArrayOfObjects.getObjWithKeyValuePair(savingsAccArr, 'id', item.id);
          const newBalance = (savingsAcc.currentBalance || 0) + item.amountToTransfer;
