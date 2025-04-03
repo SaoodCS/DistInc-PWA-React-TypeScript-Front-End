@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { StaticButton } from '../../../../../../global/components/lib/button/staticButton/Style';
 import type { IDropDownOption } from '../../../../../../global/components/lib/form/dropDown/DropDownInput';
 import { StyledForm } from '../../../../../../global/components/lib/form/form/Style';
@@ -14,6 +14,9 @@ import useForm from '../../../../../../global/hooks/useForm';
 import SavingsClass from '../../accounts/savings/class/Class';
 import type { IExpenseFormInputs } from '../class/ExpensesClass';
 import ExpensesClass from '../class/ExpensesClass';
+// TODO:
+// If the expense type is not savings transfer, set hasDistInstruction to "false" and then disable the fields
+// If the expense type is savings transfer, set the frequency to "monthly" and then disable the field.
 
 interface IExpenseForm {
    inputValues?: IExpenseFormInputs;
@@ -28,13 +31,18 @@ export default function ExpenseForm(props: IExpenseForm): JSX.Element {
       ExpensesClass.form.initialErrors,
       ExpensesClass.form.validate,
    );
+   const [disabledFields, setDisabledFields] = useState<(keyof IExpenseFormInputs)[]>([]);
 
    useEffect(() => {
-      if (form.frequency === 'Yearly') {
-         const expenseType = form.expenseType?.includes('Savings Transfer') ? '' : form.expenseType;
-         setForm((prevState) => ({ ...prevState, hasDistInstruction: 'false', expenseType }));
+      if (!MiscHelper.isNotFalsyOrEmpty(form?.expenseType)) return;
+      if (form?.expenseType?.includes('Savings')) {
+         setForm((prevState) => ({ ...prevState, frequency: 'Monthly' }));
+         setDisabledFields(['frequency']);
+      } else {
+         setForm((prevState) => ({ ...prevState, hasDistInstruction: 'false' }));
+         setDisabledFields(['hasDistInstruction']);
       }
-   }, [form.frequency, form.expenseType]);
+   }, [form.expenseType]);
 
    const queryClient = useQueryClient();
    const { data: savingsAccData } = SavingsClass.useQuery.getSavingsAccounts();
@@ -102,7 +110,7 @@ export default function ExpenseForm(props: IExpenseForm): JSX.Element {
                   type={input.type}
                   value={form[input.name]}
                   dropDownOptions={dropDownOptions(input)}
-                  isDisabled={input.name === 'hasDistInstruction'} // temporarily disabling this as it's not integrated into calculations properly yet
+                  isDisabled={disabledFields.includes(input.name)}
                />
             ))}
          <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>
