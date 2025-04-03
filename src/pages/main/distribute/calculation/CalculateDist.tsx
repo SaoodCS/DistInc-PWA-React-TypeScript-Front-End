@@ -139,7 +139,7 @@ export default class CalculateDist {
       // SA = savings account
       // TL = transfer leftovers account
       // YEC = yearly expenses coverer account
-      // CRA = credit account(s)
+      // CRA = credit account
 
       // Gathering Data
       const SE = currentAcc.salaryExp;
