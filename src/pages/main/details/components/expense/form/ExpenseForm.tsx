@@ -14,9 +14,6 @@ import useForm from '../../../../../../global/hooks/useForm';
 import SavingsClass from '../../accounts/savings/class/Class';
 import type { IExpenseFormInputs } from '../class/ExpensesClass';
 import ExpensesClass from '../class/ExpensesClass';
-// TODO:
-// If the expense type is not savings transfer, set hasDistInstruction to "false" and then disable the fields
-// If the expense type is savings transfer, set the frequency to "monthly" and then disable the field.
 
 interface IExpenseForm {
    inputValues?: IExpenseFormInputs;
