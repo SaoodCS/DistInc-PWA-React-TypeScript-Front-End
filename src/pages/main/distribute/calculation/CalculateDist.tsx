@@ -137,6 +137,7 @@ export default class CalculateDist {
       // SE = salary & expenses account
       // SP = spending account
       // SA = savings account
+      // SMA = savings manual (transfer) accounts
       // TL = transfer leftovers account
       // YEC = yearly expenses coverer account
       // CRA = credit account
@@ -164,7 +165,7 @@ export default class CalculateDist {
          'expenseType',
          'Saving',
       );
-      const SE_TO_SAs_manual_expenses = ArrayOfObjects.filterIn(
+      const SE_TO_SMAs_expenses = ArrayOfObjects.filterIn(
          SE_TO_SAs_expenses,
          'hasDistInstruction',
          'true',
@@ -184,13 +185,10 @@ export default class CalculateDist {
       // Calculation Prep Steps:
       //
       const SE_TO_CRAs_total = ArrayOfObjects.sumKeyValues(SE_TO_CRAs_accounts, 'balance');
-      const SE_TO_SAs_manual_total = ArrayOfObjects.sumKeyValues(
-         SE_TO_SAs_manual_expenses,
-         'expenseValue',
-      );
-      SE_TO_TL = Math.max(SE.leftover - SE.minCushion, 0);
+      const SE_TO_SMAs_total = ArrayOfObjects.sumKeyValues(SE_TO_SMAs_expenses, 'expenseValue');
+      SE_TO_TL = Math.max(SE.leftover - (SE_TO_SMAs_total + SE_TO_CRAs_total + SE.minCushion), 0);
       SE_TO_SP = totalIncome - totalMonthlyExpenses;
-      const SE_out_total = SE_TO_CRAs_total + SE_TO_SAs_manual_total + SE_TO_TL + SE_TO_SP;
+      const SE_out_total = SE_TO_CRAs_total + SE_TO_SMAs_total + SE_TO_TL + SE_TO_SP;
       const SE_balance_shortfall = SE_startingBalance - SE_out_total;
       const YEC_TO_SE_INITIAL = SE_balance_shortfall >= 0 ? 0 : Math.abs(SE_balance_shortfall);
       const YEC_TO_SE_INITIAL_msg = CalculateDist.createMsg({
