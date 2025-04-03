@@ -183,20 +183,16 @@ export default class CalculateDist {
       //
       // Calculation Prep Steps:
       //
-      const SE_TO_CRAs_total_balance = ArrayOfObjects.sumKeyValues(SE_TO_CRAs_accounts, 'balance');
+      const SE_TO_CRAs_total = ArrayOfObjects.sumKeyValues(SE_TO_CRAs_accounts, 'balance');
       const SE_TO_SAs_manual_total = ArrayOfObjects.sumKeyValues(
          SE_TO_SAs_manual_expenses,
          'expenseValue',
       );
-      SE_TO_TL = SE.leftover - SE.minCushion;
-      SE_TO_TL = NumberHelper.isPositive(SE_TO_TL) ? SE_TO_TL : 0;
+      SE_TO_TL = Math.max(SE.leftover - SE.minCushion, 0);
       SE_TO_SP = totalIncome - totalMonthlyExpenses;
-      const SE_outgoings_total =
-         SE_TO_CRAs_total_balance + SE_TO_SAs_manual_total + SE_TO_TL + SE_TO_SP;
-      const SE_balance_shortfall = SE_startingBalance - SE_outgoings_total;
-      const YEC_TO_SE_INITIAL = NumberHelper.isPositive(SE_balance_shortfall)
-         ? 0
-         : NumberHelper.toPositive(SE_balance_shortfall);
+      const SE_out_total = SE_TO_CRAs_total + SE_TO_SAs_manual_total + SE_TO_TL + SE_TO_SP;
+      const SE_balance_shortfall = SE_startingBalance - SE_out_total;
+      const YEC_TO_SE_INITIAL = SE_balance_shortfall >= 0 ? 0 : Math.abs(SE_balance_shortfall);
       const YEC_TO_SE_INITIAL_msg = CalculateDist.createMsg({
          amount: YEC_TO_SE_INITIAL,
          fromAccount: YEC.accountName,
@@ -220,28 +216,21 @@ export default class CalculateDist {
 
       for (let i = 0; i < SE_TO_SAs_expenses.length; i++) {
          const expense = SE_TO_SAs_expenses[i];
-         const savingsAccId = Number(expense.expenseType.split(':')[1]);
-         const savingsAcc = ArrayOfObjects.getObjWithKeyValuePair(
-            savingsAccArr,
-            'id',
-            savingsAccId,
-         );
+         const SA_id = Number(expense.expenseType.split(':')[1]);
+         const SA = ArrayOfObjects.getObjWithKeyValuePair(savingsAccArr, 'id', SA_id);
          const SE_TO_SA_isManualStep = expense.hasDistInstruction === 'true';
          if (SE_TO_SA_isManualStep) {
             const SE_TO_SA_msg = CalculateDist.createMsg({
                amount: expense.expenseValue,
                fromAccount: SE.accountName,
-               transfer: { transferToAccount: savingsAcc.accountName },
+               transfer: { transferToAccount: SA.accountName },
                expenseName: expense.expenseName,
             });
             stepsList.push(SE_TO_SA_msg);
             SE_newBalance = SE_newBalance - expense.expenseValue;
          }
-         if (savingsAcc.isTracked !== 'true') continue;
-         trackedSavingsAccountTransfers.push({
-            id: savingsAcc.id,
-            amountToTransfer: expense.expenseValue,
-         });
+         if (SA.isTracked !== 'true') continue;
+         trackedSavingsAccountTransfers.push({ id: SA.id, amountToTransfer: expense.expenseValue });
       }
 
       SE_TO_SP = SE.hasTransferLeftoversTo ? SE_TO_SP : SE_TO_SP + SE_TO_TL;
@@ -284,14 +273,14 @@ export default class CalculateDist {
       //
       SP_TO_TL = SP.leftover;
       for (let i = 0; i < SP_TO_CRAs_accounts.length; i++) {
-         const credAcc = SP_TO_CRAs_accounts[i];
+         const CRA = SP_TO_CRAs_accounts[i];
          const SP_TO_CRA_msg = CalculateDist.createMsg({
-            amount: credAcc.balance,
+            amount: CRA.balance,
             fromAccount: SP.accountName,
-            transfer: { transferToAccount: credAcc.accountName },
+            transfer: { transferToAccount: CRA.accountName },
          });
          stepsList.push(SP_TO_CRA_msg);
-         SP_TO_TL = SP_TO_TL - credAcc.balance;
+         SP_TO_TL = SP_TO_TL - CRA.balance;
       }
       if (!SP.hasTransferLeftoversTo) return { stepsList, trackedSavingsAccountTransfers };
       const TL = ArrayOfObjects.getObjWithKeyValuePair(savingsAccArr, 'id', SP.transferLeftoversTo);
@@ -304,8 +293,7 @@ export default class CalculateDist {
       if (TL.isTracked === 'true') {
          trackedSavingsAccountTransfers.push({ id: TL.id, amountToTransfer: SP_TO_TL });
       }
-      //
-      //
+
       return { stepsList, trackedSavingsAccountTransfers };
    }
    //----------------------------------------------------------------------------
