@@ -57,29 +57,29 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
    );
    /////
    const {
-      form: changeShortfallAccForm,
-      errors: changeShortfallAccFormErrors,
-      handleChange: changeShortfallAccHandleChange,
-      initHandleSubmit: changeShortfallAccInitHandleSubmit,
+      form: changeShortfallToDiffAccForm,
+      errors: changeShortfallToDiffAccFormErrors,
+      handleChange: changeShortfallToDiffAccHandleChange,
+      initHandleSubmit: changeShortfallToDiffAccInitHandleSubmit,
    } = useForm(
       CoversShortfallSavingsAccForm.form.initialState,
       CoversShortfallSavingsAccForm.form.initialErrors,
       CoversShortfallSavingsAccForm.form.validate,
    );
-   const [displayChangeShortfallAccForm, setDisplayChangeShortfallAccForm] = useState(false);
-   const [shortfallAccChangeToTrueMsg, setShortfallAccChangeToTrueMsg] = useState<string>();
+   const [showChangeShortfallToDiffAccForm, setShowChangeShortfallToDiffAccForm] = useState(false);
+   const [changeShortfallToThisAccMsg, setChangeShortfallToThisAccMsg] = useState<string>();
    const [disabledFields, setDisabledFields] = useState<(keyof ISavingsFormInputs)[]>([]);
 
    useEffect(() => {
       const noOfExistingAcc = savingsAccArr.length;
-      const isCreating = !MiscHelper.isNotFalsyOrEmpty(inputValues);
-      if (isCreating) {
+      const isNewAcc = !MiscHelper.isNotFalsyOrEmpty(inputValues);
+      if (isNewAcc) {
          if (noOfExistingAcc < 1) {
             setForm((prev) => ({ ...prev, coversShortfall: 'true' }));
             setDisabledFields(['coversShortfall']);
             return;
          }
-         if (form.coversShortfall === 'true') setShortfallAccChangeToTrueMsg(SHORTFALL_CHANGE_MSG);
+         if (form.coversShortfall === 'true') setChangeShortfallToThisAccMsg(SHORTFALL_CHANGE_MSG);
          return;
       }
       if (noOfExistingAcc <= 1) {
@@ -88,25 +88,26 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
          return;
       }
       if (inputValues.coversShortfall === form.coversShortfall) {
-         setDisplayChangeShortfallAccForm(false);
-         setShortfallAccChangeToTrueMsg(undefined);
+         setShowChangeShortfallToDiffAccForm(false);
+         setChangeShortfallToThisAccMsg(undefined);
          return;
       }
       if (form.coversShortfall === 'false') {
-         setDisplayChangeShortfallAccForm(true);
-      } else setShortfallAccChangeToTrueMsg(SHORTFALL_CHANGE_MSG);
+         setShowChangeShortfallToDiffAccForm(true);
+         setChangeShortfallToThisAccMsg('');
+      } else setChangeShortfallToThisAccMsg(SHORTFALL_CHANGE_MSG);
    }, [inputValues, savingsAccounts, form?.coversShortfall]);
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
       if (!isFormValid) return;
-      if (displayChangeShortfallAccForm) {
-         const { isFormValid } = changeShortfallAccInitHandleSubmit(e);
+      if (showChangeShortfallToDiffAccForm) {
+         const { isFormValid } = changeShortfallToDiffAccInitHandleSubmit(e);
          if (!isFormValid) return;
          const accToCoverShortfall = ArrayOfObjects.getObjWithKeyValuePair(
             savingsAccArr,
             'id',
-            changeShortfallAccForm.selectedAccName,
+            changeShortfallToDiffAccForm.selectedAccName,
          );
          await Promise.all([
             setSavingAccInFS.mutateAsync({ ...accToCoverShortfall, coversShortfall: 'true' }),
@@ -114,7 +115,7 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
          ]);
          return;
       }
-      if (MiscHelper.isNotFalsyOrEmpty(shortfallAccChangeToTrueMsg)) {
+      if (MiscHelper.isNotFalsyOrEmpty(changeShortfallToThisAccMsg)) {
          const prevCoveringShortfall = ArrayOfObjects.getObjWithKeyValuePair(
             savingsAccArr,
             'coversShortfall',
@@ -137,12 +138,12 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
          await delSavingAccInFS.mutateAsync(form);
          return;
       }
-      if (!displayChangeShortfallAccForm) setDisplayChangeShortfallAccForm(true);
-      const { isFormValid } = changeShortfallAccInitHandleSubmit(
+      if (!showChangeShortfallToDiffAccForm) setShowChangeShortfallToDiffAccForm(true);
+      const { isFormValid } = changeShortfallToDiffAccInitHandleSubmit(
          e as unknown as React.FormEvent<HTMLFormElement>,
       );
       if (!isFormValid) return;
-      const accToCoverShortfallId = changeShortfallAccForm.selectedAccName;
+      const accToCoverShortfallId = changeShortfallToDiffAccForm.selectedAccName;
       const accToCoverShortfall = ArrayOfObjects.getObjWithKeyValuePair(
          savingsAccArr,
          'id',
@@ -191,7 +192,7 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
                isDisabled={disabledFields.includes(input.name)}
             />
          ))}
-         <ConditionalRender condition={displayChangeShortfallAccForm}>
+         <ConditionalRender condition={showChangeShortfallToDiffAccForm}>
             {CoversShortfallSavingsAccForm.form.inputs.map((input) => (
                <InputCombination
                   placeholder={input.placeholder}
@@ -199,9 +200,9 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
                   name={input.name}
                   isRequired={input.isRequired}
                   autoComplete={input.autoComplete}
-                  handleChange={changeShortfallAccHandleChange}
-                  value={changeShortfallAccForm[input.name]}
-                  error={changeShortfallAccFormErrors[input.name]}
+                  handleChange={changeShortfallToDiffAccHandleChange}
+                  value={changeShortfallToDiffAccForm[input.name]}
+                  error={changeShortfallToDiffAccFormErrors[input.name]}
                   id={input.id}
                   key={input.id}
                   dropDownOptions={dropDownOptions(input)}
@@ -209,7 +210,7 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
             ))}
          </ConditionalRender>
 
-         <ConditionalRender condition={shortfallAccChangeToTrueMsg !== undefined}>
+         <ConditionalRender condition={changeShortfallToThisAccMsg !== undefined}>
             <TextColourizer
                fontSize="0.75em"
                padding="0em 0em 1.25em 0em"
@@ -217,7 +218,7 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
                color={isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning}
                style={{ fontStyle: 'italic' }}
             >
-               {shortfallAccChangeToTrueMsg}
+               {changeShortfallToThisAccMsg}
             </TextColourizer>
          </ConditionalRender>
 
