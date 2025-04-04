@@ -67,7 +67,7 @@ export default class SavingsClass {
       {
          name: 'coversShortfall',
          id: 'covers-yearly-expenses',
-         placeholder: 'Covers Yearly Expenses?',
+         placeholder: 'Covers Current Acc Shortfall?',
          type: 'string',
          isRequired: true,
          isDropDown: true,
@@ -77,7 +77,7 @@ export default class SavingsClass {
          ],
          validator: (value: string): string | true => {
             if (value !== 'true' && value !== 'false') {
-               return 'Please choose if you would like to cover yearly expenses with this account';
+               return 'Please choose if you would like to cover the current account shortfall with this account';
             }
             return true;
          },
