@@ -177,12 +177,14 @@ export default class CalculateDist {
       //
       const SE_startingBalance = totalIncome + SE.leftover;
       const SE_requiredBalance = totalExpense + SE.minCushion;
+      const SE_TO_CRAs_total = ArrayOfObjects.sumKeyValues(SE_TO_CRAs_accounts, 'balance');
+      const SE_TO_SMAs_total = ArrayOfObjects.sumKeyValues(SE_TO_SMAs_expenses, 'expenseValue');
+      const SE_netLeftover = SE.leftover - (SE_TO_CRAs_total + SE_TO_SMAs_total + SE.minCushion);
       //
       // Calculation Prep Steps:
       //
-      const SE_TO_CRAs_total = ArrayOfObjects.sumKeyValues(SE_TO_CRAs_accounts, 'balance');
-      const SE_TO_SMAs_total = ArrayOfObjects.sumKeyValues(SE_TO_SMAs_expenses, 'expenseValue');
-      SE_TO_TL = Math.max(SE.leftover - (SE_TO_SMAs_total + SE_TO_CRAs_total + SE.minCushion), 0);
+
+      SE_TO_TL = Math.max(SE_netLeftover, 0);
       SE_TO_SP = totalIncome - totalMonthlyExpenses;
       const SE_out_total = SE_TO_CRAs_total + SE_TO_SMAs_total + SE_TO_TL + SE_TO_SP;
       const SE_balance_shortfall = SE_startingBalance - SE_out_total;
