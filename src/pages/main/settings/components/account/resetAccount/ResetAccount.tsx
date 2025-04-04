@@ -46,7 +46,7 @@ export default function ResetAccount(): JSX.Element {
          } as ICurrentFormInputs);
          await setSavingsAccountInFirestore.mutateAsync({
             accountName: 'Savings Default',
-            coversYearlyExpenses: 'true',
+            coversShortfall: 'true',
             currentBalance: 0,
             isTracked: 'false',
             targetToReach: 0,

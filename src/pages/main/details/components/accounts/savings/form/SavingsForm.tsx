@@ -17,7 +17,7 @@ import ObjectOfObjects from '../../../../../../../global/helpers/dataTypes/objec
 import type { InputArray } from '../../../../../../../global/helpers/react/form/FormHelper';
 import useForm from '../../../../../../../global/hooks/useForm';
 import type { ISavingsFormInputs } from '../class/Class';
-import SavingsClass, { YearlyExpSavingsAccForm } from '../class/Class';
+import SavingsClass, { CoversShortfallSavingsAccForm } from '../class/Class';
 
 interface ISavingsFormComponent {
    inputValues?: ISavingsFormInputs;
@@ -33,81 +33,81 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
       SavingsClass.form.validate,
    );
    const {
-      form: changeYearlyExpForm,
-      errors: changeYearlyExpFormErrors,
-      handleChange: changeYearlyExpHandleChange,
-      initHandleSubmit: changeYearlyExpInitHandleSubmit,
+      form: changeShortfallAccForm,
+      errors: changeShortfallAccFormErrors,
+      handleChange: changeShortfallAccHandleChange,
+      initHandleSubmit: changeShortfallAccInitHandleSubmit,
    } = useForm(
-      YearlyExpSavingsAccForm.form.initialState,
-      YearlyExpSavingsAccForm.form.initialErrors,
-      YearlyExpSavingsAccForm.form.validate,
+      CoversShortfallSavingsAccForm.form.initialState,
+      CoversShortfallSavingsAccForm.form.initialErrors,
+      CoversShortfallSavingsAccForm.form.validate,
    );
-   const [displayYearlyExpForm, setDisplayYearlyExpForm] = useState(false);
+   const [displayChangeShortfallAccForm, setDisplayChangeShortfallAccForm] = useState(false);
    const { data: savingsAccounts } = SavingsClass.useQuery.getSavingsAccounts();
    const queryClient = useQueryClient();
-   const [yearlyExpAccChangeWarningMsg, setYearlyExpAccChangeWarningMsg] = useState<
+   const [shortfallCoverAccChangeWarningMsg, setShortfallCoverAccChangeWarningMsg] = useState<
       string | undefined
    >();
 
    useEffect(() => {
       if (!MiscHelper.isNotFalsyOrEmpty(savingsAccounts)) {
-         setForm((prev) => ({ ...prev, coversYearlyExpenses: 'true' }));
+         setForm((prev) => ({ ...prev, coversShortfall: 'true' }));
          return;
       }
       if (MiscHelper.isNotFalsyOrEmpty(inputValues)) {
          const savingsAccountArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
          if (savingsAccountArr.length === 1) {
-            setForm((prev) => ({ ...prev, coversYearlyExpenses: 'true' }));
+            setForm((prev) => ({ ...prev, coversShortfall: 'true' }));
          }
       }
    }, [inputValues, savingsAccounts]);
 
    useEffect(() => {
       if (MiscHelper.isNotFalsyOrEmpty(inputValues)) {
-         const isCoveringYearlyExpenses = inputValues.coversYearlyExpenses === 'true';
-         const changedToCoverYearlyExpenses = form?.coversYearlyExpenses === 'true';
-         const changedToNotCoverYearlyExpenses = form?.coversYearlyExpenses === 'false';
-         if (!(isCoveringYearlyExpenses && changedToNotCoverYearlyExpenses)) {
-            if (displayYearlyExpForm) setDisplayYearlyExpForm(false);
+         const isCoveringShortfall = inputValues.coversShortfall === 'true';
+         const changedToCoverYearlyExpenses = form?.coversShortfall === 'true';
+         const changedToNotCoveringShortfall = form?.coversShortfall === 'false';
+         if (!(isCoveringShortfall && changedToNotCoveringShortfall)) {
+            if (displayChangeShortfallAccForm) setDisplayChangeShortfallAccForm(false);
          }
-         if (!(!isCoveringYearlyExpenses && changedToCoverYearlyExpenses)) {
-            if (yearlyExpAccChangeWarningMsg) setYearlyExpAccChangeWarningMsg(undefined);
+         if (!(!isCoveringShortfall && changedToCoverYearlyExpenses)) {
+            if (shortfallCoverAccChangeWarningMsg) setShortfallCoverAccChangeWarningMsg(undefined);
          }
-         if (!isCoveringYearlyExpenses && changedToCoverYearlyExpenses) {
+         if (!isCoveringShortfall && changedToCoverYearlyExpenses) {
             const savingsAccountArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts || {});
-            const accCoveringYearlyExpName = ArrayOfObjects.getObjWithKeyValuePair(
+            const accCoveringShortfallName = ArrayOfObjects.getObjWithKeyValuePair(
                savingsAccountArr,
-               'coversYearlyExpenses',
+               'coversShortfall',
                'true',
             ).accountName;
             const accBeingUpdatedName = form.accountName;
-            const message = `You are about to change the account that covers yearly expenses from ${accCoveringYearlyExpName} to ${accBeingUpdatedName}`;
-            setYearlyExpAccChangeWarningMsg(message);
-         } else if (isCoveringYearlyExpenses && changedToNotCoverYearlyExpenses) {
-            if (!displayYearlyExpForm) setDisplayYearlyExpForm(true);
+            const message = `You are about to change the savings account that covers shortfall from ${accCoveringShortfallName} to ${accBeingUpdatedName}`;
+            setShortfallCoverAccChangeWarningMsg(message);
+         } else if (isCoveringShortfall && changedToNotCoveringShortfall) {
+            if (!displayChangeShortfallAccForm) setDisplayChangeShortfallAccForm(true);
          }
       }
-   }, [inputValues, form?.coversYearlyExpenses]);
+   }, [inputValues, form?.coversShortfall]);
 
    useEffect(() => {
       const isNewAccountForm = !MiscHelper.isNotFalsyOrEmpty(inputValues);
       const savingsAccountsExist = MiscHelper.isNotFalsyOrEmpty(savingsAccounts);
-      const changedToCoverYearlyExpenses = form?.coversYearlyExpenses === 'true';
+      const changedToCoverYearlyExpenses = form?.coversShortfall === 'true';
       if (!(isNewAccountForm && changedToCoverYearlyExpenses && savingsAccountsExist)) {
-         if (yearlyExpAccChangeWarningMsg) setYearlyExpAccChangeWarningMsg(undefined);
+         if (shortfallCoverAccChangeWarningMsg) setShortfallCoverAccChangeWarningMsg(undefined);
       }
       if (isNewAccountForm && changedToCoverYearlyExpenses && savingsAccountsExist) {
          const savingsAccountArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts || {});
-         const accCoveringYearlyExpName = ArrayOfObjects.getObjWithKeyValuePair(
+         const accCoveringShortfall = ArrayOfObjects.getObjWithKeyValuePair(
             savingsAccountArr,
-            'coversYearlyExpenses',
+            'coversShortfall',
             'true',
          ).accountName;
          const accBeingUpdatedName = form.accountName;
-         const message = `You are about to change the account that covers yearly expenses from ${accCoveringYearlyExpName} to ${accBeingUpdatedName}`;
-         setYearlyExpAccChangeWarningMsg(message);
+         const message = `You are about to change the account that covers shortfall from ${accCoveringShortfall} to ${accBeingUpdatedName}`;
+         setShortfallCoverAccChangeWarningMsg(message);
       }
-   }, [inputValues, savingsAccounts, form?.coversYearlyExpenses]);
+   }, [inputValues, savingsAccounts, form?.coversShortfall]);
 
    const setSavingAccountInFirestore = SavingsClass.useMutation.setSavingsAccount({
       onSuccess: () => {
@@ -131,28 +131,28 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
       const isNewAccountForm = !MiscHelper.isNotFalsyOrEmpty(inputValues);
       const isUpdateAccountForm = MiscHelper.isNotFalsyOrEmpty(inputValues);
       const savingsAccountsExist = MiscHelper.isNotFalsyOrEmpty(savingsAccounts);
-      const changedToCoverYearlyExpenses = form?.coversYearlyExpenses === 'true';
-      const changedToNotCoverYearlyExpenses = form?.coversYearlyExpenses === 'false';
-      const isCoveringYearlyExpenses = inputValues?.coversYearlyExpenses === 'true';
+      const changedToCoverShortfall = form?.coversShortfall === 'true';
+      const changedToNotCoverShortfall = form?.coversShortfall === 'false';
+      const isCoveringShortfall = inputValues?.coversShortfall === 'true';
       if (!savingsAccountsExist) {
          await setSavingAccountInFirestore.mutateAsync(form);
          return;
       }
       if (isNewAccountForm && savingsAccountsExist) {
-         if (!changedToCoverYearlyExpenses) {
+         if (!changedToCoverShortfall) {
             await setSavingAccountInFirestore.mutateAsync(form);
             return;
          }
          const savingsAccAsArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
          const accCoveringYearlyExp = ArrayOfObjects.getObjWithKeyValuePair(
             savingsAccAsArr,
-            'coversYearlyExpenses',
+            'coversShortfall',
             'true',
          );
          await Promise.all([
             setSavingAccountInFirestore.mutateAsync({
                ...accCoveringYearlyExp,
-               coversYearlyExpenses: 'false',
+               coversShortfall: 'false',
             }),
             setSavingAccountInFirestore.mutateAsync(form),
          ]);
@@ -160,41 +160,41 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
       }
       if (isUpdateAccountForm) {
          const savingsAccAsArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
-         const coversYearlyExpensesHasNotChanged =
-            form?.coversYearlyExpenses === inputValues?.coversYearlyExpenses;
-         if (savingsAccAsArr.length === 1 || coversYearlyExpensesHasNotChanged) {
+         const coversShortfallHasNotChanged =
+            form?.coversShortfall === inputValues?.coversShortfall;
+         if (savingsAccAsArr.length === 1 || coversShortfallHasNotChanged) {
             await setSavingAccountInFirestore.mutateAsync(form);
             return;
          }
 
-         if (!isCoveringYearlyExpenses && changedToCoverYearlyExpenses) {
+         if (!isCoveringShortfall && changedToCoverShortfall) {
             const accCoveringYearlyExp = ArrayOfObjects.getObjWithKeyValuePair(
                savingsAccAsArr,
-               'coversYearlyExpenses',
+               'coversShortfall',
                'true',
             );
             await Promise.all([
                setSavingAccountInFirestore.mutateAsync({
                   ...accCoveringYearlyExp,
-                  coversYearlyExpenses: 'false',
+                  coversShortfall: 'false',
                }),
                setSavingAccountInFirestore.mutateAsync(form),
             ]);
             return;
          }
-         if (isCoveringYearlyExpenses && changedToNotCoverYearlyExpenses) {
-            const { isFormValid } = changeYearlyExpInitHandleSubmit(e);
+         if (isCoveringShortfall && changedToNotCoverShortfall) {
+            const { isFormValid } = changeShortfallAccInitHandleSubmit(e);
             if (!isFormValid) return;
-            const accToCoverYearlyExpensesId = changeYearlyExpForm.selectedAccName;
-            const accToCoverYearlyExpenses = ArrayOfObjects.getObjWithKeyValuePair(
+            const accToCoverShortfallId = changeShortfallAccForm.selectedAccName;
+            const accToCoverShortfall = ArrayOfObjects.getObjWithKeyValuePair(
                savingsAccAsArr,
                'id',
-               accToCoverYearlyExpensesId,
+               accToCoverShortfallId,
             );
             await Promise.all([
                setSavingAccountInFirestore.mutateAsync({
-                  ...accToCoverYearlyExpenses,
-                  coversYearlyExpenses: 'true',
+                  ...accToCoverShortfall,
+                  coversShortfall: 'true',
                }),
                setSavingAccountInFirestore.mutateAsync(form),
             ]);
@@ -207,28 +207,28 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
 
       if (MiscHelper.isNotFalsyOrEmpty(savingsAccounts)) {
          const savingsAccountArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
-         const isCoveringYearlyExpenses = inputValues?.coversYearlyExpenses === 'true';
-         if (savingsAccountArr.length === 1 || !isCoveringYearlyExpenses) {
+         const isCoveringShortfall = inputValues?.coversShortfall === 'true';
+         if (savingsAccountArr.length === 1 || !isCoveringShortfall) {
             await delSavingAccountInFirestore.mutateAsync(form);
             return;
          }
-         if (isCoveringYearlyExpenses) {
-            if (!displayYearlyExpForm) setDisplayYearlyExpForm(true);
-            const { isFormValid } = changeYearlyExpInitHandleSubmit(
+         if (isCoveringShortfall) {
+            if (!displayChangeShortfallAccForm) setDisplayChangeShortfallAccForm(true);
+            const { isFormValid } = changeShortfallAccInitHandleSubmit(
                e as unknown as React.FormEvent<HTMLFormElement>,
             );
             if (!isFormValid) return;
-            const accToCoverYearlyExpensesId = changeYearlyExpForm.selectedAccName;
+            const accToCoverShortfallId = changeShortfallAccForm.selectedAccName;
             const savingsAccountArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
-            const accToCoverYearlyExpenses = ArrayOfObjects.getObjWithKeyValuePair(
+            const accToCoverShortfall = ArrayOfObjects.getObjWithKeyValuePair(
                savingsAccountArr,
                'id',
-               accToCoverYearlyExpensesId,
+               accToCoverShortfallId,
             );
             await Promise.all([
                setSavingAccountInFirestore.mutateAsync({
-                  ...accToCoverYearlyExpenses,
-                  coversYearlyExpenses: 'true',
+                  ...accToCoverShortfall,
+                  coversShortfall: 'true',
                }),
                delSavingAccountInFirestore.mutateAsync(form),
             ]);
@@ -238,21 +238,19 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
 
    function filteredInputs(): InputArray<ISavingsFormInputs> {
       if (!MiscHelper.isNotFalsyOrEmpty(savingsAccounts)) {
-         return SavingsClass.form.inputs.filter((input) => input.name !== 'coversYearlyExpenses');
+         return SavingsClass.form.inputs.filter((input) => input.name !== 'coversShortfall');
       }
       if (MiscHelper.isNotFalsyOrEmpty(inputValues)) {
          const savingsAccountArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
          if (savingsAccountArr.length === 1) {
-            return SavingsClass.form.inputs.filter(
-               (input) => input.name !== 'coversYearlyExpenses',
-            );
+            return SavingsClass.form.inputs.filter((input) => input.name !== 'coversShortfall');
          }
       }
       return SavingsClass.form.inputs;
    }
 
    function dropDownOptions(
-      input: (typeof YearlyExpSavingsAccForm.form.inputs)[0],
+      input: (typeof CoversShortfallSavingsAccForm.form.inputs)[0],
    ): IDropDownOption[] | undefined {
       if (input.name === 'selectedAccName') {
          if (!MiscHelper.isNotFalsyOrEmpty(savingsAccounts)) return input.dropDownOptions;
@@ -284,17 +282,17 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
                dropDownOptions={input.dropDownOptions}
             />
          ))}
-         <ConditionalRender condition={displayYearlyExpForm}>
-            {YearlyExpSavingsAccForm.form.inputs.map((input) => (
+         <ConditionalRender condition={displayChangeShortfallAccForm}>
+            {CoversShortfallSavingsAccForm.form.inputs.map((input) => (
                <InputCombination
                   placeholder={input.placeholder}
                   type={input.type}
                   name={input.name}
                   isRequired={input.isRequired}
                   autoComplete={input.autoComplete}
-                  handleChange={changeYearlyExpHandleChange}
-                  value={changeYearlyExpForm[input.name]}
-                  error={changeYearlyExpFormErrors[input.name]}
+                  handleChange={changeShortfallAccHandleChange}
+                  value={changeShortfallAccForm[input.name]}
+                  error={changeShortfallAccFormErrors[input.name]}
                   id={input.id}
                   key={input.id}
                   dropDownOptions={dropDownOptions(input)}
@@ -302,7 +300,7 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
             ))}
          </ConditionalRender>
 
-         <ConditionalRender condition={yearlyExpAccChangeWarningMsg !== undefined}>
+         <ConditionalRender condition={shortfallCoverAccChangeWarningMsg !== undefined}>
             <TextColourizer
                fontSize="0.75em"
                padding="0em 0em 1.25em 0em"
@@ -310,7 +308,7 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
                color={isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning}
                style={{ fontStyle: 'italic' }}
             >
-               {yearlyExpAccChangeWarningMsg}
+               {shortfallCoverAccChangeWarningMsg}
             </TextColourizer>
          </ConditionalRender>
 

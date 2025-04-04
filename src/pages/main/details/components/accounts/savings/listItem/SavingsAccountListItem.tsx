@@ -52,7 +52,7 @@ export default function SavingsAccountListItem(props: ISavingsAccountListItem): 
          target: isDarkTheme ? Color.darkThm.error : Color.lightThm.error,
          tracked: isDarkTheme ? Color.darkThm.success : Color.lightThm.success,
          amount: isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning,
-         coversYearlyExpenses: isDarkTheme
+         coversShortfall: isDarkTheme
             ? Color.darkThm.coversYearlyExp
             : Color.lightThm.coversYearlyExp,
       };
@@ -90,8 +90,10 @@ export default function SavingsAccountListItem(props: ISavingsAccountListItem): 
                   <ConditionalRender condition={item.isTracked === 'true'}>
                      <Tag bgColor={tagColor('tracked')}>Tracked</Tag>
                   </ConditionalRender>
-                  <ConditionalRender condition={item.coversYearlyExpenses === 'true'}>
-                     <Tag bgColor={tagColor('coversYearlyExpenses')}>Covers Yearly Expenses</Tag>
+                  <ConditionalRender condition={item.coversShortfall === 'true'}>
+                     <Tag bgColor={tagColor('coversShortfall')}>
+                        Covers Current Account Shortfalls
+                     </Tag>
                   </ConditionalRender>
                </SecondRowTagsWrapper>
             </FlatListItem>

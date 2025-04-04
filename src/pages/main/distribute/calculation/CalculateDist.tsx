@@ -139,17 +139,13 @@ export default class CalculateDist {
       // SA = savings account
       // SMA = savings manual (transfer) accounts
       // TL = transfer leftovers account
-      // YEC = yearly expenses coverer account
+      // SCA = Shortfall coverer (savings) account
       // CRA = credit account
 
       // Gathering Data
       const SE = currentAcc.salaryExp;
       const SP = currentAcc.spendings;
-      const YEC = ArrayOfObjects.getObjWithKeyValuePair(
-         savingsAccArr,
-         'coversYearlyExpenses',
-         'true',
-      );
+      const SCA = ArrayOfObjects.getObjWithKeyValuePair(savingsAccArr, 'coversShortfall', 'true');
       const SE_TO_CRAs_accounts = ArrayOfObjects.filterIn(
          creditAccArr,
          'payBalanceFromAccName',
@@ -172,7 +168,7 @@ export default class CalculateDist {
       );
       let SE_TO_TL: number = 0;
       let SE_TO_SP: number = 0;
-      let YEC_TO_SE: number = 0;
+      let SCA_TO_SE: number = 0;
       let SP_TO_TL: number = 0;
       const stepsList: string[] = [];
       const trackedSavingsAccountTransfers: ISavingsAccountTransfers = [];
@@ -190,14 +186,14 @@ export default class CalculateDist {
       SE_TO_SP = totalIncome - totalMonthlyExpenses;
       const SE_out_total = SE_TO_CRAs_total + SE_TO_SMAs_total + SE_TO_TL + SE_TO_SP;
       const SE_balance_shortfall = SE_startingBalance - SE_out_total;
-      const YEC_TO_SE_INITIAL = SE_balance_shortfall >= 0 ? 0 : Math.abs(SE_balance_shortfall);
-      const YEC_TO_SE_INITIAL_msg = CalculateDist.createMsg({
-         amount: YEC_TO_SE_INITIAL,
-         fromAccount: YEC.accountName,
+      const SCA_TO_SE_INITIAL = SE_balance_shortfall >= 0 ? 0 : Math.abs(SE_balance_shortfall);
+      const SCA_TO_SE_INITIAL_msg = CalculateDist.createMsg({
+         amount: SCA_TO_SE_INITIAL,
+         fromAccount: SCA.accountName,
          transfer: { transferToAccount: SE.accountName },
       });
-      stepsList.push(YEC_TO_SE_INITIAL_msg);
-      let SE_newBalance = SE_startingBalance + YEC_TO_SE_INITIAL;
+      stepsList.push(SCA_TO_SE_INITIAL_msg);
+      let SE_newBalance = SE_startingBalance + SCA_TO_SE_INITIAL;
       //
       // Actual Distribution Calculation Steps
       //
@@ -259,13 +255,13 @@ export default class CalculateDist {
          }
       }
 
-      YEC_TO_SE = SE_requiredBalance - SE_newBalance;
-      const YEC_TO_SE_msg = CalculateDist.createMsg({
-         amount: YEC_TO_SE,
-         fromAccount: YEC.accountName,
+      SCA_TO_SE = SE_requiredBalance - SE_newBalance;
+      const SCA_TO_SE_msg = CalculateDist.createMsg({
+         amount: SCA_TO_SE,
+         fromAccount: SCA.accountName,
          transfer: { transferToAccount: SE.accountName },
       });
-      stepsList.push(YEC_TO_SE_msg);
+      stepsList.push(SCA_TO_SE_msg);
       //
       // -- S P E N D I N G S  A C C O U N T  T R A N S F E R S -- //
       //

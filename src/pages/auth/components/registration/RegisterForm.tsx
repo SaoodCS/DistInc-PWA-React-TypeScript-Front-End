@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { sendEmailVerification, signInWithEmailAndPassword } from 'firebase/auth';
 import { StaticButton } from '../../../../global/components/lib/button/staticButton/Style';
 import { StyledForm } from '../../../../global/components/lib/form/form/Style';
@@ -11,11 +12,10 @@ import { useCustomMutation } from '../../../../global/hooks/useCustomMutation';
 import useForm from '../../../../global/hooks/useForm';
 import type { ICurrentFormInputs } from '../../../main/details/components/accounts/current/class/Class';
 import CurrentClass from '../../../main/details/components/accounts/current/class/Class';
-import type { IRegInputs } from './Class';
-import RegClass from './Class';
 import type { ISavingsFormInputs } from '../../../main/details/components/accounts/savings/class/Class';
 import SavingsClass from '../../../main/details/components/accounts/savings/class/Class';
-import { useQueryClient } from '@tanstack/react-query';
+import type { IRegInputs } from './Class';
+import RegClass from './Class';
 
 export default function RegisterForm(): JSX.Element {
    const { isDarkTheme } = useThemeContext();
@@ -62,7 +62,7 @@ export default function RegisterForm(): JSX.Element {
          } as ICurrentFormInputs),
          setSavingsAccountInFirestore.mutateAsync({
             accountName: 'Savings Default',
-            coversYearlyExpenses: 'true',
+            coversShortfall: 'true',
             currentBalance: 0,
             isTracked: 'false',
             targetToReach: 0,

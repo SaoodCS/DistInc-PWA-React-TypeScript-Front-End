@@ -20,7 +20,7 @@ export interface ISavingsFormInputs {
    targetToReach: OptionalNumberInput;
    currentBalance: OptionalNumberInput;
    isTracked: 'true' | 'false';
-   coversYearlyExpenses: 'true' | 'false';
+   coversShortfall: 'true' | 'false';
    id: number;
 }
 
@@ -65,7 +65,7 @@ export default class SavingsClass {
       },
 
       {
-         name: 'coversYearlyExpenses',
+         name: 'coversShortfall',
          id: 'covers-yearly-expenses',
          placeholder: 'Covers Yearly Expenses?',
          type: 'string',
@@ -211,45 +211,50 @@ export default class SavingsClass {
    }
 }
 
-export interface IYearlyExpSavingsAccForm {
+export interface ICoversShortfallSavingsAccForm {
    selectedAccName: string;
    id: number;
 }
 
-export class YearlyExpSavingsAccForm {
-   private static inputs: InputArray<IYearlyExpSavingsAccForm> = [
+export class CoversShortfallSavingsAccForm {
+   private static inputs: InputArray<ICoversShortfallSavingsAccForm> = [
       {
          name: 'selectedAccName',
          id: 'selected-acc-name',
-         placeholder: 'Change account that covers yearly expenses to:',
+         placeholder: 'Change account that covers the current account shortfall(s) to:',
          type: 'string',
          isRequired: true,
          isDropDown: true,
          dropDownOptions: [],
          validator: (value: string): string | true => {
-            if (!value) return 'Please select the account to cover yearly expenses';
+            if (!value) return 'Please select the account to cover current account shortfall(s)';
             return true;
          },
       },
    ];
 
-   private static initialState: IYearlyExpSavingsAccForm = FormHelper.createInitialState(
-      YearlyExpSavingsAccForm.inputs,
+   private static initialState: ICoversShortfallSavingsAccForm = FormHelper.createInitialState(
+      CoversShortfallSavingsAccForm.inputs,
    );
 
-   private static initialErrors = FormHelper.createInitialErrors(YearlyExpSavingsAccForm.inputs);
+   private static initialErrors = FormHelper.createInitialErrors(
+      CoversShortfallSavingsAccForm.inputs,
+   );
 
    private static validate(
-      formValues: IYearlyExpSavingsAccForm,
-   ): Record<keyof IYearlyExpSavingsAccForm, string> {
-      const formValidation = FormHelper.validation(formValues, YearlyExpSavingsAccForm.inputs);
+      formValues: ICoversShortfallSavingsAccForm,
+   ): Record<keyof ICoversShortfallSavingsAccForm, string> {
+      const formValidation = FormHelper.validation(
+         formValues,
+         CoversShortfallSavingsAccForm.inputs,
+      );
       return formValidation;
    }
 
    static form = {
-      inputs: YearlyExpSavingsAccForm.inputs,
-      initialState: YearlyExpSavingsAccForm.initialState,
-      initialErrors: YearlyExpSavingsAccForm.initialErrors,
-      validate: YearlyExpSavingsAccForm.validate,
+      inputs: CoversShortfallSavingsAccForm.inputs,
+      initialState: CoversShortfallSavingsAccForm.initialState,
+      initialErrors: CoversShortfallSavingsAccForm.initialErrors,
+      validate: CoversShortfallSavingsAccForm.validate,
    };
 }
