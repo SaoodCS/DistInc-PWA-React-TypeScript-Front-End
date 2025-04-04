@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { StaticButton } from '../../../../../../../global/components/lib/button/staticButton/Style';
 import { TextColourizer } from '../../../../../../../global/components/lib/font/textColorizer/TextColourizer';
 import type { IDropDownOption } from '../../../../../../../global/components/lib/form/dropDown/DropDownInput';
@@ -14,7 +14,6 @@ import microservices from '../../../../../../../global/firebase/apis/microservic
 import ArrayOfObjects from '../../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import MiscHelper from '../../../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import ObjectOfObjects from '../../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
-import type { InputArray } from '../../../../../../../global/helpers/react/form/FormHelper';
 import useForm from '../../../../../../../global/hooks/useForm';
 import type { ISavingsFormInputs } from '../class/Class';
 import SavingsClass, { CoversShortfallSavingsAccForm } from '../class/Class';
@@ -23,15 +22,40 @@ interface ISavingsFormComponent {
    inputValues?: ISavingsFormInputs;
 }
 
+const SHORTFALL_CHANGE_MSG =
+   'You will be changing the savings account that covers shortfall to this account';
+
 export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
    const { inputValues } = props;
    const { isDarkTheme } = useThemeContext();
    const { apiError } = useApiErrorContext();
+   const { data: savingsAccounts } = SavingsClass.useQuery.getSavingsAccounts();
+   const savingsAccArr = useMemo(
+      () => ObjectOfObjects.convertToArrayOfObj(savingsAccounts || {}),
+      [savingsAccounts],
+   );
+   const queryClient = useQueryClient();
+   const setSavingAccInFS = SavingsClass.useMutation.setSavingsAccount({
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [microservices.getSavingsAccount.name] });
+         queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
+      },
+   });
+   const delSavingAccInFS = SavingsClass.useMutation.delSavingsAccount({
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [microservices.getSavingsAccount.name] });
+         queryClient.invalidateQueries({ queryKey: [microservices.getCurrentAccount.name] });
+         queryClient.invalidateQueries({ queryKey: [microservices.getExpenses.name] });
+         queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
+      },
+   });
+   ////
    const { form, setForm, errors, handleChange, initHandleSubmit } = useForm(
       inputValues ? inputValues : SavingsClass.form.initialState,
       SavingsClass.form.initialErrors,
       SavingsClass.form.validate,
    );
+   /////
    const {
       form: changeShortfallAccForm,
       errors: changeShortfallAccFormErrors,
@@ -43,210 +67,105 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
       CoversShortfallSavingsAccForm.form.validate,
    );
    const [displayChangeShortfallAccForm, setDisplayChangeShortfallAccForm] = useState(false);
-   const { data: savingsAccounts } = SavingsClass.useQuery.getSavingsAccounts();
-   const queryClient = useQueryClient();
-   const [shortfallCoverAccChangeWarningMsg, setShortfallCoverAccChangeWarningMsg] = useState<
-      string | undefined
-   >();
+   const [shortfallAccChangeToTrueMsg, setShortfallAccChangeToTrueMsg] = useState<string>();
+   const [disabledFields, setDisabledFields] = useState<(keyof ISavingsFormInputs)[]>([]);
 
    useEffect(() => {
-      if (!MiscHelper.isNotFalsyOrEmpty(savingsAccounts)) {
-         setForm((prev) => ({ ...prev, coversShortfall: 'true' }));
-         return;
-      }
-      if (MiscHelper.isNotFalsyOrEmpty(inputValues)) {
-         const savingsAccountArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
-         if (savingsAccountArr.length === 1) {
+      const noOfExistingAcc = savingsAccArr.length;
+      const isCreating = !MiscHelper.isNotFalsyOrEmpty(inputValues);
+      if (isCreating) {
+         if (noOfExistingAcc < 1) {
             setForm((prev) => ({ ...prev, coversShortfall: 'true' }));
-         }
-      }
-   }, [inputValues, savingsAccounts]);
-
-   useEffect(() => {
-      if (MiscHelper.isNotFalsyOrEmpty(inputValues)) {
-         const isCoveringShortfall = inputValues.coversShortfall === 'true';
-         const changedToCoverShortfall = form?.coversShortfall === 'true';
-         const changedToNotCoveringShortfall = form?.coversShortfall === 'false';
-         if (!(isCoveringShortfall && changedToNotCoveringShortfall)) {
-            if (displayChangeShortfallAccForm) setDisplayChangeShortfallAccForm(false);
-         }
-         if (!(!isCoveringShortfall && changedToCoverShortfall)) {
-            if (shortfallCoverAccChangeWarningMsg) setShortfallCoverAccChangeWarningMsg(undefined);
-         }
-         if (!isCoveringShortfall && changedToCoverShortfall) {
-            const savingsAccountArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts || {});
-            const accCoveringShortfallName = ArrayOfObjects.getObjWithKeyValuePair(
-               savingsAccountArr,
-               'coversShortfall',
-               'true',
-            ).accountName;
-            const accBeingUpdatedName = form.accountName;
-            const message = `You are about to change the savings account that covers shortfall from ${accCoveringShortfallName} to ${accBeingUpdatedName}`;
-            setShortfallCoverAccChangeWarningMsg(message);
-         } else if (isCoveringShortfall && changedToNotCoveringShortfall) {
-            if (!displayChangeShortfallAccForm) setDisplayChangeShortfallAccForm(true);
-         }
-      }
-   }, [inputValues, form?.coversShortfall]);
-
-   useEffect(() => {
-      const isNewAccountForm = !MiscHelper.isNotFalsyOrEmpty(inputValues);
-      const savingsAccountsExist = MiscHelper.isNotFalsyOrEmpty(savingsAccounts);
-      const changedToCoverShortfall = form?.coversShortfall === 'true';
-      if (!(isNewAccountForm && changedToCoverShortfall && savingsAccountsExist)) {
-         if (shortfallCoverAccChangeWarningMsg) setShortfallCoverAccChangeWarningMsg(undefined);
-      }
-      if (isNewAccountForm && changedToCoverShortfall && savingsAccountsExist) {
-         const savingsAccountArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts || {});
-         const accCoveringShortfall = ArrayOfObjects.getObjWithKeyValuePair(
-            savingsAccountArr,
-            'coversShortfall',
-            'true',
-         ).accountName;
-         const accBeingUpdatedName = form.accountName;
-         const message = `You are about to change the account that covers shortfall from ${accCoveringShortfall} to ${accBeingUpdatedName}`;
-         setShortfallCoverAccChangeWarningMsg(message);
-      }
-   }, [inputValues, savingsAccounts, form?.coversShortfall]);
-
-   const setSavingAccountInFirestore = SavingsClass.useMutation.setSavingsAccount({
-      onSuccess: () => {
-         queryClient.invalidateQueries({ queryKey: [microservices.getSavingsAccount.name] });
-         queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
-      },
-   });
-
-   const delSavingAccountInFirestore = SavingsClass.useMutation.delSavingsAccount({
-      onSuccess: () => {
-         queryClient.invalidateQueries({ queryKey: [microservices.getSavingsAccount.name] });
-         queryClient.invalidateQueries({ queryKey: [microservices.getCurrentAccount.name] });
-         queryClient.invalidateQueries({ queryKey: [microservices.getExpenses.name] });
-         queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
-      },
-   });
-
-   async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
-      const { isFormValid } = initHandleSubmit(e);
-      if (!isFormValid) return;
-      const isNewAccountForm = !MiscHelper.isNotFalsyOrEmpty(inputValues);
-      const isUpdateAccountForm = MiscHelper.isNotFalsyOrEmpty(inputValues);
-      const savingsAccountsExist = MiscHelper.isNotFalsyOrEmpty(savingsAccounts);
-      const changedToCoverShortfall = form?.coversShortfall === 'true';
-      const changedToNotCoverShortfall = form?.coversShortfall === 'false';
-      const isCoveringShortfall = inputValues?.coversShortfall === 'true';
-      if (!savingsAccountsExist) {
-         await setSavingAccountInFirestore.mutateAsync(form);
-         return;
-      }
-      if (isNewAccountForm && savingsAccountsExist) {
-         if (!changedToCoverShortfall) {
-            await setSavingAccountInFirestore.mutateAsync(form);
+            setDisabledFields(['coversShortfall']);
             return;
          }
-         const savingsAccAsArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
-         const accCoveringYearlyExp = ArrayOfObjects.getObjWithKeyValuePair(
-            savingsAccAsArr,
+         if (form.coversShortfall === 'true') setShortfallAccChangeToTrueMsg(SHORTFALL_CHANGE_MSG);
+         return;
+      }
+      if (noOfExistingAcc <= 1) {
+         setForm((prev) => ({ ...prev, coversShortfall: 'true' }));
+         setDisabledFields(['coversShortfall']);
+         return;
+      }
+      if (inputValues.coversShortfall === form.coversShortfall) {
+         setDisplayChangeShortfallAccForm(false);
+         setShortfallAccChangeToTrueMsg(undefined);
+         return;
+      }
+      if (form.coversShortfall === 'false') {
+         setDisplayChangeShortfallAccForm(true);
+      } else setShortfallAccChangeToTrueMsg(SHORTFALL_CHANGE_MSG);
+   }, [inputValues, savingsAccounts, form?.coversShortfall]);
+
+   async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
+      const noOfExistingAcc = savingsAccArr.length;
+      const isCreating = !MiscHelper.isNotFalsyOrEmpty(inputValues);
+      const isEditing = !isCreating;
+      const shortfallValChanged = form.coversShortfall !== inputValues?.coversShortfall;
+      const { isFormValid } = initHandleSubmit(e);
+      if (!isFormValid) return;
+      if (!shortfallValChanged) {
+         await setSavingAccInFS.mutateAsync(form);
+         return;
+      }
+      if ((isCreating && noOfExistingAcc < 1) || (isEditing && noOfExistingAcc <= 1)) {
+         await setSavingAccInFS.mutateAsync(form);
+         return;
+      }
+      if (MiscHelper.isNotFalsyOrEmpty(shortfallAccChangeToTrueMsg)) {
+         const prevCoveringShortfall = ArrayOfObjects.getObjWithKeyValuePair(
+            savingsAccArr,
             'coversShortfall',
             'true',
          );
          await Promise.all([
-            setSavingAccountInFirestore.mutateAsync({
-               ...accCoveringYearlyExp,
-               coversShortfall: 'false',
-            }),
-            setSavingAccountInFirestore.mutateAsync(form),
+            setSavingAccInFS.mutateAsync({ ...prevCoveringShortfall, coversShortfall: 'false' }),
+            setSavingAccInFS.mutateAsync(form),
          ]);
          return;
       }
-      if (isUpdateAccountForm) {
-         const savingsAccAsArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
-         const coversShortfallHasNotChanged =
-            form?.coversShortfall === inputValues?.coversShortfall;
-         if (savingsAccAsArr.length === 1 || coversShortfallHasNotChanged) {
-            await setSavingAccountInFirestore.mutateAsync(form);
-            return;
-         }
 
-         if (!isCoveringShortfall && changedToCoverShortfall) {
-            const accCoveringYearlyExp = ArrayOfObjects.getObjWithKeyValuePair(
-               savingsAccAsArr,
-               'coversShortfall',
-               'true',
-            );
-            await Promise.all([
-               setSavingAccountInFirestore.mutateAsync({
-                  ...accCoveringYearlyExp,
-                  coversShortfall: 'false',
-               }),
-               setSavingAccountInFirestore.mutateAsync(form),
-            ]);
-            return;
-         }
-         if (isCoveringShortfall && changedToNotCoverShortfall) {
-            const { isFormValid } = changeShortfallAccInitHandleSubmit(e);
-            if (!isFormValid) return;
-            const accToCoverShortfallId = changeShortfallAccForm.selectedAccName;
-            const accToCoverShortfall = ArrayOfObjects.getObjWithKeyValuePair(
-               savingsAccAsArr,
-               'id',
-               accToCoverShortfallId,
-            );
-            await Promise.all([
-               setSavingAccountInFirestore.mutateAsync({
-                  ...accToCoverShortfall,
-                  coversShortfall: 'true',
-               }),
-               setSavingAccountInFirestore.mutateAsync(form),
-            ]);
-         }
+      if (shortfallValChanged && form.coversShortfall === 'false') {
+         const { isFormValid } = changeShortfallAccInitHandleSubmit(e);
+         if (!isFormValid) return;
+         const accToCoverShortfall = ArrayOfObjects.getObjWithKeyValuePair(
+            savingsAccArr,
+            'id',
+            changeShortfallAccForm.selectedAccName,
+         );
+         await Promise.all([
+            setSavingAccInFS.mutateAsync({ ...accToCoverShortfall, coversShortfall: 'true' }),
+            setSavingAccInFS.mutateAsync(form),
+         ]);
       }
    }
 
    async function handleDelete(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> {
       e.preventDefault();
-
-      if (MiscHelper.isNotFalsyOrEmpty(savingsAccounts)) {
-         const savingsAccountArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
-         const isCoveringShortfall = inputValues?.coversShortfall === 'true';
-         if (savingsAccountArr.length === 1 || !isCoveringShortfall) {
-            await delSavingAccountInFirestore.mutateAsync(form);
-            return;
-         }
-         if (isCoveringShortfall) {
-            if (!displayChangeShortfallAccForm) setDisplayChangeShortfallAccForm(true);
-            const { isFormValid } = changeShortfallAccInitHandleSubmit(
-               e as unknown as React.FormEvent<HTMLFormElement>,
-            );
-            if (!isFormValid) return;
-            const accToCoverShortfallId = changeShortfallAccForm.selectedAccName;
-            const savingsAccountArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
-            const accToCoverShortfall = ArrayOfObjects.getObjWithKeyValuePair(
-               savingsAccountArr,
-               'id',
-               accToCoverShortfallId,
-            );
-            await Promise.all([
-               setSavingAccountInFirestore.mutateAsync({
-                  ...accToCoverShortfall,
-                  coversShortfall: 'true',
-               }),
-               delSavingAccountInFirestore.mutateAsync(form),
-            ]);
-         }
+      if (!MiscHelper.isNotFalsyOrEmpty(savingsAccounts)) return;
+      const isCoveringShortfall = inputValues?.coversShortfall === 'true';
+      if (savingsAccArr.length === 1 || !isCoveringShortfall) {
+         await delSavingAccInFS.mutateAsync(form);
+         return;
       }
-   }
-
-   function filteredInputs(): InputArray<ISavingsFormInputs> {
-      if (!MiscHelper.isNotFalsyOrEmpty(savingsAccounts)) {
-         return SavingsClass.form.inputs.filter((input) => input.name !== 'coversShortfall');
-      }
-      if (MiscHelper.isNotFalsyOrEmpty(inputValues)) {
-         const savingsAccountArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
-         if (savingsAccountArr.length === 1) {
-            return SavingsClass.form.inputs.filter((input) => input.name !== 'coversShortfall');
-         }
-      }
-      return SavingsClass.form.inputs;
+      if (!displayChangeShortfallAccForm) setDisplayChangeShortfallAccForm(true);
+      const { isFormValid } = changeShortfallAccInitHandleSubmit(
+         e as unknown as React.FormEvent<HTMLFormElement>,
+      );
+      if (!isFormValid) return;
+      const accToCoverShortfallId = changeShortfallAccForm.selectedAccName;
+      const accToCoverShortfall = ArrayOfObjects.getObjWithKeyValuePair(
+         savingsAccArr,
+         'id',
+         accToCoverShortfallId,
+      );
+      await Promise.all([
+         setSavingAccInFS.mutateAsync({
+            ...accToCoverShortfall,
+            coversShortfall: 'true',
+         }),
+         delSavingAccInFS.mutateAsync(form),
+      ]);
    }
 
    function dropDownOptions(
@@ -267,7 +186,7 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
 
    return (
       <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
-         {filteredInputs().map((input) => (
+         {SavingsClass.form.inputs.map((input) => (
             <InputCombination
                placeholder={input.placeholder}
                type={input.type}
@@ -280,6 +199,7 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
                id={input.id}
                key={input.id}
                dropDownOptions={input.dropDownOptions}
+               isDisabled={disabledFields.includes(input.name)}
             />
          ))}
          <ConditionalRender condition={displayChangeShortfallAccForm}>
@@ -300,7 +220,7 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
             ))}
          </ConditionalRender>
 
-         <ConditionalRender condition={shortfallCoverAccChangeWarningMsg !== undefined}>
+         <ConditionalRender condition={shortfallAccChangeToTrueMsg !== undefined}>
             <TextColourizer
                fontSize="0.75em"
                padding="0em 0em 1.25em 0em"
@@ -308,7 +228,7 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
                color={isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning}
                style={{ fontStyle: 'italic' }}
             >
-               {shortfallCoverAccChangeWarningMsg}
+               {shortfallAccChangeToTrueMsg}
             </TextColourizer>
          </ConditionalRender>
 
