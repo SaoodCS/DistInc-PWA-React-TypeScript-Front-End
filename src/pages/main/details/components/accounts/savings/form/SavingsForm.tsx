@@ -65,15 +65,15 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
    useEffect(() => {
       if (MiscHelper.isNotFalsyOrEmpty(inputValues)) {
          const isCoveringShortfall = inputValues.coversShortfall === 'true';
-         const changedToCoverYearlyExpenses = form?.coversShortfall === 'true';
+         const changedToCoverShortfall = form?.coversShortfall === 'true';
          const changedToNotCoveringShortfall = form?.coversShortfall === 'false';
          if (!(isCoveringShortfall && changedToNotCoveringShortfall)) {
             if (displayChangeShortfallAccForm) setDisplayChangeShortfallAccForm(false);
          }
-         if (!(!isCoveringShortfall && changedToCoverYearlyExpenses)) {
+         if (!(!isCoveringShortfall && changedToCoverShortfall)) {
             if (shortfallCoverAccChangeWarningMsg) setShortfallCoverAccChangeWarningMsg(undefined);
          }
-         if (!isCoveringShortfall && changedToCoverYearlyExpenses) {
+         if (!isCoveringShortfall && changedToCoverShortfall) {
             const savingsAccountArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts || {});
             const accCoveringShortfallName = ArrayOfObjects.getObjWithKeyValuePair(
                savingsAccountArr,
@@ -92,11 +92,11 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
    useEffect(() => {
       const isNewAccountForm = !MiscHelper.isNotFalsyOrEmpty(inputValues);
       const savingsAccountsExist = MiscHelper.isNotFalsyOrEmpty(savingsAccounts);
-      const changedToCoverYearlyExpenses = form?.coversShortfall === 'true';
-      if (!(isNewAccountForm && changedToCoverYearlyExpenses && savingsAccountsExist)) {
+      const changedToCoverShortfall = form?.coversShortfall === 'true';
+      if (!(isNewAccountForm && changedToCoverShortfall && savingsAccountsExist)) {
          if (shortfallCoverAccChangeWarningMsg) setShortfallCoverAccChangeWarningMsg(undefined);
       }
-      if (isNewAccountForm && changedToCoverYearlyExpenses && savingsAccountsExist) {
+      if (isNewAccountForm && changedToCoverShortfall && savingsAccountsExist) {
          const savingsAccountArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts || {});
          const accCoveringShortfall = ArrayOfObjects.getObjWithKeyValuePair(
             savingsAccountArr,
