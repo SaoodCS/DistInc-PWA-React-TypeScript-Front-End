@@ -80,6 +80,7 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
             return;
          }
          if (form.coversShortfall === 'true') setChangeShortfallToThisAccMsg(SHORTFALL_CHANGE_MSG);
+         else setChangeShortfallToThisAccMsg('');
          return;
       }
       if (noOfExistingAcc <= 1) {
@@ -92,10 +93,8 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
          setChangeShortfallToThisAccMsg(undefined);
          return;
       }
-      if (form.coversShortfall === 'false') {
-         setShowChangeShortfallToDiffAccForm(true);
-         setChangeShortfallToThisAccMsg('');
-      } else setChangeShortfallToThisAccMsg(SHORTFALL_CHANGE_MSG);
+      if (form.coversShortfall === 'false') setShowChangeShortfallToDiffAccForm(true);
+      else setChangeShortfallToThisAccMsg(SHORTFALL_CHANGE_MSG);
    }, [inputValues, savingsAccounts, form?.coversShortfall]);
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
