@@ -221,7 +221,7 @@ export class CoversShortfallSavingsAccForm {
       {
          name: 'selectedAccName',
          id: 'selected-acc-name',
-         placeholder: 'Change account that covers the current account shortfall(s) to:',
+         placeholder: 'Change account that covers the current account shortfall:',
          type: 'string',
          isRequired: true,
          isDropDown: true,
