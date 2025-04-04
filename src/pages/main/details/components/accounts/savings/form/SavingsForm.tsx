@@ -98,18 +98,20 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
    }, [inputValues, savingsAccounts, form?.coversShortfall]);
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
-      const noOfExistingAcc = savingsAccArr.length;
-      const isCreating = !MiscHelper.isNotFalsyOrEmpty(inputValues);
-      const isEditing = !isCreating;
-      const shortfallValChanged = form.coversShortfall !== inputValues?.coversShortfall;
       const { isFormValid } = initHandleSubmit(e);
       if (!isFormValid) return;
-      if (!shortfallValChanged) {
-         await setSavingAccInFS.mutateAsync(form);
-         return;
-      }
-      if ((isCreating && noOfExistingAcc < 1) || (isEditing && noOfExistingAcc <= 1)) {
-         await setSavingAccInFS.mutateAsync(form);
+      if (displayChangeShortfallAccForm) {
+         const { isFormValid } = changeShortfallAccInitHandleSubmit(e);
+         if (!isFormValid) return;
+         const accToCoverShortfall = ArrayOfObjects.getObjWithKeyValuePair(
+            savingsAccArr,
+            'id',
+            changeShortfallAccForm.selectedAccName,
+         );
+         await Promise.all([
+            setSavingAccInFS.mutateAsync({ ...accToCoverShortfall, coversShortfall: 'true' }),
+            setSavingAccInFS.mutateAsync(form),
+         ]);
          return;
       }
       if (MiscHelper.isNotFalsyOrEmpty(shortfallAccChangeToTrueMsg)) {
@@ -124,20 +126,7 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
          ]);
          return;
       }
-
-      if (shortfallValChanged && form.coversShortfall === 'false') {
-         const { isFormValid } = changeShortfallAccInitHandleSubmit(e);
-         if (!isFormValid) return;
-         const accToCoverShortfall = ArrayOfObjects.getObjWithKeyValuePair(
-            savingsAccArr,
-            'id',
-            changeShortfallAccForm.selectedAccName,
-         );
-         await Promise.all([
-            setSavingAccInFS.mutateAsync({ ...accToCoverShortfall, coversShortfall: 'true' }),
-            setSavingAccInFS.mutateAsync(form),
-         ]);
-      }
+      await setSavingAccInFS.mutateAsync(form);
    }
 
    async function handleDelete(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> {
