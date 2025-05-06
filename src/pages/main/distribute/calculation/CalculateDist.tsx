@@ -134,13 +134,16 @@ export default class CalculateDist {
       totalMonthlyExpenses: number,
       totalYearlyExpenses: number,
    ): { stepsList: string[]; trackedSavingsAccountTransfers: ISavingsAccountTransfers } {
-      // SE = salary & expenses account
-      // SP = spending account
-      // SA = savings account
-      // SMA = savings manual (transfer) accounts
-      // TL = transfer leftovers account
-      // SCA = Shortfall coverer (savings) account
-      // CRA = credit account
+      // ORDER OF MSGS: (Mx = multiple times)
+      // 1x:   SCA (shortfall coverer savings account) --> SE (salary & expenses account)  [if the SE starting balance doesn't cover all outgoings, this makes up for it]
+      // 0-Mx: SE (salary & expenses account) --> CRA (credit account(s))
+      // 0-Mx: SE (salary & expenses account) --> SMA (savings manual transfer account(s)) [SMAs i.e. expenses that are of type "transfer to x savings account". These are trasnferred from SE acc by default]
+      // 1x:   SE (salary & expenses account) --> SP (spendings account)
+      // 1x:   SE (salary & expenses account) --> TL ('transfer leftovers to' account related to se acc)
+      // 1x:   SCA (shortfall coverer savings account) --> SE (salary & expenses account)  [if the SE final balance after all outgoings doesn't meet the required balance, this transfer makes up for it]
+      // 0-Mx: SP (spendings account) --> CRA (credit account(s))
+      // 1x:   SP (spendings account) --> TL ('transfer leftovers to' account related to sp acc)
+      //TODO: Potential future improvement could be to also set the shortfall coverer account to cover shortfall if the spendings account balance is less than it's total credit account transfers ie. it's total outgoings
 
       // Gathering Data
       const SE = currentAcc.salaryExp;
@@ -161,6 +164,7 @@ export default class CalculateDist {
          'expenseType',
          'Saving',
       );
+      // i.e. expenses that I have to manually transfer from salaryExp account to savings accounts
       const SE_TO_SMAs_expenses = ArrayOfObjects.filterIn(
          SE_TO_SAs_expenses,
          'hasDistInstruction',
@@ -175,18 +179,22 @@ export default class CalculateDist {
       //
       // -- S A L A R Y  &  E X P E N S E S  C U R R E N T  A C C O U N T  T R A N S F E R S -- //
       //
+      //
       const SE_startingBalance = totalIncome + SE.leftover;
       const SE_requiredBalance = totalExpense + SE.minCushion;
       const SE_TO_CRAs_total = ArrayOfObjects.sumKeyValues(SE_TO_CRAs_accounts, 'balance');
       const SE_TO_SMAs_total = ArrayOfObjects.sumKeyValues(SE_TO_SMAs_expenses, 'expenseValue');
-      const SE_netLeftover = SE.leftover - (SE_TO_CRAs_total + SE_TO_SMAs_total + SE.minCushion);
+
       //
       // Calculation Prep Steps:
       //
-
-      SE_TO_TL = Math.max(SE_netLeftover, 0);
       SE_TO_SP = totalIncome - totalMonthlyExpenses;
-      const SE_out_total = SE_TO_CRAs_total + SE_TO_SMAs_total + SE_TO_TL + SE_TO_SP;
+      //
+      const SE_outgoings = SE_TO_CRAs_total + SE_TO_SMAs_total + SE_TO_SP;
+      const SE_final_bal = SE_startingBalance - SE_outgoings;
+      SE_TO_TL = Math.max(SE_final_bal - SE_requiredBalance, 0);
+      //
+      const SE_out_total = SE_outgoings + SE_TO_TL;
       const SE_balance_shortfall = SE_startingBalance - SE_out_total;
       const SCA_TO_SE_INITIAL = SE_balance_shortfall >= 0 ? 0 : Math.abs(SE_balance_shortfall);
       const SCA_TO_SE_INITIAL_msg = CalculateDist.createMsg({
