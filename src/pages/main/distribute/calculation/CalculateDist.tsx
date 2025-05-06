@@ -143,7 +143,7 @@ export default class CalculateDist {
       // 1x:   SCA (shortfall coverer savings account) --> SE (salary & expenses account)  [if the SE final balance after all outgoings doesn't meet the required balance, this transfer makes up for it]
       // 0-Mx: SP (spendings account) --> CRA (credit account(s))
       // 1x:   SP (spendings account) --> TL ('transfer leftovers to' account related to sp acc)
-      //TODO: Potential future improvement could be to also set the shortfall coverer account to cover shortfall if the spendings account balance is less than it's total credit account transfers ie. it's total outgoings -- in a similar way I did for salaryexp using the same steps setup
+      //TODO: Potential future improvement could be to also set the shortfall coverer account to cover shortfall if the spendings account balance is less than it's total credit account transfers ie. it's total outgoings -- in a similar way I did for salaryexp using the same steps setup -> then update the list of msgs above with the new msg in the correct ordered place
 
       // Gathering Data
       const SE = currentAcc.salaryExp;
