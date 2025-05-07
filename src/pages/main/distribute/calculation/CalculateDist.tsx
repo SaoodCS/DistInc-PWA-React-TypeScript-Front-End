@@ -141,9 +141,10 @@ export default class CalculateDist {
       // 1x:   SE (salary & expenses account) --> SP (spendings account)
       // 1x:   SE (salary & expenses account) --> TL ('transfer leftovers to' account related to se acc)
       // 1x:   SCA (shortfall coverer savings account) --> SE (salary & expenses account)  [if the SE final balance after all outgoings doesn't meet the required balance, this transfer makes up for it]
+      // 1x:   SCA (shortfall coverer savings account) --> SP (spendings account)  [if the SP starting balance doesn't cover all outgoings, this makes up for it]
       // 0-Mx: SP (spendings account) --> CRA (credit account(s))
       // 1x:   SP (spendings account) --> TL ('transfer leftovers to' account related to sp acc)
-      //TODO: Potential future improvement could be to also set the shortfall coverer account to cover shortfall if the spendings account balance is less than it's total credit account transfers ie. it's total outgoings -- in a similar way I did for salaryexp using the same steps setup -> then update the list of msgs above with the new msg in the correct ordered place
+      // TODO: Potential future improvement could be to also set the shortfall coverer account to cover shortfall if the spendings account balance is less than it's total credit account transfers ie. it's total outgoings -- in a similar way I did for salaryexp using the same steps setup -> then update the list of msgs above with the new msg in the correct ordered place
 
       // Gathering Data
       const SE = currentAcc.salaryExp;
@@ -179,7 +180,6 @@ export default class CalculateDist {
       //
       // -- S A L A R Y  &  E X P E N S E S  C U R R E N T  A C C O U N T  T R A N S F E R S -- //
       //
-      //
       const SE_startingBalance = totalIncome + SE.leftover;
       const SE_requiredBalance = totalExpense + SE.minCushion;
       const SE_TO_CRAs_total = ArrayOfObjects.sumKeyValues(SE_TO_CRAs_accounts, 'balance');
@@ -208,14 +208,14 @@ export default class CalculateDist {
       // Actual Distribution Calculation Steps
       //
       for (let i = 0; i < SE_TO_CRAs_accounts.length; i++) {
-         const credAcc = SE_TO_CRAs_accounts[i];
+         const CRA = SE_TO_CRAs_accounts[i];
          const SE_TO_CRA_msg = CalculateDist.createMsg({
-            amount: credAcc.balance,
+            amount: CRA.balance,
             fromAccount: SE.accountName,
-            transfer: { transferToAccount: credAcc.accountName },
+            transfer: { transferToAccount: CRA.accountName },
          });
          stepsList.push(SE_TO_CRA_msg);
-         SE_newBalance = SE_newBalance - credAcc.balance;
+         SE_newBalance = SE_newBalance - CRA.balance;
       }
 
       for (let i = 0; i < SE_TO_SAs_expenses.length; i++) {
@@ -275,7 +275,30 @@ export default class CalculateDist {
       //
       // -- S P E N D I N G S  A C C O U N T  T R A N S F E R S -- //
       //
-      SP_TO_TL = SP.leftover;
+      const SP_startingBalance = SP.leftover;
+      const SP_requiredBalance = SP.minCushion;
+      const SP_TO_CRAs_total = ArrayOfObjects.sumKeyValues(SP_TO_CRAs_accounts, 'balance');
+
+      //
+      // Calculation Prep Steps:
+      //
+      const SP_outgoings = SP_TO_CRAs_total;
+      const SP_final_bal = SP_startingBalance - SP_outgoings;
+      SP_TO_TL = Math.max(SP_final_bal - SP_requiredBalance, 0);
+      //
+      const SP_out_total = SP_outgoings + SP_TO_TL;
+      const SP_balance_shortfall = SP_startingBalance - SP_out_total;
+      const SCA_TO_SP_INITIAL = SP_balance_shortfall >= 0 ? 0 : Math.abs(SP_balance_shortfall);
+      const SCA_TO_SP_INITIAL_msg = CalculateDist.createMsg({
+         amount: SCA_TO_SP_INITIAL,
+         fromAccount: SCA.accountName,
+         transfer: { transferToAccount: SP.accountName },
+      });
+      stepsList.push(SCA_TO_SP_INITIAL_msg);
+      let SP_newBalance = SP_startingBalance + SCA_TO_SP_INITIAL;
+      //
+      // Actual Distribution Calculation Steps
+      //
       for (let i = 0; i < SP_TO_CRAs_accounts.length; i++) {
          const CRA = SP_TO_CRAs_accounts[i];
          const SP_TO_CRA_msg = CalculateDist.createMsg({
@@ -284,8 +307,9 @@ export default class CalculateDist {
             transfer: { transferToAccount: CRA.accountName },
          });
          stepsList.push(SP_TO_CRA_msg);
-         SP_TO_TL = SP_TO_TL - CRA.balance;
+         SP_newBalance = SP_newBalance - CRA.balance;
       }
+
       if (!SP.hasTransferLeftoversTo) return { stepsList, trackedSavingsAccountTransfers };
       const TL = ArrayOfObjects.getObjWithKeyValuePair(savingsAccArr, 'id', SP.transferLeftoversTo);
       const SP_TO_TL_msg = CalculateDist.createMsg({
@@ -294,6 +318,7 @@ export default class CalculateDist {
          transfer: { transferToAccount: TL.accountName, leftover: true },
       });
       stepsList.push(SP_TO_TL_msg);
+      SP_newBalance = SP_newBalance - SP_TO_TL;
       if (TL.isTracked === 'true') {
          trackedSavingsAccountTransfers.push({ id: TL.id, amountToTransfer: SP_TO_TL });
       }
