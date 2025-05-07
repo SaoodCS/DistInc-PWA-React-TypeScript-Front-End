@@ -11,9 +11,11 @@ import useApiErrorContext from '../../../../../../global/context/widget/apiError
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import MiscHelper from '../../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import useForm from '../../../../../../global/hooks/useForm';
+import type { ISavingsFormInputs } from '../../accounts/savings/class/Class';
 import SavingsClass from '../../accounts/savings/class/Class';
 import type { IExpenseFormInputs } from '../class/ExpensesClass';
 import ExpensesClass from '../class/ExpensesClass';
+import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 
 interface IExpenseForm {
    inputValues?: IExpenseFormInputs;
@@ -29,20 +31,35 @@ export default function ExpenseForm(props: IExpenseForm): JSX.Element {
       ExpensesClass.form.validate,
    );
    const [disabledFields, setDisabledFields] = useState<(keyof IExpenseFormInputs)[]>([]);
+   const { data: savingsAccData } = SavingsClass.useQuery.getSavingsAccounts();
 
    useEffect(() => {
       if (!MiscHelper.isNotFalsyOrEmpty(form?.expenseType)) return;
-      if (form?.expenseType?.includes('Savings')) {
-         setForm((prevState) => ({ ...prevState, frequency: 'Monthly' }));
-         setDisabledFields(['frequency']);
-      } else {
+      const isSavingsTransferExpense = form.expenseType.includes('Savings');
+      if (!isSavingsTransferExpense) {
          setForm((prevState) => ({ ...prevState, hasDistInstruction: 'false' }));
          setDisabledFields(['hasDistInstruction']);
+         return;
       }
-   }, [form.expenseType]);
+      if (!MiscHelper.isNotFalsyOrEmpty(savingsAccData)) return;
+      const savingsAccId: ISavingsFormInputs['id'] = Number(
+         form.expenseType.replace(/^Savings Transfer:\s*/i, ''),
+      );
+      const savingsAcc = ObjectOfObjects.findObjFromUniqueVal(savingsAccData, savingsAccId);
+      if (savingsAcc?.isTracked === 'true') {
+         setForm((prevState) => ({ ...prevState, frequency: 'Monthly' }));
+         setDisabledFields(['frequency']);
+         return;
+      }
+      if (form.frequency === 'Yearly') {
+         setForm((prevState) => ({ ...prevState, hasDistInstruction: 'false' }));
+         setDisabledFields(['hasDistInstruction']);
+         return;
+      }
+      setDisabledFields([]);
+   }, [form.expenseType, form.frequency, savingsAccData]);
 
    const queryClient = useQueryClient();
-   const { data: savingsAccData } = SavingsClass.useQuery.getSavingsAccounts();
 
    const setExpenseInFirestore = ExpensesClass.useMutation.setExpense({
       onSuccess: () => {
@@ -71,7 +88,7 @@ export default function ExpenseForm(props: IExpenseForm): JSX.Element {
       input: (typeof ExpensesClass.form.inputs)[0],
    ): IDropDownOption[] | undefined {
       if (!input.isDropDown) return undefined;
-      if (input.name === 'expenseType' && form.frequency !== 'Yearly') {
+      if (input.name === 'expenseType') {
          if (!MiscHelper.isNotFalsyOrEmpty(savingsAccData)) return input.dropDownOptions;
          const dropDownOptions: IDropDownOption[] = [];
          Object.entries(savingsAccData).forEach(([id, savingsAccount]) => {
@@ -90,26 +107,22 @@ export default function ExpenseForm(props: IExpenseForm): JSX.Element {
 
    return (
       <StyledForm onSubmit={handleSubmit} apiError={apiError} padding={1}>
-         {ExpensesClass.form.inputs
-            .filter((input) =>
-               form.frequency === 'Yearly' ? input.name !== 'hasDistInstruction' : input,
-            )
-            .map((input) => (
-               <InputCombination
-                  key={input.id}
-                  placeholder={input.placeholder}
-                  name={input.name}
-                  isRequired={input.isRequired}
-                  autoComplete={input.autoComplete}
-                  handleChange={handleChange}
-                  error={errors[input.name]}
-                  id={input.id}
-                  type={input.type}
-                  value={form[input.name]}
-                  dropDownOptions={dropDownOptions(input)}
-                  isDisabled={disabledFields.includes(input.name)}
-               />
-            ))}
+         {ExpensesClass.form.inputs.map((input) => (
+            <InputCombination
+               key={input.id}
+               placeholder={input.placeholder}
+               name={input.name}
+               isRequired={input.isRequired}
+               autoComplete={input.autoComplete}
+               handleChange={handleChange}
+               error={errors[input.name]}
+               id={input.id}
+               type={input.type}
+               value={form[input.name]}
+               dropDownOptions={dropDownOptions(input)}
+               isDisabled={disabledFields.includes(input.name)}
+            />
+         ))}
          <StaticButton isDarkTheme={isDarkTheme} type={'submit'}>
             {`${inputValues ? 'Update' : 'Add'} Expense`}
          </StaticButton>
