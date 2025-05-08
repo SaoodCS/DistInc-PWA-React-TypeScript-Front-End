@@ -61,12 +61,6 @@ export default function DistributeForm(): JSX.Element {
          queryClient.invalidateQueries({ queryKey: [microservices.getSavingsAccount.name] });
       },
    });
-   const setSavingAccInFS = SavingsClass.useMutation.setSavingsAccount({
-      onSuccess: () => {
-         queryClient.invalidateQueries({ queryKey: [microservices.getSavingsAccount.name] });
-         queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
-      },
-   });
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
