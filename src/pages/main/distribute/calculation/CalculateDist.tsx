@@ -19,6 +19,7 @@ import type {
    IExpenseFormInputs,
    IExpensesFirebase,
 } from '../../details/components/expense/class/ExpensesClass';
+import ExpensesClass from '../../details/components/expense/class/ExpensesClass';
 import type NDist from '../namespace/NDist';
 
 export default class CalculateDist {
@@ -144,7 +145,6 @@ export default class CalculateDist {
       // 1x:   SCA (shortfall coverer savings account) --> SP (spendings account)  [if the SP starting balance doesn't cover all outgoings, this makes up for it]
       // 0-Mx: SP (spendings account) --> CRA (credit account(s))
       // 1x:   SP (spendings account) --> TL ('transfer leftovers to' account related to sp acc)
-      // TODO: Potential future improvement could be to also set the shortfall coverer account to cover shortfall if the spendings account balance is less than it's total credit account transfers ie. it's total outgoings -- in a similar way I did for salaryexp using the same steps setup -> then update the list of msgs above with the new msg in the correct ordered place
 
       // Gathering Data
       const SE = currentAcc.salaryExp;
@@ -220,8 +220,7 @@ export default class CalculateDist {
 
       for (let i = 0; i < SE_TO_SAs_expenses.length; i++) {
          const expense = SE_TO_SAs_expenses[i];
-         const SA_id = Number(expense.expenseType.split(':')[1]);
-         const SA = ArrayOfObjects.getObjWithKeyValuePair(savingsAccArr, 'id', SA_id);
+         const SA = ExpensesClass.helper.savingsTransferType.getSavingsAcc(expense, savingsAccArr);
          const SE_TO_SA_isManualStep = expense.hasDistInstruction === 'true';
          if (SE_TO_SA_isManualStep) {
             const SE_TO_SA_msg = CalculateDist.createMsg({

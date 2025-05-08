@@ -10,6 +10,8 @@ import microservices from '../../../../../../global/firebase/apis/microservices/
 import type { InputArray } from '../../../../../../global/helpers/react/form/FormHelper';
 import FormHelper from '../../../../../../global/helpers/react/form/FormHelper';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
+import type { ISavingsFormInputs } from '../../accounts/savings/class/Class';
+import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 
 export interface IExpenseFormInputs {
    expenseName: string;
@@ -204,6 +206,20 @@ export default class ExpensesClass {
          },
       );
    }
+
+   private static getSavingsAcc(
+      expense: IExpenseFormInputs,
+      savingsAccArr: ISavingsFormInputs[],
+   ): ISavingsFormInputs {
+      const SA_id = Number(expense.expenseType.replace('Savings Transfer:', ''));
+      return ArrayOfObjects.getObjWithKeyValuePair(savingsAccArr, 'id', SA_id);
+   }
+
+   static helper = {
+      savingsTransferType: {
+         getSavingsAcc: ExpensesClass.getSavingsAcc,
+      },
+   };
 
    static form = {
       inputs: ExpensesClass.inputs,

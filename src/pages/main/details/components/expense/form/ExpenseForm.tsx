@@ -11,7 +11,6 @@ import useApiErrorContext from '../../../../../../global/context/widget/apiError
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import MiscHelper from '../../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import useForm from '../../../../../../global/hooks/useForm';
-import type { ISavingsFormInputs } from '../../accounts/savings/class/Class';
 import SavingsClass from '../../accounts/savings/class/Class';
 import type { IExpenseFormInputs } from '../class/ExpensesClass';
 import ExpensesClass from '../class/ExpensesClass';
@@ -42,10 +41,11 @@ export default function ExpenseForm(props: IExpenseForm): JSX.Element {
          return;
       }
       if (!MiscHelper.isNotFalsyOrEmpty(savingsAccData)) return;
-      const savingsAccId: ISavingsFormInputs['id'] = Number(
-         form.expenseType.replace(/^Savings Transfer:\s*/i, ''),
+      const savingsAccArr = ObjectOfObjects.convertToArrayOfObj(savingsAccData);
+      const savingsAcc = ExpensesClass.helper.savingsTransferType.getSavingsAcc(
+         form,
+         savingsAccArr,
       );
-      const savingsAcc = ObjectOfObjects.findObjFromUniqueVal(savingsAccData, savingsAccId);
       if (savingsAcc?.isTracked === 'true') {
          setForm((prevState) => ({ ...prevState, frequency: 'Monthly' }));
          setDisabledFields(['frequency']);
