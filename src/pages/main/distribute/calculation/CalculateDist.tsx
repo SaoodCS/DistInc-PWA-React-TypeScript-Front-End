@@ -175,7 +175,7 @@ export default class CalculateDist {
          'expenseType',
          'Saving',
       );
-      // i.e. expenses that I have to manually transfer from salaryExp account to savings accounts when I distribute my income monthly
+      // i.e. Expenses that I have set to manually transfer from salaryExp to Savings Accounts when I distribute my income.
       const SE_TO_SMAs_expenses = ArrayOfObjects.filterIn(
          SE_TO_SAs_expenses,
          'hasDistInstruction',
@@ -232,8 +232,10 @@ export default class CalculateDist {
       for (let i = 0; i < SE_TO_SAs_expenses.length; i++) {
          const expense = SE_TO_SAs_expenses[i];
          const SA = ExpensesClass.helper.savingsTransferType.getSavingsAcc(expense, savingsAccArr);
-         const SE_TO_SA_isManualStep = expense.hasDistInstruction === 'true';
-         if (SE_TO_SA_isManualStep) {
+         const SE_TO_SA_isManualExp = expense.hasDistInstruction === 'true';
+         const SA_isTracked = SA.isTracked === 'true';
+         const SE_TO_SA_isMonthlyExp = expense.frequency === 'Monthly';
+         if (SE_TO_SA_isManualExp && SE_TO_SA_isMonthlyExp) {
             const SE_TO_SA_msg = CalculateDist.createMsg({
                amount: expense.expenseValue,
                fromAccount: SE.accountName,
@@ -243,8 +245,12 @@ export default class CalculateDist {
             stepsList.push(SE_TO_SA_msg);
             SE_newBalance = SE_newBalance - expense.expenseValue;
          }
-         if (SA.isTracked !== 'true') continue;
-         trackedSavingsAccountTransfers.push({ id: SA.id, amountToTransfer: expense.expenseValue });
+         if (SA_isTracked && SE_TO_SA_isMonthlyExp) {
+            trackedSavingsAccountTransfers.push({
+               id: SA.id,
+               amountToTransfer: expense.expenseValue,
+            });
+         }
       }
 
       SE_TO_SP = SE_hasTransferLeftoversTo ? SE_TO_SP : SE_TO_SP + SE_TO_TL;
@@ -265,7 +271,6 @@ export default class CalculateDist {
          });
          stepsList.push(SE_TO_TL_msg);
          SE_newBalance = SE_newBalance - SE_TO_TL;
-
          if (TL.isTracked === 'true') {
             trackedSavingsAccountTransfers.push({ id: TL.id, amountToTransfer: SE_TO_TL });
          }
