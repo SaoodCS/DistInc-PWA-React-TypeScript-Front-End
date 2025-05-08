@@ -44,6 +44,23 @@ export default class ArrayOfObjects {
       return arr.reduce((acc, curr) => acc + Number(curr[key]), 0);
    }
 
+   static mergeAndSum<T>(arr: T[], mergeKey: keyof T, sumKey: keyof T): T[] {
+      const result: T[] = [];
+      for (let i = 0; i < arr.length; i++) {
+         const current = arr[i];
+         const existing = result.find((item) => item[mergeKey] === current[mergeKey]);
+
+         if (existing) {
+            const currentVal = current[sumKey] as number;
+            const existingVal = existing[sumKey] as number;
+            existing[sumKey] = (existingVal + currentVal) as NonNullable<T>[keyof T];
+         } else {
+            result.push({ ...current });
+         }
+      }
+      return result;
+   }
+
    static deleteDuplicates<T>(arr: T[], key: keyof T): T[] {
       return arr.filter((obj, index, self) => self.findIndex((o) => o[key] === obj[key]) === index);
    }

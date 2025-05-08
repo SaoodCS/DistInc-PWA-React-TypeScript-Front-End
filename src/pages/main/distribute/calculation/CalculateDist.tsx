@@ -309,17 +309,22 @@ export default class CalculateDist {
          SP_newBalance = SP_newBalance - CRA.balance;
       }
 
-      if (!SP.hasTransferLeftoversTo) return { stepsList, trackedSavingsAccountTransfers };
-      const TL = ArrayOfObjects.getObjWithKeyValuePair(savingsAccArr, 'id', SP.transferLeftoversTo);
-      const SP_TO_TL_msg = CalculateDist.createMsg({
-         amount: SP_TO_TL,
-         fromAccount: SP.accountName,
-         transfer: { transferToAccount: TL.accountName, leftover: true },
-      });
-      stepsList.push(SP_TO_TL_msg);
-      SP_newBalance = SP_newBalance - SP_TO_TL;
-      if (TL.isTracked === 'true') {
-         trackedSavingsAccountTransfers.push({ id: TL.id, amountToTransfer: SP_TO_TL });
+      if (SP.hasTransferLeftoversTo) {
+         const TL = ArrayOfObjects.getObjWithKeyValuePair(
+            savingsAccArr,
+            'id',
+            SP.transferLeftoversTo,
+         );
+         const SP_TO_TL_msg = CalculateDist.createMsg({
+            amount: SP_TO_TL,
+            fromAccount: SP.accountName,
+            transfer: { transferToAccount: TL.accountName, leftover: true },
+         });
+         stepsList.push(SP_TO_TL_msg);
+         SP_newBalance = SP_newBalance - SP_TO_TL;
+         if (TL.isTracked === 'true') {
+            trackedSavingsAccountTransfers.push({ id: TL.id, amountToTransfer: SP_TO_TL });
+         }
       }
 
       return { stepsList, trackedSavingsAccountTransfers };
@@ -333,33 +338,26 @@ export default class CalculateDist {
       savingsAccArr: ISavingsFormInputs[],
    ): NDist.ISavingsAccHist[] {
       const savingsAccHistory: NDist.ISavingsAccHist[] = [];
-      // Sum up amounts that have been transferred into same savings account
-      const savingsAccHistoryObjArr = savingsAccountTransfers.reduce(
-         (acc, curr) => {
-            const doesExistInArray = acc.find((item) => item.id === curr.id);
-            if (doesExistInArray) {
-               const index = acc.findIndex((item) => item.id === curr.id);
-               acc[index].amountToTransfer = acc[index].amountToTransfer + curr.amountToTransfer;
-            }
-            if (!doesExistInArray) {
-               acc.push(curr);
-            }
-            return acc;
-         },
-         [] as { id: number; amountToTransfer: number }[],
+      //Sum up amounts that have been transferred into same savings account
+      const totalTransfersPerSavingsAccount = ArrayOfObjects.mergeAndSum(
+         savingsAccountTransfers,
+         'id',
+         'amountToTransfer',
       );
       // Sum the total amount transferred into savings account with it's currentBalance to get it's new balance
-      savingsAccHistoryObjArr.forEach((item) => {
-         const savingsAcc = ArrayOfObjects.getObjWithKeyValuePair(savingsAccArr, 'id', item.id);
-         const newBalance = (savingsAcc.currentBalance || 0) + item.amountToTransfer;
-         const savingsAccHistoryObj = {
-            id: savingsAcc.id,
-            balance: newBalance,
-            timestamp: DateHelper.toDDMMYYYY(distDate), // was new Date()
-         };
-         savingsAccHistory.push(savingsAccHistoryObj);
-      });
-
+      for (let i = 0; i < totalTransfersPerSavingsAccount.length; i++) {
+         const account = totalTransfersPerSavingsAccount[i];
+         const currentBalance = ArrayOfObjects.getObjWithKeyValuePair(
+            savingsAccArr,
+            'id',
+            account.id,
+         ).currentBalance;
+         savingsAccHistory.push({
+            id: account.id,
+            balance: (currentBalance || 0) + account.amountToTransfer,
+            timestamp: DateHelper.toDDMMYYYY(distDate),
+         });
+      }
       return savingsAccHistory;
    }
    //----------------------------------------------------------------------------
