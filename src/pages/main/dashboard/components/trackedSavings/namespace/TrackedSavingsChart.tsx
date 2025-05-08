@@ -6,7 +6,7 @@ export namespace TrackedSavingsChart {
    export const currentlySelectedKey = 'displayedSavingsAcc';
 
    export function getAccounts(savingsAccAsArr: ISavingsFormInputs[]): ISavingsFormInputs[] {
-      const savingsAccWithTrackedTrue = ArrayOfObjects.getObjectsWithKeyValuePair(
+      const savingsAccWithTrackedTrue = ArrayOfObjects.getObjects(
          savingsAccAsArr,
          'isTracked',
          'true',
@@ -18,7 +18,7 @@ export namespace TrackedSavingsChart {
       savingsAccAsArr: ISavingsFormInputs[],
       selectedSavingsAccName: string,
    ): ISavingsFormInputs | undefined {
-      const savingsAccToDisplayObj = ArrayOfObjects.getObjWithKeyValuePair(
+      const savingsAccToDisplayObj = ArrayOfObjects.getObj(
          savingsAccAsArr,
          'accountName',
          selectedSavingsAccName,

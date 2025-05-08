@@ -167,7 +167,7 @@ export default class CurrentClass {
       currentAccArr: ICurrentFormInputs[],
       type: ICurrentFormInputs['accountType'],
    ): ICurrentFormInputs {
-      return ArrayOfObjects.getObjWithKeyValuePair(currentAccArr, 'accountType', type);
+      return ArrayOfObjects.getObj(currentAccArr, 'accountType', type)!;
    }
 
    private static getLeftover(

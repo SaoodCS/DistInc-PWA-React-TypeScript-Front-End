@@ -41,7 +41,7 @@ export default function DistributeContextProvider(props: IDistributeContextProvi
    );
    const [slideName, setSlideName] = useSessionStorage<NDist.Carousel.ISlideNameOptions>(
       NDist.Carousel.key.currentSlideName,
-      ArrayOfObjects.getObjWithKeyValuePair(NDist.Carousel.slides, 'slideNo', 1).name,
+      ArrayOfObjects.getObj(NDist.Carousel.slides, 'slideNo', 1)!.name,
    );
    const [distStepsCompleted, setDistStepsCompleted] = useSessionStorage<number>(
       NDist.Carousel.key.distStepsCompleted,

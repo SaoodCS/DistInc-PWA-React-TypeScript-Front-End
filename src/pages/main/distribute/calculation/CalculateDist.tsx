@@ -159,7 +159,7 @@ export default class CalculateDist {
       const SP = CurrentClass.helper.getAccountType(currentAccArr, 'Spending');
       const SP_leftover = CurrentClass.helper.getLeftover(SP, distForm);
       const SP_hasTransferLeftoversTo = CurrentClass.helper.hasTransferLeftoversTo(SP);
-      const SCA = ArrayOfObjects.getObjWithKeyValuePair(savingsAccArr, 'coversShortfall', 'true');
+      const SCA = ArrayOfObjects.getObj(savingsAccArr, 'coversShortfall', 'true')!;
       const SE_TO_CRAs_accounts = CreditClass.helper.getAccountsWithPayBalanceFromVal(
          creditAccArr,
          currentAccArr,
@@ -257,11 +257,7 @@ export default class CalculateDist {
       SE_newBalance = SE_newBalance - SE_TO_SP;
 
       if (SE_hasTransferLeftoversTo) {
-         const TL = ArrayOfObjects.getObjWithKeyValuePair(
-            savingsAccArr,
-            'id',
-            SE.transferLeftoversTo,
-         );
+         const TL = ArrayOfObjects.getObj(savingsAccArr, 'id', SE.transferLeftoversTo)!;
          const SE_TO_TL_msg = CalculateDist.createMsg({
             amount: SE_TO_TL,
             fromAccount: SE.accountName,
@@ -322,11 +318,7 @@ export default class CalculateDist {
       }
 
       if (SP_hasTransferLeftoversTo) {
-         const TL = ArrayOfObjects.getObjWithKeyValuePair(
-            savingsAccArr,
-            'id',
-            SP.transferLeftoversTo,
-         );
+         const TL = ArrayOfObjects.getObj(savingsAccArr, 'id', SP.transferLeftoversTo)!;
          const SP_TO_TL_msg = CalculateDist.createMsg({
             amount: SP_TO_TL,
             fromAccount: SP.accountName,
@@ -364,11 +356,11 @@ export default class CalculateDist {
       //
       for (let i = 0; i < totalTransfersPerSavingsAccount.length; i++) {
          const account = totalTransfersPerSavingsAccount[i];
-         const currentBalance = ArrayOfObjects.getObjWithKeyValuePair(
+         const currentBalance = ArrayOfObjects.getObj(
             savingsAccArr,
             'id',
             account.id,
-         ).currentBalance;
+         )!.currentBalance;
          savingsAccHistory.push({
             id: account.id,
             balance: (currentBalance || 0) + account.amountToTransfer,

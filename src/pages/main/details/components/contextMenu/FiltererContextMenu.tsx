@@ -17,11 +17,11 @@ interface IFilterer {
 export default function FiltererContextMenu(props: IFilterer): JSX.Element {
    const { currentSlide } = props;
    const { isDarkTheme } = useThemeContext();
-   const filterOptions = ArrayOfObjects.getObjWithKeyValuePair(
+   const filterOptions = ArrayOfObjects.getObj(
       NDetails.slides,
       'slideNo',
       currentSlide,
-   ).sortDataOptions;
+   )!.sortDataOptions;
    const [sortState, setSortState] = useURLState({ key: filterOptions[0].sortUrlKey });
    const [orderState, setOrderState] = useURLState({ key: filterOptions[0].orderUrlKey });
 

@@ -103,11 +103,11 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
       if (showChangeShortfallToDiffAccForm) {
          const { isFormValid } = changeShortfallToDiffAccInitHandleSubmit(e);
          if (!isFormValid) return;
-         const accToCoverShortfall = ArrayOfObjects.getObjWithKeyValuePair(
+         const accToCoverShortfall = ArrayOfObjects.getObj(
             savingsAccArr,
             'id',
             changeShortfallToDiffAccForm.selectedAccName,
-         );
+         )!;
          await Promise.all([
             setSavingAccInFS.mutateAsync({ ...accToCoverShortfall, coversShortfall: 'true' }),
             setSavingAccInFS.mutateAsync(form),
@@ -115,11 +115,11 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
          return;
       }
       if (MiscHelper.isNotFalsyOrEmpty(changeShortfallToThisAccMsg)) {
-         const prevCoveringShortfall = ArrayOfObjects.getObjWithKeyValuePair(
+         const prevCoveringShortfall = ArrayOfObjects.getObj(
             savingsAccArr,
             'coversShortfall',
             'true',
-         );
+         )!;
          await Promise.all([
             setSavingAccInFS.mutateAsync({ ...prevCoveringShortfall, coversShortfall: 'false' }),
             setSavingAccInFS.mutateAsync(form),
@@ -143,11 +143,11 @@ export default function SavingsForm(props: ISavingsFormComponent): JSX.Element {
       );
       if (!isFormValid) return;
       const accToCoverShortfallId = changeShortfallToDiffAccForm.selectedAccName;
-      const accToCoverShortfall = ArrayOfObjects.getObjWithKeyValuePair(
+      const accToCoverShortfall = ArrayOfObjects.getObj(
          savingsAccArr,
          'id',
          accToCoverShortfallId,
-      );
+      )!;
       await Promise.all([
          setSavingAccInFS.mutateAsync({
             ...accToCoverShortfall,

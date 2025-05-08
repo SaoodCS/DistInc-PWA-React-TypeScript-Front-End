@@ -22,7 +22,7 @@ export default function HelpRequirements(): JSX.Element {
          income || {},
          expenses || {},
       );
-      const isValid = ArrayOfObjects.getObjWithKeyValuePair(reqCheck, 'name', requirement).isValid;
+      const isValid = ArrayOfObjects.getObj(reqCheck, 'name', requirement)!.isValid;
       return isValid;
    }
 

@@ -25,12 +25,20 @@ export default class ArrayOfObjects {
       });
    }
 
-   static getObjWithKeyValuePair<T>(arr: T[], key: keyof T, value: T[keyof T]): T {
-      return arr.find((obj) => obj[key] === value) as T;
+   static getObj<T>(arr: T[], key: keyof T, value: T[keyof T]): T | undefined {
+      return arr.find((obj) => obj[key] === value);
    }
 
-   static getObjectsWithKeyValuePair<T>(arr: T[], key: keyof T, value: T[keyof T]): T[] {
-      return arr.filter((obj) => obj[key] === value) as T[];
+   static getObjects<T>(arr: T[], key: keyof T, value: T[keyof T]): T[] {
+      return arr.filter((obj) => obj[key] === value);
+   }
+
+   static getObjsMatchingSome<T>(arr: T[], keyVals: { key: keyof T; value: T[keyof T] }[]): T[] {
+      return arr.filter((obj) => keyVals.some((keyVal) => obj[keyVal.key] === keyVal.value));
+   }
+
+   static getObjectsMatchingAll<T>(arr: T[], keyVals: { key: keyof T; value: T[keyof T] }[]): T[] {
+      return arr.filter((obj) => keyVals.every((keyVal) => obj[keyVal.key] === keyVal.value));
    }
 
    static getObjectsWithKeyWhichIncludesValue<T>(arr: T[], key: keyof T, value: string): T[] {

@@ -38,11 +38,7 @@ export default function AnalyticsDetailsSlide(): JSX.Element {
    }
 
    function analyticsMapArray(): NDist.Carousel.IAnalyticsDetails[] {
-      const analyticsObj = ArrayOfObjects.getObjWithKeyValuePair(
-         NDist.Carousel.slides,
-         'name',
-         'analytics',
-      );
+      const analyticsObj = ArrayOfObjects.getObj(NDist.Carousel.slides, 'name', 'analytics');
       const mapArray = analyticsObj?.mapArr as NDist.Carousel.IMapArrFunc;
       return mapArray(analyticsItem, isDarkTheme);
    }

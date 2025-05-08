@@ -267,8 +267,7 @@ export namespace NDist {
       };
 
       export function getSlideTitle(slideName: ISlide1Name | ISlide2NameOptions): string {
-         return ArrayOfObjects.getObjWithKeyValuePair(NDist.Carousel.slides, 'name', slideName)
-            .title;
+         return ArrayOfObjects.getObj(NDist.Carousel.slides, 'name', slideName)!.title;
       }
    }
 

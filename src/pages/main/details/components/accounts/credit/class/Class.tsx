@@ -127,7 +127,7 @@ export default class CreditClass {
       creditAcc: ICreditFormInputs,
       currentAccArr: ICurrentFormInputs[],
    ): ICurrentFormInputs {
-      return ArrayOfObjects.getObjWithKeyValuePair(currentAccArr, 'id', creditAcc.payBalanceFrom);
+      return ArrayOfObjects.getObj(currentAccArr, 'id', creditAcc.payBalanceFrom)!;
    }
 
    private static getAccountsWithPayBalanceFromVal(
@@ -135,16 +135,8 @@ export default class CreditClass {
       currentAccArr: ICurrentFormInputs[],
       payBalanceFrom: ICurrentFormInputs['accountType'],
    ): ICreditFormInputs[] {
-      const currentAcc = ArrayOfObjects.getObjWithKeyValuePair(
-         currentAccArr,
-         'accountType',
-         payBalanceFrom,
-      );
-      return ArrayOfObjects.getObjectsWithKeyValuePair(
-         creditAccArr,
-         'payBalanceFrom',
-         currentAcc.id,
-      );
+      const currentAcc = ArrayOfObjects.getObj(currentAccArr, 'accountType', payBalanceFrom)!;
+      return ArrayOfObjects.getObjects(creditAccArr, 'payBalanceFrom', currentAcc.id);
    }
 
    private static getBalance(

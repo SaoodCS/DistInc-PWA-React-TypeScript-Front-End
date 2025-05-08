@@ -212,7 +212,7 @@ export default class ExpensesClass {
       savingsAccArr: ISavingsFormInputs[],
    ): ISavingsFormInputs {
       const SA_id = Number(expense.expenseType.replace('Savings Transfer:', ''));
-      return ArrayOfObjects.getObjWithKeyValuePair(savingsAccArr, 'id', SA_id);
+      return ArrayOfObjects.getObj(savingsAccArr, 'id', SA_id)!;
    }
 
    static helper = {
