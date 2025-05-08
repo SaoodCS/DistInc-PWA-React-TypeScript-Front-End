@@ -61,6 +61,12 @@ export default function DistributeForm(): JSX.Element {
          queryClient.invalidateQueries({ queryKey: [microservices.getSavingsAccount.name] });
       },
    });
+   const setSavingAccInFS = SavingsClass.useMutation.setSavingsAccount({
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [microservices.getSavingsAccount.name] });
+         queryClient.invalidateQueries({ queryKey: [microservices.getCalculations.name] });
+      },
+   });
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
@@ -76,6 +82,7 @@ export default function DistributeForm(): JSX.Element {
          form,
       );
       await setCalcDistInFirestore.mutateAsync(newCalculatedDist);
+      // NOTE: the new balance of each savings account after transfer is updated in the back-end microservice, in Data-Microservice/SetCalculations/endpoint/endpoint.ts //
    }
 
    function messageToDisplay(): string {
