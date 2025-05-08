@@ -76,7 +76,7 @@ export default function DistributeForm(): JSX.Element {
          form,
       );
       await setCalcDistInFirestore.mutateAsync(newCalculatedDist);
-      // NOTE: the new balance of each savings account after transfer is updated in the back-end microservice, in Data-Microservice/SetCalculations/endpoint/endpoint.ts //
+      // NOTE: the new balance of each Savings Account after transfer is updated in the back-end microservice, in Data-Microservice/SetCalculations/endpoint/endpoint.ts //
    }
 
    function messageToDisplay(): string {
