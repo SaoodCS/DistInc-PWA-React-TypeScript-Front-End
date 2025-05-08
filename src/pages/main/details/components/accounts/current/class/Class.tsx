@@ -13,11 +13,12 @@ import type {
 } from '../../../../../../../global/helpers/react/form/FormHelper';
 import FormHelper from '../../../../../../../global/helpers/react/form/FormHelper';
 import { useCustomMutation } from '../../../../../../../global/hooks/useCustomMutation';
+import ArrayOfObjects from '../../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 
 export interface ICurrentFormInputs {
    accountName: string;
    minCushion: number;
-   accountType: string;
+   accountType: 'Salary & Expenses' | 'Spending';
    transferLeftoversTo: OptionalNumberInput;
    id: number;
 }
@@ -157,6 +158,30 @@ export default class CurrentClass {
          (item as ICurrentFormInputs).id !== undefined
       );
    }
+
+   private static hasTransferLeftoversTo(currentAccount: ICurrentFormInputs): boolean {
+      return currentAccount.transferLeftoversTo !== '';
+   }
+
+   private static getAccountType(
+      currentAccArr: ICurrentFormInputs[],
+      type: ICurrentFormInputs['accountType'],
+   ): ICurrentFormInputs {
+      return ArrayOfObjects.getObjWithKeyValuePair(currentAccArr, 'accountType', type);
+   }
+
+   private static getLeftover(
+      account: ICurrentFormInputs,
+      distForm: { [x: number]: number },
+   ): number {
+      return distForm[account.id];
+   }
+
+   static helper = {
+      hasTransferLeftoversTo: CurrentClass.hasTransferLeftoversTo,
+      getAccountType: CurrentClass.getAccountType,
+      getLeftover: CurrentClass.getLeftover,
+   };
 
    static form = {
       inputs: CurrentClass.inputs,

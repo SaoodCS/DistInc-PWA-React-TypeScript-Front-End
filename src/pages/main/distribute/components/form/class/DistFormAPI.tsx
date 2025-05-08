@@ -84,20 +84,6 @@ export default class DistFormAndAPI {
       return formValidation;
    }
 
-   get form(): {
-      inputs: InputArray<{ [x: number]: number }>;
-      initialState: { [x: number]: number };
-      initialErrors: Record<number, string>;
-      validate: (formValues: { [x: number]: number }) => Record<number, string>;
-   } {
-      return {
-         inputs: this.inputs(),
-         initialState: this.initialState(),
-         initialErrors: this.initialErrors(),
-         validate: this.validate.bind(this),
-      };
-   }
-
    // -- API QUERIES / MUTATIONS -- //
    private static useCalcDistQuery(
       options: UseQueryOptions<NDist.ISchema> = {},
@@ -144,6 +130,20 @@ export default class DistFormAndAPI {
             ...options,
          },
       );
+   }
+
+   get form(): {
+      inputs: InputArray<{ [x: number]: number }>;
+      initialState: { [x: number]: number };
+      initialErrors: Record<number, string>;
+      validate: (formValues: { [x: number]: number }) => Record<number, string>;
+   } {
+      return {
+         inputs: this.inputs(),
+         initialState: this.initialState(),
+         initialErrors: this.initialErrors(),
+         validate: this.validate.bind(this),
+      };
    }
 
    static useQuery = {

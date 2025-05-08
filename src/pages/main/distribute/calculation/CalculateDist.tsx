@@ -7,10 +7,12 @@ import type {
    ICreditAccountFirebase,
    ICreditFormInputs,
 } from '../../details/components/accounts/credit/class/Class';
+import CreditClass from '../../details/components/accounts/credit/class/Class';
 import type {
    ICurrentAccountFirebase,
    ICurrentFormInputs,
 } from '../../details/components/accounts/current/class/Class';
+import CurrentClass from '../../details/components/accounts/current/class/Class';
 import type {
    ISavingsAccountFirebase,
    ISavingsFormInputs,
@@ -33,12 +35,8 @@ export default class CalculateDist {
       expenses: IExpensesFirebase,
       distForm: { [id: number]: number }, // contains current account leftovers and credit account balances
    ): NDist.ISchema {
-      const currentAcc = CalculateDist.formatCurrentAccounts(currentAccounts, distForm);
-      const creditAccArr = CalculateDist.formatCreditAccounts(
-         creditAccounts,
-         currentAccounts,
-         distForm,
-      );
+      const creditAccArr = ObjectOfObjects.convertToArrayOfObj(creditAccounts);
+      const currentAccArr = ObjectOfObjects.convertToArrayOfObj(currentAccounts);
       const savingsAccArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
       const incomeArr = ObjectOfObjects.convertToArrayOfObj(incomes);
       const expenseArr = ObjectOfObjects.convertToArrayOfObj(expenses);
@@ -54,15 +52,16 @@ export default class CalculateDist {
 
       // Calculate Prev Month Analytics:
       const prevMonth = CalculateDist.calcPrevMonthAnaltics(
-         currentAcc,
+         currentAccArr,
          totalIncome,
          totalActiveExp,
          totalActiveMonthExp,
+         distForm,
       );
 
       // Calculate Current Account Transfers:
       const { stepsList, trackedSavingsAccountTransfers } = CalculateDist.calcTransfers(
-         currentAcc,
+         currentAccArr,
          creditAccArr,
          savingsAccArr,
          activeExpArr,
@@ -70,6 +69,7 @@ export default class CalculateDist {
          totalActiveExp,
          totalActiveMonthExp,
          totalActiveYearlyExp,
+         distForm,
       );
 
       // Create Savings Account History Array:
@@ -86,10 +86,12 @@ export default class CalculateDist {
       };
 
       // Create Analytics Obj:
-      const SalaryExpAmtAtBegOfMonth = totalActiveExp + currentAcc.salaryExp.minCushion;
+      const salaryExpAcc = CurrentClass.helper.getAccountType(currentAccArr, 'Salary & Expenses');
+      const salExpLeftovers = CurrentClass.helper.getLeftover(salaryExpAcc, distForm);
+      const SalaryExpAmtAtBegOfMonth = totalActiveExp + salaryExpAcc.minCushion;
       const analytics = {
          totalIncomes: totalIncome,
-         totalExpenses: SalaryExpAmtAtBegOfMonth - currentAcc.salaryExp.leftover,
+         totalExpenses: SalaryExpAmtAtBegOfMonth - salExpLeftovers,
          prevMonth: prevMonth,
          timestamp: DateHelper.toDDMMYYYY(distDate),
       };
@@ -104,36 +106,40 @@ export default class CalculateDist {
    //----------------------------------------------------------------------------
    // -- CALC PREV MONTH ANALYTICS -- //
    private static calcPrevMonthAnaltics(
-      currentAcc: IFormattedCurrentAcc,
+      currentAccArr: ICurrentFormInputs[],
       totalIncome: number,
       totalExpenses: number,
       totalMonthlyExpenses: number,
+      distForm: { [id: number]: number },
    ): NDist.ISchema['analytics'][0]['prevMonth'] {
-      const initialSalaryExpBalancePrevMonth = totalExpenses + currentAcc.salaryExp.minCushion; // Note: this is actually from this month rather than prev month, because I haven't implemented storing the data: total expenses from prev month and minCushion from prev month
-      const salaryExpLeftoverNow = currentAcc.salaryExp.leftover;
-      const spendingsLeftoverNow = currentAcc.spendings.leftover;
-      const totalExpensesSpending = initialSalaryExpBalancePrevMonth - salaryExpLeftoverNow;
-      const initialSpendingsAccBalancePrevMonth = totalIncome - totalMonthlyExpenses; // Note: this is actually from this month rather than prev month, because I haven't implemented storing the data: total Income from prev month and total monthly expenses from prev month
-      const totalDisposableSpending = initialSpendingsAccBalancePrevMonth - spendingsLeftoverNow;
+      const SE = CurrentClass.helper.getAccountType(currentAccArr, 'Salary & Expenses');
+      const SP = CurrentClass.helper.getAccountType(currentAccArr, 'Spending');
+      const SE_initialBal_prevMonth = totalExpenses + SE.minCushion; // Note: this is actually from this month rather than prev month, because I haven't implemented storing the data: total expenses from prev month and minCushion from prev month
+      const SE_leftover = CurrentClass.helper.getLeftover(SE, distForm);
+      const SP_leftover = CurrentClass.helper.getLeftover(SP, distForm);
+      const totalExpensesSpending = SE_initialBal_prevMonth - SE_leftover;
+      const SP_initialBal_prevMonth = totalIncome - totalMonthlyExpenses; // Note: this is actually from this month rather than prev month, because I haven't implemented storing the data: total Income from prev month and total monthly expenses from prev month
+      const totalDisposableSpending = SP_initialBal_prevMonth - SP_leftover;
       const totalSpendings = totalDisposableSpending + totalExpensesSpending;
       return {
          totalSpendings,
          totalDisposableSpending,
-         totalSavings: currentAcc.spendings.leftover,
+         totalSavings: SP_leftover,
       };
    }
    //----------------------------------------------------------------------------
    //----------------------------------------------------------------------------
    // -- CALC TRANSFERS FUNC: CURRENTACC TRANSFERS -- //
    private static calcTransfers(
-      currentAcc: IFormattedCurrentAcc,
-      creditAccArr: IFormattedCreditAcc[],
+      currentAccArr: ICurrentFormInputs[],
+      creditAccArr: ICreditFormInputs[],
       savingsAccArr: ISavingsFormInputs[],
       activeExpensesArr: IExpenseFormInputs[],
       totalIncome: number,
       totalExpense: number,
       totalMonthlyExpenses: number,
       totalYearlyExpenses: number,
+      distForm: { [id: number]: number },
    ): { stepsList: string[]; trackedSavingsAccountTransfers: ISavingsAccountTransfers } {
       // ORDER OF MSGS: (Mx = multiple times)
       // 1x:   SCA (shortfall coverer savings account) --> SE (salary & expenses account)  [if the SE starting balance doesn't cover all outgoings, this makes up for it]
@@ -147,18 +153,22 @@ export default class CalculateDist {
       // 1x:   SP (spendings account) --> TL ('transfer leftovers to' account related to sp acc)
 
       // Gathering Data
-      const SE = currentAcc.salaryExp;
-      const SP = currentAcc.spendings;
+      const SE = CurrentClass.helper.getAccountType(currentAccArr, 'Salary & Expenses');
+      const SE_leftover = CurrentClass.helper.getLeftover(SE, distForm);
+      const SE_hasTransferLeftoversTo = CurrentClass.helper.hasTransferLeftoversTo(SE);
+      const SP = CurrentClass.helper.getAccountType(currentAccArr, 'Spending');
+      const SP_leftover = CurrentClass.helper.getLeftover(SP, distForm);
+      const SP_hasTransferLeftoversTo = CurrentClass.helper.hasTransferLeftoversTo(SP);
       const SCA = ArrayOfObjects.getObjWithKeyValuePair(savingsAccArr, 'coversShortfall', 'true');
-      const SE_TO_CRAs_accounts = ArrayOfObjects.filterIn(
+      const SE_TO_CRAs_accounts = CreditClass.helper.getAccountsWithPayBalanceFromVal(
          creditAccArr,
-         'payBalanceFromAccName',
-         'Salary And Expenses',
+         currentAccArr,
+         'Salary & Expenses',
       );
-      const SP_TO_CRAs_accounts = ArrayOfObjects.filterIn(
+      const SP_TO_CRAs_accounts = CreditClass.helper.getAccountsWithPayBalanceFromVal(
          creditAccArr,
-         'payBalanceFromAccName',
-         'Spendings',
+         currentAccArr,
+         'Spending',
       );
       const SE_TO_SAs_expenses = ArrayOfObjects.getObjectsWithKeyWhichIncludesValue(
          activeExpensesArr,
@@ -180,9 +190,9 @@ export default class CalculateDist {
       //
       // -- S A L A R Y  &  E X P E N S E S  C U R R E N T  A C C O U N T  T R A N S F E R S -- //
       //
-      const SE_startingBalance = totalIncome + SE.leftover;
+      const SE_startingBalance = totalIncome + SE_leftover;
       const SE_requiredBalance = totalExpense + SE.minCushion;
-      const SE_TO_CRAs_total = ArrayOfObjects.sumKeyValues(SE_TO_CRAs_accounts, 'balance');
+      const SE_TO_CRAs_total = CreditClass.helper.sumBalances(SE_TO_CRAs_accounts, distForm);
       const SE_TO_SMAs_total = ArrayOfObjects.sumKeyValues(SE_TO_SMAs_expenses, 'expenseValue');
 
       //
@@ -209,13 +219,14 @@ export default class CalculateDist {
       //
       for (let i = 0; i < SE_TO_CRAs_accounts.length; i++) {
          const CRA = SE_TO_CRAs_accounts[i];
+         const CRA_balance = CreditClass.helper.getBalance(CRA, distForm);
          const SE_TO_CRA_msg = CalculateDist.createMsg({
-            amount: CRA.balance,
+            amount: CRA_balance,
             fromAccount: SE.accountName,
             transfer: { transferToAccount: CRA.accountName },
          });
          stepsList.push(SE_TO_CRA_msg);
-         SE_newBalance = SE_newBalance - CRA.balance;
+         SE_newBalance = SE_newBalance - CRA_balance;
       }
 
       for (let i = 0; i < SE_TO_SAs_expenses.length; i++) {
@@ -236,7 +247,7 @@ export default class CalculateDist {
          trackedSavingsAccountTransfers.push({ id: SA.id, amountToTransfer: expense.expenseValue });
       }
 
-      SE_TO_SP = SE.hasTransferLeftoversTo ? SE_TO_SP : SE_TO_SP + SE_TO_TL;
+      SE_TO_SP = SE_hasTransferLeftoversTo ? SE_TO_SP : SE_TO_SP + SE_TO_TL;
       const SE_TO_SP_msg = CalculateDist.createMsg({
          amount: SE_TO_SP,
          fromAccount: SE.accountName,
@@ -245,7 +256,7 @@ export default class CalculateDist {
       stepsList.push(SE_TO_SP_msg);
       SE_newBalance = SE_newBalance - SE_TO_SP;
 
-      if (SE.hasTransferLeftoversTo) {
+      if (SE_hasTransferLeftoversTo) {
          const TL = ArrayOfObjects.getObjWithKeyValuePair(
             savingsAccArr,
             'id',
@@ -274,9 +285,9 @@ export default class CalculateDist {
       //
       // -- S P E N D I N G S  A C C O U N T  T R A N S F E R S -- //
       //
-      const SP_startingBalance = SP.leftover;
+      const SP_startingBalance = SP_leftover;
       const SP_requiredBalance = SP.minCushion;
-      const SP_TO_CRAs_total = ArrayOfObjects.sumKeyValues(SP_TO_CRAs_accounts, 'balance');
+      const SP_TO_CRAs_total = CreditClass.helper.sumBalances(SP_TO_CRAs_accounts, distForm);
 
       //
       // Calculation Prep Steps:
@@ -300,16 +311,17 @@ export default class CalculateDist {
       //
       for (let i = 0; i < SP_TO_CRAs_accounts.length; i++) {
          const CRA = SP_TO_CRAs_accounts[i];
+         const CRA_balance = CreditClass.helper.getBalance(CRA, distForm);
          const SP_TO_CRA_msg = CalculateDist.createMsg({
-            amount: CRA.balance,
+            amount: CRA_balance,
             fromAccount: SP.accountName,
             transfer: { transferToAccount: CRA.accountName },
          });
          stepsList.push(SP_TO_CRA_msg);
-         SP_newBalance = SP_newBalance - CRA.balance;
+         SP_newBalance = SP_newBalance - CRA_balance;
       }
 
-      if (SP.hasTransferLeftoversTo) {
+      if (SP_hasTransferLeftoversTo) {
          const TL = ArrayOfObjects.getObjWithKeyValuePair(
             savingsAccArr,
             'id',
@@ -375,64 +387,6 @@ export default class CalculateDist {
    //----------------------------------------------------------------------------
    //----------------------------------------------------------------------------
    //----------------------------------------------------------------------------
-   // -- FORMAT CURRENT ACCOUNTS -- //
-   private static formatCurrentAccounts(
-      currentAccounts: ICurrentAccountFirebase,
-      distForm: { [id: number]: number },
-   ): IFormattedCurrentAcc {
-      const currentAccArr = ObjectOfObjects.convertToArrayOfObj(currentAccounts);
-      const currentAccWithLeftovers = currentAccArr.map((acc) => {
-         const leftover = distForm[acc.id];
-         const hasTransferLeftoversTo = acc.transferLeftoversTo !== '';
-         return {
-            ...acc,
-            leftover,
-            hasTransferLeftoversTo,
-         };
-      });
-      const salaryExp: ICurrentFormInputs & {
-         leftover: number;
-         hasTransferLeftoversTo: boolean;
-      } = ArrayOfObjects.getObjWithKeyValuePair(
-         currentAccWithLeftovers,
-         'accountType',
-         'Salary & Expenses',
-      );
-      const spendings: ICurrentFormInputs & {
-         leftover: number;
-         hasTransferLeftoversTo: boolean;
-      } = ArrayOfObjects.getObjWithKeyValuePair(currentAccWithLeftovers, 'accountType', 'Spending');
-
-      const currentAcc = {
-         salaryExp: salaryExp,
-         spendings,
-      };
-      return currentAcc;
-   }
-
-   // -- FORMAT CREDIT ACCOUNTS -- //
-   private static formatCreditAccounts(
-      creditAccounts: ICreditAccountFirebase,
-      currentAccounts: ICurrentAccountFirebase,
-      distForm: { [id: number]: number },
-   ): IFormattedCreditAcc[] {
-      const creditAccArr = ObjectOfObjects.convertToArrayOfObj(creditAccounts);
-      return creditAccArr.map((acc) => {
-         const currentAccArr = ObjectOfObjects.convertToArrayOfObj(currentAccounts);
-         const currentAccToPayBalanceFrom = ArrayOfObjects.getObjWithKeyValuePair(
-            currentAccArr,
-            'id',
-            acc.payBalanceFrom,
-         );
-         const balance = distForm[acc.id];
-         return {
-            ...acc,
-            balance,
-            payBalanceFromAccName: currentAccToPayBalanceFrom.accountName,
-         };
-      });
-   }
-
    // -- CREATE MSGS -- //
    static createMsg(details: ICreateMsgs): string {
       const { amount, fromAccount, transfer, expenseName } = details;
@@ -458,18 +412,6 @@ interface ICreateMsgs {
    };
    expenseName?: string;
 }
-
-interface IFormattedCurrentAcc {
-   [key: string]: ICurrentFormInputs & {
-      leftover: number;
-      hasTransferLeftoversTo: boolean;
-   };
-}
-
-type IFormattedCreditAcc = ICreditFormInputs & {
-   balance: number;
-   payBalanceFromAccName: string;
-};
 
 type ISavingsAccountTransfers = {
    id: number;

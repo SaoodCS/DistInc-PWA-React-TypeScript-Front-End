@@ -13,6 +13,8 @@ import type {
 } from '../../../../../../../global/helpers/react/form/FormHelper';
 import FormHelper from '../../../../../../../global/helpers/react/form/FormHelper';
 import { useCustomMutation } from '../../../../../../../global/hooks/useCustomMutation';
+import type { ICurrentFormInputs } from '../../current/class/Class';
+import ArrayOfObjects from '../../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 
 export interface ICreditFormInputs {
    accountName: string;
@@ -120,6 +122,56 @@ export default class CreditClass {
          (item as ICreditFormInputs).id !== undefined
       );
    }
+
+   private static getPayBalanceFromAcc(
+      creditAcc: ICreditFormInputs,
+      currentAccArr: ICurrentFormInputs[],
+   ): ICurrentFormInputs {
+      return ArrayOfObjects.getObjWithKeyValuePair(currentAccArr, 'id', creditAcc.payBalanceFrom);
+   }
+
+   private static getAccountsWithPayBalanceFromVal(
+      creditAccArr: ICreditFormInputs[],
+      currentAccArr: ICurrentFormInputs[],
+      payBalanceFrom: ICurrentFormInputs['accountType'],
+   ): ICreditFormInputs[] {
+      const currentAcc = ArrayOfObjects.getObjWithKeyValuePair(
+         currentAccArr,
+         'accountType',
+         payBalanceFrom,
+      );
+      return ArrayOfObjects.getObjectsWithKeyValuePair(
+         creditAccArr,
+         'payBalanceFrom',
+         currentAcc.id,
+      );
+   }
+
+   private static getBalance(
+      account: ICreditFormInputs,
+      distForm: { [x: number]: number },
+   ): number {
+      return distForm[account.id];
+   }
+
+   private static sumBalances(
+      accountsArr: ICreditFormInputs[],
+      distForm: { [x: number]: number },
+   ): number {
+      let total: number = 0;
+      for (let i = 0; i < accountsArr.length; i++) {
+         const account = accountsArr[i];
+         total = total + distForm[account.id];
+      }
+      return total;
+   }
+
+   static helper = {
+      getPayBalanceFromAcc: CreditClass.getPayBalanceFromAcc,
+      getAccountsWithPayBalanceFromVal: CreditClass.getAccountsWithPayBalanceFromVal,
+      sumBalances: CreditClass.sumBalances,
+      getBalance: CreditClass.getBalance,
+   };
 
    static form = {
       inputs: CreditClass.inputs,
