@@ -337,14 +337,19 @@ export default class CalculateDist {
       savingsAccountTransfers: ISavingsAccountTransfers,
       savingsAccArr: ISavingsFormInputs[],
    ): NDist.ISavingsAccHist[] {
+      //
       const savingsAccHistory: NDist.ISavingsAccHist[] = [];
-      //Sum up amounts that have been transferred into same savings account
+      //
+      // Sum up amounts that have been transferred into same savings account
+      //
       const totalTransfersPerSavingsAccount = ArrayOfObjects.mergeAndSum(
          savingsAccountTransfers,
          'id',
          'amountToTransfer',
       );
+      //
       // Sum the total amount transferred into savings account with it's currentBalance to get it's new balance
+      //
       for (let i = 0; i < totalTransfersPerSavingsAccount.length; i++) {
          const account = totalTransfersPerSavingsAccount[i];
          const currentBalance = ArrayOfObjects.getObjWithKeyValuePair(
