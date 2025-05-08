@@ -39,16 +39,16 @@ export default class CalculateDist {
       const currentAccArr = ObjectOfObjects.convertToArrayOfObj(currentAccounts);
       const savingsAccArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
       const incomeArr = ObjectOfObjects.convertToArrayOfObj(incomes);
-      const expenseArr = ObjectOfObjects.convertToArrayOfObj(expenses);
-      const monthlyExpenseArr = ArrayOfObjects.filterOut(expenseArr, 'frequency', 'Yearly');
-      const yearlyExpenseArr = ArrayOfObjects.filterOut(expenseArr, 'frequency', 'Monthly');
-      const activeExpArr = ArrayOfObjects.filterOut(expenseArr, 'paused', 'true');
-      const activeMonthlyExpArr = ArrayOfObjects.filterOut(monthlyExpenseArr, 'paused', 'true');
-      const activeYearlyExpArr = ArrayOfObjects.filterOut(yearlyExpenseArr, 'paused', 'true');
       const totalMonthlyIncome = ArrayOfObjects.sumKeyValues(incomeArr, 'incomeValue');
+      const expenseArr = ObjectOfObjects.convertToArrayOfObj(expenses);
+      const activeExpArr = ArrayOfObjects.filterOut(expenseArr, 'paused', 'true');
       const totalActiveExp = ArrayOfObjects.sumKeyValues(activeExpArr, 'expenseValue');
-      const totalActiveMonthExp = ArrayOfObjects.sumKeyValues(activeMonthlyExpArr, 'expenseValue');
+      const yearlyExpenseArr = ArrayOfObjects.filterOut(expenseArr, 'frequency', 'Monthly');
+      const activeYearlyExpArr = ArrayOfObjects.filterOut(yearlyExpenseArr, 'paused', 'true');
       const totalActiveYearlyExp = ArrayOfObjects.sumKeyValues(activeYearlyExpArr, 'expenseValue');
+      const monthlyExpenseArr = ArrayOfObjects.filterOut(expenseArr, 'frequency', 'Yearly');
+      const activeMonthlyExpArr = ArrayOfObjects.filterOut(monthlyExpenseArr, 'paused', 'true');
+      const totalActiveMonthExp = ArrayOfObjects.sumKeyValues(activeMonthlyExpArr, 'expenseValue');
 
       // Calculate Prev Month Analytics:
       const prevMonth = CalculateDist.calcPrevMonthAnaltics(
