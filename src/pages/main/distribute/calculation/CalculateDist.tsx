@@ -175,7 +175,7 @@ export default class CalculateDist {
          'expenseType',
          'Saving',
       );
-      // i.e. expenses that I have to manually transfer from salaryExp account to savings accounts
+      // i.e. expenses that I have to manually transfer from salaryExp account to savings accounts when I distribute my income monthly
       const SE_TO_SMAs_expenses = ArrayOfObjects.filterIn(
          SE_TO_SAs_expenses,
          'hasDistInstruction',
