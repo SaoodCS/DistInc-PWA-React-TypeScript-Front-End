@@ -98,10 +98,14 @@ export default function ExpenseSlide(): JSX.Element {
       return Color.setRgbOpacity(mapper[tag], 0.4);
    }
 
-   function expenseTypeLabel(expenseType: string): string {
-      if (!expenseType.includes('Savings')) return expenseType;
-      const id = expenseType.split(':')[1];
-      const savingsAccount = savingsAccounts?.[id];
+   function expenseTypeLabel(expense: IExpenseFormInputs): string {
+      if (!ExpensesClass.helper.isType(expense, 'Savings Transfer')) return expense.expenseType;
+      if (!MiscHelper.isNotFalsyOrEmpty(savingsAccounts)) return expense.expenseType;
+      const savingsAccountsArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
+      const savingsAccount = ExpensesClass.helper.savingsTransferType.getSavingsAcc(
+         expense,
+         savingsAccountsArr,
+      );
       return `Transfer: ${savingsAccount?.accountName}` || 'Savings Transfer';
    }
 
@@ -167,7 +171,7 @@ export default function ExpenseSlide(): JSX.Element {
                               Amount: {NumberHelper.asCurrencyStr(item.expenseValue)}
                            </Tag>
                         </ConditionalRender>
-                        <Tag bgColor={tagColor('type')}>{expenseTypeLabel(item.expenseType)}</Tag>
+                        <Tag bgColor={tagColor('type')}>{expenseTypeLabel(item)}</Tag>
                         <Tag bgColor={tagColor('frequency')}>{item.frequency}</Tag>
                         <ConditionalRender
                            condition={BoolHelper.strToBool(item.hasDistInstruction)}

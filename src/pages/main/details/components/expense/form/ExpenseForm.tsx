@@ -34,7 +34,7 @@ export default function ExpenseForm(props: IExpenseForm): JSX.Element {
 
    useEffect(() => {
       if (!MiscHelper.isNotFalsyOrEmpty(form?.expenseType)) return;
-      const isSavingsTransferExpense = form.expenseType.includes('Savings');
+      const isSavingsTransferExpense = ExpensesClass.helper.isType(form, 'Savings Transfer');
       if (!isSavingsTransferExpense) {
          setForm((prevState) => ({ ...prevState, hasDistInstruction: 'false' }));
          setDisabledFields(['hasDistInstruction']);

@@ -2,6 +2,7 @@
 import Color from '../../../../../../global/css/colors';
 import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import type { IExpenseFormInputs } from '../../../../details/components/expense/class/ExpensesClass';
+import ExpensesClass from '../../../../details/components/expense/class/ExpensesClass';
 
 export namespace ExpenseChart {
    export namespace Selector {
@@ -13,7 +14,7 @@ export namespace ExpenseChart {
       function getTypesAndSumValues(expenses: IExpenseFormInputs[]): IGetLabelsAndValues {
          const expenseMap: Record<string, number> = {};
          expenses.forEach((expense) => {
-            const type = expense.expenseType.includes('Savings Transfer')
+            const type = ExpensesClass.helper.isType(expense, 'Savings Transfer')
                ? 'Savings Transfer'
                : expense.expenseType;
             expenseMap[type] = (expenseMap[type] || 0) + expense.expenseValue;

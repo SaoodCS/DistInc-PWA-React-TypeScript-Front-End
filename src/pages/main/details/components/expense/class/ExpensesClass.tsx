@@ -16,7 +16,7 @@ import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfOb
 export interface IExpenseFormInputs {
    expenseName: string;
    expenseValue: number;
-   expenseType: string;
+   expenseType: 'Subscription' | 'Household' | `Savings Transfer:${string}`;
    paymentMethod: 'Direct Debit' | 'CPA' | 'Cash' | '';
    paused: 'true' | 'false';
    hasDistInstruction: 'true' | 'false';
@@ -215,7 +215,16 @@ export default class ExpensesClass {
       return ArrayOfObjects.getObj(savingsAccArr, 'id', SA_id)!;
    }
 
+   private static isType(
+      expense: IExpenseFormInputs,
+      type: IExpenseFormInputs['expenseType'] | 'Savings Transfer',
+   ): boolean {
+      return expense.expenseType.includes(type);
+   }
+
+   // original: helper.savingsTransferType.getSavingsAcc
    static helper = {
+      isType: ExpensesClass.isType,
       savingsTransferType: {
          getSavingsAcc: ExpensesClass.getSavingsAcc,
       },
