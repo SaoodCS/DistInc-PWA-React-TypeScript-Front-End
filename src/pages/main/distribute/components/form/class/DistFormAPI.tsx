@@ -13,31 +13,39 @@ import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutat
 import type { ICurrentFormInputs } from '../../../../details/components/accounts/current/class/Class';
 import type NDist from '../../../namespace/NDist';
 import type { ICreditFormInputs } from '../../../../details/components/accounts/credit/class/Class';
+import type { IIncomeFormInputs } from '../../../../details/components/Income/class/Class';
 
 export default class DistFormAndAPI {
    // -- FORM -- //
-   constructor(currentAccounts: ICurrentFormInputs[], creditAccounts: ICreditFormInputs[]) {
+   constructor(
+      currentAccounts: ICurrentFormInputs[],
+      creditAccounts: ICreditFormInputs[],
+      incomes: IIncomeFormInputs[],
+   ) {
       this.currentAccounts = currentAccounts;
       this.creditAccounts = creditAccounts;
+      this.incomes = incomes;
    }
 
    private currentAccounts: ICurrentFormInputs[];
    private creditAccounts: ICreditFormInputs[];
+   private incomes: IIncomeFormInputs[];
 
    private inputs(): InputArray<{ [x: number]: number }> {
       const mappedCurrentAccounts = this.currentAccounts.map((currentAccount) => {
          const isSalaryAndExpenses = currentAccount.accountType === 'Salary & Expenses';
-         const defaultPlaceholder = `${currentAccount.accountName} Leftover`;
-         const salaryExpPlaceholder = `${defaultPlaceholder} (Before Monthly Wage)`;
+         const defaultPlaceholder = `${currentAccount.accountName} Balance`;
+         const spendingsPlaceholder = `${defaultPlaceholder} (Set to 0 if partner already transferred from this account to savings this month)`;
+         const salaryExpPlaceholder = `${defaultPlaceholder} (Just before first expense of new month)`;
          return {
             name: currentAccount.id,
             id: `leftovers-${currentAccount.accountName}`,
-            placeholder: isSalaryAndExpenses ? salaryExpPlaceholder : defaultPlaceholder,
+            placeholder: isSalaryAndExpenses ? salaryExpPlaceholder : spendingsPlaceholder,
             type: 'number',
             isRequired: true,
             validator: (value: number): string | true => {
-               if (typeof value !== 'number') return 'Leftover amount is required';
-               if (value < 0) return 'Leftover amount cannot be negative';
+               if (typeof value !== 'number') return 'Balance is required';
+               if (value < 0) return 'Balance cannot be negative';
                return true;
             },
          };
@@ -56,7 +64,21 @@ export default class DistFormAndAPI {
             },
          };
       });
-      return [...mappedCurrentAccounts, ...mappedCreditAccounts];
+      const mappedIncomes = this.incomes.map((income) => {
+         return {
+            name: income.id,
+            id: `value-${income.incomeName}`,
+            placeholder: `${income.incomeName} Income This Month (Just before first expense of last month to just before first expense of new month)`,
+            type: 'number',
+            isRequired: true,
+            validator: (value: number): string | true => {
+               if (typeof value !== 'number') return 'Income value is required';
+               if (value < 0) return 'Income value cannot be negative';
+               return true;
+            },
+         };
+      });
+      return [...mappedCurrentAccounts, ...mappedCreditAccounts, ...mappedIncomes];
    }
 
    private initialState(): { [x: number]: number } {

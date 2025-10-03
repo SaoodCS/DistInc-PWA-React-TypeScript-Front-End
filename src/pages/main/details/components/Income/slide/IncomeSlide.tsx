@@ -132,17 +132,9 @@ export default function IncomeSlide(): JSX.Element {
                         <ItemTitleWrapper>
                            <ItemTitle>{item.incomeName}</ItemTitle>
                         </ItemTitleWrapper>
-                        <ConditionalRender condition={isPortableDevice}>
-                           <ItemValue>{NumberHelper.asCurrencyStr(item.incomeValue)}</ItemValue>
-                        </ConditionalRender>
                      </FirstRowWrapper>
                      <SecondRowTagsWrapper>
                         <Tag bgColor={tagColor('income')}>Income</Tag>
-                        <ConditionalRender condition={!isPortableDevice}>
-                           <Tag bgColor={tagColor('amount')}>
-                              Amount: {NumberHelper.asCurrencyStr(item.incomeValue)}
-                           </Tag>
-                        </ConditionalRender>
                      </SecondRowTagsWrapper>
                   </FlatListItem>
                ))}

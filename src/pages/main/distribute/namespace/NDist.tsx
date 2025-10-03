@@ -32,6 +32,10 @@ export namespace NDist {
 
    export interface IAnalytics {
       totalIncomes: number;
+      incomeEarnings: {
+         name: string;
+         earned: number;
+      }[];
       totalExpenses: number;
       prevMonth: {
          totalSpendings: number;
@@ -71,26 +75,11 @@ export namespace NDist {
          const expensesExists = MiscHelper.isNotFalsyOrEmpty(expenses);
          const savingsExists = MiscHelper.isNotFalsyOrEmpty(savingsAccounts);
          return [
-            {
-               name: 'salaryExp',
-               isValid: salaryExp ? true : false,
-            },
-            {
-               name: 'spending',
-               isValid: spendings ? true : false,
-            },
-            {
-               name: 'savings',
-               isValid: savingsExists,
-            },
-            {
-               name: 'income',
-               isValid: incomeExists,
-            },
-            {
-               name: 'expense',
-               isValid: expensesExists,
-            },
+            { name: 'salaryExp', isValid: salaryExp ? true : false },
+            { name: 'spending', isValid: spendings ? true : false },
+            { name: 'savings', isValid: savingsExists },
+            { name: 'income', isValid: incomeExists },
+            { name: 'expense', isValid: expensesExists },
          ];
       }
 

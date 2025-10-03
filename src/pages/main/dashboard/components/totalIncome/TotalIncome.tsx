@@ -9,24 +9,21 @@ import { FlexColumnWrapper } from '../../../../../global/components/lib/position
 import ConditionalRender from '../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../global/context/theme/hooks/useThemeContext';
 import Color from '../../../../../global/css/colors';
-import ArrayOfObjects from '../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import NumberHelper from '../../../../../global/helpers/dataTypes/number/NumberHelper';
-import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
-import IncomeClass from '../../../details/components/Income/class/Class';
+import NDist from '../../../distribute/namespace/NDist';
 
 export default function TotalIncome(): JSX.Element {
    const { isDarkTheme, isPortableDevice } = useThemeContext();
-   const { data: incomeData, isLoading, isPaused, error } = IncomeClass.useQuery.getIncomes();
+   const { data: calcDistData, isLoading, isPaused, error } = NDist.API.useQuery.getCalcDist();
    const [totalIncome, setTotalIncome] = useState<number>(0);
 
    useEffect(() => {
-      if (MiscHelper.isNotFalsyOrEmpty(incomeData)) {
-         const incomeDataAsArr = ObjectOfObjects.convertToArrayOfObj(incomeData);
-         const total = ArrayOfObjects.calcSumOfKeyValue(incomeDataAsArr, 'incomeValue');
-         setTotalIncome(total);
+      const analytics = calcDistData?.analytics;
+      if (MiscHelper.isNotFalsyOrEmpty(analytics)) {
+         setTotalIncome(analytics[0].totalIncomes);
       }
-   }, [incomeData]);
+   }, [calcDistData]);
 
    if (isLoading && !isPaused && isPortableDevice) {
       return <CardLoadingPlaceholder isDarkTheme={isDarkTheme} />;
@@ -38,7 +35,7 @@ export default function TotalIncome(): JSX.Element {
          </FlexCenterer>
       );
    }
-   if (error || !incomeData) {
+   if (error || !calcDistData) {
       return (
          <FlexCenterer height="90%" width="100%">
             <FetchError iconHeightEm={2} />

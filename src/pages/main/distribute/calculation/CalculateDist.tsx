@@ -3,6 +3,7 @@ import DateHelper from '../../../../global/helpers/dataTypes/date/DateHelper';
 import NumberHelper from '../../../../global/helpers/dataTypes/number/NumberHelper';
 import ObjectOfObjects from '../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import type { IIncomeFirebase } from '../../details/components/Income/class/Class';
+import IncomeClass from '../../details/components/Income/class/Class';
 import type {
    ICreditAccountFirebase,
    ICreditFormInputs,
@@ -33,13 +34,17 @@ export default class CalculateDist {
       creditAccounts: ICreditAccountFirebase,
       incomes: IIncomeFirebase,
       expenses: IExpensesFirebase,
-      distForm: { [id: number]: number }, // contains current account leftovers and credit account balances
+      distForm: { [id: number]: number }, // contains current account leftovers and credit account balances and income earnt this month from different sources
    ): NDist.ISchema {
       const creditAccArr = ObjectOfObjects.convertToArrayOfObj(creditAccounts);
       const currentAccArr = ObjectOfObjects.convertToArrayOfObj(currentAccounts);
       const savingsAccArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
       const incomeArr = ObjectOfObjects.convertToArrayOfObj(incomes);
-      const totalMonthlyIncome = ArrayOfObjects.sumKeyValues(incomeArr, 'incomeValue');
+      const totalMonthlyIncome = IncomeClass.helper.sumIncomes(incomeArr, distForm);
+      const incomeNameAndEarned = incomeArr.map((income) => ({
+         name: income.incomeName,
+         earned: distForm[income.id],
+      }));
       const expenseArr = ObjectOfObjects.convertToArrayOfObj(expenses);
       const activeExpArr = ArrayOfObjects.filterOut(expenseArr, 'paused', 'true');
       const totalActiveExp = ArrayOfObjects.sumKeyValues(activeExpArr, 'expenseValue');
@@ -91,6 +96,7 @@ export default class CalculateDist {
       const SalaryExpAmtAtBegOfMonth = totalActiveExp + salaryExpAcc.minCushion;
       const analytics = {
          totalIncomes: totalMonthlyIncome,
+         incomeEarnings: incomeNameAndEarned,
          totalExpenses: SalaryExpAmtAtBegOfMonth - salExpLeftovers,
          prevMonth: prevMonth,
          timestamp: DateHelper.toDDMMYYYY(distDate),

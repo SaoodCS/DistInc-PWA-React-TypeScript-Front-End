@@ -13,7 +13,6 @@ import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutat
 
 export interface IIncomeFormInputs {
    incomeName: string;
-   incomeValue: number;
    id: number;
 }
 
@@ -35,17 +34,6 @@ export default class IncomeClass {
             if (value.length > 30) return 'Income name must be less than 30 characters long';
             if (!/^[a-zA-Z0-9 ()]+$/.test(value))
                return 'Income name must only contain letters, numbers, spaces and parentheses';
-            return true;
-         },
-      },
-      {
-         name: 'incomeValue',
-         id: 'income-value',
-         placeholder: 'Income Value',
-         type: 'number',
-         isRequired: true,
-         validator: (value: number): string | true => {
-            if (typeof value !== 'number') return 'Income value must be a number';
             return true;
          },
       },
@@ -104,6 +92,22 @@ export default class IncomeClass {
          },
       );
    }
+
+   private static sumIncomes(
+      incomesArr: IIncomeFormInputs[],
+      distForm: { [x: number]: number },
+   ): number {
+      let total: number = 0;
+      for (let i = 0; i < incomesArr.length; i++) {
+         const income = incomesArr[i];
+         total = total + distForm[income.id];
+      }
+      return total;
+   }
+
+   static helper = {
+      sumIncomes: IncomeClass.sumIncomes,
+   };
 
    static form = {
       inputs: IncomeClass.inputs,

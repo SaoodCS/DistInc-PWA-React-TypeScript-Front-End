@@ -38,7 +38,8 @@ export default function DistributeForm(): JSX.Element {
       currentAccounts ? currentAccounts : {},
    );
    const creditAccAsArr = ObjectOfObjects.convertToArrayOfObj(creditAccounts ? creditAccounts : {});
-   const dist = new NDist.FormBuilder(currentAccAsArr, creditAccAsArr);
+   const incomesAsArr = ObjectOfObjects.convertToArrayOfObj(incomes ? incomes : {});
+   const dist = new NDist.FormBuilder(currentAccAsArr, creditAccAsArr, incomesAsArr);
    const { form, errors, handleChange, initHandleSubmit } = useForm(
       dist.form.initialState,
       dist.form.initialErrors,
