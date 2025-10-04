@@ -38,9 +38,6 @@ export default class CurrentClass {
          validator: (value: string): string | true => {
             if (!value) return 'Account name is required';
             if (value.length < 3) return 'Account name must be at least 3 characters long';
-            if (value.length > 30) return 'Account name must be less than 30 characters long';
-            if (!/^[a-zA-Z0-9 ()]+$/.test(value))
-               return 'Account name must only contain letters, numbers, spaces and parentheses';
             return true;
          },
       },

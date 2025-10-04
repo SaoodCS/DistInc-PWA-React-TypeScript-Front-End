@@ -9,7 +9,7 @@ export const FlatListWrapper = styled.div`
 
 export const FlatListItem = styled.div<{ isDarkTheme: boolean }>`
    ${MyCSS.Clickables.removeDefaultEffects};
-   height: 6em;
+   min-height: 6em;
    width: 100%;
    box-sizing: border-box;
    padding: 1em;
@@ -44,6 +44,7 @@ export const FirstRowWrapper = styled.div`
 
 export const ItemTitleWrapper = styled.div`
    font-weight: 600;
+   padding-right: 0.5rem;
    display: flex;
 `;
 

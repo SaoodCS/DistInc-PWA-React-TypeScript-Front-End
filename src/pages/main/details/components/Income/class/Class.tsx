@@ -31,9 +31,6 @@ export default class IncomeClass {
          validator: (value: string): string | true => {
             if (!value) return 'Income name is required';
             if (value.length < 3) return 'Income name must be at least 3 characters long';
-            if (value.length > 30) return 'Income name must be less than 30 characters long';
-            if (!/^[a-zA-Z0-9 ()]+$/.test(value))
-               return 'Income name must only contain letters, numbers, spaces and parentheses';
             return true;
          },
       },
