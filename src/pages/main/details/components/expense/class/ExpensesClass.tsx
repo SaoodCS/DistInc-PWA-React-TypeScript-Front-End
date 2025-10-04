@@ -15,6 +15,7 @@ import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfOb
 
 export interface IExpenseFormInputs {
    expenseName: string;
+   notes: string;
    expenseValue: number;
    expenseType: 'Subscription' | 'Household' | `Savings Transfer:${string}`;
    paymentMethod: 'Direct Debit' | 'CPA' | 'Cash' | '';
@@ -39,6 +40,17 @@ export default class ExpensesClass {
          validator: (value: string): string | true => {
             if (!value) return 'Expense name is required';
             if (value.length < 3) return 'Expense name must be at least 3 characters long';
+            return true;
+         },
+      },
+      {
+         name: 'notes',
+         id: 'expense-notes',
+         placeholder: 'Expense Notes',
+         type: 'text',
+         isRequired: false,
+         validator: (value: string): string | true => {
+            if (value && value.length < 3) return 'Notes must be at least 3 characters long';
             return true;
          },
       },

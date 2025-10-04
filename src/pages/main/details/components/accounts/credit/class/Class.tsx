@@ -18,6 +18,7 @@ import ArrayOfObjects from '../../../../../../../global/helpers/dataTypes/arrayO
 
 export interface ICreditFormInputs {
    accountName: string;
+   notes: string;
    payBalanceFrom: number;
    id: number;
 }
@@ -37,6 +38,17 @@ export default class CreditClass {
          validator: (value: string): string | true => {
             if (!value) return 'Account name is required';
             if (value.length < 3) return 'Account name must be at least 3 characters long';
+            return true;
+         },
+      },
+      {
+         name: 'notes',
+         id: 'credit-account-notes',
+         placeholder: 'Account Notes',
+         type: 'text',
+         isRequired: false,
+         validator: (value: string): string | true => {
+            if (value && value.length < 3) return 'Notes must be at least 3 characters long';
             return true;
          },
       },

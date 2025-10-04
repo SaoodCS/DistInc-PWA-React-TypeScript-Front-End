@@ -13,6 +13,7 @@ import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutat
 
 export interface IIncomeFormInputs {
    incomeName: string;
+   notes: string;
    id: number;
 }
 
@@ -31,6 +32,17 @@ export default class IncomeClass {
          validator: (value: string): string | true => {
             if (!value) return 'Income name is required';
             if (value.length < 3) return 'Income name must be at least 3 characters long';
+            return true;
+         },
+      },
+      {
+         name: 'notes',
+         id: 'income-notes',
+         placeholder: 'Income Notes',
+         type: 'text',
+         isRequired: false,
+         validator: (value: string): string | true => {
+            if (value && value.length < 3) return 'Notes must be at least 3 characters long';
             return true;
          },
       },
