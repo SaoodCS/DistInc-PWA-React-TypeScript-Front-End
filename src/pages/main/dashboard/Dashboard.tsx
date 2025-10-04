@@ -24,6 +24,7 @@ import TotalExpense from './components/totalExpense/TotalExpense';
 import TotalIncome from './components/totalIncome/TotalIncome';
 import TrackedSavings from './components/trackedSavings/TrackedSavings';
 import useScrollSaver from '../../../global/hooks/useScrollSaver';
+import IncomeChart from './components/incomeChart/IncomeChart';
 
 export default function Dashboard(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Dashboard');
@@ -93,18 +94,21 @@ export default function Dashboard(): JSX.Element {
             {/**/}
             <CardHolder>
                <CardHolderRow>
-                  <SmallCardSquareHolder>
-                     <ExtraSmallCardSquareHolder>
-                        <CardContentWrapper isDarkTheme={isDarkTheme}>
-                           <TotalIncome />
-                        </CardContentWrapper>
-                     </ExtraSmallCardSquareHolder>
-                     <ExtraSmallCardSquareHolder>
-                        <CardContentWrapper isDarkTheme={isDarkTheme}>
-                           <TotalExpense />
-                        </CardContentWrapper>
-                     </ExtraSmallCardSquareHolder>
-                  </SmallCardSquareHolder>
+                  <CardContentWrapper isDarkTheme={isDarkTheme}>
+                     <IncomeChart />
+                  </CardContentWrapper>
+               </CardHolderRow>
+               <CardHolderRow>
+                  <ExtraSmallCardSquareHolder style={{ height: '100%' }}>
+                     <CardContentWrapper isDarkTheme={isDarkTheme}>
+                        <TotalIncome />
+                     </CardContentWrapper>
+                  </ExtraSmallCardSquareHolder>
+                  <ExtraSmallCardSquareHolder style={{ height: '100%' }}>
+                     <CardContentWrapper isDarkTheme={isDarkTheme}>
+                        <TotalExpense />
+                     </CardContentWrapper>
+                  </ExtraSmallCardSquareHolder>
                </CardHolderRow>
             </CardHolder>
             {/**/}
