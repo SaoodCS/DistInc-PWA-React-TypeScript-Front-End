@@ -20,7 +20,6 @@ import useThemeContext from '../../../../../global/context/theme/hooks/useThemeC
 import { PopupMenuContext } from '../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import { ToastContext } from '../../../../../global/context/widget/toast/ToastContext';
 import BoolHelper from '../../../../../global/helpers/dataTypes/bool/BoolHelper';
-import DateHelper from '../../../../../global/helpers/dataTypes/date/DateHelper';
 import MiscHelper from '../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import Device from '../../../../../global/helpers/pwa/deviceHelper';
 import useScrollSaver from '../../../../../global/hooks/useScrollSaver';
@@ -31,6 +30,7 @@ import DistStepsItems from '../d-distSteps/cardListItem/DistStepsItems';
 import SavingsAccHistoryItems from '../d-savingsHist/cardListItems/SavingsAccHistoryItem';
 import FilterHistoryPopupMenu from '../filterHistoryPopupMenu/FilterHistoryPopupMenu';
 import MonthPopupMenu from '../monthPopupMenu/MonthPopupMenu';
+import _Date from '../../../../../global/helpers/dataTypes/date/_Date';
 
 export default function HistorySlide(): JSX.Element {
    const [filterOutState] = useURLState({ key: NDist.Filterer.key });
@@ -132,7 +132,7 @@ export default function HistorySlide(): JSX.Element {
                   <CardListWrapper key={monthObj.monthYear}>
                      <CardListTitle>
                         <TextColourizer padding={'0 0.5em 0 0'}>
-                           {DateHelper.fromMMYYYYToWord(monthObj.monthYear)}
+                           {_Date.MMYYYY.toWord(monthObj.monthYear)}
                         </TextColourizer>
                         <HorizontalMenuDots
                            darktheme={BoolHelper.boolToStr(isDarkTheme)}

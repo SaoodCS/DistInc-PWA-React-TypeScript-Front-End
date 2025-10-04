@@ -16,11 +16,11 @@ import useThemeContext from '../../../../../../global/context/theme/hooks/useThe
 import Color from '../../../../../../global/css/colors';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
-import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
 import { DistributeContext } from '../../../context/DistributeContext';
 import NDist from '../../../namespace/NDist';
+import _Date from '../../../../../../global/helpers/dataTypes/date/_Date';
 
 export default function SavingsAccHistDetailsSlide(): JSX.Element {
    const { slide2Data } = useContext(DistributeContext);
@@ -63,7 +63,7 @@ export default function SavingsAccHistDetailsSlide(): JSX.Element {
       <CarouselAndNavBarWrapper style={{ width: '100%' }}>
          <FlexRowWrapper padding="2em">
             <TextColourizer fontSize="2em" bold padding="0em 0.25em 0em 0em">
-               {DateHelper.fromDDMMYYYYToWord(savingsAccHistItem.timestamp)}
+               {_Date.DDMMYYYY.toWord(savingsAccHistItem.timestamp)}
             </TextColourizer>
             <TrashIcon
                darktheme={BoolHelper.boolToStr(isDarkTheme)}

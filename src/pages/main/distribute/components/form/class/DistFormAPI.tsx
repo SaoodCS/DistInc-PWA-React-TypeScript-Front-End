@@ -14,7 +14,7 @@ import type { ICurrentFormInputs } from '../../../../details/components/accounts
 import type NDist from '../../../namespace/NDist';
 import type { ICreditFormInputs } from '../../../../details/components/accounts/credit/class/Class';
 import type { IIncomeFormInputs } from '../../../../details/components/Income/class/Class';
-import DateObjHelper from '../../../../../../global/helpers/dataTypes/date/DateObjHelper';
+import _Date from '../../../../../../global/helpers/dataTypes/date/_Date';
 
 export default class DistFormAndAPI {
    // -- FORM -- //
@@ -34,7 +34,7 @@ export default class DistFormAndAPI {
 
    private inputs(): InputArray<{ [x: number]: number }> {
       const mappedCurrentAccounts = this.currentAccounts.map((currentAccount) => {
-         const currentMonth = DateObjHelper.getCurrentMonthName();
+         const currentMonth = _Date.Obj.getCurrentMonthName();
          const isIncomeAndExpenses = currentAccount.accountType === 'Income & Expenses';
          const defaultPlaceholder = `${currentAccount.accountName} Balance`;
          const spendingsPlaceholder = `${defaultPlaceholder} (Set to 0 if partner distributed their income for ${currentMonth} before you)`;
@@ -67,7 +67,7 @@ export default class DistFormAndAPI {
          };
       });
       const mappedIncomes = this.incomes.map((income) => {
-         const { getPrevMonthFirstDay, getPrevMonthLastDay, formatAs } = DateObjHelper;
+         const { getPrevMonthFirstDay, getPrevMonthLastDay, formatAs } = _Date.Obj;
          const firstDayOfPrevMonth = formatAs(getPrevMonthFirstDay(), 'dd/mm');
          const lastDayOfPrevMonth = formatAs(getPrevMonthLastDay(), 'dd/mm');
          return {

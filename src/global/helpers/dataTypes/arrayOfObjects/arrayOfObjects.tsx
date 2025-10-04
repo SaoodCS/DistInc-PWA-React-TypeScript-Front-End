@@ -1,4 +1,4 @@
-import DateHelper from '../date/DateHelper';
+import _Date from '../date/_Date';
 
 export default class ArrayOfObjects {
    static sort<T>(arr: T[], key: keyof T, descending?: boolean): T[] {
@@ -112,8 +112,8 @@ export default class ArrayOfObjects {
    static sortByDateStr<T>(arrayOfObj: T[], ddmmyyPropName: keyof T, descending?: boolean): T[] {
       const sortedArr = arrayOfObj.sort(
          (a, b) =>
-            DateHelper.fromDDMMYYYY(b[ddmmyyPropName] as string).getTime() -
-            DateHelper.fromDDMMYYYY(a[ddmmyyPropName] as string).getTime(),
+            _Date.DDMMYYYY.toDate(b[ddmmyyPropName] as string).getTime() -
+            _Date.DDMMYYYY.toDate(a[ddmmyyPropName] as string).getTime(),
       );
       if (descending) {
          return sortedArr.reverse();

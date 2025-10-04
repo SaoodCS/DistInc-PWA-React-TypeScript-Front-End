@@ -17,9 +17,9 @@ import useThemeContext from '../../../../../../global/context/theme/hooks/useThe
 import Color from '../../../../../../global/css/colors';
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
-import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import { DistributeContext } from '../../../context/DistributeContext';
 import NDist from '../../../namespace/NDist';
+import _Date from '../../../../../../global/helpers/dataTypes/date/_Date';
 
 export default function DistStepsDetailsSlide(): JSX.Element {
    const { slide2Data, scrollToSlide, distStepsCompleted, setDistStepsCompleted } =
@@ -69,7 +69,7 @@ export default function DistStepsDetailsSlide(): JSX.Element {
       <CarouselAndNavBarWrapper style={{ width: '100%' }}>
          <FlexRowWrapper justifyContent={'left'} padding="1em 0em 0em 1em">
             <TextColourizer fontSize="2em" bold>
-               {DateHelper.fromDDMMYYYYToWord(distStepsItem.timestamp)}
+               {_Date.DDMMYYYY.toWord(distStepsItem.timestamp)}
             </TextColourizer>
             <FlexRowWrapper justifyContent="center" padding="1em 0em 1em 1em">
                <ArrowCircleLeftIcon

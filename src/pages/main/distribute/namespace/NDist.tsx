@@ -2,7 +2,6 @@ import { CashStack as Dollar } from '@styled-icons/bootstrap/CashStack';
 import { Receipt } from '@styled-icons/bootstrap/Receipt';
 import Color from '../../../../global/css/colors';
 import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
-import DateHelper from '../../../../global/helpers/dataTypes/date/DateHelper';
 import MiscHelper from '../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
 import ObjectOfObjects from '../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import type { IIncomeFirebase } from '../../details/components/Income/class/Class';
@@ -11,6 +10,7 @@ import type { IExpensesFirebase } from '../../details/components/expense/class/E
 import CalculateDist from '../calculation/CalculateDist';
 import DistFormAndAPI from '../components/form/class/DistFormAPI';
 import type { ISavingsAccountFirebase } from '../../details/components/accounts/savings/class/Class';
+import _Date from '../../../../global/helpers/dataTypes/date/_Date';
 
 // export interface IDistMsgs {
 //    timestamp: string;
@@ -120,7 +120,7 @@ export namespace NDist {
 
       static hasCurrentMonth(calcDistData: NDist.ISchema): boolean {
          if (ObjectOfObjects.isEmpty(calcDistData)) return false;
-         const [, currentMonth, currentYear] = DateHelper.toDDMMYYYY(new Date()).split('/');
+         const [, currentMonth, currentYear] = _Date.Obj.toDDMMYYYY(new Date()).split('/');
          const { analytics } = calcDistData;
          if (!MiscHelper.isNotFalsyOrEmpty(analytics)) return false;
          for (const analyticsObj of analytics) {
@@ -134,7 +134,7 @@ export namespace NDist {
 
       static hasToday(calcDistData: NDist.ISchema): boolean {
          if (ObjectOfObjects.isEmpty(calcDistData)) return false;
-         const today = DateHelper.toDDMMYYYY(new Date());
+         const today = _Date.Obj.toDDMMYYYY(new Date());
          const { analytics } = calcDistData;
          if (!MiscHelper.isNotFalsyOrEmpty(analytics)) return false;
          for (const analyticsObj of analytics) {

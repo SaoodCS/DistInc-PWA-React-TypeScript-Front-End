@@ -11,12 +11,12 @@ import { HorizontalMenuDots } from '../../../../../../global/components/lib/icon
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { PopupMenuContext } from '../../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
-import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
 import { DistributeContext } from '../../../context/DistributeContext';
 import type NDist from '../../../namespace/NDist';
 import SavingsAccPopupMenu from '../popupMenu/SavingsAccPopupMenu';
+import _Date from '../../../../../../global/helpers/dataTypes/date/_Date';
 
 interface ISavingsAccHistoryItems {
    savingsAccHistory: NDist.ISavingsAccHist[];
@@ -73,7 +73,7 @@ export default function SavingsAccHistoryItems(props: ISavingsAccHistoryItems): 
                      darktheme={BoolHelper.boolToStr(isDarkTheme)}
                   />
                   <TextColourizer fontSize="0.8em">
-                     {DateHelper.fromDDMMYYYYToWord(savingsHistObj.timestamp)}
+                     {_Date.DDMMYYYY.toWord(savingsHistObj.timestamp)}
                   </TextColourizer>
                </ItemRightColWrapper>
             </CardListItem>

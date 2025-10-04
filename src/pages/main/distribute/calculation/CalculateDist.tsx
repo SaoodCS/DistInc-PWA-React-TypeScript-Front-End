@@ -1,5 +1,5 @@
 import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
-import DateHelper from '../../../../global/helpers/dataTypes/date/DateHelper';
+import _Date from '../../../../global/helpers/dataTypes/date/_Date';
 import NumberHelper from '../../../../global/helpers/dataTypes/number/NumberHelper';
 import ObjectOfObjects from '../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import type { IIncomeFirebase } from '../../details/components/Income/class/Class';
@@ -77,7 +77,7 @@ export default class CalculateDist {
 
       // Create distSteps Obj:
       const distSteps = {
-         timestamp: DateHelper.toDDMMYYYY(distDate),
+         timestamp: _Date.Obj.toDDMMYYYY(distDate),
          list: stepsList,
       };
 
@@ -91,7 +91,7 @@ export default class CalculateDist {
          incomeEarnings: incomeNameAndEarned,
          totalExpenses: incomeExpAmtAtBegOfMonth - salExpLeftovers,
          totalMonthlyExpenses: totalActiveMonthExp,
-         timestamp: DateHelper.toDDMMYYYY(distDate),
+         timestamp: _Date.Obj.toDDMMYYYY(distDate),
       };
 
       return {
@@ -342,7 +342,7 @@ export default class CalculateDist {
          savingsAccHistory.push({
             id: account.id,
             balance: (currentBalance || 0) + account.amountToTransfer,
-            timestamp: DateHelper.toDDMMYYYY(distDate),
+            timestamp: _Date.Obj.toDDMMYYYY(distDate),
          });
       }
       return savingsAccHistory;

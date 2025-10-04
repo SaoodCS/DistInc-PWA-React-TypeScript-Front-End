@@ -2,7 +2,7 @@ import LineChartHelper from '../../../../../../global/components/lib/lineChart/c
 import Color from '../../../../../../global/css/colors';
 import ArrayHelper from '../../../../../../global/helpers/dataTypes/arrayHelper/ArrayHelper';
 import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
-import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
+import _Date from '../../../../../../global/helpers/dataTypes/date/_Date';
 import type NDist from '../../../../distribute/namespace/NDist';
 
 export namespace N_IncomeChart {
@@ -142,7 +142,7 @@ export namespace N_IncomeChart {
       const orderedAnalytics = ArrayOfObjects.sortByDateStr(analytics, 'timestamp', true);
       const timestamps = ArrayOfObjects.getArrOfValuesFromKey(orderedAnalytics, 'timestamp');
       const monthNames = timestamps.map((timestamp) => {
-         const month = DateHelper.getMonthName(timestamp);
+         const month = _Date.DDMMYYYY.getMonthName(timestamp);
          return month;
       });
       const last12Months = ArrayHelper.trimLength(monthNames, 12, 'start');

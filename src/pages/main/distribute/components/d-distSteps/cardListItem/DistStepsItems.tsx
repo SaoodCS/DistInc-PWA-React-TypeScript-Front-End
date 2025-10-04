@@ -11,10 +11,10 @@ import { HorizontalMenuDots } from '../../../../../../global/components/lib/icon
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { PopupMenuContext } from '../../../../../../global/context/widget/popupMenu/PopupMenuContext';
 import BoolHelper from '../../../../../../global/helpers/dataTypes/bool/BoolHelper';
-import DateHelper from '../../../../../../global/helpers/dataTypes/date/DateHelper';
 import { DistributeContext } from '../../../context/DistributeContext';
 import type NDist from '../../../namespace/NDist';
 import DistStepsPopupMenu from '../popupMenu/DistStepsPopupMenu';
+import _Date from '../../../../../../global/helpers/dataTypes/date/_Date';
 
 interface IDistStepsItems {
    distSteps: NDist.IDistSteps[];
@@ -62,7 +62,7 @@ export default function DistStepsItems(props: IDistStepsItems): JSX.Element {
                      darktheme={BoolHelper.boolToStr(isDarkTheme)}
                   />
                   <TextColourizer fontSize="0.8em">
-                     {DateHelper.fromDDMMYYYYToWord(distStepsObj.timestamp)}
+                     {_Date.DDMMYYYY.toWord(distStepsObj.timestamp)}
                   </TextColourizer>
                </ItemRightColWrapper>
             </CardListItem>
