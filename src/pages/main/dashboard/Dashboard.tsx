@@ -19,11 +19,9 @@ import SavingsClass from '../details/components/accounts/savings/class/Class';
 import ExpensesClass from '../details/components/expense/class/ExpensesClass';
 import NDist from '../distribute/namespace/NDist';
 import ExpenseByCategory from './components/expenseByCategory/ExpenseByCategory';
-import SpendingsAnalytics from './components/spendingsAnalytics/SpendingsAnalytics';
 import TargetSavings from './components/targetSavings/TargetSavings';
 import TotalExpense from './components/totalExpense/TotalExpense';
 import TotalIncome from './components/totalIncome/TotalIncome';
-import TotalSavings from './components/totalSavings/TotalSavings';
 import TrackedSavings from './components/trackedSavings/TrackedSavings';
 import useScrollSaver from '../../../global/hooks/useScrollSaver';
 
@@ -95,16 +93,6 @@ export default function Dashboard(): JSX.Element {
             {/**/}
             <CardHolder>
                <CardHolderRow>
-                  <CardContentWrapper isDarkTheme={isDarkTheme}>
-                     <SpendingsAnalytics />
-                  </CardContentWrapper>
-               </CardHolderRow>
-               <CardHolderRow>
-                  <SmallCardSquareHolder>
-                     <CardContentWrapper isDarkTheme={isDarkTheme}>
-                        <TotalSavings />
-                     </CardContentWrapper>
-                  </SmallCardSquareHolder>
                   <SmallCardSquareHolder>
                      <ExtraSmallCardSquareHolder>
                         <CardContentWrapper isDarkTheme={isDarkTheme}>
