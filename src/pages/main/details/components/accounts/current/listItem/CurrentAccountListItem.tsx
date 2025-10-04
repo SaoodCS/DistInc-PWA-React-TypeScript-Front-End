@@ -2,6 +2,8 @@ import { useContext } from 'react';
 import {
    FirstRowWrapper,
    FlatListItem,
+   ItemDescription,
+   ItemDescriptionWrapper,
    ItemTitle,
    ItemTitleWrapper,
    SecondRowTagsWrapper,
@@ -72,6 +74,9 @@ export default function CurrentAccountListItem(props: ICurrentAccountListItem): 
                      <ItemTitle>{item.accountName}</ItemTitle>
                   </ItemTitleWrapper>
                </FirstRowWrapper>
+               <ItemDescriptionWrapper>
+                  <ItemDescription>{item.notes}</ItemDescription>
+               </ItemDescriptionWrapper>
                <SecondRowTagsWrapper>
                   <Tag bgColor={tagColor('account')}>Current Account</Tag>
                   <Tag bgColor={tagColor('type')}>{item.accountType}</Tag>

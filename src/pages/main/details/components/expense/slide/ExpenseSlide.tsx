@@ -5,6 +5,8 @@ import {
    FirstRowWrapper,
    FlatListItem,
    FlatListWrapper,
+   ItemDescription,
+   ItemDescriptionWrapper,
    ItemTitle,
    ItemTitleWrapper,
    ItemValue,
@@ -164,6 +166,9 @@ export default function ExpenseSlide(): JSX.Element {
                            <ItemValue>{NumberHelper.asCurrencyStr(item.expenseValue)}</ItemValue>
                         </ConditionalRender>
                      </FirstRowWrapper>
+                     <ItemDescriptionWrapper>
+                        <ItemDescription>{item.notes}</ItemDescription>
+                     </ItemDescriptionWrapper>
                      <SecondRowTagsWrapper>
                         <Tag bgColor={tagColor('expense')}>Expense</Tag>
                         <ConditionalRender condition={!isPortableDevice}>

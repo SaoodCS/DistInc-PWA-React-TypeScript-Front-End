@@ -2,6 +2,8 @@ import { useContext } from 'react';
 import {
    FirstRowWrapper,
    FlatListItem,
+   ItemDescription,
+   ItemDescriptionWrapper,
    ItemTitle,
    ItemTitleWrapper,
    ItemValue,
@@ -74,6 +76,9 @@ export default function SavingsAccountListItem(props: ISavingsAccountListItem): 
                      </ItemValue>
                   </ConditionalRender>
                </FirstRowWrapper>
+               <ItemDescriptionWrapper>
+                  <ItemDescription>{item.notes}</ItemDescription>
+               </ItemDescriptionWrapper>
                <SecondRowTagsWrapper>
                   <Tag bgColor={tagColor('account')}>Savings Account</Tag>
                   <ConditionalRender condition={!isPortableDevice && !!item.currentBalance}>

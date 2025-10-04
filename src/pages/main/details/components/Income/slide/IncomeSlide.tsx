@@ -5,16 +5,16 @@ import {
    FirstRowWrapper,
    FlatListItem,
    FlatListWrapper,
+   ItemDescription,
+   ItemDescriptionWrapper,
    ItemTitle,
    ItemTitleWrapper,
-   ItemValue,
    SecondRowTagsWrapper,
    Tag,
 } from '../../../../../../global/components/lib/flatList/Style';
 import FlatListPlaceholder from '../../../../../../global/components/lib/flatList/placeholder/FlatListPlaceholder';
 import Loader from '../../../../../../global/components/lib/loader/fullScreen/Loader';
 import PullToRefresh from '../../../../../../global/components/lib/pullToRefresh/PullToRefresh';
-import ConditionalRender from '../../../../../../global/components/lib/renderModifiers/conditionalRender/ConditionalRender';
 import useThemeContext from '../../../../../../global/context/theme/hooks/useThemeContext';
 import { BottomPanelContext } from '../../../../../../global/context/widget/bottomPanel/BottomPanelContext';
 import { ModalContext } from '../../../../../../global/context/widget/modal/ModalContext';
@@ -23,7 +23,6 @@ import Color from '../../../../../../global/css/colors';
 import ArrayOfObjects from '../../../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import JSXHelper from '../../../../../../global/helpers/dataTypes/jsx/jsxHelper';
 import MiscHelper from '../../../../../../global/helpers/dataTypes/miscHelper/MiscHelper';
-import NumberHelper from '../../../../../../global/helpers/dataTypes/number/NumberHelper';
 import ObjectOfObjects from '../../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import Device from '../../../../../../global/helpers/pwa/deviceHelper';
 import useScrollSaver from '../../../../../../global/hooks/useScrollSaver';
@@ -133,6 +132,9 @@ export default function IncomeSlide(): JSX.Element {
                            <ItemTitle>{item.incomeName}</ItemTitle>
                         </ItemTitleWrapper>
                      </FirstRowWrapper>
+                     <ItemDescriptionWrapper>
+                        <ItemDescription>{item.notes}</ItemDescription>
+                     </ItemDescriptionWrapper>
                      <SecondRowTagsWrapper>
                         <Tag bgColor={tagColor('income')}>Income</Tag>
                      </SecondRowTagsWrapper>

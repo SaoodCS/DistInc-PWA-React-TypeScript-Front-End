@@ -2,6 +2,8 @@ import { useContext } from 'react';
 import {
    FirstRowWrapper,
    FlatListItem,
+   ItemDescription,
+   ItemDescriptionWrapper,
    ItemTitle,
    ItemTitleWrapper,
    SecondRowTagsWrapper,
@@ -69,6 +71,9 @@ export default function CreditAccountListItem(props: ICreditAccountListItem): JS
                      <ItemTitle>{item.accountName}</ItemTitle>
                   </ItemTitleWrapper>
                </FirstRowWrapper>
+               <ItemDescriptionWrapper>
+                  <ItemDescription>{item.notes}</ItemDescription>
+               </ItemDescriptionWrapper>
                <SecondRowTagsWrapper>
                   <Tag bgColor={tagColor('account')}>Credit Account</Tag>
                   <Tag bgColor={tagColor('type')}>Credit</Tag>

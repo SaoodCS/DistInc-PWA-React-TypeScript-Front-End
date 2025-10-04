@@ -44,12 +44,24 @@ export const FirstRowWrapper = styled.div`
 
 export const ItemTitleWrapper = styled.div`
    font-weight: 600;
-   padding-right: 0.5rem;
+   padding-right: 0.75rem;
    display: flex;
 `;
 
-export const ItemTitle = styled.div`
-   padding-right: 0.25em;
+export const ItemDescriptionWrapper = styled.div`
+   margin-bottom: 0.2em;
+   margin-left: 0.4em;
+   padding-right: 0.75rem;
+   font-style: italic;
+`;
+
+export const ItemTitle = styled.div``;
+
+export const ItemDescription = styled.div`
+   font-size: 0.75rem;
+   font-weight: lighter;
+   opacity: 0.6;
+   padding-top: 0.1rem;
 `;
 
 export const ItemValue = styled.div``;
