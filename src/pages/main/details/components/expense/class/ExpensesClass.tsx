@@ -17,7 +17,7 @@ export interface IExpenseFormInputs {
    expenseName: string;
    notes: string;
    expenseValue: number;
-   expenseType: 'Subscription' | 'Household' | `Savings Transfer:${string}`;
+   expenseType: 'Subscription' | 'Household' | 'Career' | 'Car' | `Savings Transfer:${string}`;
    paymentMethod: 'Direct Debit' | 'CPA' | 'Cash' | '';
    paused: 'true' | 'false';
    hasDistInstruction: 'true' | 'false';
@@ -75,6 +75,8 @@ export default class ExpensesClass {
          dropDownOptions: [
             { value: 'Subscription', label: 'Subscription' },
             { value: 'Household', label: 'Household' },
+            { value: 'Career', label: 'Career' },
+            { value: 'Car', label: 'Car' },
          ],
 
          validator: (value: string): string | true => {
