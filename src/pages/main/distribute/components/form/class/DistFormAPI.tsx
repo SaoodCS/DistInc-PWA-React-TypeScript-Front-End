@@ -14,6 +14,7 @@ import type { ICurrentFormInputs } from '../../../../details/components/accounts
 import type NDist from '../../../namespace/NDist';
 import type { ICreditFormInputs } from '../../../../details/components/accounts/credit/class/Class';
 import type { IIncomeFormInputs } from '../../../../details/components/Income/class/Class';
+import DateObjHelper from '../../../../../../global/helpers/dataTypes/date/DateObjHelper';
 
 export default class DistFormAndAPI {
    // -- FORM -- //
@@ -33,10 +34,11 @@ export default class DistFormAndAPI {
 
    private inputs(): InputArray<{ [x: number]: number }> {
       const mappedCurrentAccounts = this.currentAccounts.map((currentAccount) => {
+         const currentMonth = DateObjHelper.getCurrentMonthName();
          const isIncomeAndExpenses = currentAccount.accountType === 'Income & Expenses';
          const defaultPlaceholder = `${currentAccount.accountName} Balance`;
-         const spendingsPlaceholder = `${defaultPlaceholder} (Set to 0 if partner already transferred from this account to savings this month)`;
-         const incomeExpPlaceholder = `${defaultPlaceholder} (Just before first expense of new month)`;
+         const spendingsPlaceholder = `${defaultPlaceholder} (Set to 0 if partner has already distributed their income for ${currentMonth})`;
+         const incomeExpPlaceholder = `${defaultPlaceholder} (before ${currentMonth}'s first expense)`;
          return {
             name: currentAccount.id,
             id: `leftovers-${currentAccount.accountName}`,
@@ -65,10 +67,13 @@ export default class DistFormAndAPI {
          };
       });
       const mappedIncomes = this.incomes.map((income) => {
+         const { getPrevMonthFirstDay, getPrevMonthLastDay, formatAs } = DateObjHelper;
+         const firstDayOfPrevMonth = formatAs(getPrevMonthFirstDay(), 'dd/mm');
+         const lastDayOfPrevMonth = formatAs(getPrevMonthLastDay(), 'dd/mm');
          return {
             name: income.id,
             id: `value-${income.incomeName}`,
-            placeholder: `${income.incomeName} Income This Month (Just before first expense of last month to just before first expense of new month)`,
+            placeholder: `${income.incomeName} Income (from ${firstDayOfPrevMonth} (before first expense) to ${lastDayOfPrevMonth} (after last expense))`,
             type: 'number',
             isRequired: true,
             validator: (value: number): string | true => {
