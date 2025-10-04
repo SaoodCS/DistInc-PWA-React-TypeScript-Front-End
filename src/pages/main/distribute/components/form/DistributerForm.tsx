@@ -13,7 +13,6 @@ import useThemeContext from '../../../../../global/context/theme/hooks/useThemeC
 import useApiErrorContext from '../../../../../global/context/widget/apiError/hooks/useApiErrorContext';
 import Color from '../../../../../global/css/colors';
 import microservices from '../../../../../global/firebase/apis/microservices/microservices';
-import DateHelper from '../../../../../global/helpers/dataTypes/date/DateHelper';
 import ObjectOfObjects from '../../../../../global/helpers/dataTypes/objectOfObjects/objectsOfObjects';
 import useForm from '../../../../../global/hooks/useForm';
 import IncomeClass from '../../../details/components/Income/class/Class';
@@ -33,7 +32,6 @@ export default function DistributeForm(): JSX.Element {
    const { data: expenses } = ExpensesClass.useQuery.getExpenses();
    const { data: calcDistData } = NDist.API.useQuery.getCalcDist();
    const [showOverwriteMsg, setShowOverwriteMsg] = useState(false);
-   const [showLateDateMsg, setShowLateDateMsg] = useState(false);
    const currentAccAsArr = ObjectOfObjects.convertToArrayOfObj(
       currentAccounts ? currentAccounts : {},
    );
@@ -49,9 +47,7 @@ export default function DistributeForm(): JSX.Element {
    useEffect(() => {
       if (calcDistData) {
          const currentMonthIsDistributed = NDist.Data.hasCurrentMonth(calcDistData);
-         const endOfMonth = new Date().getDate() > 20;
-         setShowOverwriteMsg(currentMonthIsDistributed && !endOfMonth);
-         setShowLateDateMsg(endOfMonth);
+         setShowOverwriteMsg(currentMonthIsDistributed);
       }
    }, [calcDistData]);
 
@@ -66,7 +62,7 @@ export default function DistributeForm(): JSX.Element {
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       const { isFormValid } = initHandleSubmit(e);
       if (!isFormValid) return;
-      const distDate = showLateDateMsg ? DateHelper.getFirstOfNextMonth() : new Date();
+      const distDate = new Date();
       const newCalculatedDist = NDist.Calc.run(
          distDate,
          savingsAccount || {},
@@ -80,21 +76,9 @@ export default function DistributeForm(): JSX.Element {
       // NOTE: the new balance of each Savings Account after transfer is updated in the back-end microservice, in Data-Microservice/SetCalculations/endpoint/endpoint.ts //
    }
 
-   function messageToDisplay(): string {
-      const overWriteMsg =
-         'Continuing overwrites current month because it has already been distributed.';
-      const lateDateMsg = `You are distributing your income on a late date of ${DateHelper.getMonthName(
-         DateHelper.toDDMMYYYY(new Date()),
-      )}. In order for your dashboard & analytics to be accurate, we will set the distribution date to the 1st of ${DateHelper.getNextMonthName(
-         DateHelper.toDDMMYYYY(new Date()),
-      )}.`;
-
-      return showOverwriteMsg ? overWriteMsg : lateDateMsg;
-   }
-
    return (
       <>
-         <ConditionalRender condition={showOverwriteMsg || showLateDateMsg}>
+         <ConditionalRender condition={showOverwriteMsg}>
             <FlexRowWrapper
                padding="1.5em 1em 0em 1em"
                color={isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning}
@@ -109,7 +93,7 @@ export default function DistributeForm(): JSX.Element {
                   color={isDarkTheme ? Color.darkThm.warning : Color.lightThm.warning}
                   fontSize="0.80em"
                >
-                  {messageToDisplay()}
+                  Continuing overwrites current month because it has already been distributed.
                </TextColourizer>
             </FlexRowWrapper>
          </ConditionalRender>
