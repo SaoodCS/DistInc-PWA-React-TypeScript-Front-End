@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { Fragment, useContext } from 'react';
+import { useContext } from 'react';
 import { CardWidgetWrapper } from '../../../../../../global/components/lib/card/Card';
 import { CarouselAndNavBarWrapper } from '../../../../../../global/components/lib/carousel/NavBar';
 import { TextColourizer } from '../../../../../../global/components/lib/font/textColorizer/TextColourizer';
@@ -63,27 +63,12 @@ export default function AnalyticsDetailsSlide(): JSX.Element {
                      <TextColourizer fontSize="1.25em" bold padding={'0.25em 0em'}>
                         {item.title}
                      </TextColourizer>
-                     {item.key !== 'prevMonth' && (
-                        <TextColourizer fontSize="0.9em">
-                           {NumberHelper.asCurrencyStr(item.data as number)}
-                        </TextColourizer>
-                     )}
-                     {item.key === 'prevMonth' && (
-                        <Fragment>
-                           {(item.data as NDist.Carousel.IPrevMonthData[]).map((data) => (
-                              <TextColourizer fontSize="0.85em" padding="0.1em 0em" key={data.key}>
-                                 <TextColourizer bold>{data.title}</TextColourizer>
-                                 {NumberHelper.asCurrencyStr(data.data)}
-                              </TextColourizer>
-                           ))}
-                        </Fragment>
-                     )}
+
+                     <TextColourizer fontSize="0.9em">
+                        {NumberHelper.asCurrencyStr(item.data as number)}
+                     </TextColourizer>
                   </FlexColumnWrapper>
-                  <FlexColumnWrapper
-                     height={'100%'}
-                     justifyContent="center"
-                     padding={item.key === 'prevMonth' ? '0em 0em' : '0em 0.5em'}
-                  >
+                  <FlexColumnWrapper height={'100%'} justifyContent="center" padding={'0em 0.5em'}>
                      {item.icon}
                   </FlexColumnWrapper>
                </CardWidgetWrapper>

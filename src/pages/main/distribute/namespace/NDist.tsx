@@ -1,6 +1,5 @@
 import { CashStack as Dollar } from '@styled-icons/bootstrap/CashStack';
 import { Receipt } from '@styled-icons/bootstrap/Receipt';
-import { DocumentTextClock } from '@styled-icons/fluentui-system-filled/DocumentTextClock';
 import Color from '../../../../global/css/colors';
 import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import DateHelper from '../../../../global/helpers/dataTypes/date/DateHelper';
@@ -37,11 +36,6 @@ export namespace NDist {
          earned: number;
       }[];
       totalExpenses: number;
-      prevMonth: {
-         totalSpendings: number;
-         totalDisposableSpending: number;
-         totalSavings: number;
-      };
       timestamp: string;
    }
 
@@ -153,18 +147,13 @@ export namespace NDist {
       export type ISlide2NameOptions = keyof ISchema;
       export type ISlideNameOptions = ISlide1Name | ISlide2NameOptions;
       export type ISlide2DataOptions = ISchema[ISlide2NameOptions][0] | null;
-      export type IPrevMonthData = {
-         key: string;
-         data: number;
-         title: string;
-      };
       export type IAnalyticsDetails = {
          key: string;
          title: string;
          icon: JSX.Element;
          color: string;
          cardHeight: string;
-         data: number | IPrevMonthData[];
+         data: number;
       };
 
       export type IMapArrFunc = (
@@ -208,30 +197,6 @@ export namespace NDist {
                   color: isDarkTheme ? Color.lightThm.warning : Color.darkThm.warning,
                   data: analyticsItem.totalExpenses,
                   cardHeight: '6em',
-               },
-               {
-                  key: 'prevMonth',
-                  title: `Prev Month: ${DateHelper.getPrevMonthName(analyticsItem.timestamp)}`,
-                  icon: <DocumentTextClock height="70%" color={Color.lightThm.border} />,
-                  color: Color.lightThm.error,
-                  cardHeight: '9em',
-                  data: [
-                     {
-                        key: 'totalSpendings',
-                        data: analyticsItem.prevMonth.totalSpendings,
-                        title: 'Total Spent: ',
-                     },
-                     {
-                        key: 'totalDisposableSpending',
-                        data: analyticsItem.prevMonth.totalDisposableSpending,
-                        title: 'Disposable Spent: ',
-                     },
-                     {
-                        key: 'totalSavings',
-                        data: analyticsItem.prevMonth.totalSavings,
-                        title: 'Total Saved: ',
-                     },
-                  ],
                },
             ],
          },

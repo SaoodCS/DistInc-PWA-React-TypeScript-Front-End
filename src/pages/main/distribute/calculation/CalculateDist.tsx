@@ -55,15 +55,6 @@ export default class CalculateDist {
       const activeMonthlyExpArr = ArrayOfObjects.filterOut(monthlyExpenseArr, 'paused', 'true');
       const totalActiveMonthExp = ArrayOfObjects.sumKeyValues(activeMonthlyExpArr, 'expenseValue');
 
-      // Calculate Prev Month Analytics:
-      const prevMonth = CalculateDist.calcPrevMonthAnaltics(
-         currentAccArr,
-         totalMonthlyIncome,
-         totalActiveExp,
-         totalActiveMonthExp,
-         distForm,
-      );
-
       // Calculate Current Account Transfers:
       const { stepsList, trackedSavingsAccountTransfers } = CalculateDist.calcTransfers(
          currentAccArr,
@@ -98,7 +89,6 @@ export default class CalculateDist {
          totalIncomes: totalMonthlyIncome,
          incomeEarnings: incomeNameAndEarned,
          totalExpenses: incomeExpAmtAtBegOfMonth - salExpLeftovers,
-         prevMonth: prevMonth,
          timestamp: DateHelper.toDDMMYYYY(distDate),
       };
 
@@ -106,31 +96,6 @@ export default class CalculateDist {
          distSteps: [distSteps],
          savingsAccHistory: savingsAccHistory,
          analytics: [analytics],
-      };
-   }
-   //----------------------------------------------------------------------------
-   //----------------------------------------------------------------------------
-   // -- CALC PREV MONTH ANALYTICS -- //
-   private static calcPrevMonthAnaltics(
-      currentAccArr: ICurrentFormInputs[],
-      totalMonthlyIncome: number,
-      totalActiveExp: number,
-      totalActiveMonthExp: number,
-      distForm: { [id: number]: number },
-   ): NDist.ISchema['analytics'][0]['prevMonth'] {
-      const IE = CurrentClass.helper.getAccountType(currentAccArr, 'Income & Expenses');
-      const SP = CurrentClass.helper.getAccountType(currentAccArr, 'Spending');
-      const IE_initialBal_prevMonth = totalActiveExp + IE.minCushion; // Note: this is actually from this month rather than prev month, because I haven't implemented storing the data: total expenses from prev month and minCushion from prev month
-      const IE_leftover = CurrentClass.helper.getLeftover(IE, distForm);
-      const SP_leftover = CurrentClass.helper.getLeftover(SP, distForm);
-      const totalExpensesSpending = IE_initialBal_prevMonth - IE_leftover;
-      const SP_initialBal_prevMonth = totalMonthlyIncome - totalActiveMonthExp; // Note: this is actually from this month rather than prev month, because I haven't implemented storing the data: total Income from prev month and total monthly expenses from prev month
-      const totalDisposableSpending = SP_initialBal_prevMonth - SP_leftover;
-      const totalSpendings = totalDisposableSpending + totalExpensesSpending;
-      return {
-         totalSpendings,
-         totalDisposableSpending,
-         totalSavings: SP_leftover,
       };
    }
    //----------------------------------------------------------------------------
