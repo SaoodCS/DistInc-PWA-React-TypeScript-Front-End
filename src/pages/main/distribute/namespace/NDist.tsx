@@ -31,11 +31,13 @@ export namespace NDist {
 
    export interface IAnalytics {
       totalIncomes: number;
+      totalDisposableIncome: number;
       incomeEarnings: {
          name: string;
          earned: number;
       }[];
       totalExpenses: number;
+      totalMonthlyExpenses: number;
       timestamp: string;
    }
 
