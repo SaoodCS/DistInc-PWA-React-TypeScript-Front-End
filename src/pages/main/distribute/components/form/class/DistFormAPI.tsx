@@ -37,7 +37,7 @@ export default class DistFormAndAPI {
          const currentMonth = DateObjHelper.getCurrentMonthName();
          const isIncomeAndExpenses = currentAccount.accountType === 'Income & Expenses';
          const defaultPlaceholder = `${currentAccount.accountName} Balance`;
-         const spendingsPlaceholder = `${defaultPlaceholder} (Set to 0 if partner has already distributed their income for ${currentMonth})`;
+         const spendingsPlaceholder = `${defaultPlaceholder} (Set to 0 if partner distributed their income for ${currentMonth} before you)`;
          const incomeExpPlaceholder = `${defaultPlaceholder} (before ${currentMonth}'s first expense)`;
          return {
             name: currentAccount.id,
