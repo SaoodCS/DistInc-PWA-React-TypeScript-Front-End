@@ -59,23 +59,23 @@ export namespace NDist {
    }
 
    export namespace Calc {
-      export type IPreReqs = 'salaryExp' | 'spending' | 'income' | 'expense' | 'savings';
+      export type IPreReqs = 'incomeExp' | 'spending' | 'income' | 'expense' | 'savings';
       export function checkPreReqsMet(
          currentAccounts: ICurrentAccountFirebase,
          savingsAccounts: ISavingsAccountFirebase,
          income: IIncomeFirebase,
          expenses: IExpensesFirebase,
       ): { name: IPreReqs; isValid: boolean }[] {
-         const salaryExp = ObjectOfObjects.findObjFromUniqueVal(
+         const incomeExp = ObjectOfObjects.findObjFromUniqueVal(
             currentAccounts,
-            'Salary & Expenses',
+            'Income & Expenses',
          );
          const spendings = ObjectOfObjects.findObjFromUniqueVal(currentAccounts, 'Spending');
          const incomeExists = MiscHelper.isNotFalsyOrEmpty(income);
          const expensesExists = MiscHelper.isNotFalsyOrEmpty(expenses);
          const savingsExists = MiscHelper.isNotFalsyOrEmpty(savingsAccounts);
          return [
-            { name: 'salaryExp', isValid: salaryExp ? true : false },
+            { name: 'incomeExp', isValid: incomeExp ? true : false },
             { name: 'spending', isValid: spendings ? true : false },
             { name: 'savings', isValid: savingsExists },
             { name: 'income', isValid: incomeExists },

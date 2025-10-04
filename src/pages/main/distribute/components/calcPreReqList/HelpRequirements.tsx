@@ -33,12 +33,12 @@ export default function HelpRequirements(): JSX.Element {
          </TextColourizer>
          <BulletList removeBullets>
             <ListItem>
-               {isReqMet('salaryExp') && <SuccessMsg>Salary & Expenses Current Account</SuccessMsg>}
-               {!isReqMet('salaryExp') && <ErrorMsg>Salary & Expenses Current Account</ErrorMsg>}
+               {isReqMet('incomeExp') && <SuccessMsg>Income & Expenses Current Account</SuccessMsg>}
+               {!isReqMet('incomeExp') && <ErrorMsg>Income & Expenses Current Account</ErrorMsg>}
             </ListItem>
             <ListItem>
-               {isReqMet('salaryExp') && <SuccessMsg>Spendings Current Account</SuccessMsg>}
-               {!isReqMet('salaryExp') && <ErrorMsg>Spendings Current Account</ErrorMsg>}
+               {isReqMet('incomeExp') && <SuccessMsg>Spendings Current Account</SuccessMsg>}
+               {!isReqMet('incomeExp') && <ErrorMsg>Spendings Current Account</ErrorMsg>}
             </ListItem>
             <ListItem>
                {isReqMet('savings') && <SuccessMsg>At least 1 Savings Account</SuccessMsg>}

@@ -58,7 +58,7 @@ export default function CurrentForm(props: ICurrentForm): JSX.Element {
    }
 
    function formInputs(): typeof CurrentClass.form.inputs {
-      if (form.accountType === 'Salary & Expenses') {
+      if (form.accountType === 'Income & Expenses') {
          return CurrentClass.form.inputs;
       }
       return CurrentClass.form.inputs.filter((input) => input.name !== 'minCushion');

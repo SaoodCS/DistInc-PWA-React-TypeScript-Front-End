@@ -49,9 +49,9 @@ export default function RegisterForm(): JSX.Element {
       const signInUser = await signInWithEmailAndPassword(auth, formData.email, formData.password);
       await Promise.all([
          setCurrentAccountInFirestore.mutateAsync({
-            accountName: 'Salary And Expenses',
+            accountName: 'Income And Expenses',
             minCushion: 0,
-            accountType: 'Salary & Expenses',
+            accountType: 'Income & Expenses',
             transferLeftoversTo: '',
          } as ICurrentFormInputs),
          setCurrentAccountInFirestore.mutateAsync({

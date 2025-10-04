@@ -19,7 +19,7 @@ export interface ICurrentFormInputs {
    accountName: string;
    notes: string;
    minCushion: number;
-   accountType: 'Salary & Expenses' | 'Spending';
+   accountType: 'Income & Expenses' | 'Spending';
    transferLeftoversTo: OptionalNumberInput;
    id: number;
 }
@@ -61,7 +61,7 @@ export default class CurrentClass {
          isRequired: true,
          isDropDown: true,
          dropDownOptions: [
-            { value: 'Salary & Expenses', label: 'Salary & Expenses' },
+            { value: 'Income & Expenses', label: 'Income & Expenses' },
             { value: 'Spending', label: 'Spending' },
          ],
          validator: (value: string): string | true => {

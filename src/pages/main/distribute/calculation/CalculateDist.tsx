@@ -91,13 +91,13 @@ export default class CalculateDist {
       };
 
       // Create Analytics Obj:
-      const salaryExpAcc = CurrentClass.helper.getAccountType(currentAccArr, 'Salary & Expenses');
-      const salExpLeftovers = CurrentClass.helper.getLeftover(salaryExpAcc, distForm);
-      const SalaryExpAmtAtBegOfMonth = totalActiveExp + salaryExpAcc.minCushion;
+      const incomeExpAcc = CurrentClass.helper.getAccountType(currentAccArr, 'Income & Expenses');
+      const salExpLeftovers = CurrentClass.helper.getLeftover(incomeExpAcc, distForm);
+      const incomeExpAmtAtBegOfMonth = totalActiveExp + incomeExpAcc.minCushion;
       const analytics = {
          totalIncomes: totalMonthlyIncome,
          incomeEarnings: incomeNameAndEarned,
-         totalExpenses: SalaryExpAmtAtBegOfMonth - salExpLeftovers,
+         totalExpenses: incomeExpAmtAtBegOfMonth - salExpLeftovers,
          prevMonth: prevMonth,
          timestamp: DateHelper.toDDMMYYYY(distDate),
       };
@@ -118,12 +118,12 @@ export default class CalculateDist {
       totalActiveMonthExp: number,
       distForm: { [id: number]: number },
    ): NDist.ISchema['analytics'][0]['prevMonth'] {
-      const SE = CurrentClass.helper.getAccountType(currentAccArr, 'Salary & Expenses');
+      const IE = CurrentClass.helper.getAccountType(currentAccArr, 'Income & Expenses');
       const SP = CurrentClass.helper.getAccountType(currentAccArr, 'Spending');
-      const SE_initialBal_prevMonth = totalActiveExp + SE.minCushion; // Note: this is actually from this month rather than prev month, because I haven't implemented storing the data: total expenses from prev month and minCushion from prev month
-      const SE_leftover = CurrentClass.helper.getLeftover(SE, distForm);
+      const IE_initialBal_prevMonth = totalActiveExp + IE.minCushion; // Note: this is actually from this month rather than prev month, because I haven't implemented storing the data: total expenses from prev month and minCushion from prev month
+      const IE_leftover = CurrentClass.helper.getLeftover(IE, distForm);
       const SP_leftover = CurrentClass.helper.getLeftover(SP, distForm);
-      const totalExpensesSpending = SE_initialBal_prevMonth - SE_leftover;
+      const totalExpensesSpending = IE_initialBal_prevMonth - IE_leftover;
       const SP_initialBal_prevMonth = totalMonthlyIncome - totalActiveMonthExp; // Note: this is actually from this month rather than prev month, because I haven't implemented storing the data: total Income from prev month and total monthly expenses from prev month
       const totalDisposableSpending = SP_initialBal_prevMonth - SP_leftover;
       const totalSpendings = totalDisposableSpending + totalExpensesSpending;
@@ -148,110 +148,110 @@ export default class CalculateDist {
       distForm: { [id: number]: number },
    ): { stepsList: string[]; trackedSavingsAccountTransfers: ISavingsAccountTransfers } {
       // ORDER OF MSGS: (Mx = multiple times)
-      // 1x:   SCA (shortfall coverer savings account) --> SE (salary & expenses account)  [if the SE starting balance doesn't cover all outgoings, this makes up for it]
-      // 0-Mx: SE (salary & expenses account) --> CRA (credit account(s))
-      // 0-Mx: SE (salary & expenses account) --> SMA (savings manual transfer account(s)) [SMAs i.e. expenses that are of type "transfer to x savings account". These are trasnferred from SE acc by default]
-      // 1x:   SE (salary & expenses account) --> SP (spendings account)
-      // 1x:   SE (salary & expenses account) --> TL ('transfer leftovers to' account related to se acc)
-      // 1x:   SCA (shortfall coverer savings account) --> SE (salary & expenses account)  [if the SE final balance after all outgoings doesn't meet the required balance, this transfer makes up for it]
+      // 1x:   SCA (shortfall coverer savings account) --> IE (income & expenses account)  [if the IE starting balance doesn't cover all outgoings, this makes up for it]
+      // 0-Mx: IE (income & expenses account) --> CRA (credit account(s))
+      // 0-Mx: IE (income & expenses account) --> SMA (savings manual transfer account(s)) [SMAs i.e. expenses that are of type "transfer to x savings account". These are trasnferred from IE acc by default]
+      // 1x:   IE (income & expenses account) --> SP (spendings account)
+      // 1x:   IE (income & expenses account) --> TL ('transfer leftovers to' account related to se acc)
+      // 1x:   SCA (shortfall coverer savings account) --> IE (income & expenses account)  [if the IE final balance after all outgoings doesn't meet the required balance, this transfer makes up for it]
       // 1x:   SCA (shortfall coverer savings account) --> SP (spendings account)  [if the SP starting balance doesn't cover all outgoings, this makes up for it]
       // 0-Mx: SP (spendings account) --> CRA (credit account(s))
       // 1x:   SP (spendings account) --> TL ('transfer leftovers to' account related to sp acc)
 
       // Gathering Data
-      const SE = CurrentClass.helper.getAccountType(currentAccArr, 'Salary & Expenses');
-      const SE_leftover = CurrentClass.helper.getLeftover(SE, distForm);
-      const SE_hasTransferLeftoversTo = CurrentClass.helper.hasTransferLeftoversTo(SE);
+      const IE = CurrentClass.helper.getAccountType(currentAccArr, 'Income & Expenses');
+      const IE_leftover = CurrentClass.helper.getLeftover(IE, distForm);
+      const IE_hasTransferLeftoversTo = CurrentClass.helper.hasTransferLeftoversTo(IE);
       const SP = CurrentClass.helper.getAccountType(currentAccArr, 'Spending');
       const SP_leftover = CurrentClass.helper.getLeftover(SP, distForm);
       const SP_hasTransferLeftoversTo = CurrentClass.helper.hasTransferLeftoversTo(SP);
       const SCA = ArrayOfObjects.getObj(savingsAccArr, 'coversShortfall', 'true')!;
-      const SE_TO_CRAs_accounts = CreditClass.helper.getAccountsWithPayBalanceFromVal(
+      const IE_TO_CRAs_accounts = CreditClass.helper.getAccountsWithPayBalanceFromVal(
          creditAccArr,
          currentAccArr,
-         'Salary & Expenses',
+         'Income & Expenses',
       );
       const SP_TO_CRAs_accounts = CreditClass.helper.getAccountsWithPayBalanceFromVal(
          creditAccArr,
          currentAccArr,
          'Spending',
       );
-      const SE_TO_SAs_expenses = ArrayOfObjects.getObjectsWithKeyWhichIncludesValue(
+      const IE_TO_SAs_expenses = ArrayOfObjects.getObjectsWithKeyWhichIncludesValue(
          activeExpArr,
          'expenseType',
          'Saving',
       );
-      // i.e. Expenses that I have set to manually transfer from salaryExp to Savings Accounts when I distribute my income.
-      const SE_TO_SMAs_expenses = ArrayOfObjects.filterIn(
-         SE_TO_SAs_expenses,
+      // i.e. Expenses that I have set to manually transfer from incomeExp to Savings Accounts when I distribute my income.
+      const IE_TO_SMAs_expenses = ArrayOfObjects.filterIn(
+         IE_TO_SAs_expenses,
          'hasDistInstruction',
          'true',
       );
-      let SE_TO_TL: number = 0;
-      let SE_TO_SP: number = 0;
-      let SCA_TO_SE: number = 0;
+      let IE_TO_TL: number = 0;
+      let IE_TO_SP: number = 0;
+      let SCA_TO_IE: number = 0;
       let SP_TO_TL: number = 0;
       const stepsList: string[] = [];
       const trackedSavingsAccountTransfers: ISavingsAccountTransfers = [];
       //
       // -- S A L A R Y  &  E X P E N S E S  C U R R E N T  A C C O U N T  T R A N S F E R S -- //
       //
-      const SE_startingBalance = totalMonthlyIncome + SE_leftover;
-      const SE_requiredBalance = totalActiveExp + SE.minCushion;
-      const SE_TO_CRAs_total = CreditClass.helper.sumBalances(SE_TO_CRAs_accounts, distForm);
-      const SE_TO_SMAs_total = ArrayOfObjects.sumKeyValues(SE_TO_SMAs_expenses, 'expenseValue');
+      const IE_startingBalance = totalMonthlyIncome + IE_leftover;
+      const IE_requiredBalance = totalActiveExp + IE.minCushion;
+      const IE_TO_CRAs_total = CreditClass.helper.sumBalances(IE_TO_CRAs_accounts, distForm);
+      const IE_TO_SMAs_total = ArrayOfObjects.sumKeyValues(IE_TO_SMAs_expenses, 'expenseValue');
 
       //
       // Calculation Prep Steps:
       //
-      SE_TO_SP = totalMonthlyIncome - totalActiveMonthExp;
+      IE_TO_SP = totalMonthlyIncome - totalActiveMonthExp;
       //
-      const SE_outgoings = SE_TO_CRAs_total + SE_TO_SMAs_total + SE_TO_SP;
-      const SE_final_bal = SE_startingBalance - SE_outgoings;
-      SE_TO_TL = Math.max(SE_final_bal - SE_requiredBalance, 0);
+      const IE_outgoings = IE_TO_CRAs_total + IE_TO_SMAs_total + IE_TO_SP;
+      const IE_final_bal = IE_startingBalance - IE_outgoings;
+      IE_TO_TL = Math.max(IE_final_bal - IE_requiredBalance, 0);
       //
-      const SE_out_total = SE_outgoings + SE_TO_TL;
-      const SE_balance_shortfall = SE_startingBalance - SE_out_total;
-      const SCA_TO_SE_INITIAL = SE_balance_shortfall >= 0 ? 0 : Math.abs(SE_balance_shortfall);
-      const SCA_TO_SE_INITIAL_msg = CalculateDist.createMsg({
-         amount: SCA_TO_SE_INITIAL,
+      const IE_out_total = IE_outgoings + IE_TO_TL;
+      const IE_balance_shortfall = IE_startingBalance - IE_out_total;
+      const SCA_TO_IE_INITIAL = IE_balance_shortfall >= 0 ? 0 : Math.abs(IE_balance_shortfall);
+      const SCA_TO_IE_INITIAL_msg = CalculateDist.createMsg({
+         amount: SCA_TO_IE_INITIAL,
          fromAccount: SCA.accountName,
-         transfer: { transferToAccount: SE.accountName },
+         transfer: { transferToAccount: IE.accountName },
       });
-      stepsList.push(SCA_TO_SE_INITIAL_msg);
-      let SE_newBalance = SE_startingBalance + SCA_TO_SE_INITIAL;
+      stepsList.push(SCA_TO_IE_INITIAL_msg);
+      let IE_newBalance = IE_startingBalance + SCA_TO_IE_INITIAL;
       //
       // Actual Distribution Calculation Steps
       //
-      for (let i = 0; i < SE_TO_CRAs_accounts.length; i++) {
-         const CRA = SE_TO_CRAs_accounts[i];
+      for (let i = 0; i < IE_TO_CRAs_accounts.length; i++) {
+         const CRA = IE_TO_CRAs_accounts[i];
          const CRA_balance = CreditClass.helper.getBalance(CRA, distForm);
-         const SE_TO_CRA_msg = CalculateDist.createMsg({
+         const IE_TO_CRA_msg = CalculateDist.createMsg({
             amount: CRA_balance,
-            fromAccount: SE.accountName,
+            fromAccount: IE.accountName,
             transfer: { transferToAccount: CRA.accountName },
          });
-         stepsList.push(SE_TO_CRA_msg);
-         SE_newBalance = SE_newBalance - CRA_balance;
+         stepsList.push(IE_TO_CRA_msg);
+         IE_newBalance = IE_newBalance - CRA_balance;
       }
 
-      for (let i = 0; i < SE_TO_SAs_expenses.length; i++) {
-         const expense = SE_TO_SAs_expenses[i];
+      for (let i = 0; i < IE_TO_SAs_expenses.length; i++) {
+         const expense = IE_TO_SAs_expenses[i];
          const SA = ExpensesClass.helper.savingsTransferType.getSavingsAcc(expense, savingsAccArr);
-         const SE_TO_SA_isManualExp = expense.hasDistInstruction === 'true';
+         const IE_TO_SA_isManualExp = expense.hasDistInstruction === 'true';
          const SA_isTracked = SA.isTracked === 'true';
-         const SE_TO_SA_isMonthlyExp = expense.frequency === 'Monthly';
-         if (SE_TO_SA_isManualExp && SE_TO_SA_isMonthlyExp) {
-            const SE_TO_SA_msg = CalculateDist.createMsg({
+         const IE_TO_SA_isMonthlyExp = expense.frequency === 'Monthly';
+         if (IE_TO_SA_isManualExp && IE_TO_SA_isMonthlyExp) {
+            const IE_TO_SA_msg = CalculateDist.createMsg({
                amount: expense.expenseValue,
-               fromAccount: SE.accountName,
+               fromAccount: IE.accountName,
                transfer: { transferToAccount: SA.accountName },
                expenseName: expense.expenseName,
             });
-            stepsList.push(SE_TO_SA_msg);
-            SE_newBalance = SE_newBalance - expense.expenseValue;
+            stepsList.push(IE_TO_SA_msg);
+            IE_newBalance = IE_newBalance - expense.expenseValue;
          }
-         if (SA_isTracked && SE_TO_SA_isMonthlyExp) {
+         if (SA_isTracked && IE_TO_SA_isMonthlyExp) {
             trackedSavingsAccountTransfers.push({
                id: SA.id,
                amountToTransfer: expense.expenseValue,
@@ -259,36 +259,36 @@ export default class CalculateDist {
          }
       }
 
-      SE_TO_SP = SE_hasTransferLeftoversTo ? SE_TO_SP : SE_TO_SP + SE_TO_TL;
-      const SE_TO_SP_msg = CalculateDist.createMsg({
-         amount: SE_TO_SP,
-         fromAccount: SE.accountName,
+      IE_TO_SP = IE_hasTransferLeftoversTo ? IE_TO_SP : IE_TO_SP + IE_TO_TL;
+      const IE_TO_SP_msg = CalculateDist.createMsg({
+         amount: IE_TO_SP,
+         fromAccount: IE.accountName,
          transfer: { transferToAccount: SP.accountName },
       });
-      stepsList.push(SE_TO_SP_msg);
-      SE_newBalance = SE_newBalance - SE_TO_SP;
+      stepsList.push(IE_TO_SP_msg);
+      IE_newBalance = IE_newBalance - IE_TO_SP;
 
-      if (SE_hasTransferLeftoversTo) {
-         const TL = ArrayOfObjects.getObj(savingsAccArr, 'id', SE.transferLeftoversTo)!;
-         const SE_TO_TL_msg = CalculateDist.createMsg({
-            amount: SE_TO_TL,
-            fromAccount: SE.accountName,
+      if (IE_hasTransferLeftoversTo) {
+         const TL = ArrayOfObjects.getObj(savingsAccArr, 'id', IE.transferLeftoversTo)!;
+         const IE_TO_TL_msg = CalculateDist.createMsg({
+            amount: IE_TO_TL,
+            fromAccount: IE.accountName,
             transfer: { transferToAccount: TL.accountName, leftover: true },
          });
-         stepsList.push(SE_TO_TL_msg);
-         SE_newBalance = SE_newBalance - SE_TO_TL;
+         stepsList.push(IE_TO_TL_msg);
+         IE_newBalance = IE_newBalance - IE_TO_TL;
          if (TL.isTracked === 'true') {
-            trackedSavingsAccountTransfers.push({ id: TL.id, amountToTransfer: SE_TO_TL });
+            trackedSavingsAccountTransfers.push({ id: TL.id, amountToTransfer: IE_TO_TL });
          }
       }
 
-      SCA_TO_SE = SE_requiredBalance - SE_newBalance;
-      const SCA_TO_SE_msg = CalculateDist.createMsg({
-         amount: SCA_TO_SE,
+      SCA_TO_IE = IE_requiredBalance - IE_newBalance;
+      const SCA_TO_IE_msg = CalculateDist.createMsg({
+         amount: SCA_TO_IE,
          fromAccount: SCA.accountName,
-         transfer: { transferToAccount: SE.accountName },
+         transfer: { transferToAccount: IE.accountName },
       });
-      stepsList.push(SCA_TO_SE_msg);
+      stepsList.push(SCA_TO_IE_msg);
       //
       // -- S P E N D I N G S  A C C O U N T  T R A N S F E R S -- //
       //
