@@ -24,6 +24,8 @@ export interface ICurrentFormInputs {
    id: number;
 }
 
+export type ICurrentFormInputs_New = Omit<ICurrentFormInputs, 'id'>;
+
 export interface ICurrentAccountFirebase {
    [id: string]: ICurrentFormInputs;
 }
@@ -127,10 +129,10 @@ export default class CurrentClass {
    }
 
    private static useSetCurrentAccountMutation(
-      options: UseMutationOptions<void, unknown, ICurrentFormInputs>,
-   ): UseMutationResult<void, unknown, ICurrentFormInputs, void> {
+      options: UseMutationOptions<void, unknown, ICurrentFormInputs | ICurrentFormInputs_New>,
+   ): UseMutationResult<void, unknown, ICurrentFormInputs | ICurrentFormInputs_New, void> {
       return useCustomMutation(
-         async (formData: ICurrentFormInputs) => {
+         async (formData: ICurrentFormInputs | ICurrentFormInputs_New) => {
             const body = APIHelper.createBody(formData);
             const method = 'POST';
             const microserviceName = microservices.setCurrentAccount.name;

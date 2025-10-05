@@ -10,9 +10,7 @@ import microservices from '../../../../global/firebase/apis/microservices/micros
 import { auth } from '../../../../global/firebase/config/config';
 import { useCustomMutation } from '../../../../global/hooks/useCustomMutation';
 import useForm from '../../../../global/hooks/useForm';
-import type { ICurrentFormInputs } from '../../../main/details/components/accounts/current/class/Class';
 import CurrentClass from '../../../main/details/components/accounts/current/class/Class';
-import type { ISavingsFormInputs } from '../../../main/details/components/accounts/savings/class/Class';
 import SavingsClass from '../../../main/details/components/accounts/savings/class/Class';
 import type { IRegInputs } from './Class';
 import RegClass from './Class';
@@ -50,23 +48,26 @@ export default function RegisterForm(): JSX.Element {
       await Promise.all([
          setCurrentAccountInFirestore.mutateAsync({
             accountName: 'Income And Expenses',
+            notes: '',
             minCushion: 0,
             accountType: 'Income & Expenses',
             transferLeftoversTo: '',
-         } as ICurrentFormInputs),
+         }),
          setCurrentAccountInFirestore.mutateAsync({
             accountName: 'Spendings',
+            notes: '',
             minCushion: 0,
             accountType: 'Spending',
             transferLeftoversTo: '',
-         } as ICurrentFormInputs),
+         }),
          setSavingsAccountInFirestore.mutateAsync({
             accountName: 'Savings Default',
+            notes: '',
             coversShortfall: 'true',
             currentBalance: 0,
             isTracked: 'false',
             targetToReach: 0,
-         } as ISavingsFormInputs),
+         }),
       ]);
       await sendEmailVerification(signInUser.user);
    });

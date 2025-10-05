@@ -25,6 +25,8 @@ export interface ISavingsFormInputs {
    id: number;
 }
 
+export type ISavingsFormInputs_New = Omit<ISavingsFormInputs, 'id'>;
+
 export interface ISavingsAccountFirebase {
    [id: string]: ISavingsFormInputs;
 }
@@ -144,10 +146,10 @@ export default class SavingsClass {
    }
 
    private static useSetSavingsAccountMutation(
-      options: UseMutationOptions<void, unknown, ISavingsFormInputs>,
-   ): UseMutationResult<void, unknown, ISavingsFormInputs, void> {
+      options: UseMutationOptions<void, unknown, ISavingsFormInputs | ISavingsFormInputs_New>,
+   ): UseMutationResult<void, unknown, ISavingsFormInputs | ISavingsFormInputs_New, void> {
       return useCustomMutation(
-         async (formData: ISavingsFormInputs) => {
+         async (formData: ISavingsFormInputs | ISavingsFormInputs_New) => {
             const body = APIHelper.createBody(formData);
             const method = 'POST';
             const microserviceName = microservices.setSavingsAccount.name;

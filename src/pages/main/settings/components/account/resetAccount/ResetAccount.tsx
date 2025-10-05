@@ -11,9 +11,7 @@ import APIHelper from '../../../../../../global/firebase/apis/helper/NApiHelper'
 import microservices from '../../../../../../global/firebase/apis/microservices/microservices';
 import { auth } from '../../../../../../global/firebase/config/config';
 import { useCustomMutation } from '../../../../../../global/hooks/useCustomMutation';
-import type { ICurrentFormInputs } from '../../../../details/components/accounts/current/class/Class';
 import CurrentClass from '../../../../details/components/accounts/current/class/Class';
-import type { ISavingsFormInputs } from '../../../../details/components/accounts/savings/class/Class';
 import SavingsClass from '../../../../details/components/accounts/savings/class/Class';
 
 export default function ResetAccount(): JSX.Element {
@@ -32,29 +30,30 @@ export default function ResetAccount(): JSX.Element {
          const method = 'POST';
          const microserviceName = microservices.resetUser.name;
          await APIHelper.gatewayCall(body, method, microserviceName);
-
-         await setCurrentAccountInFirestore.mutateAsync({
-            accountName: 'Income And Expenses',
-            notes: '',
-            minCushion: 0,
-            accountType: 'Income & Expenses',
-            transferLeftoversTo: '',
-         } as ICurrentFormInputs);
-         await setCurrentAccountInFirestore.mutateAsync({
-            accountName: 'Spendings',
-            notes: '',
-            minCushion: 0,
-            accountType: 'Spending',
-            transferLeftoversTo: '',
-         } as ICurrentFormInputs);
-         await setSavingsAccountInFirestore.mutateAsync({
-            accountName: 'Savings Default',
-            notes: '',
-            targetToReach: 0,
-            currentBalance: 0,
-            isTracked: 'false',
-            coversShortfall: 'true',
-         } as ISavingsFormInputs);
+         await Promise.all([
+            setCurrentAccountInFirestore.mutateAsync({
+               accountName: 'Income And Expenses',
+               notes: '',
+               minCushion: 0,
+               accountType: 'Income & Expenses',
+               transferLeftoversTo: '',
+            }),
+            setCurrentAccountInFirestore.mutateAsync({
+               accountName: 'Spendings',
+               notes: '',
+               minCushion: 0,
+               accountType: 'Spending',
+               transferLeftoversTo: '',
+            }),
+            setSavingsAccountInFirestore.mutateAsync({
+               accountName: 'Savings Default',
+               notes: '',
+               targetToReach: 0,
+               currentBalance: 0,
+               isTracked: 'false',
+               coversShortfall: 'true',
+            }),
+         ]);
       },
       {
          onError: () => {
