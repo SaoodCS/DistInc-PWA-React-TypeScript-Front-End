@@ -32,24 +32,28 @@ export default function ResetAccount(): JSX.Element {
          const method = 'POST';
          const microserviceName = microservices.resetUser.name;
          await APIHelper.gatewayCall(body, method, microserviceName);
+
          await setCurrentAccountInFirestore.mutateAsync({
             accountName: 'Income And Expenses',
+            notes: '',
             minCushion: 0,
             accountType: 'Income & Expenses',
             transferLeftoversTo: '',
          } as ICurrentFormInputs);
          await setCurrentAccountInFirestore.mutateAsync({
             accountName: 'Spendings',
+            notes: '',
             minCushion: 0,
             accountType: 'Spending',
             transferLeftoversTo: '',
          } as ICurrentFormInputs);
          await setSavingsAccountInFirestore.mutateAsync({
             accountName: 'Savings Default',
-            coversShortfall: 'true',
+            notes: '',
+            targetToReach: 0,
             currentBalance: 0,
             isTracked: 'false',
-            targetToReach: 0,
+            coversShortfall: 'true',
          } as ISavingsFormInputs);
       },
       {
