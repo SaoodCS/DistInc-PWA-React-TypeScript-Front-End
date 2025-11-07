@@ -35,7 +35,7 @@ export default class CalculateDist {
       creditAccounts: ICreditAccountFirebase,
       incomes: IIncomeFirebase,
       expenses: IExpensesFirebase,
-      distForm: { [id: number]: number }, // contains current account leftovers and credit account balances and income earnt this month from different sources
+      distForm: { [id: number]: number }, // contains current account balances and credit account balances and income earnt this month from different sources
    ): NDist.ISchema {
       const creditAccArr = ObjectOfObjects.convertToArrayOfObj(creditAccounts);
       const currentAccArr = ObjectOfObjects.convertToArrayOfObj(currentAccounts);
@@ -88,10 +88,7 @@ export default class CalculateDist {
       );
 
       // Create distSteps Obj:
-      const distSteps = {
-         timestamp: _Date.Obj.toDDMMYYYY(distDate),
-         list: stepsList,
-      };
+      const distSteps = { timestamp: _Date.Obj.toDDMMYYYY(distDate), list: stepsList };
 
       // Create Analytics Obj:
 
