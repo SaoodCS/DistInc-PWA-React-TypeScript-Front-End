@@ -174,14 +174,14 @@ export default class CurrentClass {
       return currentAccount.transferLeftoversTo !== '';
    }
 
-   private static getAccountType(
+   private static getAccountFromType(
       currentAccArr: ICurrentFormInputs[],
       type: ICurrentFormInputs['accountType'],
    ): ICurrentFormInputs {
       return ArrayOfObjects.getObj(currentAccArr, 'accountType', type)!;
    }
 
-   private static getLeftover(
+   private static getBalance(
       account: ICurrentFormInputs,
       distForm: { [x: number]: number },
    ): number {
@@ -190,8 +190,8 @@ export default class CurrentClass {
 
    static helper = {
       hasTransferLeftoversTo: CurrentClass.hasTransferLeftoversTo,
-      getAccountType: CurrentClass.getAccountType,
-      getLeftover: CurrentClass.getLeftover,
+      getAccountFromType: CurrentClass.getAccountFromType,
+      getBalance: CurrentClass.getBalance,
    };
 
    static form = {

@@ -139,15 +139,6 @@ export default class CreditClass {
       return ArrayOfObjects.getObj(currentAccArr, 'id', creditAcc.payBalanceFrom)!;
    }
 
-   private static getAccountsWithPayBalanceFromVal(
-      creditAccArr: ICreditFormInputs[],
-      currentAccArr: ICurrentFormInputs[],
-      payBalanceFrom: ICurrentFormInputs['accountType'],
-   ): ICreditFormInputs[] {
-      const currentAcc = ArrayOfObjects.getObj(currentAccArr, 'accountType', payBalanceFrom)!;
-      return ArrayOfObjects.getObjects(creditAccArr, 'payBalanceFrom', currentAcc.id);
-   }
-
    private static getBalance(
       account: ICreditFormInputs,
       distForm: { [x: number]: number },
@@ -169,7 +160,6 @@ export default class CreditClass {
 
    static helper = {
       getPayBalanceFromAcc: CreditClass.getPayBalanceFromAcc,
-      getAccountsWithPayBalanceFromVal: CreditClass.getAccountsWithPayBalanceFromVal,
       sumBalances: CreditClass.sumBalances,
       getBalance: CreditClass.getBalance,
    };

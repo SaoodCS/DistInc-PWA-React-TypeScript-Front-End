@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import ArrayOfObjects from '../../../../global/helpers/dataTypes/arrayOfObjects/arrayOfObjects';
 import _Date from '../../../../global/helpers/dataTypes/date/_Date';
 import NumberHelper from '../../../../global/helpers/dataTypes/number/NumberHelper';
@@ -40,31 +41,42 @@ export default class CalculateDist {
       const currentAccArr = ObjectOfObjects.convertToArrayOfObj(currentAccounts);
       const savingsAccArr = ObjectOfObjects.convertToArrayOfObj(savingsAccounts);
       const incomeArr = ObjectOfObjects.convertToArrayOfObj(incomes);
-      const totalMonthlyIncome = IncomeClass.helper.sumIncomes(incomeArr, distForm);
-      const incomeNameAndEarned = incomeArr.map((income) => ({
+      const expenseArr = ObjectOfObjects.convertToArrayOfObj(expenses);
+      const yearlyExpenseArr = ArrayOfObjects.filterOut(expenseArr, 'frequency', 'Monthly');
+      const monthlyExpenseArr = ArrayOfObjects.filterOut(expenseArr, 'frequency', 'Yearly');
+      const activeYearlyExpArr = ArrayOfObjects.filterOut(yearlyExpenseArr, 'paused', 'true');
+      const activeMonthlyExpArr = ArrayOfObjects.filterOut(monthlyExpenseArr, 'paused', 'true');
+      const activeExpArr = ArrayOfObjects.filterOut(expenseArr, 'paused', 'true');
+
+      const IE = CurrentClass.helper.getAccountFromType(currentAccArr, 'Income & Expenses');
+      const SP = CurrentClass.helper.getAccountFromType(currentAccArr, 'Spending');
+
+      const totalIncome_pastMonth = IncomeClass.helper.sumIncomes(incomeArr, distForm);
+      const incomeNamesAndEarnings_pastMonth = incomeArr.map((income) => ({
          name: income.incomeName,
          earned: distForm[income.id],
       }));
-      const expenseArr = ObjectOfObjects.convertToArrayOfObj(expenses);
-      const activeExpArr = ArrayOfObjects.filterOut(expenseArr, 'paused', 'true');
-      const totalActiveExp = ArrayOfObjects.sumKeyValues(activeExpArr, 'expenseValue');
-      const yearlyExpenseArr = ArrayOfObjects.filterOut(expenseArr, 'frequency', 'Monthly');
-      const activeYearlyExpArr = ArrayOfObjects.filterOut(yearlyExpenseArr, 'paused', 'true');
-      const totalActiveYearlyExp = ArrayOfObjects.sumKeyValues(activeYearlyExpArr, 'expenseValue');
-      const monthlyExpenseArr = ArrayOfObjects.filterOut(expenseArr, 'frequency', 'Yearly');
-      const activeMonthlyExpArr = ArrayOfObjects.filterOut(monthlyExpenseArr, 'paused', 'true');
-      const totalActiveMonthExp = ArrayOfObjects.sumKeyValues(activeMonthlyExpArr, 'expenseValue');
+      const totalExp_active = ArrayOfObjects.sumKeyValues(activeExpArr, 'expenseValue');
+      const totalExp_active_yearly = ArrayOfObjects.sumKeyValues(
+         activeYearlyExpArr,
+         'expenseValue',
+      );
+      const totalExp_active_monthly = ArrayOfObjects.sumKeyValues(
+         activeMonthlyExpArr,
+         'expenseValue',
+      );
 
       // Calculate Current Account Transfers:
       const { stepsList, trackedSavingsAccountTransfers } = CalculateDist.calcTransfers(
-         currentAccArr,
+         IE,
+         SP,
          creditAccArr,
          savingsAccArr,
          activeExpArr,
-         totalMonthlyIncome,
-         totalActiveExp,
-         totalActiveMonthExp,
-         totalActiveYearlyExp,
+         totalIncome_pastMonth,
+         totalExp_active,
+         totalExp_active_monthly,
+         totalExp_active_yearly,
          distForm,
       );
 
@@ -82,15 +94,16 @@ export default class CalculateDist {
       };
 
       // Create Analytics Obj:
-      const incomeExpAcc = CurrentClass.helper.getAccountType(currentAccArr, 'Income & Expenses');
-      const salExpLeftovers = CurrentClass.helper.getLeftover(incomeExpAcc, distForm);
-      const incomeExpAmtAtBegOfMonth = totalActiveExp + incomeExpAcc.minCushion;
+
+      const IE_balance_endOfPastMonth = CurrentClass.helper.getBalance(IE, distForm);
+      const IE_leftovers_endOfPastMonth = IE_balance_endOfPastMonth - totalIncome_pastMonth;
+      const IE_balance_startOfPastMonth = totalExp_active + IE.minCushion;
       const analytics = {
-         totalIncomes: totalMonthlyIncome,
-         totalDisposableIncome: totalMonthlyIncome - totalActiveMonthExp,
-         incomeEarnings: incomeNameAndEarned,
-         totalExpenses: incomeExpAmtAtBegOfMonth - salExpLeftovers,
-         totalMonthlyExpenses: totalActiveMonthExp,
+         totalIncomes: totalIncome_pastMonth,
+         totalDisposableIncome: totalIncome_pastMonth - totalExp_active_monthly,
+         incomeEarnings: incomeNamesAndEarnings_pastMonth,
+         totalExpenses: IE_balance_startOfPastMonth - IE_leftovers_endOfPastMonth,
+         totalMonthlyExpenses: totalExp_active_monthly,
          timestamp: _Date.Obj.toDDMMYYYY(distDate),
       };
 
@@ -104,14 +117,15 @@ export default class CalculateDist {
    //----------------------------------------------------------------------------
    // -- CALC TRANSFERS FUNC: CURRENTACC TRANSFERS -- //
    private static calcTransfers(
-      currentAccArr: ICurrentFormInputs[],
+      IE: ICurrentFormInputs,
+      SP: ICurrentFormInputs,
       creditAccArr: ICreditFormInputs[],
       savingsAccArr: ISavingsFormInputs[],
       activeExpArr: IExpenseFormInputs[],
-      totalMonthlyIncome: number,
-      totalActiveExp: number,
-      totalActiveMonthExp: number,
-      totalActiveYearlyExp: number,
+      totalIncome_pastMonth: number,
+      totalExp_active: number,
+      totalExp_active_monthly: number,
+      totalExp_active_yearly: number,
       distForm: { [id: number]: number },
    ): { stepsList: string[]; trackedSavingsAccountTransfers: ISavingsAccountTransfers } {
       // ORDER OF MSGS: (Mx = multiple times)
@@ -126,23 +140,14 @@ export default class CalculateDist {
       // 1x:   SP (spendings account) --> TL ('transfer leftovers to' account related to sp acc)
 
       // Gathering Data
-      const IE = CurrentClass.helper.getAccountType(currentAccArr, 'Income & Expenses');
-      const IE_leftover = CurrentClass.helper.getLeftover(IE, distForm);
+      const IE_balance_endOfPastMonth = CurrentClass.helper.getBalance(IE, distForm);
       const IE_hasTransferLeftoversTo = CurrentClass.helper.hasTransferLeftoversTo(IE);
-      const SP = CurrentClass.helper.getAccountType(currentAccArr, 'Spending');
-      const SP_leftover = CurrentClass.helper.getLeftover(SP, distForm);
+      const SP_balance_endOfPastMonth = CurrentClass.helper.getBalance(SP, distForm);
       const SP_hasTransferLeftoversTo = CurrentClass.helper.hasTransferLeftoversTo(SP);
       const SCA = ArrayOfObjects.getObj(savingsAccArr, 'coversShortfall', 'true')!;
-      const IE_TO_CRAs_accounts = CreditClass.helper.getAccountsWithPayBalanceFromVal(
-         creditAccArr,
-         currentAccArr,
-         'Income & Expenses',
-      );
-      const SP_TO_CRAs_accounts = CreditClass.helper.getAccountsWithPayBalanceFromVal(
-         creditAccArr,
-         currentAccArr,
-         'Spending',
-      );
+      const IE_TO_CRAs_accounts = ArrayOfObjects.getObjects(creditAccArr, 'payBalanceFrom', IE.id);
+      const SP_TO_CRAs_accounts = ArrayOfObjects.getObjects(creditAccArr, 'payBalanceFrom', SP.id);
+
       const IE_TO_SAs_expenses = ArrayOfObjects.getObjectsWithKeyWhichIncludesValue(
          activeExpArr,
          'expenseType',
@@ -163,15 +168,15 @@ export default class CalculateDist {
       //
       // -- S A L A R Y  &  E X P E N S E S  C U R R E N T  A C C O U N T  T R A N S F E R S -- //
       //
-      const IE_startingBalance = totalMonthlyIncome + IE_leftover;
-      const IE_requiredBalance = totalActiveExp + IE.minCushion;
+      const IE_startingBalance = IE_balance_endOfPastMonth;
+      const IE_requiredBalance = totalExp_active + IE.minCushion;
       const IE_TO_CRAs_total = CreditClass.helper.sumBalances(IE_TO_CRAs_accounts, distForm);
       const IE_TO_SMAs_total = ArrayOfObjects.sumKeyValues(IE_TO_SMAs_expenses, 'expenseValue');
 
       //
       // Calculation Prep Steps:
       //
-      IE_TO_SP = totalMonthlyIncome - totalActiveMonthExp;
+      IE_TO_SP = totalIncome_pastMonth - totalExp_active_monthly;
       //
       const IE_outgoings = IE_TO_CRAs_total + IE_TO_SMAs_total + IE_TO_SP;
       const IE_final_bal = IE_startingBalance - IE_outgoings;
@@ -259,7 +264,7 @@ export default class CalculateDist {
       //
       // -- S P E N D I N G S  A C C O U N T  T R A N S F E R S -- //
       //
-      const SP_startingBalance = SP_leftover;
+      const SP_startingBalance = SP_balance_endOfPastMonth;
       const SP_requiredBalance = SP.minCushion;
       const SP_TO_CRAs_total = CreditClass.helper.sumBalances(SP_TO_CRAs_accounts, distForm);
 
