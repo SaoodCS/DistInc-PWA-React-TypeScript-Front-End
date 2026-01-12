@@ -173,7 +173,7 @@ export default class CalculateDist {
       //
       // Calculation Prep Steps:
       //
-      IE_TO_SP = totalIncome_pastMonth - totalExp_active_monthly;
+      IE_TO_SP = Math.max(totalIncome_pastMonth - totalExp_active_monthly, 0);
       //
       const IE_outgoings = IE_TO_CRAs_total + IE_TO_SMAs_total + IE_TO_SP;
       const IE_final_bal = IE_startingBalance - IE_outgoings;
