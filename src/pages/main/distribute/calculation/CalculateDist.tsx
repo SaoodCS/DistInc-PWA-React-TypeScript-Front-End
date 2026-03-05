@@ -99,7 +99,7 @@ export default class CalculateDist {
          totalIncomes: totalIncome_pastMonth,
          totalDisposableIncome: totalIncome_pastMonth - totalExp_active_monthly,
          incomeEarnings: incomeNamesAndEarnings_pastMonth,
-         totalExpenses: IE_balance_startOfPastMonth - IE_leftovers_endOfPastMonth, //TODO: this should be renamed to "actual expenses" (labelled with ("Feb") in analytics history if the income was dist in March)
+         actualExpenses: IE_balance_startOfPastMonth - IE_leftovers_endOfPastMonth,
          totalMonthlyExpenses: totalExp_active_monthly,
          timestamp: _Date.Obj.toDDMMYYYY(distDate),
       };

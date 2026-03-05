@@ -36,7 +36,7 @@ export namespace NDist {
          name: string;
          earned: number;
       }[];
-      totalExpenses: number;
+      actualExpenses: number;
       totalMonthlyExpenses: number;
       timestamp: string;
    }
@@ -186,18 +186,18 @@ export namespace NDist {
             ): IAnalyticsDetails[] => [
                {
                   key: 'totalIncomes',
-                  title: 'Total Income',
+                  title: 'Total Income (From Prev Month)',
                   icon: <Dollar height="90%" color={Color.lightThm.border} />,
                   color: isDarkTheme ? Color.lightThm.accent : Color.darkThm.accent,
                   data: analyticsItem.totalIncomes,
                   cardHeight: '6em',
                },
                {
-                  key: 'totalExpenses',
-                  title: 'Total Expense',
+                  key: 'actualExpenses',
+                  title: 'Actual Expenses (From Prev Month)',
                   icon: <Receipt height="90%" color={Color.lightThm.border} />,
                   color: isDarkTheme ? Color.lightThm.warning : Color.darkThm.warning,
-                  data: analyticsItem.totalExpenses,
+                  data: analyticsItem.actualExpenses,
                   cardHeight: '6em',
                },
             ],
