@@ -69,7 +69,7 @@ export default class ExpensesClass {
          name: 'expenseType',
          id: 'expense-type',
          placeholder: 'Expense Type',
-         type: 'string',
+         type: 'text',
          isRequired: true,
          isDropDown: true,
          dropDownOptions: [
@@ -88,7 +88,7 @@ export default class ExpensesClass {
          name: 'frequency',
          id: 'expense-frequency',
          placeholder: 'Frequency',
-         type: 'string',
+         type: 'text',
          isRequired: true,
          isDropDown: true,
          dropDownOptions: [
@@ -105,7 +105,7 @@ export default class ExpensesClass {
          name: 'hasDistInstruction',
          id: 'has-dist-instruction',
          placeholder: "Has it's own instruction step?",
-         type: 'string',
+         type: 'text',
          isRequired: true,
          isDropDown: true,
          dropDownOptions: [
@@ -123,7 +123,7 @@ export default class ExpensesClass {
          name: 'paymentMethod',
          id: 'expense-payment-method',
          placeholder: 'Payment Method',
-         type: 'string',
+         type: 'text',
          isRequired: false,
          isDropDown: true,
          dropDownOptions: [
@@ -142,7 +142,7 @@ export default class ExpensesClass {
          name: 'paused',
          id: 'expense-paused',
          placeholder: 'Pause',
-         type: 'string',
+         type: 'text',
          isRequired: true,
          isDropDown: true,
          dropDownOptions: [
