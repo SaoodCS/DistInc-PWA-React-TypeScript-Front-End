@@ -44,6 +44,8 @@ interface ICreditAccWithFilterProps extends ICreditFormInputs {
 export default function AccountsSlide(): JSX.Element {
    const [sortAccountBy] = useURLState({ key: NDetails.keys.searchParams.sort.accounts });
    const [orderAccount] = useURLState({ key: NDetails.keys.searchParams.order.accounts });
+   const [searchTerm] = useURLState({ key: NDetails.keys.searchParams.searchTerm });
+
    const { isDarkTheme, isPortableDevice } = useThemeContext();
    const { containerRef, handleOnScroll, scrollSaverStyle } = useScrollSaver(
       NDetails.keys.localStorage.accountsSlide,
@@ -150,15 +152,25 @@ export default function AccountsSlide(): JSX.Element {
       if (MiscHelper.isNotFalsyOrEmpty(creditWithFilterProps)) {
          accountsConcat = { ...accountsConcat, ...creditWithFilterProps };
       }
-      const dataAsArr = ObjectOfObjects.convertToArrayOfObj(accountsConcat);
-      if (!sortAccountBy) return dataAsArr;
-      const desc = orderAccount?.includes('desc');
-      const sortedData = ArrayOfObjects.sort(
-         dataAsArr,
-         sortAccountBy as keyof (typeof dataAsArr)[0],
-         desc,
-      );
-      return sortedData;
+      let dataAsArr = ObjectOfObjects.convertToArrayOfObj(accountsConcat);
+      if (sortAccountBy) {
+         const desc = orderAccount?.includes('desc');
+         dataAsArr = ArrayOfObjects.sort(
+            dataAsArr,
+            sortAccountBy as keyof (typeof dataAsArr)[0],
+            desc,
+         );
+      }
+      if (searchTerm) {
+         dataAsArr = ArrayOfObjects.getObjectsWithKeyWhichIncludesValue(
+            dataAsArr,
+            'accountName',
+            searchTerm,
+            false,
+         );
+      }
+
+      return dataAsArr;
    }
 
    function savingsAccNoFilterProps(item: ISavingsAccWithFilterProps): ISavingsFormInputs {

@@ -35,6 +35,8 @@ import IncomeForm from '../form/IncomeForm';
 export default function IncomeSlide(): JSX.Element {
    const [sortIncomeBy] = useURLState({ key: NDetails.keys.searchParams.sort.income });
    const [orderIncome] = useURLState({ key: NDetails.keys.searchParams.order.income });
+   const [searchTerm] = useURLState({ key: NDetails.keys.searchParams.searchTerm });
+
    const { isDarkTheme, isPortableDevice } = useThemeContext();
    const { toggleBottomPanel, setBottomPanelContent, setBottomPanelHeading, setBottomPanelZIndex } =
       useContext(BottomPanelContext);
@@ -82,15 +84,20 @@ export default function IncomeSlide(): JSX.Element {
 
    function sortData(incomeData: typeof data): IIncomeFormInputs[] {
       if (!MiscHelper.isNotFalsyOrEmpty(incomeData)) return [];
-      const dataAsArr = ObjectOfObjects.convertToArrayOfObj(incomeData);
-      if (!sortIncomeBy) return dataAsArr;
-      const desc = orderIncome?.includes('desc');
-      const sortedData = ArrayOfObjects.sort(
-         dataAsArr,
-         sortIncomeBy as keyof IIncomeFormInputs,
-         desc,
-      );
-      return sortedData;
+      let dataAsArr = ObjectOfObjects.convertToArrayOfObj(incomeData);
+      if (sortIncomeBy) {
+         const desc = orderIncome?.includes('desc');
+         dataAsArr = ArrayOfObjects.sort(dataAsArr, sortIncomeBy as keyof IIncomeFormInputs, desc);
+      }
+      if (searchTerm) {
+         dataAsArr = ArrayOfObjects.getObjectsWithKeyWhichIncludesValue(
+            dataAsArr,
+            'incomeName',
+            searchTerm,
+            false,
+         );
+      }
+      return dataAsArr;
    }
 
    async function handleOnRefresh(): Promise<void> {

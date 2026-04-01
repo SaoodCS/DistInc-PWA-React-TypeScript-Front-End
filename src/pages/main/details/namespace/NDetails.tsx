@@ -74,6 +74,7 @@ export namespace NDetails {
             expense: getSearchParamKey(slides, 'Expense', 'order'),
             accounts: getSearchParamKey(slides, 'Accounts', 'order'),
          },
+         searchTerm: 'searchTerm',
       },
    };
 }

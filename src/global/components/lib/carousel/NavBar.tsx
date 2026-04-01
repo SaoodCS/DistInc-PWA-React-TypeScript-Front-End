@@ -6,7 +6,7 @@ export const CarouselAndNavBarWrapper = styled.div`
    height: 100%;
    display: flex;
    flex-direction: column;
-   & > :nth-child(2) {
+   & > :nth-child(3) {
       flex: 1;
    }
 `;

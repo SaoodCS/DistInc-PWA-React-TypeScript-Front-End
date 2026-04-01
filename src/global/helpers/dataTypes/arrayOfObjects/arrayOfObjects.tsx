@@ -2,8 +2,9 @@ import _Date from '../date/_Date';
 
 export default class ArrayOfObjects {
    static sort<T>(arr: T[], key: keyof T, descending?: boolean): T[] {
+      const arrClone = JSON.parse(JSON.stringify(arr)) as T[];
       if (descending) {
-         return arr.sort((a, b) => {
+         return arrClone.sort((a, b) => {
             if (a[key] > b[key]) {
                return -1;
             }
@@ -41,10 +42,19 @@ export default class ArrayOfObjects {
       return arr.filter((obj) => keyVals.every((keyVal) => obj[keyVal.key] === keyVal.value));
    }
 
-   static getObjectsWithKeyWhichIncludesValue<T>(arr: T[], key: keyof T, value: string): T[] {
+   static getObjectsWithKeyWhichIncludesValue<T>(
+      arr: T[],
+      key: keyof T,
+      value: string,
+      caseSensitive: boolean = true,
+   ): T[] {
       return arr.filter((obj) => {
          const val = obj[key];
-         return typeof val === 'string' && val.includes(value);
+         if (typeof val !== 'string') return false;
+         if (!caseSensitive) {
+            return val.toLowerCase().includes(value.toLowerCase());
+         }
+         return val.includes(value);
       });
    }
 

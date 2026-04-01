@@ -19,6 +19,8 @@ import BoolHelper from '../../../global/helpers/dataTypes/bool/BoolHelper';
 import FiltererContextMenu from './components/contextMenu/FiltererContextMenu';
 import NewFormContextMenu from './components/contextMenu/NewFormContextMenu';
 import NDetails from './namespace/NDetails';
+import useURLState from '../../../global/hooks/useURLState';
+import { SearchBar } from '../../../global/components/lib/searchbar/SearchBar';
 
 export default function Details(): JSX.Element {
    HeaderHooks.useOnMount.setHeaderTitle('Details');
@@ -26,6 +28,7 @@ export default function Details(): JSX.Element {
    HeaderHooks.useOnUnMount.resetHeaderRightEl();
    FooterHooks.useOnUnMount.resetFooterItemSecondClick();
 
+   const [searchTerm, setSearchTerm] = useURLState({ key: NDetails.keys.searchParams.searchTerm });
    const { setHeaderRightElement } = useHeaderContext();
    const { containerRef, scrollToSlide, currentSlide } = useCarousel(
       1,
@@ -78,6 +81,14 @@ export default function Details(): JSX.Element {
                </NavBarHeading>
             ))}
          </NavBarContainer>
+         <div>
+            <SearchBar
+               type="search"
+               placeholder="Search"
+               value={searchTerm}
+               onChange={(e) => setSearchTerm(e.target.value)}
+            />
+         </div>
          <CarouselContainer ref={containerRef}>
             {NDetails.slides.map((slide) => (
                <CarouselSlide key={slide.slideNo} height="auto" style={carouselBorderRight}>

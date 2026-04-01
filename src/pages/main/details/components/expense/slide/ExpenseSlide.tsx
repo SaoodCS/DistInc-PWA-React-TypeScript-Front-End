@@ -40,6 +40,8 @@ import ExpenseForm from '../form/ExpenseForm';
 export default function ExpenseSlide(): JSX.Element {
    const [sortExpenseBy] = useURLState({ key: NDetails.keys.searchParams.sort.expense });
    const [orderExpense] = useURLState({ key: NDetails.keys.searchParams.order.expense });
+   const [searchTerm] = useURLState({ key: NDetails.keys.searchParams.searchTerm });
+
    const { isDarkTheme, isPortableDevice } = useThemeContext();
    const { toggleBottomPanel, setBottomPanelContent, setBottomPanelHeading, setBottomPanelZIndex } =
       useContext(BottomPanelContext);
@@ -113,15 +115,24 @@ export default function ExpenseSlide(): JSX.Element {
 
    function sortData(expensesDataData: typeof expensesData): IExpenseFormInputs[] {
       if (!MiscHelper.isNotFalsyOrEmpty(expensesDataData)) return [];
-      const dataAsArr = ObjectOfObjects.convertToArrayOfObj(expensesDataData);
-      if (!sortExpenseBy) return dataAsArr;
-      const desc = orderExpense?.includes('desc');
-      const sortedData = ArrayOfObjects.sort(
-         dataAsArr,
-         sortExpenseBy as keyof (typeof dataAsArr)[0],
-         desc,
-      );
-      return sortedData;
+      let dataAsArr = ObjectOfObjects.convertToArrayOfObj(expensesDataData);
+      if (sortExpenseBy) {
+         const desc = orderExpense?.includes('desc');
+         dataAsArr = ArrayOfObjects.sort(
+            dataAsArr,
+            sortExpenseBy as keyof IExpenseFormInputs,
+            desc,
+         );
+      }
+      if (searchTerm) {
+         dataAsArr = ArrayOfObjects.getObjectsWithKeyWhichIncludesValue(
+            dataAsArr,
+            'expenseName',
+            searchTerm,
+            false,
+         );
+      }
+      return dataAsArr;
    }
 
    async function handleOnRefresh(): Promise<void> {
