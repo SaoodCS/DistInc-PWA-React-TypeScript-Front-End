@@ -175,13 +175,15 @@ export default class CalculateDist {
       //
       IE_TO_SP = Math.max(totalIncome_pastMonth - totalExp_active_monthly, 0);
       //
-      const IE_outgoings = IE_TO_CRAs_total + IE_TO_SMAs_total + IE_TO_SP;
-      const IE_final_bal = IE_startingBalance - IE_outgoings;
+      let IE_outgoings = IE_TO_CRAs_total + IE_TO_SMAs_total + IE_TO_SP;
+      let IE_final_bal = IE_startingBalance - IE_outgoings;
       IE_TO_TL = Math.max(IE_final_bal - IE_requiredBalance, 0);
       //
-      const IE_out_total = IE_outgoings + IE_TO_TL;
-      const IE_balance_shortfall = IE_startingBalance - IE_out_total;
-      const SCA_TO_IE_INITIAL = IE_balance_shortfall >= 0 ? 0 : Math.abs(IE_balance_shortfall);
+      IE_outgoings = IE_outgoings + IE_TO_TL;
+      IE_final_bal = IE_startingBalance - IE_outgoings;
+      const IE_req_bal_shortfall = IE_final_bal - IE_requiredBalance;
+      const SCA_TO_IE_INITIAL = Math.abs(Math.min(IE_req_bal_shortfall, 0));
+
       const SCA_TO_IE_INITIAL_msg = CalculateDist.createMsg({
          amount: SCA_TO_IE_INITIAL,
          fromAccount: SCA.accountName,
@@ -268,13 +270,15 @@ export default class CalculateDist {
       //
       // Calculation Prep Steps:
       //
-      const SP_outgoings = SP_TO_CRAs_total;
-      const SP_final_bal = SP_startingBalance - SP_outgoings;
+      let SP_outgoings = SP_TO_CRAs_total;
+      let SP_final_bal = SP_startingBalance - SP_outgoings;
       SP_TO_TL = Math.max(SP_final_bal - SP_requiredBalance, 0);
       //
-      const SP_out_total = SP_outgoings + SP_TO_TL;
-      const SP_balance_shortfall = SP_startingBalance - SP_out_total;
-      const SCA_TO_SP_INITIAL = SP_balance_shortfall >= 0 ? 0 : Math.abs(SP_balance_shortfall);
+      SP_outgoings = SP_outgoings + SP_TO_TL;
+      SP_final_bal = SP_startingBalance - SP_outgoings;
+      const SP_req_bal_shortfall = SP_final_bal - SP_requiredBalance;
+      const SCA_TO_SP_INITIAL = Math.abs(Math.min(SP_req_bal_shortfall, 0));
+
       const SCA_TO_SP_INITIAL_msg = CalculateDist.createMsg({
          amount: SCA_TO_SP_INITIAL,
          fromAccount: SCA.accountName,
