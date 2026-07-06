@@ -4,8 +4,10 @@
    "version": "0.1.0",
    "type": "module",
    "scripts": {
-      "setup-project": "npm run git-sync && npm run setup-os-env && npm run update-cert",
-      "setup-os-env": "npm run config-node-and-firebase-cli",
+      "setup-os-env": "powershell -ExecutionPolicy Bypass -File .\\src\\global\\config\\script\\checkNodeAndFirebaseCli.ps1",
+      "update-cert": "powershell -ExecutionPolicy Bypass -File .\\src\\global\\config\\script\\updateCert.ps1",
+      "init-env-and-sw": "node src/global/config/script/initEnvAndSw.js",
+      "generate-pwa-assets": "pwa-assets-generator public/icons/logo-512x512.png",
       "dev": "vite",
       "preview": "vite preview",
       "build": "tsc && vite build",
@@ -16,9 +18,6 @@
       "prettify": "prettier --config .prettierrc.json --write \"src/**/*.{ts,tsx}\"",
       "test": "vitest",
       "test-watch": "vitest --watch",
-      "view-unused-exports": "npx unimported",
-      "init-env-and-sw": "node src/global/config/script/initEnvAndSw.js",
-      "update-cert": "powershell -ExecutionPolicy Bypass -File .\\src\\global\\config\\script\\updateCert.ps1",
       "build-dev": "npm run init-env-and-sw .env.devdeployed deployed && tsc && vite build --mode devdeployed",
       "build-prod": "npm run init-env-and-sw .env.proddeployed deployed && tsc && vite build --mode proddeployed",
       "deploy-dev": "npm run build-dev && firebase deploy --only hosting --project distinc-dev",
@@ -26,18 +25,11 @@
       "start-dev-to-local": "npm run update-cert && nvm use 20.12.2 && npm run init-env-and-sw .env.devlocal locally && vite --mode devlocal --host",
       "start-prod-to-local": "npm run update-cert && nvm use 20.12.2 && npm run init-env-and-sw .env.prodlocal locally && vite --mode prodlocal --host",
       "start-dev-to-deployed": "npm run update-cert && nvm use 20.12.2 && npm run init-env-and-sw .env.devdeployed locally && vite --mode devdeployed --host",
-      "start-prod-to-deployed": "npm run update-cert && nvm use 20.12.2 && npm run init-env-and-sw .env.proddeployed locally && vite --mode proddeployed --host",
-      "generate-pwa-assets": "pwa-assets-generator public/icons/logo-512x512.png",
-      "config-node-and-firebase-cli": "powershell -ExecutionPolicy Bypass -File .\\src\\global\\config\\script\\configNodeAndFirebaseCli.ps1",
-      "git-prune-remote": "git remote update origin --prune",
-      "git-prune-local": "npx git-removed-branches --prune --force",
-      "git-pull-all": "powershell -ExecutionPolicy Bypass -File .\\src\\global\\config\\script\\gitPullAll.ps1",
-      "git-sync": "npm run git-pull-all && npm run git-prune-remote && npm run git-prune-local && npm install"
+      "start-prod-to-deployed": "npm run update-cert && nvm use 20.12.2 && npm run init-env-and-sw .env.proddeployed locally && vite --mode proddeployed --host"
    },
    "engines": {
       "node": "20.12.2"
-    },
-
+   },
    "dependencies": {
       "@tanstack/react-query": "^4.33.0",
       "@tanstack/react-query-devtools": "^4.33.0",
@@ -80,6 +72,7 @@
       "eslint-plugin-react": "^7.33.2",
       "eslint-plugin-security": "^1.7.1",
       "eslint-plugin-unused-imports": "^3.0.0",
+      "firebase-tools": "^15.22.4",
       "fs-extra": "^11.1.1",
       "jsdom": "^22.1.0",
       "prettier": "^3.0.1",

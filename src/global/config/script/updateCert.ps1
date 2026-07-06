@@ -1,23 +1,28 @@
-if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
-    Write-Host 'choco is not installed. Installing choco...'
-    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-    Write-Host 'choco has been installed. PLEASE RESTART THE CMD OR CODE EDITOR and run this script again.' -ForegroundColor Cyan
+$hasMkcert = [bool](Get-Command mkcert -ErrorAction SilentlyContinue)
+$hasOpenSsl = [bool](Get-Command openssl -ErrorAction SilentlyContinue)
+
+if (-not $hasMkcert) {
+    Write-Host "Error: Please Install mkcert -> ensure it's added to PATH -> restart your terminal"
+}
+
+if (-not $hasOpenSsl) {
+    Write-Host "Error: Please install openssl, ensure it's added to PATH, and restart your terminal"
+}
+
+if (-not $hasMkcert -or -not $hasOpenSsl) {
     exit
 }
-if (-not (Get-Command mkcert -ErrorAction SilentlyContinue)) {
-    Write-Host 'mkcert is not installed. Installing mkcert using choco...'
-    choco install mkcert -y
-    Write-Host 'mkcert has been installed. PLEASE RESTART THE CMD OR CODE EDITOR and run this script again.' -ForegroundColor Cyan
-    exit
+
+$mkcertCaRoot = mkcert -CAROOT
+$mkcertRootCa = Join-Path $mkcertCaRoot 'rootCA.pem'
+
+if (-not (Test-Path $mkcertRootCa)) {
+    Write-Host 'Installing the mkcert root certificate...'
+    mkcert -install
 }
-if (-not (Get-Command openssl -ErrorAction SilentlyContinue)) {
-    Write-Host 'OpenSSL is not installed. Installing OpenSSL using choco...'
-    choco install openssl -y
-    Write-Host 'openssl has been installed. PLEASE RESTART THE CMD OR CODE EDITOR and run this script again.' -ForegroundColor Cyan
-    exit
+else {
+    Write-Host 'mkcert root certificate already exists.'
 }
-Write-Host 'Installing the mkcert root certificate...'
-mkcert -install
 #
 Write-Host 'Getting the IPv4 address for this machine...'
 $ipAddress = (Get-NetIPAddress | Where-Object { $_.AddressFamily -eq 'IPv4' -and $_.InterfaceAlias -like '*Wi*Fi*' }).IPAddress
