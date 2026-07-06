@@ -28,7 +28,7 @@ jobs:
            run: npm run test || exit 1
 
          - name: CD Phase - Install Firebase CLI
-           run: npm install -g firebase-tools@13.7.2
+           run: npm install -g firebase-tools@latest
 
          - name: CD Phase - Deploy to Dev Env If Pushed To Dev Branch # the deploy-dev script includes building the project as a pre-script before deploying
            if: github.ref == 'refs/heads/dev'
